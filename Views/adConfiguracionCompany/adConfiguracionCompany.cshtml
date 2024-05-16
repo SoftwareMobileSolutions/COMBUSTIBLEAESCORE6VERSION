@@ -1,0 +1,433 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = null;
+}
+<section>
+    <div class="card">
+        <div class="container-fluid p-lg-4 p-4">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2 class="text-center">Informacion de la empresa</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label class="form-label">Nombre de la empresa</label>
+                            <input type="text" class="w-100 form-control" id="Input_CompanyName">
+                        </div>
+                    </div>
+                    <div class="row mt-lg-2 mt-2">
+                        <div class="col-lg-12">
+                            <label> Seleccione su departamento</label>
+                            <input id="departamentoDropDownList" class="w-100 drop" />
+                        </div>
+                    </div>
+                    <div class="row mt-lg-2 mt-2">
+                        <div class="col-lg-12">
+                            <label> Seleccione su Municipio</label>
+                            <input id="municipioDropDownList" class=" w-100 drop" />
+                        </div>
+                    </div>
+
+                    <div class="row mt-lg-2 mt-2">
+                        <div class="col-lg-12">
+                            <label  class="form-label">Pagina web</label>
+                            <input type="text" class="w-100 form-control" id="Input_Website">
+                        </div>
+                    </div>
+                    <div class="row mt-lg-2 mt-2">
+                        <div class="col-lg-12">
+                            <label class="form-label">Correo</label>
+                            <input type="email" class="w-100 form-control" id="Input_Email">
+                        </div>
+                    </div>
+                    <div class="row mt-lg-2 mt-2">
+                        <div class="col-lg-12">
+                            <label  class="form-label">Descripcion de la empresa</label>
+                            <input type="text" class="w-100 form-control" id="Input_Description">
+                        </div>
+                    </div>
+                    <div class="row mt-lg-2 mt-2">
+                        <div class="col-lg-12">
+                            <label class="form-label">Razon Saocial</label>
+                            <input type="text" class="w-100 form-control" id="Input_RazonSocial">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+
+                    <div class="row mt-lg-0 mt-2">
+                        <div class="col-lg-12">
+                            <label class="form-label">Direccion</label>
+                            <input type="text" class="w-100 form-control" id="Input_Direccion">
+                        </div>
+                    </div>
+                    <div class="row mt-lg-2 mt-2">
+                        <div class="col-lg-12" style="margin-top: 8px;">
+                            <div class="container-fluid p-0">
+                                @*<div class="row">
+                                    <div class="col-lg-6 d-flex flex-column justify-content-center align-items-center order-sm-2">
+                                        <label class="w-100 text-center">Seleccione una imagen para su logo</label>
+
+                                        <div class="form-group w-100 d-flex justify-content-center align-items-center my-3 my-lg-0">
+                                            <input type="file" name="file" id="fileInput" class="input-file" accept=".jpg,.png">
+                                            <label for="fileInput" class="btn btn-tertiary js-labelFile w-100 d-flex justify-content-center align-items-center">                                                
+                                                <span class="js-fileName">Selecciona un archivo</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 order-sm-1">
+                                        <div id="DIV_logo" class="border border-secondary rounded">
+
+                                        </div>
+                                    </div>
+                                </div>*@
+                                <div class="row">
+                                    <div class="col-lg-6 order-lg-2 order-sm-1 mt-2 mt-lg-2">
+                                        <div id="DIV_logo" class="border border-secondary rounded">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 d-flex flex-column justify-content-center align-items-center order-lg-1 order-sm-2 mt-2 mt-lg-0">
+                                        <label class="w-100 text-center">Seleccione una imagen para su logo</label>
+
+                                        <div class="form-group w-100 d-flex justify-content-center align-items-center my-3 my-lg-0">
+                                            <input type="file" name="file" id="fileInput" class="input-file" accept=".jpg,.png">
+                                            <label for="fileInput" class="btn btn-tertiary js-labelFile w-100 d-flex justify-content-center align-items-center">
+                                                <span class="js-fileName">Selecciona un archivo</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-lg-4 mt-2">
+                        <div class="col-lg-12">
+                            <label class="form-label">Numero de Telefono 1</label>
+                            <input type="text" class="w-100 form-control" id="Input_Number1">
+                        </div>
+                    </div>
+                    <div class="row mt-lg-2 mt-2">
+                        <div class="col-lg-12">
+                            <label class="form-label">Numero de Telefono 2</label>
+                            <input type="text" class="w-100 form-control" id="Input_Number2">
+                        </div>
+                    </div>
+                    <div class="row mt-lg-2 mt-2">
+                        <div class="col-lg-12">                            
+                            <button type="button" class="btn btn-success w-100" style="margin-top:26px;" id="BTN_Guardar"> <i class="bi bi-floppy"></i> Guardar cambios </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<style>
+    .drop{
+        height: 36px;
+        margin-top: 10px;
+    }
+
+    .btn-tertiary {
+        color: #555;
+        padding: 0;
+        line-height: 40px;
+        width: 300px;
+        height:36px;
+        display: block;
+        border: 2px solid #555;
+    }
+
+    .btn-tertiary:hover,
+    .btn-tertiary:focus {
+        color: #7b7b7b; 
+        border-color: #7b7b7b; 
+    }      
+
+    .input-file {
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
+    }
+
+    .input-file + .js-labelFile {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        padding: 0 10px;
+        cursor: pointer;
+    }
+
+    .input-file.has-file .icon:before {
+            color: #5AAC7B;
+    }
+
+    #DIV_logo{
+        height: 202px;
+    }
+</style>
+<script type="text/javascript">
+    (function () {
+        $.extend({
+            DropDownList: {
+                loadDropDownList: function () {
+                    $("#departamentoDropDownList").kendoDropDownList({
+                        filter: "contains",
+                        optionLabel: 'departamentos...',
+                        dataTextField: "nombreDepartamento",
+                        dataValueField: "departamentoID",
+                        select: function (e) {
+                            $.get('@Url.Action("ObtenerMunicipios", "adConfiguracionCompany")', { DepartamentoID: e.dataItem.departamentoID }, function (data) {
+                                $("#municipioDropDownList").data("kendoDropDownList").dataSource.data(data.municipios)
+                            })
+                        }
+                    });
+                    $("#municipioDropDownList").kendoDropDownList({
+                        filter: "contains",
+                        optionLabel: 'municipios...',
+                        dataTextField: "nombreMunicipio",
+                        dataValueField: "municipioID",
+                    });
+                },
+                dataDropDownList: function () {  
+                    $.get('@Url.Action("ObtenerDataDrops", "adConfiguracionCompany")', function (data) {
+                        $("#municipioDropDownList").data("kendoDropDownList").dataSource.data(data.municipios)
+                        $("#departamentoDropDownList").data("kendoDropDownList").dataSource.data(data.departamentos)
+
+
+                        $("#municipioDropDownList").data("kendoDropDownList").value(data.municipioID)
+                        $("#departamentoDropDownList").data("kendoDropDownList").value(data.departamentoID)
+                    })
+                }
+            },
+            Company: {
+                DataCompany: function () {
+                    var _this = this
+                    $.get('@Url.Action("ObtenerDataCompany", "adConfiguracionCompany")', function (data) {
+                        company = data.dataCompany[0]
+                        $("#Input_CompanyName").val(company.nombreCompany)
+                        $("#Input_Website").val(company.sitioWeb)
+                        $("#Input_Email").val(company.correo)
+                        $("#Input_Description").val(company.descripcion)
+                        $("#Input_RazonSocial").val(company.razonSocial)
+                        $("#Input_Direccion").val(company.direccion)
+
+                        var telefono1 = company.telMovil === null ? "" : company.telMovil.substring(5, 9) + company.telMovil.substring(10)
+                        $("#Input_Number1").val(telefono1)
+
+                        var telefono2 = company.telfijo === null ? "" : company.telfijo.substring(5, 9) + company.telfijo.substring(10)
+                        $("#Input_Number2").val(telefono2)
+
+                        _this.logoCompany(data.logo)
+                    })
+                },
+                Input_File: function () {
+                    var _this = this;
+                    $("#fileInput").on("focus", function () {
+                        $("#fileInput").val("")
+                    });
+
+                    $('.input-file').each(function () {
+                        var input = $(this),
+                            label = input.next('.js-labelFile'),
+                            labelVal = label.html();
+
+                        input.on('change', function (element) {
+                            var fileName = '';
+                            if (element.target.value) fileName = element.target.value.split('\\').pop();
+                            fileName ? label.addClass('has-file').find('.js-fileName').html(fileName) : $label.removeClass('has-file').html(labelVal);
+                            if ($("#fileInput").val() != "") {
+                                const fileInput = event.target;
+                                const file = fileInput.files[0];
+                                var reader = new FileReader();
+                                reader.onload = function (e) {
+                                    _this.logoCompany(e.target.result)
+                                };
+                                reader.readAsDataURL(file);
+                            }
+                        });
+                    });
+
+                },
+                logoCompany: function (logo) {
+                    $("#DIV_logo").css('background', 'url(' + logo + ')');
+                    $("#DIV_logo").css('background-size', 'contain');
+                    $("#DIV_logo").css('background-repeat', 'no-repeat');
+                    $("#DIV_logo").css('background-position', 'center');
+                },
+                validaciones: {
+                    formato: function (_CompanyName, _PaginaWeb, _Email, _Number1, _Number2) {
+                        var URL_Regex = /^(?:(?:https?|ftp):\/\/)?(?:www\.)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(?:\/\S*)?$/;
+                        var Email_Regex = /^\w+([.-_+]?\w+)*@@\w+([.-]?\w+)*(\.\w{2,10})+$/;
+
+                        if (_CompanyName.length < 3) {
+                            $._combustible.alert("error", "Nombre demasiado corto", "El nombre debe tener al menos 3 caracteres")
+                            return false
+                        }
+
+                        if (_PaginaWeb !== "") {
+                            if (!URL_Regex.test(_PaginaWeb)) {
+                                Swal.fire({
+                                    title: "Sitio web invalido",
+                                    icon: "error",
+                                    html: `<span class="fw-bold"> El sitio web debe cumplir uno de estos formatos</span>
+                                                <ul>
+                                                     <li class="text-start">https://dominio.com</li>
+                                                     <li class="text-start">http://dominio.com</li>
+                                                     <li class="text-start">https://www.dominio.com</li>
+                                                     <li class="text-start">http://www.dominio.com</li>
+                                                     <li class="text-start">www.dominio.com</li>
+                                                     <li class="text-start">dominio.com</li>
+                                                </ul>`
+                                });
+                                return false
+                            }
+                        }
+                        if (_Email !== "") {
+                            if (!Email_Regex.test(_Email)) {
+                                $._combustible.alert("error", "Formato de correo incorrecto", "Debe digitar  un correo valido, por ejemplo usuario@correo.com")
+                                return false
+                            }
+                        }
+
+                        if (_Number1 !== "") {
+                            if (_Number1.length < 8) {
+                                $._combustible.alert("error", "Número de telefono 1 demasido corto ", "El numero de telefono debe tener al menos 8 números")
+                                return false
+                            }
+                        }
+
+                        if (_Number2 !== "") {
+                            if (_Number2.length < 8) {
+                                $._combustible.alert("error", "Número de telefono 2 demasido corto ", "El numero de telefono debe tener al menos 8 números")
+                                return false
+                            }
+                        }                      
+                        return true
+                    },
+                    keypress: function () {
+                        $('#Input_Number1').keypress(function (event) {
+                            var keyCode = event.which;
+                            var inputValue = $(this).val();
+
+                            if (keyCode < 48 || keyCode > 57) {
+                                event.preventDefault();
+                            }
+                            if (inputValue.length > 7) {
+                                event.preventDefault();
+                            }
+
+                        });
+
+                        $('#Input_Number1').on("paste", function (event) {
+                            event.preventDefault();
+                        });
+                        $('#Input_Number2').keypress(function (event) {
+                            var keyCode = event.which;
+                            var inputValue = $(this).val();
+
+                            if (keyCode < 48 || keyCode > 57) {
+                                event.preventDefault();
+                            }
+                            if (inputValue.length > 7) {
+                                event.preventDefault();
+                            }
+
+                        });
+
+                        $('#Input_Number2').on("paste", function (event) {
+                            event.preventDefault();
+                        });
+                    }
+                },
+                BTN_Guardar: function(){
+                    var _this = this
+                    $("#BTN_Guardar").on("click", function(){
+
+                        var fileInput = document.getElementById('fileInput');                     
+                        var file = fileInput.files[0];
+
+                        if (file != undefined) {
+                            if (file.type !== "image/png" && file.type !== "image/jpeg") {
+                                file = null
+                            }
+                        }
+
+                        var _CompanyName = $("#Input_CompanyName").val()
+                        var _Direccion = $("#Input_Direccion").val()
+                        var _Website = $("#Input_Website").val()
+                        var _Email = $("#Input_Email").val()
+                        var _RazonSocial = $("#Input_RazonSocial").val()
+                        var _DepartamentoID = $("#departamentoDropDownList").data("kendoDropDownList").value()
+                        _DepartamentoID = _DepartamentoID === "" ? null : parseInt(_DepartamentoID)
+                        var _MunicipioID = $("#municipioDropDownList").data("kendoDropDownList").value()
+                        _MunicipioID = _MunicipioID === "" ? null : parseInt(_MunicipioID)
+                        var _Description = $("#Input_Description").val()
+                        var _Number1 = $("#Input_Number1").val()                       
+                        var _Number2 = $("#Input_Number2").val()
+                        if (_this.validaciones.formato(_CompanyName, _Website, _Email, _Number1, _Number2) === true) {
+
+                            if (_Number1 !== "") {
+                                _Number1 = "+503 " + _Number1.substring(0, 4) + "-" + _Number1.substring(4)
+                            }
+                            var _Number2 = $("#Input_Number2").val()
+                            if (_Number2 !== "") {
+                                _Number2 = "+503 " + _Number2.substring(0, 4) + "-" + _Number2.substring(4)
+                            }
+
+                            var formData = new FormData();
+
+                            formData.append('NombreCompany', _CompanyName);
+                            formData.append('Direccion', _Direccion);
+                            formData.append('SitioWeb', _Website);
+                            formData.append('Correo', _Email);
+                            formData.append('RazonSocial', _RazonSocial);
+                            formData.append('DepartamentoID', _DepartamentoID);
+                            formData.append('MunicipioID', _MunicipioID);
+                            formData.append('Descripcion', _Description);
+                            formData.append('TelMovil', _Number1);
+                            formData.append('Telfijo', _Number2);
+                            formData.append('img', file);
+
+                            $.ajax({
+                                url: "/adConfiguracionCompany/CambiarInformacion",
+                                type: "POST",
+                                data: formData,
+                                contentType: false,
+                                processData: false,
+                                success: function (mensaje) {
+                                    _this.DataCompany();
+                                    mensaje = mensaje[0]
+                                    $._combustible.alert("success", "Actualizacion exitosa", mensaje.resultado)
+                                },
+                                error: function (xhr, status, error) {
+                                    console.error("Error al guardar la imagen:", error);
+                                }
+                            });
+                        }                    
+                    })
+                }
+            },
+            init: function () {
+                var _this = this
+                _this.Company.Input_File()
+                _this.Company.validaciones.keypress()
+                _this.DropDownList.loadDropDownList()
+                _this.DropDownList.dataDropDownList()
+                _this.Company.DataCompany()
+                _this.Company.BTN_Guardar()
+            }
+        })
+        $.init()
+    })();
+
+</script>

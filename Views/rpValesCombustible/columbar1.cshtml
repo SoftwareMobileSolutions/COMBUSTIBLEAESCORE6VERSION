@@ -1,0 +1,123 @@
+﻿<div id="columbar2" class="chart" style="margin-top: 2em;"></div>
+<script type="text/javascript">
+    $.extend({
+        colum1Chart: {
+            createColumn1: function () {
+                let d = $.rpValesCombustible.dataGridGlobal,
+                    $this = $.ddlTipoGraf,
+                    variable = $this.variable,
+                    tipo = $this.tipo,
+                    orden = $this.orden,
+                    simboloy = $this.simboloy,
+                    title_tipo = $this.title_tipo,
+                    title_variable = $this.title_variable;
+
+
+                $("#columbar2").html("");
+                let datachart = [];
+               
+                let xAxisArr = [];
+                //console.log(data);
+                //let colum1data = _.groupBy(data, "placa");
+                let grdata = _.groupBy(d, tipo);
+
+                //console.log(grdata);
+               // return false;
+
+                for (let a in grdata) {
+                    xAxisArr.push(a);
+                    let t = $._combustible.getTotal(grdata[a], variable);
+                    if (t !== 0) {
+                        datachart.push({
+                            name: a,
+                            y: parseFloat(t.toFixed(2))
+                        }); 
+                    }
+                }
+               
+                if (orden === "mayor") {
+                    datachart = _.sortBy(datachart, 'y').reverse();
+                } else {
+                    datachart = _.sortBy(datachart, 'y');
+                }
+               
+
+                datachart = datachart.slice(0, 10); 
+
+                Highcharts.chart('columbar2',
+                    {
+                    chart: {
+                        type: 'column',
+                        height: 72 + '%'
+                    },
+                    legend: false,
+                    title: {
+                       // align: 'right',
+                       // x: -80,
+                        verticalAlign: 'top',
+                       // y: -80,
+                      //  floating: true,
+                            text: "Top 10 " + title_tipo + " con " + orden + " " + title_variable,
+                        style: {
+                            fontSize: '0.8em'
+                        }
+                    },
+                    /*subtitle: {
+                        text:
+                            'Source: <a target="_blank" ' +
+                            'href="https://www.indexmundi.com/agriculture/?commodity=corn">indexmundi</a>',
+                        align: 'left'
+                    },*/
+                    xAxis: {
+                        categories: xAxisArr,
+                        /*crosshair: true,
+                        accessibility: {
+                            description: 'Countries'
+                        }*/
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                                text: 'Totales por ' + title_tipo
+                            },
+                        labels: {
+                            formatter: function () {
+                                    return simboloy + this.axis.defaultLabelFormatter.call(this);
+                            }
+                        }
+                    },
+                    tooltip: {
+                        valueSuffix: ''
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    plotOptions: {
+                        column: {
+                            pointPadding: 0.2,
+                            borderWidth: 0
+                        },
+                        series: {
+                            dataLabels: {
+                                enabled: true,
+                                formatter() {
+                                    if (Number.isInteger(this.y)) {
+                                        return this.y
+                                    }
+                                }
+                            },
+                        }
+                    },
+                    exporting: {
+                        enabled: false
+                    },
+                    series: [{
+                        name: 'Total de vales ($)',
+                        colorByPoint: true,
+                        data: datachart
+                    }]
+                });
+            }
+        }
+    })
+</script>

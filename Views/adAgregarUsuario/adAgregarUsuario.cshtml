@@ -1,0 +1,730 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = null;
+}
+<section>
+  <div class="card p-lg-4 p-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2 class="text-center"> Agregar Usuarios </h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="concontainer-fluid">
+                        <label> Ingrese el Username</label>
+                        <input  type="text" class="form-control my-2" id="Input_Username"/>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="concontainer-fluid">
+                        <label> Ingrese la contraseña del usuario</label>
+                        <div class="input-group border rounded p-0 show_hide_password my-2">
+                            <input type="password" id="Input_Password" class="form-control border-0 "
+                                   @*placeholder="Ingresa la contraseña"*@ />
+                            <div class="input-group-addon px-lg-2">
+                                <a href="" class="align-middle mx-lg-auto">
+                                    <i class="bi bi-eye-fill align-middle mx-lg-auto" style="color:grey;"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 order-1 order-lg-0">
+                    <div class="concontainer-fluid ">
+                        <label> Seleccione el perfil de usuario</label>
+                        <input class="h-100 my-2" id="DropDownListPerfilUsuario" style="height:36px !important" />
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="concontainer-fluid">
+                        <label> Ingrese el contacto del usuario</label>
+                        <input type="text" class="form-control my-2" id="Input_Contacto" />
+                    </div>
+                </div>
+            </div>
+            <div class="row d-none" id="DIV_Gasolineras">
+                <div class="col-lg-6" >
+                    <div class="concontainer-fluid">
+                        <label> Seleccione la gasolinera para usuario cerrador</label>
+                        <input class="h-100 my-2" id="DropDownListGasolinera" style="height:36px !important" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="concontainer-fluid">
+                        <label> Ingrese el Primer nombre del usuario</label>
+                        <input type="text" class="form-control my-2" id="Input_Nombre" />
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="concontainer-fluid">
+                        <label> Ingrese el apellido</label>
+                        <input type="text" class="form-control my-2" id="Input_Apellido" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="concontainer-fluid">
+                        <label> Ingrese el correo electronico</label>
+                        <input type="text" class="form-control my-2" id="Input_correo" />
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="concontainer-fluid">
+                        <button type="button" class="btn btn-success w-100" id="BTN_AgregarUsuario"> 
+                            <i class="bi bi-person-plus"></i> Agregar Usuario
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+  </div>
+  <div class="card p-lg-4 p-3">
+      <div class="container-fluid">
+          <div class="row">
+              <div class="col-lg-12">
+                  <h2 class="text-center"> Usuarios Existentes</h2>
+              </div>
+              <div class="col-lg-12">
+                  <div id="GridUsuarios">
+
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="modal fade" id="editarModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">                   
+                    <h5 class="modal-title"> <i class="bi bi-pencil-square"></i> Editar usuario</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                   <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-lg-12 d-flex justify-content-center align-items-center">
+                                <img src="../images/user.gif" />
+                                <span class=" text-center" id="editarModalLabel"> Contraseña nueva</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <span>Contraseña nueva</span>
+                            </div>
+                        </div>
+                        <div class="row pt-lg-2">
+                            <div class="col-lg-12">
+                                <input type="text" id="InputModal_contra" class="form-control inputModal" />
+                            </div>
+                        </div>
+                       <div class="row">
+                            <span>Nombre</span>
+                       </div>
+                       <div class="row pt-lg-2">
+                           <div class="col-lg-12">
+                                <input type="text" id="InputModal_Nombre" class="form-control inputModal" />
+                           </div>
+                       </div>
+                        <div class="row">
+                            <span>Apellido</span>
+                        </div>
+                        <div class="row pt-lg-2">
+                            <div class="col-lg-12">
+                                <input type="text" id="InputModal_Apellido" class="form-control inputModal" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <span>Correo</span>
+                        </div>
+                        <div class="row pt-lg-2">
+                            <div class="col-lg-12">
+                                <input type="text" id="InputModal_Correo" class="form-control inputModal" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <span>Telefono</span>
+                        </div>
+                        <div class="row pt-lg-2">
+                            <div class="col-lg-12">
+                                <input type="text" id="InputModal_Telefono" class="form-control inputModal" />
+                            </div>
+                        </div>
+                       <div class="row">
+                           <div class="col-lg-12 mt-lg-1">
+                                @*<span id="ModalAlert"></span>*@
+                           </div>
+                       </div>
+                   </div>
+                </div>
+                <div class="container-fluid border-top">
+                   <div class="row">
+                        <div class="col-6 d-flex align-items-center justify-content-start">
+                            <span id="ModalAlert" class="ms-3"> Prueba ccxcxbvcxbcxbxcbbbxcbxcbx</span>
+                       </div>
+                        <div class="col-6">
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn btn-success" id="BTN_Guardar" disabled><i class="bi bi-floppy"></i> Guardar cambios</button>
+                            </div>
+                        </div>
+                   </div>
+               </div>
+            </div>
+        </div>
+    </div>
+</section>
+<style type="text/css">
+    #BTN_AgregarUsuario{
+        margin-top: 35px
+    }
+    .k-grid-Editar {
+        background: #198754;
+        color: white;
+    }
+
+        .k-grid-Editar:hover {
+            background: #157347;
+        }
+
+    .k-grid-Eliminar {
+        background: #dc3545;
+        color: white;
+    }
+
+        .k-grid-Eliminar:hover {
+            background: #bb2d3b;
+            color: white;
+        }
+    .modal-footer{
+        border-top: 0px solid #dee2e6;
+    }
+
+    .col-command {
+        text-align: center !important;
+        width: 75px;
+    }
+
+    .col-activo {
+        text-align: center !important;
+        width: 45px;
+    }
+
+    .col-data {
+        width: 150px;
+    }
+
+    @@media screen and (max-width: 576px) {
+        #BTN_AgregarUsuario {
+            margin-top: 10px
+        }
+        .col-command {
+            text-align: center !important;
+            width: 100px;
+        }
+
+        .col-activo {
+            text-align: center !important;
+            width: 70px;
+        }
+    }
+</style>
+<script type="text/javascript">
+    (function () {
+        $.extend({
+            AgregarUsuario: {
+                DropDownList: {
+                    load: function () {
+                        var _this = this
+                        $("#DropDownListPerfilUsuario").kendoDropDownList({
+                            optionLabel: 'Perfiles...',
+                            dataTextField: "nombreProfile",
+                            dataValueField: "perfilID",
+                            change: function (data) {
+                                //console.log(data)
+                                var value = this.text();
+                                if (value === "Cerrador") {
+                                    $("#DIV_Gasolineras").removeClass("d-none")
+                                    $("#DIV_Gasolineras").addClass("d-block")
+                                } else {
+                                    $("#DIV_Gasolineras").removeClass("d-block")
+                                    $("#DIV_Gasolineras").addClass("d-none")
+                                }
+                            }
+                        });
+
+                        $("#DropDownListGasolinera").kendoDropDownList({
+                            optionLabel: 'Gasolineras...',
+                            dataTextField: "nombre",
+                            dataValueField: "estacionServcioID"
+                        });
+                        _this.dataDropDownList();
+                    },
+                    dataDropDownList: function () {
+                        $.get('@Url.Action("ObtenerPerfilUsuarios", "adAgregarUsuario")', function (perfiles) {
+                            $("#DropDownListPerfilUsuario").data("kendoDropDownList").dataSource.data(perfiles)
+                        })
+                        $.get('@Url.Action("ObtenerGasolineras", "adAgregarUsuario")', function (gasolineras) {
+                            $("#DropDownListGasolinera").data("kendoDropDownList").dataSource.data(gasolineras)
+                        })
+                    }
+                },
+                showPassword: function () {
+                    $(".show_hide_password a").on('click', function (event) {
+                        event.preventDefault();
+                        if ($('.show_hide_password input').attr("type") == "text") {
+                            $('.show_hide_password input').attr('type', 'password');
+                            $('.show_hide_password i').removeClass("bi bi-eye-slash-fill");
+                            $('.show_hide_password i').addClass("bi bi-eye-fill");
+                        } else if ($('.show_hide_password input').attr("type") == "password") {
+                            $('.show_hide_password input').attr('type', 'text');
+                            $('.show_hide_password i').addClass("bi bi-eye-slash-fill");
+                            $('.show_hide_password i').removeClass("bi bi-eye-fill");
+
+                        }
+                    });
+                },
+                Validaciones: {
+                    formato: function (username, clave, perfil, gasolinera,contacto, nombre, apellido, correo) {
+
+                        var validEmail = /^\w+([.-_+]?\w+)*@@\w+([.-]?\w+)*(\.\w{2,10})+$/;
+                        var securePassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)\S{8,}$/;
+
+                        //Username
+                        if (username === "") {
+                            $._combustible.alert("error", "Campo de texto vacio", "Debe digitar el username del nuevo usuario")
+                            return false
+                        }
+                        if (username.length < 3) {
+                            $._combustible.alert("error", "Username demasiado corto", "El username debe tener al menos tres caracteres")
+                            return false
+                        }
+                        //Contraseña
+                        if (clave === "") {
+                            $._combustible.alert("error", "Campo de texto vacio", "Debe digitar una contraseña")
+                            return false
+                        }
+                        if (!securePassword.test(clave)) {
+                            $._combustible.alert("error", "Contraseña insegura", "La contraseña debe contener una o mas mayusculas, una o mas minusculas, uno o mas digitos y mas de 8 caracteres")
+                            return false
+                        }
+
+                        //Perfil
+                        console.log(perfil)
+                        if (perfil === "") {
+                            $._combustible.alert("error", "No hay seleccion", "Debe seleccionar un perfil para el nuevo usuario")
+                            return false
+                        }
+                        //Gasolinera Usuario cerrrador
+                        if (perfil === "4") {
+                            //$._combustible.alert("error", "No hay seleccion", "Debe seleccionar un perfil para el nuevo usuario")
+                            /*console.log("Usuario Cerrador")
+                            return false*/
+                            if (gasolinera === "") {
+                                $._combustible.alert("error", "No hay seleccion", "Debe seleccionar una gasolinera para el usuario cerrador")
+                                return false
+                            }
+                        }
+                        //Contacto
+                        if (contacto !== "") {
+                            if (contacto < 8) {
+                                $._combustible.alert("error", "Formato de telefono incorrecto", "El numero de telefono debe tene 8 digitos")
+                                return false
+                            }
+                        }
+
+                        //Nombre
+                        if (nombre === "") {
+                            $._combustible.alert("error", "Campo de texto vacio", "Debe digitar el nombre del usuario")
+                            return false
+                        }
+
+                        if (nombre.length < 3) {
+                            $._combustible.alert("error", "Nombre demasiado corto", "El nombre del usuario debe tener al menos tres caracteres")
+                            return false
+                        }
+                        //Apellido
+                        if (apellido === "") {
+                            $._combustible.alert("error", "Campo de texto vacio", "Debe digitar el apellido del usuario")
+                            return false
+                        }
+
+                        if (apellido.length < 3) {
+                            $._combustible.alert("error", "Apellido demasiado corto", "El apellido del usuario debe tener al menos tres caracteres")
+                            return false
+                        }
+                        //Correo
+                        if (correo !== "") {
+                            if (!validEmail.test(correo)) {
+                                $._combustible.alert("error", "Formato de correo incorrecto", "Debe digitar  un correo valido, por ejemplo usuario@correo.com")
+                                return false
+                            }
+                        }
+
+                        return true
+                    },
+                    keypress: function () {
+                        $('#Input_Contacto').keypress(function (event) {
+                            var keyCode = event.which;
+                            var inputValue = $(this).val();
+
+                            if (keyCode < 48 || keyCode > 57) {
+                                event.preventDefault();
+                            }
+                            if (inputValue.length > 7) {
+                                event.preventDefault();
+                            }
+
+                        });
+
+                        $('#Input_Contacto').on("paste", function (event) {
+                            event.preventDefault();
+                        });
+                    },
+                },
+                BTN_CrearUsuario: function () {
+                    var _this = this                                     
+                    
+                    $("#BTN_AgregarUsuario").on("click", function () {
+                        var _username = $("#Input_Username").val().trim()
+                        var _clave = $("#Input_Password").val().trim()
+                        var _perfil = $("#DropDownListPerfilUsuario").val().trim()
+                        var _gasolinera = $("#DropDownListGasolinera").val().trim()
+                        var _contacto = $("#Input_Contacto").val().trim()
+                        var _nombre = $("#Input_Nombre").val().trim()
+                        var _apellido = $("#Input_Apellido").val().trim()
+                        var _correo = $("#Input_correo").val().trim()
+                    
+                        if (_this.Validaciones.formato(_username, _clave, _perfil, _gasolinera, _contacto, _nombre, _apellido, _correo) === true) {
+                            _perfil = parseInt(_perfil)
+                            if (_contacto !== "") {
+                                _contacto = "+503 " + _contacto.substring(0, 4) + "-" + _contacto.substring(4)
+                            }
+                            
+                            _gasolinera = (_perfil === 4 ? parseInt( _gasolinera) : "0")
+
+                                arg = { 
+                                Nombre: _nombre,
+                                Apellido: _apellido,
+                                Username: _username,
+                                Clave: _clave,
+                                Correo: _correo,
+                                PerfilID: _perfil,
+                                GasolineraID: _gasolinera,
+                                Telefono: _contacto
+                            }
+                            console.log(arg)
+                            $.post('@Url.Action("CrearUsuarios", "adAgregarUsuario")', arg, function (mensaje) {
+                                mensaje = mensaje[0]
+                                if (mensaje.bandera === 1) {
+                                    $._combustible.alert("success", "Usuario Creado", mensaje.resultado)
+                                    $.GRID.DataGrid();
+                                    $("#Input_Username").val("")
+                                    $("#Input_Password").val("")
+                                    $("#DropDownListPerfilUsuario").data("kendoDropDownList").select(0)
+                                    $("#Input_Contacto").val("")
+                                    $("#Input_Nombre").val("")
+                                    $("#Input_Apellido").val("")
+                                    $("#Input_correo").val("")
+                                    $.AgregarUsuario.DropDownList.load()
+                                } else {
+                                    $._combustible.alert("error", "No se creó el usuario", mensaje.resultado)
+                                }
+                            });
+
+                        }
+
+                    });
+                }
+            },
+            GRID: {
+                loadGRID: function () {
+                    var _this = this
+                    $("#GridUsuarios").html("");
+                    $("#GridUsuarios").kendoGrid({
+                        dataSource: {
+                            pageSize: 15,
+                        },
+                        toolbar: ["search"],
+                        themeColor: "Purple",
+                        columns: [
+                            {
+                                field: "username",
+                                title: "Username",
+                                attributes: { class: "col-data" },
+                                headerAttributes: { class: "col-data" }
+                            },
+                            {
+                                field: "perfil",
+                                title: "Perfil",
+                                attributes: { class: "col-data" },
+                                headerAttributes: { class: "col-data" }
+                            },
+                            {
+                                field: "nombre",
+                                title: "Nombre",
+                                attributes: { class: "col-data" },
+                                headerAttributes: { class: "col-data" }
+                            },
+                            {
+                                field: "apellido",
+                                title: "Apellido",
+                                attributes: { class: "col-data" },
+                                headerAttributes: { class: "col-data" }
+                            },
+                            {
+                                field: "correo",
+                                title: "Correo",
+                                attributes: { class: "col-data" },
+                                headerAttributes: { class: "col-data" }
+                            },
+                            {
+                                field: "telefono",
+                                title: "Telefono",
+                                attributes: { class: "col-data" },
+                                headerAttributes: { class: "col-data" }
+                            },
+                            {
+                                field: "estado", 
+                                type: "number", 
+                                title: "Activo", 
+                                filterable: false, 
+                                attributes: { class: "col-activo" },
+                                headerAttributes: { class: "col-activo" },
+                                template: function (data) {
+                                    var Switch = '<div class="form-check form-switch d-flex justify-content-center align-items-center">' +
+                                                    '<input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" ' + (data.estado === 0 ? '' : 'checked') + ' onchange="$.GRID.CambioEstado(' + data.usuarioID + ',' + data.estado + ')">' +
+                                                 '</div>';
+                                    return Switch;
+                                }
+                                
+                            },
+                            {
+                                command: [
+                                    {
+                                        name: "Editar",
+                                        text: '<span> <i class="bi bi-pencil-square"></i></i> Editar </span>',
+                                        click: function (e) {
+                                            e.preventDefault();
+                                            var tr = $(e.target).closest("tr");
+                                            var data = this.dataItem(tr);
+                                            console.log(data)
+                                            var telefono = data.telefono === null ? "" : data.telefono.substring(5, 9) + data.telefono.substring(10)
+                                            $("#editarModalLabel").text(data.username)
+                                            $("#InputModal_Nombre").val(data.nombre)
+                                            $("#InputModal_Apellido").val(data.apellido)
+                                            $("#InputModal_Correo").val(data.correo)
+                                            $("#InputModal_Telefono").val(telefono)
+                                            $("#ModalAlert").text("")
+                                            $('#editarModal').modal('show');
+                                            $("#BTN_Guardar").attr("disabled", true)
+                                            
+                                            $.GRID.Modal.username = data.username
+                                            $.GRID.Modal.dataActual.nombre = data.nombre
+                                            $.GRID.Modal.dataActual.apellido = data.apellido
+                                            $.GRID.Modal.dataActual.correo = data.correo
+                                            $.GRID.Modal.dataActual.telefono = telefono
+                                        }
+                                    }
+                                ],
+                                attributes: { class: "col-command" },
+                                headerAttributes: { class: "col-command" },
+                            }
+                        ],
+                        pageable: true,
+                        mobile: "phone",
+                        dataBound: function (e) {
+                            $("#GridUsuarios > div span input").attr("placeholder", "Busqueda")
+                        }
+                    });
+                    _this.DataGrid()
+                },
+                DataGrid: function() {
+                    $.get('@Url.Action("ObtenerUsuarios", "adAgregarUsuario")', function (usuarios) {
+                        $("#GridUsuarios").data("kendoGrid").dataSource.data(usuarios)
+                    })
+                },
+                CambioEstado: function (usuarioID, estado) {
+                    var _this = this
+                    arg = {
+                        UsuarioID: usuarioID,
+                        Estado: estado
+                    }
+                    $.post('@Url.Action("CambiarEstadoUsuario", "adAgregarUsuario")', arg , function (resultado) {
+                        _this.DataGrid()
+                    })
+                },
+                Modal: {
+                    username:"",
+                    dataActual: {
+                        nombre: "",
+                        apellido: "",
+                        correo: "",
+                        telefono: ""
+                    },
+                    evaluarData: function (_contrasena, _nombre, _apellido, _correo, _telefono) {
+                        var _this = this
+                        if (_contrasena != "") {
+                            return true
+                        }
+                        if (_nombre != _this.dataActual.nombre) {
+                            return true
+                        }
+                        if (_apellido != _this.dataActual.apellido) {
+                            return true
+                        }
+                        if (_correo != _this.dataActual.correo) {
+                            return true
+                        }
+                        if (_telefono != _this.dataActual.telefono) {
+                            return true
+                        }
+                        $("#ModalAlert").text("")
+                        return false
+                    },
+                    Validaciones: function (_contrasena, _nombre, _apellido, _correo, _telefono) {
+                        var _this = this
+                        var validEmail = /^\w+([.-_+]?\w+)*@@\w+([.-]?\w+)*(\.\w{2,10})+$/;
+                        var securePassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)\S{8,}$/;
+                        if (_contrasena !== "") {
+                            if (!securePassword.test(_contrasena)) {
+                                _this.alertModal("alerta", "Contraseña insegura, La contraseña debe contener una o mas mayusculas, una o mas minusculas, uno o mas digitos, 8 o mas caracteres")
+                                return false
+                            }
+                        }
+                        if (_nombre.length < 3) {
+                            _this.alertModal("alerta", "Nombre demasiado corto, El nombre del usuario debe tener al menos tres caracteres")
+                            return false
+                        }
+                        if (_apellido.length < 3) {
+                            _this.alertModal("alerta", "Apellido demasiado corto, El Apellido del usuario debe tener al menos tres caracteres")
+                            return false
+                        }
+                        if (_correo !== "") {
+                            if (!validEmail.test(_correo)) {
+                                _this.alertModal("alerta", "Formato de correo, Debe digitar  un correo valido")
+                                return false
+                            }
+                        }
+                        if (_telefono.length < 8) {
+                            _this.alertModal("alerta", "Formato de telefono incorrecto, El numero de telefono debe tene 8 digitos")
+                            return false
+                        }
+                        $("#ModalAlert").text("")
+                        return true
+                    },
+                    keypress: function () {
+                        $('#InputModal_Telefono').keypress(function (event) {
+                            var keyCode = event.which;
+                            var inputValue = $(this).val();
+
+                            if (keyCode < 48 || keyCode > 57) {
+                                event.preventDefault();
+                            }
+                            if (inputValue.length > 7) {
+                                event.preventDefault();
+                            }
+
+                        });
+
+                        $('#InputModal_Telefono').on("paste", function (event) {
+                            event.preventDefault();
+                        });
+                    },
+                    activarBoton: function () {
+                        var _this = this 
+                        $(".inputModal").on("blur", function () {
+
+                            var _contrasena = $("#InputModal_contra").val().trim()
+                            var _nombre = $("#InputModal_Nombre").val().trim()
+                            var _apellido = $("#InputModal_Apellido").val().trim()
+                            var _correo = $("#InputModal_Correo").val().trim()
+                            var _telefono = $("#InputModal_Telefono").val().trim()
+
+                            if (_this.Validaciones(_contrasena, _nombre, _apellido, _correo, _telefono) === true) {
+                                
+
+                                if (_this.evaluarData(_contrasena, _nombre, _apellido, _correo, _telefono) === true) {
+                                    $("#BTN_Guardar").attr("disabled", false)
+                                } else {
+                                    $("#BTN_Guardar").attr("disabled", true)
+                                }
+
+                            }
+                            
+                            //console.log("XD")
+                        });
+                    },
+                    BTN_GuardarCambios: function () {
+                        var _this = this
+                        $("#BTN_Guardar").on("click",function(){
+                            var _contrasena = $("#InputModal_contra").val().trim()
+                            var _nombre = $("#InputModal_Nombre").val().trim()
+                            var _apellido = $("#InputModal_Apellido").val().trim()
+                            var _correo = $("#InputModal_Correo").val().trim()
+                            var _telefono = $("#InputModal_Telefono").val().trim()
+
+                            if (_this.Validaciones(_contrasena, _nombre, _apellido, _correo, _telefono) === true) {
+                                if (_this.evaluarData(_contrasena, _nombre, _apellido, _correo, _telefono) === true) {
+
+                                    if (_telefono !== "") {
+                                        _telefono = "+503 " + _telefono.substring(0, 4) + "-" + _telefono.substring(4)
+                                    }
+                                    var arg = {
+                                        username: _this.username,
+                                        contrasena: _contrasena,
+                                        nombre: _nombre,
+                                        apellido: _apellido,
+                                        correo: _correo,
+                                        telefono: _telefono
+                                    }
+
+                                    $.post('@Url.Action("ActualizarUsuario", "adAgregarUsuario")',arg, function (mensaje) {
+                                        mensaje = mensaje[0]
+                                        if (mensaje.bandera === 1) {
+                                            _this.alertModal("suceso", mensaje.resultado)
+                                            $.GRID.DataGrid()
+                                            $("#BTN_Guardar").attr("disabled", true)
+                                        } else {
+                                            _this.alertModal("alerta", mensaje.resultado)
+                                        }
+                                    })
+                                } 
+                            }                          
+                        })
+                    },                    
+                    alertModal: function (tipo, mensaje) {
+                        if (tipo === "alerta") {
+                            $("#ModalAlert").text("Alerta: " + mensaje)
+                            $("#ModalAlert").css("color", "red")
+                        }
+                        if (tipo === "suceso") {
+                            $("#ModalAlert").text("Nota: " + mensaje)
+                            $("#ModalAlert").css("color", "green")
+                        }
+                    }
+                }
+            },
+            init: function () {
+                var _this = this
+                _this.AgregarUsuario.DropDownList.load()
+                _this.AgregarUsuario.showPassword()
+                _this.AgregarUsuario.BTN_CrearUsuario()
+                _this.AgregarUsuario.Validaciones.keypress()
+                _this.GRID.loadGRID();
+                _this.GRID.Modal.BTN_GuardarCambios()
+                _this.GRID.Modal.activarBoton()
+                _this.GRID.Modal.keypress()
+            }
+        })
+        $.init()
+    })();
+</script>

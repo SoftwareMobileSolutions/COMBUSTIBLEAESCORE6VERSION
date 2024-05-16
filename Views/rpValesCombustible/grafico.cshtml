@@ -1,0 +1,226 @@
+﻿<style type="text/css">
+.chart {
+   /*  height: 108%; */
+}
+
+    .btnregresar  {
+        background-color: #ebebeb;
+        border-radius: 1em;
+        position: absolute;
+        z-index: 1;
+        top: 6em;
+        font-size: 0.85em;
+        font-weight: 600;
+    }
+
+    .btnregresar2 {
+        background-color: #ebebeb;
+        border-radius: 1em;
+        z-index: 1;
+        font-size: 0.85em;
+        font-weight: 600;
+    }
+</style>
+
+<button id="btnregresar" class="btnregresar k-button k-button-solid k-button-solid-base" style="display: none;">< Regresar</button>
+<div id="graf_pie" class="chart" ></div>
+<div id="columbar1" class="chart" style="display: none;"></div>
+
+<script type="text/javascript">
+    $.extend({
+        pieChart: {
+            createPie: function(data) {
+                
+                $("#btnregresar").on("click", function () {
+                    $("#graf_pie").fadeIn();
+                    $("#columbar1, #btnregresar").hide();
+                });
+
+                let _this = this;
+                $("#graf_pie").html("");
+                let piegrdata = _.groupBy(data, "estadoCSS");
+                let pdata = [];
+                //console.log(piegrdata);
+
+                for (var a in piegrdata) {
+                    pdata.push({
+                        name: a.charAt(0).toUpperCase() + a.slice(1),
+                        y: piegrdata[a].length,
+                        datos: piegrdata[a]
+                    });
+                }
+                
+                pdata = [{
+                    name: 'Porcentaje',
+                    colorByPoint: true,
+                    data: pdata
+                }];
+
+                 
+
+                Highcharts.chart('graf_pie', {
+                    chart: {
+                        type: 'pie',
+                        height: 82 + '%'
+                    },
+                    title: {
+                        text: 'Gráfico de vales',
+                        style: {
+                            fontSize: '0.8em'
+                        }
+                    },
+                   /* title: {
+                        text: 'Reporte de Estado de Vales',
+                        style: {
+                            fontSize: '0.8em'
+                        }
+                    },
+                    */
+                    tooltip: {
+                        valueSuffix: '%'
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    exporting: {
+                        enabled: false
+                    },
+                    plotOptions: {
+                        series: {
+                            allowPointSelect: true,
+                            cursor: 'pointer',
+                            point: {
+                                events: {
+                                    click: function () {
+                                        _this.columbar2byClick.createColumChart(this.datos, this.name);
+                                    }
+                                }
+                            },
+                            dataLabels: [{
+                                enabled: true,
+                                distance: 5
+                            }, {
+                                enabled: true,
+                                //distance: -30,
+                                format: '{point.percentage:.1f}%',
+                                style: {
+                                    fontSize: '0.7em',
+                                    textOutline: 'none',
+                                    opacity: 0.7
+                                },
+                                filter: {
+                                    operator: '>',
+                                    property: 'percentage',
+                                    value: 10
+                                }
+                            }]
+                        }
+                    },
+                    series: pdata
+                });
+            },
+            columbar2byClick: {
+                createColumChart: function (d, nombre) {
+                    console.log(d, nombre);
+                    $("#graf_pie").hide();
+                    $("#columbar1, #btnregresar").fadeIn();
+                    $("#columbar1").html("");
+                    let datachart = [];
+                    let xAxisArr = [];
+                    
+                    let grdata = _.groupBy(d, "placa");
+                    let data = [];
+                    for (let a in grdata) {
+                        let ds = grdata[a];
+                        data.push({
+                            placa: a,
+                            canvales: ds.length,
+                            total: $._combustible.getTotal(ds, "total"),
+                            cantidadtotalgalones: $._combustible.getTotal(ds, "cantidadgalones"),
+                            arg: ds
+                        });
+                    }
+
+                    for (let i = data.length; i--;) {
+                        xAxisArr.push(data[i]["placa"]);
+                        datachart.push({
+                            name: data[i]["placa"],
+                            y: data[i]["canvales"],
+                            datos: data[i]
+                        });
+                    }
+
+                    Highcharts.chart('columbar1',
+                        {
+                            chart: {
+                                type: 'column',
+                                height: 82 + '%'
+                            },
+                            legend: false,
+                            title: {
+                                text: 'Gráfico de vales ' + nombre,
+                                style: {
+                                    fontSize: '0.8em'
+                                }
+                            },
+                            /*subtitle: {
+                                text:
+                                    'Source: <a target="_blank" ' +
+                                    'href="https://www.indexmundi.com/agriculture/?commodity=corn">indexmundi</a>',
+                                align: 'left'
+                            },*/
+                            xAxis: {
+                                categories: xAxisArr,
+                                /*crosshair: true,
+                                accessibility: {
+                                    description: 'Countries'
+                                }*/
+                            },
+                            yAxis: {
+                                min: 0,
+                                title: {
+                                    text: 'Cantidad de vales '
+                                }
+                            },
+                            tooltip: {
+                                valueSuffix: ' vales'
+                            },
+                            credits: {
+                                enabled: false
+                            },
+                            exporting: {
+                                enabled: false
+                            },
+                            series: [{
+                                dataSorting: {
+                                    enabled: true,
+                                    sortKey: 'value'
+                                },
+                                name: 'Cantidad de vales',
+                                colorByPoint: true,
+                                data: datachart
+                            }],
+                            plotOptions: {
+                                series: {
+                                    allowPointSelect: true,
+                                    cursor: 'pointer',
+                                    point: {
+                                        events: {
+                                            click: function () {
+                                                console.log(this.datos.arg);
+                                                $.griddetallemodal.createGridDetalle(this.datos.arg);
+                                                //_this.columbar2byClick.createColumChart(this.datos, this.name);
+                                            }
+                                        }
+                                    },
+                                }
+                            }
+                    });
+                }
+            },
+        },
+        
+    });
+</script>
+
+@await Html.PartialAsync("~/Views/rpvalescombustible/gridDetalleModal.cshtml")

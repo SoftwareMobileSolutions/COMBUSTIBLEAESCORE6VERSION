@@ -1,0 +1,261 @@
+﻿@{
+    Layout = null;
+}
+<section>
+    <div class="container-fluid card mt-1 mt-lg-0">
+        <div class="row mt-4">
+            <h2 class="text-center">Administracion de vehiculos por usuario</h2>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 px-5 pb-5 pt-2" >
+                <div id="GridUsers">
+
+                </div>
+                <span class="d-block d-lg-none mt-2 text-center">Presione doble click para modificar la información</span>
+                <div id="mobileUserModal" class="modal fade">
+                    <div class="modal-dialog modal-dialog-centered modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title ms-lg-3" id="exampleModalLabel">user</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                @await Html.PartialAsync("~/Views/AdUsuariosVehiculos/Partials/DualListbox.cshtml")
+                            </div>
+                            <div class="d-flex border-top">
+                                <div class="w-50 d-flex justify-content-start align-items-center">
+                                    <label style="font-size:12px" class="text-secondary fst-italic ms-3"> Formato: Nombre - [Placa] - [Flota]</label>
+                                </div>
+                                <div class="w-50 d-flex justify-content-end align-items-center p-3">
+                                    <button type="button" class="btn btn-danger me-1" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="button" class="btn btn-success me-2" id="btnAceptarModal">Aceptar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<style>
+    .custon-btn{
+        border: grey 1px solid;
+        margin: 1px;
+    }
+
+    .custon-btn:hover{
+        background:grey;
+        color:white;
+    }
+
+    .form-control:focus {       
+        border-color: #ced4da;
+        box-shadow: none;
+    }
+
+    #GridUsers .k-grid td, #GridUsers .k-grid th {
+        white-space: nowrap; 
+    }
+</style>
+
+<script>
+    (function () {
+        $.extend({
+            arbol: {
+                crearArbol: function () {
+                    $("#treeview").kendoTreeView();
+                },
+                dataArbol: function () {
+                    $.get('@Url.Action("ArbolUsuariosVehiculo", "AdUsuariosVehiculos")', function (mobiles) {
+                        var mobilesUsuario = _.groupBy(mobiles, 'login');
+                        console.log(mobilesUsuario)
+
+                        var arbol = "";
+
+                        for (let login in mobilesUsuario) {
+                            var li = `<li>` +
+                                `<span>${login}</span>`;
+                            var ul = `<ul>`;
+                            for (let i = 0; i < mobilesUsuario[login].length; i++) {
+                                ul += `<li><span>${mobilesUsuario[login][i].placa} - [${mobilesUsuario[login][i].nombre}] - [${mobilesUsuario[login][i].nombreSubfleet}]</span></li>`;
+                            }
+                            ul += `</ul>`;
+                            li += ul;
+                            li += `</li>`;
+                            arbol += li;
+                        }
+                        $("#arbol").append(arbol);
+                        $.arbol.crearArbol();
+                    });
+                }
+            },
+            Grid: {
+                dataItem: [],
+                GridUsers: function () {
+                    var _this = this;
+
+                    $("#GridUsers").html("");
+                    $("#GridUsers").kendoGrid({
+                        dataSource: {
+                            pageSize: 10
+                        },
+                        toolbar: ["excel", "search"],
+                        columns: [
+                            {
+                                field: "username",
+                                title: "Usuario",
+                                width: "100px"
+                            },
+                            {
+                                field: "perfil",
+                                title: "Perfil",
+                                width: "100px"
+                            },
+                            {
+                                field: "nombre",
+                                title: "Nombre",
+                                width: "100px"
+                            },
+                            {
+                                field: "apellido",
+                                title: "Apellido",
+                                width: "100px"
+                            },                          
+                            {
+                                field: "telefono",
+                                title: "Telefono",
+                                width: "100px"
+                            }, 
+                            {
+                                field: "correo",
+                                title: "Correo",
+                                width: "100px"
+                            }
+                        ],
+                        pageable: true,
+                        excel: {
+                            fileName: "ReporteDeVales.xlsx"
+                        },
+                        detailInit: _this.GridVehiculo,
+                        detailCollapse: function (e) {
+                            var detailRow = e.detailRow;
+                            $(detailRow).remove();
+                        },
+                        selectable: "single, row",
+                        change: function (e) {
+                            _this.dataItem = e !== null ? e.sender.dataItem(e.sender.select()) : null;
+
+                        },
+                        dataBound: function () {  
+                            var touchtime = 0;
+                            /*$("#GridUsers .k-grid-content tbody tr:not(.k-grouping-row)").on("dblclick touch", function (e) {
+                                _this.modal.show();
+                                _this.modal.dataModal(_this.dataItem.username);
+                                _this.modal.username = _this.dataItem.username;
+                            });*/
+                            $("#GridUsers .k-grid-content tbody tr:not(.k-grouping-row)").on("click", function () {
+                                if (((new Date().getTime()) - touchtime) < 500) {
+                                    _this.modal.show();
+                                    _this.modal.dataModal(_this.dataItem.username);
+                                    _this.modal.username = _this.dataItem.username;
+                                } touchtime = new Date().getTime();
+                            });
+                            
+                        }
+                    });
+                    $(".k-pager-wrap").append("<span class='w-100 text-center d-none d-lg-block'>Presione doble click para modificar la información</span>")
+                },
+                dataGrid: function () {
+                    $.get('@Url.Action("UserXcompany", "AdUsuariosVehiculos")', function (users) {
+                        //console.log(users)
+                        $("#GridUsers").data("kendoGrid").dataSource.data(users);
+                    });
+                },
+                modal:{
+                    username: "",
+                    show: function () {
+                        $("#mobileUserModal").modal('show');
+                    },
+                    dataModal: function (_username) {
+                        var _this = this;
+                        $.get('@Url.Action("ObtenerVehiculosMobileCompany", "AdUsuariosVehiculos")', { username: _username }, function (mobiles) {
+                            //console.log(mobiles)
+                            createDualListboxMobile(mobiles)
+                        });
+
+                        $("#exampleModalLabel").html("")
+                        $("#exampleModalLabel").append("<span > <img src='../images/user.gif'/> " + _username + "</span>")
+
+                    }, 
+                    buttons: function () { 
+                        var _this = this; 
+                        $("#btnAceptarModal").on("click", function () {
+                            selects = $("#vocupados >")
+
+                            var valores = [];
+
+                            selects.each(function () {
+                                valores.push($(this).val());
+                            });
+                            //console.log(valores)
+                            var arg = {
+                                mobilesid: valores.join(","),
+                                Username: _this.username
+                            }
+
+                            //console.log(arg);
+                            $.get('@Url.Action("ActulizarMobileXUser", "AdUsuariosVehiculos")', arg , function (resultado) {
+                                if (resultado[0].bandera === 1) {
+                                    $.alert("success", "Actualización exitosa", resultado[0].resultado)
+                                }
+                                
+                            });
+                        });
+                    }                 
+                },
+                GridVehiculo: function (e) {
+                    var _username = e.data.username
+                    var _this = this;
+                    
+                    $.get('@Url.Action("MobileXUser", "AdUsuariosVehiculos")', { username: _username }, function (mobiles) {
+                        //console.log(mobiles)
+                        $("<div/>").appendTo(e.detailCell).kendoGrid({
+                            dataSource: {
+                                data: mobiles,
+                                sort: { field: "nombre", dir: "asc" }
+                            },
+                            toolbar: ["search"],
+                            columns: [
+                                { field: "nombre", title: "Nombre", width: "100px" },
+                                { field: "placa", title: "Placa", width: "100px" },
+                                { field: "nombreSubfleet", title: "Flota", width: "100px" },
+                                { field: "marca", title: "Marca", width: "100px" },
+                                { field: "modelo", title: "Modelo", width: "100px" },
+                                { field: "tipoCombustible", title: "Tipo de Combustible", width: "100px" }
+
+                            ],
+                            resizable: true
+
+                        });
+                    });
+                }
+            },
+            alert: function (icon,title, text) {
+                Swal.fire({
+                    icon: icon,
+                    title: title,
+                    text: text,
+                });
+            },
+            init: function () {
+                var _this = this;
+                _this.Grid.GridUsers();
+                _this.Grid.dataGrid();
+              //  _this.Grid.doubleClik();
+                _this.Grid.modal.buttons();
+            }
+        });
+        $.init();
+    })();
+</script>

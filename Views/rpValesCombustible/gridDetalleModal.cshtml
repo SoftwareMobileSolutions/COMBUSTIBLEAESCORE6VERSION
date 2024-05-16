@@ -1,0 +1,118 @@
+﻿<script type="text/javascript">
+    $.extend({
+        griddetallemodal: {
+            createGridDetalle: function(datos) {
+                let _this = this;
+                _this.modal();
+
+                $("#graf_griddetalle").kendoGrid({
+                    mobile: "phone",
+                    dataSource: {
+                        pageSize: 50,
+                        schema: {
+                            model: {
+                                fields: {
+                                    numvale: { type: "number" },
+                                    placa: { type: "string" },
+                                    total: { type: "number" },
+                                    cantidadgalones: { type: "number" },
+                                    odometro: { type: "number" },
+                                    tipocombustible: { type: "string" },
+                                    centrocosto: { type: "string" },
+                                    gasolinera: { type: "string" },
+                                    tipocarga: { type: "string" },
+                                    userabre: { type: "string" },
+                                    fgeneracion: { type: "date" },
+                                    usercierra: { type: "string" },
+                                    fcierre: { type: "string" },
+                                    estado: { type: "number" },
+                                    userautorizado: { type: "string" },
+                                    fautorizado: { type: "string" },
+                                    estadoCSS: { type: "string" },
+                                    lat: { type: "number" },
+                                    lng: { type: "number" },
+                                    vermas: { type: "string" },
+                                    razonanulado: { type: "string" }
+                                }
+                            }
+                        },
+                        data: datos
+                    },
+                    filterable: {
+                        extra: false
+                    },
+                    filterable: false,
+                    height: 180,
+                    sortable: false,
+                    groupable: false,
+                    columnMenu: false,
+                    reorderable: false,
+                    resizable: false,
+                    scrollable: true,
+                    pageable: {
+                        allPages: false,
+                        pageSizes: false,
+                        previousNext: false,
+                        input: false,
+                        numeric: false,
+                        refresh: false,
+                        info: true
+                    },
+                    selectable: "single, row",
+                    change: function (e) {
+                        let datos = e !== null ? e.sender.dataItem(e.sender.select()) : null;;
+                        console.log(datos);
+                        // Grid_viajeSolicitado_dataitem =
+                    },
+                    dataBound: function () {
+                        for (var i = 0; i < this.columns.length; i++) {
+                            this.autoFitColumn(i);
+                        }
+                    },
+                    columns: [
+                        {
+                            field: "numvale",
+                            title: "<b># Vale</b>",
+                            template: "#: numvale # ",
+                            sticky: true
+                        },
+                        {
+                            field: "placa",
+                            title: "<b>Placa</b>"
+                        },
+                        {
+                            field: "total",
+                            title: "<b>Total</b>"
+                        },
+                        {
+                            field: "cantidadgalones",
+                            title: "<b>Cant. Gal.</b>"
+                        },
+                        {
+                            field: "usercierra",
+                            title: "<b>Usuario Cierra</b>"
+                        },
+                        {
+                            field: "fcierre",
+                            title: "<b>Fecha Cierra</b>",
+                            template: "#: moment(fcierre).isValid() ? moment(fcierre).format('YYYY-MM-DD HH:mm:ss') : '' #"
+                        }
+                    ]
+                });
+            },
+            modal: function () {
+                Swal.fire({/// Espera a queexista una confirmacion con confirmButtonText
+                    title: "",
+                    text: "",
+                    icon: "",
+                    showCancelButton: false,
+                    showConfirmButton: false,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    cancelButtonText: 'Cerrar',
+                    html: `<div id="graf_griddetalle"></div>`,
+                });
+            }
+        }
+    })    
+</script>

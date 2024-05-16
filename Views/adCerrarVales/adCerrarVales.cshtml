@@ -1,0 +1,533 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = null;
+}
+
+<section class="mt-lg-5">
+    <div class="container-fluid">
+        <div class="row d-flex  align-items-center">
+            <div class="col-xl-6 offset-lg-3">
+                <div class="card rounded-3 text-black fondo ">
+                    <div class="row g-0">
+                        <div class="col-lg-12">
+                            <div class="card-body p-lg-5 ">
+
+                                <div class="text-center">
+                                    <h4 class="mt-lg-1 mb-lg-5 pb-lg-1 mt-4 mb-5">Cerrar Vales Combustible</h4>
+                                </div>
+
+                                <form>
+                                    <div class="container"> 
+                                        <div class="row"> 
+                                            <div class="col-lg-8">
+                                                <div class=" row">                                                   
+                                                    <div class="d-inline-flex align-items-center">
+                                                        <h5 id="TXT_Placa" class="form-label mt-lg-1">Placa:</h5>
+                                                        <input id="Input_Placa" type="text" class="form-control ms-1" placeholder="P44862" style="text-transform:uppercase" />
+                                                    </div>
+                                                </div>
+                                                <div class=" row">
+                                                    <h5 class="ms-lg-5 h6 ps-lg-4 text-danger" id="nota"> </h5>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <input type="button" class="btn btn-success w-100 mt-1 mt-lg-0" id="ObtenerVale" value="Obtener Vale" />
+                                                @* <button class="btn btn-success w-100" id="ObtenerVale"> Obtener Vale</button> *@
+                                            </div>
+                                        </div>
+                                        <div class="row mt-lg-4 mt-4">
+                                            <h5 id="TXT_Vale">Número de vale: </h5>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-outline mb-4 mt-3 mt-lg-4">
+                                        <label class="form-label" for="form2Example11">Cantidad de galones:</label>
+                                        <input type="text" id="Input_Galones" class="form-control" step="0.0001" disabled  value="0"/>
+                                    </div>
+
+                                    <div class="form-outline mb-4 mt-4">
+                                        <label class="form-label" for="form2Example11">Total de dolares:</label>
+                                        <input type="text" id="Input_Dolares" class="form-control" step="0.01" disabled value="0" />
+                                    </div>
+
+                                    <div class="form-outline mb-4 mt-4">
+                                        <label class="form-label" for="form2Example11">Odometro:</label>
+                                        <input type="text" id="Input_Odometro" class="form-control" step="0.01" disabled value="0" />
+                                    </div>
+                                    <div class="d-grid gap-2 col-12 mx-auto">
+                                        <input type="button" class="btn btn_lg" id="Enviar" value="Cerrar vale" disabled />
+                                        @*<button class="btn" type="button" id="Enviar">
+                                            Enviar
+                                        </button>*@
+                                    </div>
+
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="card rounded-3">
+            <h2 class="text-center mt-lg-3 mt-2">Vales cerrados</h2>
+
+           
+            <div class="row ">
+                <div class="col-lg-4 col-12 d-flex  align-items-center ps-lg-5 " >
+                    <h4 class="w-50 ps-2 ps-lg-5 text-start text-lg-center">Fecha inicio:</h4>
+                    <input id="FechaIni" class="w-50 me-2 me-lg-0" />
+                </div>
+                <div class="col-lg-4  offset-lg-2 col-12 offset-sm-0 d-flex  align-items-center ps-lg-5">
+                    <h4 class="w-50 ps-2 ps-lg-5 text-start text-lg-center">Fecha fin:</h4>
+                    <input id="FechaFin" class="w-50 me-2 me-lg-0"/>
+                    <!--<input class="ms-lg-3 btn btn-success" id="reloadGrid" type="button" value="Generar" />-->
+                </div>
+                <div class="col-lg-1 offset-lg-0 col-10 offset-1 d-flex  align-items-center mt-2 mt-lg-0">
+                    <input class="ms-lg-3 btn btn-success w-100" id="reloadGrid" type="button" value="Generar" />
+                </div>
+                @*<div class="col-lg-2 d-flex justify-content-center align-items-center">
+                    <input class="btn btn-success" type="button" value="Generar" />
+                </div>*@
+            </div>
+
+           
+            <div class="row mt-2 mt-lg-0">
+                <div class="col-12 ">
+                    <div id="GridVales" class="mt-lg-3 mx-3 mx-lg-5 mb-lg-2">
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+
+    #Enviar{
+        background: #717ff5;
+        color: white;
+    }
+
+    #Enviar:hover {
+        background: #5565EE;
+        
+    }
+    #nota{
+        font-size:10px;
+    }
+    section{
+        
+    }
+</style>
+<script>
+    (function () {
+        $.extend({
+            CerrarVale: {
+                BTN_ObtenerVale: function(){
+                    var _this = this;
+                    $('#ObtenerVale').on('click', function () {
+                        let _placa = $.trim($('#Input_Placa').val());
+                        let _galones = $.trim($("#Input_Galones").val());
+                        let _dolares = $.trim($("#Input_Dolares").val());
+                        let _odometro = $.trim($("#Input_Odometro").val());
+
+                        if (_placa === "") {
+                            _this.alert("Placa invalida", "Debe insertar una placa valida");
+                            return false;
+                        }
+                        $("#nota").text("");
+                        $("#Input_Placa").css("border", "1px solid #ced4da");
+                        $("#Input_Placa").css("background", "")
+                        let arg = {
+                            placa: _placa,
+                        };
+
+                        $.get('@Url.Action("getInformation", "adCerrarVales")', arg, function (data) {
+                            data = data[0]
+                            if (data.caso === 4) {
+                                $('#TXT_Vale').text('Numero de vale: ' + data.numVale)
+
+                                data.cantidadGalones == 0 ? $('#Input_Galones').prop("disabled", false) : $('#Input_Galones').prop("disabled", true)
+                                $('#Input_Galones').val(data.cantidadGalones)
+
+
+                                data.totalPrecio == 0 ? $('#Input_Dolares').prop("disabled", false) : $('#Input_Dolares').prop("disabled", true)
+                                $('#Input_Dolares').val(data.totalPrecio)
+
+                                $('#Input_Odometro').prop("disabled", false)
+                                $('#Input_Odometro').val(data.odometro)
+                                $('#Enviar').prop("disabled", false)
+                                _this.validaPlaca();
+                            } else {
+                                $.alert("Aviso", data.mensaje)
+                            }
+                        });
+                    });
+                },
+                BTN_CerrarVale: function () {
+                    var _this = this;
+                    $('#Enviar').on('click', function () {
+                        let _placa = $.trim($('#Input_Placa').val().toUpperCase());
+                        let _galones = parseFloat($("#Input_Galones").val());
+                        let _dolares = parseFloat($("#Input_Dolares").val());
+                        let _odometro = parseInt($("#Input_Odometro").val());
+
+                        let arg = {
+                            CantidadGalones: _galones,
+                            TotalDolares: _dolares,
+                            Odometro: _odometro
+                        }
+
+                        if (isNaN(_galones)) {
+                            _this.alert("Valor de galones esta vacio", "Debe ingresar la cantidad de galones")
+                            return false
+                        }
+                        if (_galones === 0) {
+                            _this.alert("Valor de galones es igual a 0", "La cantidad de galones debe ser mayor que 0")
+                            return false
+                        }
+
+                        if (isNaN(_dolares)) {
+                            _this.alert("Valor de dolares esta vacio", "Debe ingresar el total de dolares")
+                            return false
+                        }
+                        if (_dolares === 0) {
+                            _this.alert("El total de dolares es igual a 0", "El total de dolares debe ser mayor que 0")
+                            return false
+                        }
+
+                        if (isNaN(_odometro)) {
+                            _this.alert("Valor de odometro esta vacio", "Debe ingresar el odometro de la unidad")
+                            return false
+                        }
+                        if (_odometro === 0) {
+                            _this.alert("Valor de odometro es igual a 0", "El odometro debe ser mayor que 0")
+                            return false
+                        }
+
+                        $.get('@Url.Action("cerrarVale", "adCerrarVales")', arg, function (mensaje) {
+                            var _this = this;
+                            $.GRID.FechaFin = moment().add(6, 'hours').format("YYYY/MM/DD HH:mm:ss")
+                            Swal.fire({
+                                title: "Vale cerrado",
+                                text: mensaje[0].resultado,
+                                icon: "success"
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    console.log("El usuario ha hecho clic en el botón OK");
+                                    $('#Input_Placa').val("")
+
+                                    $("#Input_Galones").val("")
+                                    $('#Input_Galones').prop("disabled", true)
+
+                                    $("#Input_Dolares").val("")
+                                    $('#Input_Dolares').prop("disabled", true)
+
+                                    $("#Input_Odometro").val("")
+                                    $('#Input_Odometro').prop("disabled", true)
+
+                                    $('#Enviar').prop("disabled", true)
+                                    $('#TXT_Vale').text('Numero de vale: ')
+
+                                    let arg = {
+                                        FechaIncio: $.GRID.FechaInicio,
+                                        fechaFin: $.GRID.FechaFin
+                                    };
+                                    //console.log(arg)
+                                    $.GRID.dataGrid(arg)
+                                }
+                            });
+                        })
+                    })
+
+                },
+                validaPlaca: function () {
+                    var _this = this;
+
+                    $("#Input_Placa").off('blur');
+                    $("#Input_Placa").on("blur", function () {
+                        var valorInput = $(this).val();
+                        $.get('@Url.Action("validarPlaca", "adCerrarVales")', function (placa) {
+                            if (placa === null) {
+                                console.log("Es nulo")
+                            } else {
+                                if (placa != valorInput) {
+
+                                    $("#nota").text("*El valor de la placa cambió, debe volver a obtener el vale*");
+                                    $("#Input_Placa").css("border", "1px solid red");
+                                    $("#Input_Placa").css("background", "#FCC6D3")
+                                    console.log("");
+
+
+                                    $('#Input_Galones').prop("disabled", true)
+                                    $('#Input_Galones').val(0)
+                                    $('#Input_Dolares').prop("disabled", true)
+                                    $('#Input_Dolares').val(0)
+                                    $('#Input_Odometro').prop("disabled", true)
+                                    $('#Input_Odometro').val(0)
+                                    $('#TXT_Vale').text('Numero de vale: ')
+
+                                    $('#Enviar').prop("disabled", true)
+
+
+                                }
+                            }
+
+                        })
+                    });
+                },
+            },       
+            keypress: function () {
+                var _this = this;
+                $('#Input_Dolares').keypress(function (event) {
+
+                    var keyCode = event.which;
+                    var inputValue = $(this).val();
+
+                    if ((keyCode < 48 || keyCode > 57) && keyCode !== 46) {
+                        event.preventDefault();
+                    }
+
+                    if (keyCode === 46 && inputValue.indexOf('.') !== -1) {
+                        event.preventDefault();
+                    }
+
+                    if (inputValue.indexOf('.') !== -1 && inputValue.split('.')[1].length >= 2 && keyCode !== 46) {
+                        event.preventDefault();
+                    }
+
+                });
+
+                $('#Input_Galones').keypress(function (event) {
+
+                    var keyCode = event.which;
+                    var inputValue = $(this).val();
+
+                    if ((keyCode < 48 || keyCode > 57) && keyCode !== 46) {
+                        event.preventDefault();
+                    }
+
+                    if (keyCode === 46 && inputValue.indexOf('.') !== -1) {
+                        event.preventDefault();
+                    }
+
+                    if (inputValue.indexOf('.') !== -1 && inputValue.split('.')[1].length >= 4 && keyCode !== 46) {
+                        event.preventDefault();
+                    }
+
+                });
+
+                $('#Input_Odometro').keypress(function (event) {
+
+                    var keyCode = event.which;
+                    var inputValue = $(this).val();
+
+                    if ((keyCode < 48 || keyCode > 57)) {
+                        event.preventDefault();
+                    }
+
+                });
+
+                $('#Input_Placa').on('keypress', function (event) {
+                    var inputValue = event.key;
+                    var regex = /^[a-zA-Z0-9]*$/; 
+                    if (!regex.test(inputValue)) {
+                        event.preventDefault(); 
+                    }
+                });
+
+
+
+            },
+            alert: function (title, text) {
+                Swal.fire({
+                    icon: "warning",
+                    title: title,
+                    text: text,
+                });
+            },
+            GRID: {
+                FechaInicio: moment().subtract(30, 'days').format("YYYYMMDD HH:mm:ss"),
+                FechaFin: moment().add(6, 'hours').format("YYYYMMDD HH:mm:ss"),
+                loadGrid:function(){
+                    var _this = this;
+                    $("#FechaIni").kendoDateTimePicker({
+                        dateInput: true,
+                        startTime: new Date(2023, 1, 3, 8, 30, 0),
+                        endTime: new Date(2023, 1, 3, 17,00, 0)
+                    });
+                    $("#FechaIni").data("kendoDateTimePicker").value(kendo.parseDate(moment().subtract(30, 'days').format("YYYY/MM/DD HH:mm:ss")));
+                    $("#FechaFin").kendoDateTimePicker({
+                        dateInput: true,
+                        startTime: new Date(2023, 1, 3, 8, 30, 0),
+                        endTime: new Date(2023, 1, 3, 17,00, 0)
+                    });
+                    $("#FechaFin").data("kendoDateTimePicker").value(kendo.parseDate(moment().format("YYYY/MM/DD HH:mm:ss")));
+                    $("#GridVales").html("");
+
+
+                    let arg = {
+                        FechaIncio: _this.FechaInicio,
+                        fechaFin: _this.FechaFin
+                    };
+
+                    $("#GridVales").html("");
+                    $("#GridVales").kendoGrid({
+                        dataSource: {
+                            pageSize: 10
+                        },
+                        toolbar: ["excel", "search"],
+                        columns: [
+                            {
+                                field: "placa",
+                                title: "Placa",
+                                width: "100px"
+                            },
+                            {
+                                field: "CantidadVales",
+                                title: "Cantidad Vales",
+                                width: "100px"
+                            },
+                            {
+                                field: "Total",
+                                title: "Total$",
+                                width: "100px"
+                            },
+                            {
+                                field: "CantidadGalones",
+                                title: "Cantidad Galones",
+                                width: "100px"
+                            }
+                        ],
+                        pageable: true,
+                        selectable: "single, row",
+                        mobile: "phone",
+                        excel: {
+                            fileName: "ReporteDeVales.xlsx"
+                        },
+                        detailInit: _this.SubGrid.loadGridPlaca
+                    });
+                    _this.dataGrid(arg);
+                },
+                dataGrid: function (arg) {
+                    $.get('@Url.Action("getValesCerrados", "adCerrarVales")', arg, function (valesCerrados) {
+                        var valesXPlacas = [];
+                        for (let i = 0; i < valesCerrados.length; i++) {
+                            let found = false;
+                            for (let x = 0; x < valesXPlacas.length; x++) {
+                                if (valesXPlacas[x].placa === valesCerrados[i].placa) {
+                                    valesXPlacas[x].CantidadVales++;
+                                    valesXPlacas[x].Total += valesCerrados[i].totalPrecio;
+                                    valesXPlacas[x].CantidadGalones += valesCerrados[i].cantidadGalones;
+                                    found = true;
+                                    break;
+                                }
+                            }
+                            if (!found) {
+                                valesXPlacas.push({
+                                    placa: valesCerrados[i].placa,
+                                    CantidadVales: 1,
+                                    Total: valesCerrados[i].totalPrecio,
+                                    CantidadGalones: valesCerrados[i].cantidadGalones
+                                });
+                            }
+                        }
+                        //console.log(valesXPlacas);
+                        $("#GridVales").data("kendoGrid").dataSource.data(valesXPlacas);
+                    });
+                },
+                BTN_ReloadGrid: function () {
+                    var _this = this;
+                    $("#reloadGrid").on("click", function (e) {
+
+                        var FechaInicio = $("#FechaIni").data("kendoDateTimePicker").value()
+                        var FechaFin = $("#FechaFin").data("kendoDateTimePicker").value()
+
+                        _this.FechaInicio = moment(FechaInicio).add(6, 'hours').format("YYYYMMDD HH:mm:ss")
+                        _this.FechaFin = moment(FechaFin).add(6, 'hours').format("YYYYMMDD HH:mm:ss")
+
+                        let arg = {
+                            FechaIncio: _this.FechaInicio,
+                            fechaFin: _this.FechaFin
+                        };
+                        //console.log(arg)
+                        _this.dataGrid(arg);
+
+                    });
+                },
+                SubGrid: {
+                    loadGridPlaca: function (e) {
+                        var _this = this
+                        $.GRID.SubGrid.dataGridplaca(e.data.placa, e.detailCell)
+                    },
+                    dataGridplaca: function (placa, fila) {
+                        var _this = this;
+                        let arg = {
+                            Placa: placa,
+                            FechaIncio: $.GRID.FechaInicio,
+                            fechaFin: $.GRID.FechaFin
+                        }
+                        //console.log(arg)
+
+                        $.get('@Url.Action("getValesCerradosXPlaca", "adCerrarVales")', arg, function (vales) {
+                            console.log(vales)
+                            for (x = 0; x < vales.length; x++) {
+                                vales[x].fechaGeneracion = moment(vales[x].fechaGeneracion).subtract(6, 'hours').format("DD/MM/YYYY HH:mm:ss")
+                                vales[x].fechaAutorizado = moment(vales[x].fechaAutorizado).subtract(6, 'hours').format("DD/MM/YYYY HH:mm:ss")
+                                vales[x].fechaCierre = moment(vales[x].fechaCierre).subtract(6, 'hours').format("DD/MM/YYYY HH:mm:ss")
+                            }
+                            $("<div/>").appendTo(fila).kendoGrid({
+                                dataSource: vales,
+                                toolbar: ["excel", "search"],
+                                columns: [
+                                    { field: "numVale", title: "N° Vale", width: "100px" },
+                                    { field: "placa", title: "Placa", width: "100px" },
+                                    { field: "cantidadGalones", title: "Cant. Gal.", width: "100px" },
+                                    { field: "totalPrecio", title: "Total $", width: "100px" },
+                                    { field: "odometro", title: "Odometro", width: "100px" },
+                                    //{ field: "tipoCombustible", title: "Tipo Combustible", width: "150px" },
+                                    { field: "gasolinera", title: "Gasolinera", width: "200px" },
+                                    { field: "tipoCarga", title: "Tipo de Carga", width: "150px" },
+                                    { field: "usuarioAbre", title: "Usuario Abre", width: "150px" },
+                                    { field: "fechaGeneracion", title: "Fecha de Generacion", width: "200px" },
+                                    { field: "usuarioAutoriza", title: "Usuario Autoriza", width: "150px" },
+                                    { field: "fechaAutorizado", title: "Fecha Autorizado", width: "200px" },
+                                    { field: "usuarioCierra", title: "Usuario Cierra", width: "150px" },
+                                    { field: "fechaCierre", title: "Fecha Cierre", width: "200px" }
+
+                                ], selectable: "single, row",
+                                change: function (e) {
+                                    //Grid_adusuarios_dataitem = e !== null ? e.sender.dataItem(e.sender.select()) : null;
+                                    //console.log(e);
+                                    //console.log(e.sender.dataItem(e.sender.select()));
+                                },
+                                resizable: true,
+                                excel: {
+                                    fileName: "ReporteDeVales-" + placa + ".xlsx"
+                                }
+
+                            });
+
+                        });
+                    }
+                }
+            },                  
+            init: function () {
+                var _this = this 
+                _this.CerrarVale.BTN_ObtenerVale()
+                _this.CerrarVale.BTN_CerrarVale()
+                _this.GRID.loadGrid()
+                _this.GRID.BTN_ReloadGrid()
+                _this.keypress
+            }
+        })
+        $.init()
+    })();
+</script>

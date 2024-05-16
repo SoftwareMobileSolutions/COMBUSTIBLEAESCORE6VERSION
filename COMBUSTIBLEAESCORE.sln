@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34607.119
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "COMBUSTIBLEAESCORE", "COMBUSTIBLEAESCORE.csproj", "{C03500E9-53DC-4A82-950C-1120FF3353DF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C03500E9-53DC-4A82-950C-1120FF3353DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C03500E9-53DC-4A82-950C-1120FF3353DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C03500E9-53DC-4A82-950C-1120FF3353DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C03500E9-53DC-4A82-950C-1120FF3353DF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3B39F1FA-7AED-4552-A509-D1CF72742EB1}
+	EndGlobalSection
+EndGlobal

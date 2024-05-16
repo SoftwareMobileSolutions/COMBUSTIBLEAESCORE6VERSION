@@ -1,0 +1,65 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width:100vw;
+    height:100vh;
+}
+
+#logIn {
+    width: 100%;
+    height: 100vh !important;
+    background: url(/images/1.jpg);
+    background-size: cover;
+}
+/*.fondo {
+    opacity: 0.5;
+    transition: 1s;
+}
+
+    .fondo:hover {
+        opacity: 1;
+    }*/
+form {
+    width: 100%;
+    height: 100%;
+   
+}
+
+.gradient-custom-2 {
+
+    color: white !important;
+    background: #fccb90;
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);
+}
+.div-img {
+    background-image: url('/images/people.jpg');
+    background-size: cover; 
+    background-position:left;
+}
+@media (max-width: 768px) {
+    .gradient-form {
+        height: 100vh !important;
+    }
+
+    .fondo {
+        opacity: 1;
+    }
+}
+@media (max-width: 769px) {
+    .gradient-custom-2 {
+        border-top-right-radius: .3rem;
+        border-bottom-right-radius: .3rem;
+    }
+    .fondo {
+        opacity: 1;
+    }
+}
+
+

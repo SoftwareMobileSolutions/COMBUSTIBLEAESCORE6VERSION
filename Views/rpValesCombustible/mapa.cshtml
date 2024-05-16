@@ -1,0 +1,211 @@
+﻿<style type="text/css">
+    #gmap {
+        position: relative !important;
+        
+    }
+
+    .swal2-html-container {
+        margin: 0.5em !important;
+    }
+
+    .swal2-popup.swal2-modal.swal2-show {
+        padding: 0 !important
+    }
+
+    /* INFOWINDOW TABLE */
+    .gm-style-iw__ {
+        width: 450px !important;
+        top: 15px !important;
+        /*left: 0px !important;*/
+        left: 15px !important;
+        background-color: #fff;
+        border-radius: 0px 0px 4px 4px !important;
+        /*box-shadow: 0 1px 6px rgba(178, 178, 178, 0.6);*/
+        box-shadow: 0 0 6px rgba(0,33,50,.1), 0 7px 25px rgba(17,38,60,.4) !important;
+    }
+
+
+    .iw-title_ {
+        font-family: 'Open Sans Condensed', sans-serif;
+        font-size: 14px;
+        font-weight: 400;
+        padding: 23px;
+        padding-top: 6px;
+        height: 12px;
+        padding-left: 7px;
+        background-color: #3A4B55;
+        color: white;
+        border-radius: 2px 2px 0 0;
+    }
+
+    .iw-content_ {
+        font-size: 13px;
+        /* line-height: 18px;*/
+        font-weight: 400;
+        margin-right: 1px;
+        padding-bottom: 2px;
+        max-height: 440px;
+        /* overflow-y: auto;*/
+        overflow-y: hidden;
+        overflow-x: hidden;
+        z-index: 2;
+        position: relative;
+    }
+
+    .info table, .info td {
+        border: 1px solid #ddd;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 12px;
+        vertical-align: middle;
+    }
+
+        .info td:nth-child(n+1) {
+            background: #f3f3f3;
+            width: 110px;
+            padding: 4px;
+            padding-left: 4px;
+            font-weight: 600;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 12px;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        .info td:nth-child(n+2) {
+            background: #FFF !important;
+            width: 365px;
+            padding: 0px;
+            padding-left: 4px;
+            font-weight: 400;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+    .infotitle_i {
+        cursor: pointer;
+        position: relative;
+        top: -4px;
+        right: 2px;
+        display: inline-block;
+    }
+
+        .infotitle_i:hover {
+            font-size: 17px;
+        }
+
+    .infotitle {
+        display: inline-block;
+        position: relative;
+        float: left;
+    }
+
+</style>
+<script type="text/javascript">
+    $.extend({
+        gmap: {
+            idmapa: "gmap",
+            map: null,
+            mapa: function (numvale, obj) {
+                let _this = this;
+                let grid = $(obj).parents(".gridDetailnumvales").eq(0).data("kendoGrid").dataSource.data();
+                let datos = [];
+                for (let i = grid.length; i--;) {
+                    if (grid[i]["numvale"] === numvale) { 
+                        datos = grid[i];
+                        break;
+                    }
+                }
+                _this.modal();
+
+                $("#" + _this.idmapa).height($(window).height() - 70);
+
+                let latlng = new google.maps.LatLng(datos.lat, datos.lng);
+                let mapOpts = {
+                    zoom: 19,
+                    center: latlng,
+                    panControl: true,
+                    scaleControl: false,
+
+                    mapTypeControl: false,
+                    streetViewControl: false,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP,
+                    mapTypeControlOptions: {
+                        mapTypeIds: [google.maps.MapTypeId.ROADMAP,
+                        google.maps.MapTypeId.HYBRID,
+                        google.maps.MapTypeId.SATELLITE,
+                        google.maps.MapTypeId.TERRAIN],
+                        style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR
+                    },
+                    zoomControl: true,
+                    zoomControlOptions: { style: google.maps.ZoomControlStyle.SMALL },
+                    gestureHandling: 'greedy'
+                };
+                _this.map = new google.maps.Map($("#" + _this.idmapa).get(0), mapOpts);
+                var styles = [{
+                    featureType: 'poi.business',
+                    stylers: [{ visibility: 'on' }]
+                }];
+                _this.map.setOptions({ styles: styles });
+                _this.setPoint(latlng, datos)
+            },
+            setPoint: function (latlng, d) {
+                console.log(d);
+                let _this = this;
+
+                let mk = new google.maps.Marker({
+                    position: latlng,
+                    map: _this.map
+                });
+
+                const infowindow = new google.maps.InfoWindow({
+                    content: `
+                        <div id="iw-container">
+                            <div class="iw-title_">
+                                    <div class='infotitle'>${d.placa}</div>
+                            </div>
+                            <div class='iw-content_'>
+                                <table class='info'>
+                                    <tr>
+                                        <td>Núm. Vale</td>
+                                        <td>${d.numvale}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Cerrado por:</td>
+                                        <td>${d.usercierra}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Fecha Cerrado</td>
+                                        <td>${moment(d.fcierre).format("YYYY-MM-DD H:mm:ss")}</td>
+                                    </tr>
+                                </table>
+                            </<div>
+                        </div>
+                    `
+                });
+
+                mk.addListener("click", () => {
+                    infowindow.open({
+                        anchor: mk,
+                        map: _this.map,
+                    });
+                });
+
+                new google.maps.event.trigger(mk, 'click');
+            },
+            modal: function () {
+                Swal.fire({/// Espera a queexista una confirmacion con confirmButtonText
+                    title: "",
+                    text: "",
+                    icon: "",
+                    showCancelButton: false,
+                    showConfirmButton: false,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    cancelButtonText: 'Cerrar',
+                    html: `<div id="gmap"></div>`,
+                });
+            }
+        }
+    }); 
+</script>

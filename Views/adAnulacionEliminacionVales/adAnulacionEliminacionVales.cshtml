@@ -1,0 +1,381 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = null;
+}
+<section>
+    <div class="card">
+        <div class="container-fluid p-lg-4 p-4">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2 class="text-center">Anulacion y eliminacion de Vales</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 mt-lg-2 mt-1">
+                    <div id="GridVales">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <div class="modal fade" id="AnularModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editarModalLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <span>Seleccione la razon de anulacion</span>
+                        </div>
+                        <div class="row pt-lg-2">
+                            <div class="col-lg-12">
+                                <input type="text" id="InputRazonesCancelacion" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 mt-lg-1">
+                                <span id="ModalAlert"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="BTN_Anular"><i class="bi bi-x-circle"></i> Anular Vale</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<style type="text/css">
+
+    .k-grid-Eliminar {
+        background: #dc3545;
+        color: white;
+    }
+
+        .k-grid-Eliminar:hover {
+            background: #bb2d3b;
+            color: white;
+        }
+
+    .col-num-vale{
+        text-align: center !important;
+        width: 10%;
+    }
+    .col-data{
+        text-align: center !important;
+        width: 15%;
+    }
+    .col-anulado {
+        text-align: center !important;
+        width: 10%;
+    }
+
+    .col-command {
+        text-align: center !important;
+        width: 15%;
+    }
+    @@media screen and (max-width: 576px) {
+        .col-num-vale {
+            text-align: center !important;
+            width: 100px;
+        }
+        .col-data {
+            width: 100px;
+        }
+        .col-anulado {
+            width: 100px;
+        }
+
+        .col-command {
+            width: 150px;
+        }
+    }
+</style>
+<script type="text/javascript">
+    (function () { 
+        $.extend({
+            GRID: {
+                loadGrid: function () {
+                    var _this = this
+                    $("#GridVales").html("");
+                    $("#GridVales").kendoGrid({
+                        dataSource: {
+                            pageSize: 10
+                        },
+                        toolbar: ["search"],
+                        columns: [
+                            {
+                                field: "numVale",
+                                title: "N° Vale",
+                                attributes: { class: "col-num-vale" },
+                                headerAttributes: { class: "col-num-vale" }
+                            },
+                            {
+                                field: "placa",
+                                title: "Placa",
+                                attributes: { class: "col-data" },
+                                headerAttributes: { class: "col-data" }
+                            },
+                            {
+                                field: "fechaGeneracion",
+                                title: "Fecha Generacion",
+                                attributes: { class: "col-data" },
+                                headerAttributes: { class: "col-data" }
+                            },
+                            {
+                                field: "usuarioGenera",
+                                title: "Usuario Genera",
+                                attributes: { class: "col-data" },
+                                headerAttributes: { class: "col-data" }
+                            },
+                            {
+                                field: "estado",
+                                title: "Estado",
+                                attributes: { class: "col-data" },
+                                headerAttributes: { class: "col-data" }
+                            },
+                            {
+                                field: "tipoCarga",
+                                title: "Tipo Carga",
+                                attributes: { class: "col-data" },
+                                headerAttributes: { class: "col-data" }
+                            },
+                            {
+                                field: "centroCosto",
+                                title: "Centro Costo",
+                                attributes: { class: "col-data" },
+                                headerAttributes: { class: "col-data" }
+                            },
+                            {
+                                field: "cantidadGalones",
+                                title: "Cantidad Galones",
+                                attributes: { class: "col-data" },
+                                headerAttributes: { class: "col-data" }
+                            },
+                            {
+                                field: "totalPrecio",
+                                title: "Total Precio",
+                                attributes: { class: "col-data" },
+                                headerAttributes: { class: "col-data" }
+                            },
+                            {
+                                field: "proyecto",
+                                title: "Proyecto",
+                                attributes: { class: "col-data" },
+                                headerAttributes: { class: "col-data" }
+                            },
+                            {
+                                field: "usuarioAutoriza",
+                                title: "Usuario Autoriza",
+                                attributes: { class: "col-data" },
+                                headerAttributes: { class: "col-data" }
+                            },
+                            {
+                                field: "fechaAutorizado",
+                                title: "Fecha Autorizado",
+                                attributes: { class: "col-data" },
+                                headerAttributes: { class: "col-data" }
+                            },
+                            {
+                                field: "estado",
+                                type: "number",
+                                title: "Anulado",
+                                filterable: false,
+                                attributes: { class: "col-anulado" },
+                                headerAttributes: { class: "col-anulado" },
+                                template: function (data) {
+                                    var Switch = '<div class="form-check form-switch d-flex justify-content-center align-items-center">' +
+                                        '<input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" ' + (data.anulado === 0 ? '' : 'checked') + ' onchange="$.GRID.anularVale.switch(' + data.anulado + ',' + data.valeCombustubibleID + ')" >' +
+                                        '</div>';
+                                    return Switch;
+                                }
+
+                            },
+                            {
+                                command: [
+                                    {
+                                        name: "Eliminar",
+                                        text: '<span> <i class="bi bi-trash3"></i> Eliminar </span>',
+                                        click: function (e) {
+                                            e.preventDefault();
+                                            var tr = $(e.target).closest("tr");
+                                            var data = this.dataItem(tr);
+                                            _this.EliminarVale(data.numVale, data.valeCombustubibleID)
+                                        }
+                                    }
+                                ],
+                                attributes: { class: "col-command" },
+                                headerAttributes: { class: "col-command" }
+                            }
+                        ],
+                        dataBound: function (e) {
+                            //$("#GridVales > div span input").attr("placeholder", "Busqueda")
+                        },
+                        pageable: true,
+                        mobile: "phone",
+                    });
+                },
+                dataGrid: function () {
+                    $.get('@Url.Action("ObtenerValesCancelarAnular", "adAnulacionEliminacionVales")', function (vales) {
+                        if (vales.length > 0){
+                            for (let i = 0; i < vales.length; i++) {
+                                
+                                //console.log(vales[i])
+
+                                vales[i].fechaGeneracion = moment(vales[i].fechaGeneracion).format("YYYY/MM/DD HH:mm:ss")
+
+                                if (vales[i].fechaAutorizado !== null) {
+                                    vales[i].fechaAutorizado = moment(vales[i].fechaAutorizado).format("YYYY/MM/DD HH:mm:ss")
+                                }
+                                //
+                                
+
+
+                            }
+                        }
+                        
+                        $("#GridVales").data("kendoGrid").dataSource.data(vales)
+                    })
+                },
+                EliminarVale: function (numVale, ValeCombustubibleID) {
+                    var _this = this
+
+                    Swal.fire({
+                        title: "¿Esta seguro?",
+                        text: 'La eliminacion del vale N° "' + numVale + '" no es reversible',
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        cancelButtonText: "Cancelar",
+                        confirmButtonText: "Si, eliminar!"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.post('@Url.Action("EliminarVales", "adAnulacionEliminacionVales")', { ValeCombustubibleID: ValeCombustubibleID }, function (mensaje) {
+                                mensaje = mensaje[0]
+                                if (mensaje.bandera === 1) {
+                                    $._combustible.alert("success", "Eliminación exitosa", mensaje.resultado)
+                                    _this.dataGrid()
+                                } else {
+                                    $._combustible.alert("error", "Error", mensaje.resultado)
+                                }
+                            })
+                        }
+                    });
+                },
+
+                anularVale: {
+                    switch: function (anulado, ValeCombustubibleID) {
+                        var _this = this
+                        if (anulado === 0) {
+                            $("#editarModalLabel").text("Anulacion de vales")
+                            $("#BTN_Anular").attr("disabled", true)
+                            $("#ModalAlert").text("")
+                            $("#InputRazonesCancelacion").data("kendoDropDownList").select(0)
+                            $("#AnularModal").modal('show')
+                            _this.modal.ValeCombustubibleID = ValeCombustubibleID
+                        } else {
+                            $.post('@Url.Action("ReestablecerVale", "adAnulacionEliminacionVales")', arg = { ValeCombustubibleID: ValeCombustubibleID }, function (mensaje) { 
+                                $.GRID.dataGrid()
+                            })
+                        }
+                    },
+                    
+                    modal: {
+                        ValeCombustubibleID: "",
+                        DropDownlist: {
+                            loadDropDownlist: function () {
+                                var _this = this
+                                $("#InputRazonesCancelacion").kendoDropDownList({
+                                    optionLabel: 'Razones...',
+                                    dataTextField: "razon",
+                                    dataValueField: "idRazonValeCancelado",
+                                    select: function (e) {
+                                        if (e.dataItem.idRazonValeCancelado !== "") {
+                                            $("#BTN_Anular").attr("disabled", false)
+                                        } else {
+                                            $("#BTN_Anular").attr("disabled", true)
+                                        }
+                                    }
+                                });
+
+                                _this.dataDropDownlist()
+                            },
+                            dataDropDownlist: function () {
+                                $.get('@Url.Action("ObtenerRazonCancelacion", "adAnulacionEliminacionVales")', function (razones) {
+                                    //console.log(razones)
+                                    $("#InputRazonesCancelacion").data("kendoDropDownList").dataSource.data(razones)
+                                })
+                            }
+
+                        },
+
+
+                        BTN_RazonCancelacion: function () {
+                            var _this = this
+                            $("#BTN_Anular").on("click", function () {
+                                var idRazon = $("#InputRazonesCancelacion").data("kendoDropDownList").value()
+                                if (idRazon === "") {
+                                    $('#AnularModal').modal('hide');
+                                    $.GRID.dataGrid();
+                                } else {
+                                    arg = {
+                                        ValeCombustubibleID: _this.ValeCombustubibleID,
+                                        RazonID: parseInt($("#InputRazonesCancelacion").data("kendoDropDownList").value())
+                                    }
+                                    $.post('@Url.Action("AnularVale", "adAnulacionEliminacionVales")', arg, function (mensaje) {
+                                        mensaje = mensaje[0]
+                                        if (mensaje.bandera === 1) {
+                                            _this.alertModal("suceso", 'Vale Anulado: ' + mensaje.resultado)
+                                            $("#InputRazonesCancelacion").data("kendoDropDownList").select(0)
+                                            $("#BTN_Anular").attr("disabled", true)
+                                            $.GRID.dataGrid();
+                                        }else{
+                                            _this.alertModal("alerta", mensaje.resultado)
+                                            $.GRID.dataGrid();
+                                        }
+                                        
+                                    })
+                                }
+                            })
+                        },
+                        alertModal: function (tipo, mensaje) {
+                            if (tipo === "alerta") {
+                                $("#ModalAlert").text("Alerta: " + mensaje)
+                                $("#ModalAlert").css("color", "red")
+                            }
+                            if (tipo === "suceso") {
+                                $("#ModalAlert").text("Nota: " + mensaje)
+                                $("#ModalAlert").css("color", "green")
+                            }
+                        },
+                        hidenModal: function () {
+                            $('#AnularModal').on('hidden.bs.modal', function () {
+                                $.GRID.dataGrid();
+                            });
+                        }
+                    },
+                }
+            },
+            
+            init: function () {
+                var _this = this;
+                _this.GRID.loadGrid()
+                _this.GRID.dataGrid()
+                _this.GRID.anularVale.modal.DropDownlist.loadDropDownlist()
+                _this.GRID.anularVale.modal.BTN_RazonCancelacion()
+                _this.GRID.anularVale.modal.hidenModal()
+            }
+        })
+        $.init()
+    })();
+</script>

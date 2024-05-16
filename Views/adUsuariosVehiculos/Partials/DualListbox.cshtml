@@ -1,0 +1,245 @@
+﻿@{
+    //Layout = null;
+}
+
+<div id="tblListboxVehiculos">
+
+</div>
+<script type="text/javascript">
+
+    function createDualListboxMobile(d) {
+        var disponibles = [], ocupados = [];
+        for (var i = 0, len = d.length; i < len; i++) {
+            if (d[i]["disponible"]) {
+                disponibles.push('<option value="' + d[i]["mobileid"] + '">' + d[i]["nombre"] + " - [" + d[i]["placa"] + "]" + " - [" + d[i]["subfleet"] + "]" + '</option>');
+            } else {
+                ocupados.push('<option value="' + d[i]["mobileid"] + '">' + d[i]["nombre"] + " - [" + d[i]["placa"] + "]" + " - [" + d[i]["subfleet"] + "]" + '</option>');
+            }
+        }
+
+        moveSelects.CreatetblMobiles();
+        moveSelects.set_multiselectData(disponibles.join(""), ocupados.join(""));
+        moveSelects.set_UpdateTraspasoLista();
+    }
+    
+    //----- creando ids
+    var objSelectName = "moveSelects";
+    var moveSelects = {
+        idlist1: "vdisponibles",
+        idlist2: "vocupados",
+        em1: "emDiponibles",
+        em2: "emOcupados",
+        slist1: "S_list1",
+        slist2: "S_list2",
+        strSearchInListBox: objSelectName + ".SearchInListBox",
+        tbldivID: "tblListboxVehiculos",
+        bt1_hacia1: objSelectName + '.hacia1();',
+        bt1_hacia2: objSelectName + '.hacia2();',
+        bt1_haciaAll1: objSelectName + '.haciaAll1();',
+        bt1_haciaAll2: objSelectName + '.haciaAll2();',
+        //----------- fin creando ids
+        set_mostrados_em: function (idem, em_visible, em_total) {
+            $("#" + idem).html("Mostrando " + em_visible + " de " + em_total);
+        },
+        set_UpdateTraspasoLista: function () {
+            var this_ = this;
+            this_.set_mostrados_em(this_.em1, $("#" + this_.idlist1).children("option:visible").length, $("#" + this_.idlist1).children("option").length);
+            this_.set_mostrados_em(this_.em2, $("#" + this_.idlist2).children("option:visible").length, $("#" + this_.idlist2).children("option").length);
+        },
+        set_multiselectData: function (list1, list2) {
+            var this_ = this;
+            $("#" + this_.idlist1).html(list1);
+            $("#" + this_.idlist2).html(list2);
+            this_.set_UpdateTraspasoLista();
+        },
+        get_multiselectData: function () {
+            var this_ = this;
+            var vdisponibles = $("#" + this_.idlist1).children("option:selected:visible"),
+                vocupados = $("#" + this_.idlist2).children("option:selected:visible"),
+                lis1All_t = $("#" + this_.idlist1).children("option:visible"),//$("#" + this_.idlist1).html(),
+                lis2All_t = $("#" + this_.idlist2).children("option:visible"),//$("#" + this_.idlist2).html(),
+                lis1All = "",
+                lis2All = "",
+                elAllDisponibles = [],
+                elAllOcupados = [],
+                elDisponibles = [],
+                elOcupados = [],
+                disponibles = [],
+                ocupados = [];
+
+            //Hacia
+            for (var i = 0, ilen = vdisponibles.length; i < ilen; i++) {
+                elDisponibles.push(vdisponibles[i]);
+                disponibles.push($(vdisponibles[i]).prop('outerHTML'));
+            }
+            for (var j = 0, jlen = vocupados.length; j < jlen; j++) {
+                elOcupados.push(vocupados[j]);
+                ocupados.push($(vocupados[j]).prop('outerHTML'));
+            }
+
+            lis1All_t.each(function () {
+                elAllDisponibles.push(this);
+                lis1All += $(this).prop('outerHTML');
+            });
+            lis2All_t.each(function () {
+                elAllOcupados.push(this);
+                lis2All += $(this).prop('outerHTML');
+            });
+
+            return {
+                vdisponibles: disponibles.join(""),
+                vocupados: ocupados.join(""),
+                lis1All: lis1All,
+                lis2All: lis2All,
+                elDisponibles: elDisponibles,
+                elOcupados: elOcupados,
+                elAllDisponibles: elAllDisponibles,
+                elAllOcupados: elAllOcupados
+            };
+        },
+        hacia1: function () {
+            var this_ = this;
+            var dataList = this_.get_multiselectData();
+            var vocupados = $("#" + this_.idlist2);
+
+            for (var i = dataList.elDisponibles.length; i--;) {
+                dataList.elDisponibles[i].remove();
+            }
+            vocupados.html(vocupados.html() + dataList.vdisponibles);
+            this_.set_UpdateTraspasoLista();
+        },
+        hacia2: function () {
+            var this_ = this;
+            var dataList = this_.get_multiselectData();
+            var vdisponibles = $("#" + this_.idlist1);
+
+            for (var i = dataList.elOcupados.length; i--;) {
+                dataList.elOcupados[i].remove();
+            }
+
+            vdisponibles.html(vdisponibles.html() + dataList.vocupados);
+            this_.set_UpdateTraspasoLista();
+        },
+        haciaAll1: function () {
+            var this_ = this;
+
+            var dataList = this_.get_multiselectData();
+
+            var vocupados = $("#" + this_.idlist2);
+            vocupados.html(vocupados.html() + dataList.lis1All);
+
+
+            for (var i = dataList.elAllDisponibles.length; i--;) {
+                dataList.elAllDisponibles[i].remove();
+            }
+            this_.set_UpdateTraspasoLista();
+        },
+        haciaAll2: function () {
+            var this_ = this;
+            var dataList = this_.get_multiselectData();
+            var vdisponibles = $("#" + this_.idlist1);
+
+            vdisponibles.html(vdisponibles.html() + dataList.lis2All);
+
+            for (var i = dataList.elAllOcupados.length; i--;) {
+                dataList.elAllOcupados[i].remove();
+            }
+            this_.set_UpdateTraspasoLista();
+        },
+        CreatetblMobiles: function () {
+            var this_ = this;
+            var tbl= 
+                '<div class="row mx-lg-2">'+
+                '   <div class="col-lg-5 col-md-5 col-12" >'+
+                '       <label style="display: inline-block;"> Vehículos Disponibles: </label>' +
+                '       <input style="width: 100%; " type="text" class="lblMostrar form-control form-control-sm k-inline-block mt-2" id="' + this_.slist1 + '" onkeyup="' + this_.strSearchInListBox + '(\'' + this_.slist1 + '\',\'' + this_.idlist1 + '\')" placeholder="Buscar..." title="Escriba un alias o una placa">' +
+                '       <select style="width: 100%; height: 20vh;" multiple="multiple" size="15" name="SelectItem" class="custom-select form-control form-control-sm mt-2" id="' + this_.idlist1 + '">' +
+                '       </select>' +
+                '       <em>' +
+                '           <label id="' + this_.em1 + '"></label>' +
+                '       </em>' +
+                '   </div>'+
+                '   <div class="col-lg-2 col-md-2 d-flex align-items-center justify-content-center col-12" >' +
+                '   <div class="row w-100" >' +
+                '       <div class="col-lg-12 col-md-12 col-6 d-flex justify-content-center " >' +
+                '            <button onclick="' + this_.bt1_hacia1 + '" type="button" class="k-button custon-btn rounded " style=" width: 35px !important; height: 25px !important;">' +
+                '                   <span class="d-none d-md-block text-center">></span><span class="d-sm-block d-md-none ">🠗</span>' +
+                '            </button> ' +
+                '            <button onclick="' + this_.bt1_haciaAll1 + '" type="button" class="k-button custon-btn rounded " style=" width: 35px !important; height: 25px !important;">' +
+                '                   <span class="d-none d-md-block text-center">>></span><span class="d-sm-block d-md-none">⇊</span>' +
+                '            </button>' +
+                '       </div>' +
+                '       <div class="col-lg-12 col-md-12 col-6 d-flex justify-content-center " >' +
+                '            <button onclick="' + this_.bt1_hacia2 + '" type="button" class="k-button custon-btn rounded " style=" width: 35px !important; height: 25px !important;">' +
+                '                   <span class="d-none d-md-block text-center"><</span><span class="d-sm-block d-md-none">🠕</span>' +
+                '            </button>'+
+                '            <button onclick="' + this_.bt1_haciaAll2 + '" type="button" class="k-button custon-btn rounded " style=" width: 35px !important; height: 25px !important;">'+
+                '             <span class="d-none d-md-block text-center"><<</span><span class="d-sm-block d-md-none">⇈</span>' +
+                '            </button>' +
+                '       </div>' +
+                '   </div>' +
+                '   </div>' +
+                '   <div class="col-lg-5 col-md-5 col-12" >' +
+                '       <label style="display: inline-block;"> Vehículos Asignados: </label>' +
+                '       <input type="text" style="width: 100%; "class="lblMostrar form-control form-control-sm k-inline-block mt-2" id="' + this_.slist2 + '" onkeyup="' + this_.strSearchInListBox + '(\'' + this_.slist2 + '\',\'' + this_.idlist2 + '\')" placeholder="Buscar..." title="Escriba un alias o una placa">' +
+                '       <select style="width: 100%; height: 20vh;" multiple="multiple" size="15" name="SelectItem" class="custom-select form-control form-control-sm mt-2" id="' + this_.idlist2 + '">' +
+                '       </select>' +
+                '       <em>' +
+                '           <label id="' + this_.em2 + '"></label>' +
+                '       </em>' +
+                '   </div>' +
+                '</div>'
+
+            /*var tbl =
+                '<table border="0" align="center" style="width: 100%;">' +
+                '    <tr>' +
+                '        <td style="width: 30%;">' +
+                '            <label style="display: inline-block;"> Vehículos Disponibles: </label>' +
+                '            <input style="width: 103%; padding-left: 8px;" type="text" class="lblMostrar form-control form-control-sm k-inline-block mt-2" id="' + this_.slist1 + '" onkeyup="' + this_.strSearchInListBox + '(\'' + this_.slist1 + '\',\'' + this_.idlist1 + '\')" placeholder="Buscar..." title="Escriba un alias o una placa">' +
+                '            <select style="width: 103%;" multiple="multiple" size="15" name="SelectItem" class="custom-select form-control form-control-sm mt-2" id="' + this_.idlist1 + '">' +
+                '            </select>' +
+                '            <em>' +
+                '                <label id="' + this_.em1 + '"></label>' +
+                '            </em>' +
+                '        </td>' +
+                '        <td style="width: 11%; padding-left: 4%;">' +
+                '            <button onclick="' + this_.bt1_hacia1 + '" type="button" class="k-button custon-btn rounded " style=" width: 30px !important; height: 25px !important;"> > </button>' +
+                '            <button onclick="' + this_.bt1_haciaAll1 + '" type="button" class="k-button custon-btn rounded " style=" width: 35px !important; height: 25px !important;"> >> </button><br />' +
+                '            <button onclick="' + this_.bt1_hacia2 + '" type="button" class="k-button custon-btn rounded " style=" width: 30px !important; height: 25px !important;"> < </button>' +
+                '            <button onclick="' + this_.bt1_haciaAll2 + '" type="button" class="k-button custon-btn rounded " style=" width: 35px !important; height: 25px !important;"> << </button>' +
+                '        </td>' +
+                '        <td style="width: 32%; padding-right: 2%;">' +
+                '            <label style="display: inline-block;"> Vehículos Asignados: </label>' +
+                '            <input type="text" style="width: 103%; padding-left: 8px;" class="lblMostrar form-control form-control-sm k-inline-block mt-2" id="' + this_.slist2 + '" onkeyup="' + this_.strSearchInListBox + '(\'' + this_.slist2 + '\',\'' + this_.idlist2 + '\')" placeholder="Buscar..." title="Escriba un alias o una placa">' +
+                '            <select style="width: 103%;" multiple="multiple" size="15" name="SelectItem" class="custom-select form-control form-control-sm mt-2" id="' + this_.idlist2 + '">' +
+                '            </select>' +
+                '            <em>' +
+                '                <label id="' + this_.em2 + '"></label>' +
+                '            </em>' +
+                '        </td>' +
+                '    </tr>' +
+                '</table>';*/
+            $("#" + this_.tbldivID).html(tbl);
+        },
+        SearchInListBox: function (txtsearchid, SelectID) {
+            var this_ = this;
+            var input, filter, ul, li, a, i, txtValue;
+            input = document.getElementById(txtsearchid);
+            filter = input.value.toUpperCase();
+            ul = document.getElementById(SelectID);
+            li = ul.getElementsByTagName("option");
+            for (i = 0; i < li.length; i++) {
+                a = li[i];
+                txtValue = a.textContent || a.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    li[i].style.display = "";
+                } else {
+                    li[i].style.display = "none";
+                }
+            }
+            this_.set_UpdateTraspasoLista();
+        }
+    };
+
+    
+</script>

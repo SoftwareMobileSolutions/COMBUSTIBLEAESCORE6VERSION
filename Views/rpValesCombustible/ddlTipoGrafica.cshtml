@@ -1,0 +1,101 @@
+﻿<style type="text/css">
+    .ddlgraf {
+       position: absolute;
+       z-index: 2;
+       right: 0.4em;
+       margin-top: 0.4em;
+    }    
+</style>
+<div class="ddlgraf">
+    <label class="d-inline-block">Tipo: </label>
+    <div class="d-inline-block">
+        <input style="width: 9.5em;" id="ddlTipo" />
+    </div>
+    <label class="d-inline-block">Variable: </label>
+    <div class="d-inline-block">
+        <input style="width: 9.5em;" id="ddlgraf" />
+    </div>
+    <button id="btnsort"></button>
+</div>
+
+<script type="text/javascript">
+    $.extend({
+        ddlTipoGraf: {
+            idvariable: "ddlgraf",
+            idtipo: "ddlTipo",
+            idbtn: "btnsort",
+            tipo: "placa",
+            orden: "mayor",
+            variable: "total",
+            title_tipo: "vehículos",
+            title_variable: "inversión en vales",
+            simboloy: "$",
+            //ddlTipoGraf: ["Total", "canvales", "cantidadgalones"],
+            //ddlvariable: ["placa", "centrocosto", "userabre"],
+            init: function () {
+                let _this = this;
+                _this.createDDLVariable();
+                _this.createDDLTipo();
+                _this.btnCrearOrder();
+            },
+            btnCrearOrder: function () {
+                let _this = this;
+                var buttonObject = $("#" + _this.idbtn).kendoButton({
+                    icon: "sort-desc",
+                    click: function (e) {
+                        let $span = this.element.find("span");
+                        if ($span.hasClass("k-i-sort-desc")) {
+                            $span.removeClass("k-i-sort-desc").addClass("k-i-sort-asc");
+                            _this.orden = "menor";
+                        } else {
+                            $span.removeClass("k-i-sort-asc").addClass("k-i-sort-desc");
+                            _this.orden = "mayor";
+                        }
+                        $.colum1Chart.createColumn1();
+                    }
+                }).data("kendoButton");
+            }, 
+            createDDLVariable: function () {
+                let _this = this;
+                $("#" + _this.idvariable).kendoDropDownList({
+                    dataSource: [
+                        { id: 0, name: "Total Invertido", variable: "total", title_variable: "inversión en vales", simboloy: "$" }, @*Para el eje y de la gráfica*@
+                        { id: 1, name: "Cantidad Vales", variable: "canvales", title_variable: "cantidad de vales", simboloy: "" },
+                        { id: 2, name: "Cantidad Galones", variable: "cantidadgalones", title_variable: "cantidad de galones", simboloy: "" }
+                    ],
+                    dataTextField: "name",
+                    dataValueField: "id",
+                    change: function(e) {
+                        let d = e !== null ? e.sender.dataItem(e.sender.select()) : null;
+                        _this.variable = d.variable;
+                        _this.title_variable = d.title_variable;
+                        _this.simboloy = d.simboloy;
+                        $.colum1Chart.createColumn1();
+                    }
+                    // label: {
+                    //     content: "Tipo"
+                    // }
+                });
+            },
+            createDDLTipo: function () {
+                let _this = this;
+                $("#" + _this.idtipo).kendoDropDownList({
+                    dataSource: [
+                        { id: 0, name: "Vehículos", tipo: "placa", title_tipo: "vehículos" },
+                        { id: 1, name: "Usuarios", tipo: "userabre", title_tipo: "usuarios" },
+                        { id: 2, name: "Centros de Costos", tipo: "centrocosto", title_tipo: "centro de costos" },
+                    ],
+                    dataTextField: "name",
+                    dataValueField: "id",
+                    change: function (e) {
+                        let d = e !== null ? e.sender.dataItem(e.sender.select()) : null;
+                        _this.tipo = d.tipo;
+                        _this.title_tipo = d.title_tipo;
+                        $.colum1Chart.createColumn1();
+                    }
+                });
+            }
+        }
+    });
+    $.ddlTipoGraf.init();
+</script>

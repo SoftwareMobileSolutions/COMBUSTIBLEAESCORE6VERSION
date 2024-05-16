@@ -1,0 +1,118 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = null;
+}
+<section>
+    <div class="container-fluid bg-white p-3">
+        <h1 class="text-center mb-lg-3"> Menu principal</h1>
+        <div class="row row-cols-1  row-cols-md-3 row-cols-lg-4 g-4" id="gridCards">
+            <div class="col">
+                <div class="card mb-3 cardCustom" style="max-width: 400px;">
+                    <div class="row g-0">
+                        <div class="col-md-12 col-lg-5 text-center ps-lg-3 pt-lg-3 pb-lg-3 cardIMG">
+                            <img src="~/images/mp_rpVales.png"
+                                 class="img-fluid rounded-start" alt="...">
+                        </div>
+                        <div class="col-md-12 col-lg-7">
+                            <div class="card-body">
+                                <h5 class="card-title text-center text-sm-start ">
+                                    Data Structures 
+                                </h5>
+                                <p class="card-text">
+                                    A data structure is a storage that is used to store and organize data.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</section>
+<style>
+    @@media (max-width: 600px) {
+        .cardIMG {
+            padding-top: 15px;
+            margin: 0 auto;
+            width: 50%;
+        }
+        .cardCustom{
+            width: 70%;
+        }
+
+        .col{
+            display: flex;
+            justify-content: center;
+        }
+    }
+    .cardCustom:hover{
+        box-shadow: 0px 0px 5px 5px grey;
+        cursor:pointer;
+    }
+</style>
+<script type="text/javascript">
+    (function () { 
+        $.extend({
+            home_panel: {
+                dataPanel: function () { 
+                    var _this = this;
+                    $.get('@Url.Action("getShortcuts", "MainPanel")', function (d) {                        
+                        _this.loadShortcuts(d)
+                    });
+                },
+                loadShortcuts: function (shortcuts) {
+                    var _this = this;
+                    //var shortcuts = data
+                    for (let i = 0; i < shortcuts.length; i++) {
+                        if (shortcuts[i].hasChildren) {
+                            var cards = shortcuts[i].children;
+                            
+                            for (let x = 0; x < cards.length; x++) {
+                                var card =
+                                '<div class="col" >'+
+                                    '<div class="card mb-3 cardCustom" style="max-width: 400px;">' +
+                                        '<div class="row g-0">' +
+                                            '<div class="col-md-12 col-lg-5 text-center ps-lg-3 pt-lg-3 pb-lg-3 cardIMG">' +
+                                                '<img src="/images/mp_rpVales.png" class="img-fluid rounded-start" alt="...">' +
+                                            '</div>' +
+                                            '<div class="col-md-12 col-lg-7">' +
+                                                '<div class="card-body">' +
+                                                    '<h5 class="card-title text-center text-sm-start ">' + cards[x].name + '</h5>' +
+                                                    '<p class="card-text">' + 'A data structure is a storage that is used to store and organize data.'+'</p>' +
+                                                '</div>' +
+                                            '</div>' +
+                                        '</div>' +
+                                    '</div>'+
+                                '</div>';
+                                $('#gridCards').append(card);
+                            }
+                        } else { 
+                        
+                            var card =
+                                '<div class="col" >'+
+                                    '<div class="card mb-3 cardCustom" style="max-width: 400px;">' +
+                                        '<div class="row g-0">' +
+                                            '<div class="col-md-12 col-lg-5 text-center ps-lg-3 pt-lg-3 pb-lg-3 cardIMG">' +
+                                                '<img src="/images/mp_rpVales.png" class="img-fluid rounded-start" alt="...">' +
+                                            '</div>' +
+                                            '<div class="col-md-12 col-lg-7">' +
+                                                '<div class="card-body">' +
+                                                    '<h5 class="card-title text-center text-sm-start ">' + shortcuts[i].name + '</h5>' +
+                                                    '<p class="card-text">' + 'A data structure is a storage that is used to store and organize data.'+'</p>' +
+                                                '</div>' +
+                                            '</div>' +
+                                        '</div>' +
+                                    '</div>'+
+                                '</div>';
+                                $('#gridCards').append(card);
+                        }
+                    }
+                }
+            }
+        }) 
+        $.home_panel.dataPanel();
+    })();
+</script>
