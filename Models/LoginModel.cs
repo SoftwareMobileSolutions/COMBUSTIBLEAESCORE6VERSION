@@ -18,17 +18,17 @@
 
         public string CompanyName { get; set; }
 
-        /*public string Direccion { get; set; }
+        public string Direccion { get; set; }
 
-        public int MunicipioID { get; set; }
+        /*public int MunicipioID { get; set; }
 
         public int DepartamentoID { get; set; }
 
-        public string SitioWeb { get; set; }
+        public string SitioWeb { get; set; }*/
 
         public string TelMovil { get; set; }
 
-        public string Telfijo { get; set; }
+       /* public string Telfijo { get; set; }
 
         public string RazonSocial { get; set; }
 

@@ -27,17 +27,26 @@
     <section class="h-100 gradient-form" id="logIn">
         <div class="container-fluid  h-100">
 
-            <div class="row d-flex  align-items-center h-100">
-                <div class="col-xl-4 offset-lg-7">
-                    <div class="card rounded-3 text-black fondo ">
+            <div class="row d-flex   h-100">
+
+                <div class=" offset-lg-1 col-lg-5 d-none d-lg-block">
+                    <div class="h-100 d-flex align-items-center justify-content-center ">
+                        <div class="card p-2 mt-3">
+                            <span class="Titulo fw-bold">¿Qué es vales combustible?</span>
+                            <p class="mt-2 descripcion">Esta aplicación permite realizar un control del consumo y gasto de combustible para una flota de vehículos. A través de los gráficos pueden realizar un análisis de comportamientos de cada unidad, de consumo, recargas y eficiencia real. </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 offset-lg-1 d-flex align-items-center justify-content-center">
+                    <div class="card rounded-3 text-black fondo  w-100">
                         <div class="row g-0">
                             <div class="col-lg-12">
                                 <div class="card-body p-lg-5 ">
 
                                     <div class="text-center">
                                         <img src="~/images/logo.png"
-                                             style="width: 185px;" alt="logo">
-                                        <h4 class="mt-1 mb-5 pb-1">Combustible AES</h4>
+                                             style="width: 185px;" alt="logo" id="Company_logo">
+                                        <h4 class="mt-1 pb-1" id="Company_name">Vales Combustible</h4>
                                     </div>
 
                                     <form>
@@ -73,7 +82,12 @@
                                             </button>
                                             <a class="text-muted" href="#!">Olvidesate tu contraseña?</a>
                                         </div>
+                                        <div id="Company_contacto" class="my-2 text-secondary">
 
+                                        </div>
+                                        <div id="Company_Direccion" class="text-secondary">
+
+                                        </div>
                                         <div class="d-flex align-items-center justify-content-center pb-4 mt-5">
                                             <p class="mb-0 me-2">No tienes una empreasa?</p>
                                             <a class="btn btn-outline-danger" href="@Url.Action("adRegistarCompany", "adRegistarCompany")">Crear nueva</a>
@@ -91,7 +105,16 @@
     </section>
 </body>
 </html>
+<style>
+    .Titulo{
+        color: #22406c;
+        font-size: 32px;
+    }
 
+    .descripcion {
+        font-size:24px;
+    }
+</style>
 
 <script type="text/javascript">
 
@@ -102,16 +125,12 @@
                     var _this = this;
                     $("#login").on('click', function () {                      
                         $.get("/Login/iniciarSesion", { username: $("#username").val(), password: $("#password").val() }, function (data) {
-                            //console.log(data);
                             if (data.estado == 1) {
-                                //location.href = "Home"
                                 window.location = "/Home/Index";
                             } else if (data.estado == 0) {
                                 _this.alert("warning", "Usuario Inactivo", data.mensaje);
-                                //location.href = "Login"
 
                             } else {
-                                //console.log(data);
                                 _this.alert("error", "Error", data.mensaje);
                             }
 
@@ -142,10 +161,26 @@
                 }
 
             },
+            DataCompany: function () {
+                if (localStorage.companydatos !== undefined) {
+
+                    var DataCompany = JSON.parse(localStorage.getItem("companydatos"))
+                    //console.log(DataCompany)
+                    $("#Company_logo").attr("src", DataCompany.compamyLogo);
+                    $("#Company_name").text(DataCompany.companyName);
+                    $("#Company_contacto").html("")
+                    $("#Company_contacto").html('<i class="bi bi-telephone" > </i>' + ' Telefono: ' + DataCompany.cotancto);
+
+                    $("#Company_Direccion").html("")
+                    $("#Company_Direccion").html('<i class="bi bi-buildings"></i>' + ' Direccion: ' + DataCompany.direccion);
+                }
+
+            },
             home_init: function () {
                 var _this = this;
                 _this.login.click();
                 _this.login.showPassword();
+                _this.DataCompany()
             }
         })
 
@@ -153,7 +188,7 @@
                   
     })();
 
-
+    
 
     /*function () {
                 $.get("Login/login", { username: $("#username").val(), password: $("#password").val() }, function (data) {

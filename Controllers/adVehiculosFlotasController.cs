@@ -50,5 +50,20 @@ namespace COMBUSTIBLEAESCORE.Controllers
             var TipoCombustible = await iadVehiculosFlotas.obtenerTipoCombustible();
             return Json(TipoCombustible);
         }
+
+        [HttpPost]
+        public async Task<JsonResult> ActualizaMobile(int MobileID, string Placa, string Nombre, int FlotaID, string Marca, string Modelo, float? KmXGalon, float? CapTan, int? CombustibleID, string NumeroVIm)
+        {
+            var usuario = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
+            var mensaje = await iadVehiculosFlotas.ActualizaMobile(MobileID, usuario.FirstOrDefault().CompanyID, Placa,  Nombre, FlotaID,  Marca,  Modelo,  KmXGalon,  CapTan,  CombustibleID, NumeroVIm);
+            return Json(mensaje);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> EliminarMobile(int MobileID)
+        {
+            var mensaje = await iadVehiculosFlotas.EliminarMobile(MobileID);
+            return Json(mensaje);
+        }
     }
 }

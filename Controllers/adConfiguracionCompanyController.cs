@@ -96,6 +96,14 @@ namespace COMBUSTIBLEAESCORE.Controllers
             }
         }
 
+        public async Task<JsonResult> GuardarDataCompany()
+        {
+            return await Task.Run(() => {
+                var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
+                return Json(new { CompanyName = user.FirstOrDefault().CompanyName, CompamyLogo = logoCompany(user.FirstOrDefault().CompanyID), Cotancto = user.FirstOrDefault().TelMovil, Direccion = user.FirstOrDefault().Direccion });
+            });
+        }
+
         protected bool ActualizarBackGround(IFormFile img)
         {
             try{

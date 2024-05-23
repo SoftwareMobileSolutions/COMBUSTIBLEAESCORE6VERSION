@@ -1,9 +1,9 @@
-﻿<!-- ======= Header ======= -->
+﻿0<!-- ======= Header ======= -->
 <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between w-50">
-        <i class="bi bi-list toggle-sidebar-btn"></i>
-        <a href="@Url.Action("Index", "Home")" class="logo d-flex justify-content-between w-100">
+        <i class="bi bi-list toggle-sidebar-btn "></i>
+        <a @*href="@Url.Action("Introduccion", "Introduccion")"-*@ url="Introduccion/Introduccion" class="renderView logo d-flex justify-content-between w-100">
 
             <span class="d-none d-lg-block">@ViewData["CompanyName"]</span>
             <img id="logo" src="@ViewData["CompamyLogo"]" alt="">
@@ -45,7 +45,7 @@
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
-        <li class="nav-item renderView" url="MainPanel/MainPanel">
+        <li class="nav-item renderView" url="Introduccion/Introduccion">
             <a class="nav-link " >
                 <i class="bi bi-grid"></i>
                 <span>Dashboard</span>
@@ -129,7 +129,7 @@
 
                             /*Nota: No borrar los replace, o no fucnionara los dropDowns del NavBar*/
                             var li = '<li class="nav-item">' +
-                                '<a class="nav-link collapsed" data-bs-target="#' + modulosData[gp].name.replace(/ /g, "") + '-nav" data-bs-toggle="collapse" href="#">' +
+                                '<a class="nav-link collapsed" data-bs-target="#' + modulosData[gp].name.replace(/ /g, "") + '-nav" data-bs-toggle="collapse" href="#">' + '<i class="' + modulosData[gp].icono + '"></i>' +
                                 modulosData[gp].name +
                                 '<i class="bi bi-chevron-down ms-auto"></i>' +
                                 '</a>' +
@@ -201,7 +201,7 @@
 
                         if (modulo === undefined) {
                             //console.log('@Url.Action("MainPanel", "MainPanel")')
-                            _this.renderView("MainPanel/MainPanel")
+                            _this.renderView("Introduccion/Introduccion")
                         } else {
                             _this.renderView(modulo)
                         }
@@ -214,6 +214,15 @@
                         });
                     });
 
+                },
+                CompanyData: function () {
+                    $.get('@Url.Action("GuardarDataCompany", "Home")', function (data) {
+                        //console.log(data)
+                        localStorage.clear()
+                        localStorage.setItem("companydatos", JSON.stringify(data))
+                    })
+
+
                 }
             }
         })
@@ -222,5 +231,6 @@
         $.home_menu.clickModulos();
         $.home_menu.logOutBTN();
         $.home_menu.navbar();
+        $.home_menu.CompanyData();
     })();
 </script>

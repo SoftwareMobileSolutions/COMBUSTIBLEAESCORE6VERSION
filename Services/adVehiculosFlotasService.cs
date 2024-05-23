@@ -8,9 +8,11 @@ using System.Data;
 using Dapper;
 using System.Reflection;
 using System.ComponentModel.Design;
+using ImageMagick;
+using System.Numerics;
 namespace COMBUSTIBLEAESCORE.Services
 {
-    public class adVehiculosFlotasService : Interfaces.IadVehiculosFlotas
+    public class adVehiculosFlotasService : IadVehiculosFlotas
     {
 
         private readonly conexion conexion;
@@ -123,6 +125,52 @@ namespace COMBUSTIBLEAESCORE.Services
                 {
                     con.Open();
                     data = await con.QueryAsync<CombustibleMobileModel>(sp, new { }, commandType: CommandType.Text);
+                }
+            }
+            finally
+            {
+                if (con.State == ConnectionState.Open)
+                {
+                    con.Close();
+                }
+            }
+            return data;
+        }
+
+        public async Task<IEnumerable<mensaje>> ActualizaMobile(int MobileID, int CompanyID, string Placa, string Nombre, int FlotaID, string Marca, string Modelo, float? KmXGalon, float? CapTan, int? CombustibleID, string NumeroVIm)
+        {
+            IEnumerable<mensaje> data = null;
+            string sp = "EXEC SP_ActualizarDataMobile @MobileID, @CompanyID, @Placa, @Nombre, @FlotaID, @Marca, @Modelo, @KmXGalon, @CapTan, @CombustibleID, @NumeroVIm";
+            var con = new SqlConnection(conexion.Value);
+            try
+            {
+                if (con.State == ConnectionState.Closed)
+                {
+                    con.Open();
+                    data = await con.QueryAsync<mensaje>(sp, new { MobileID, CompanyID, Placa, Nombre, FlotaID,  Marca, Modelo, KmXGalon, CapTan, CombustibleID, NumeroVIm }, commandType: CommandType.Text);
+                }
+            }
+            finally
+            {
+                if (con.State == ConnectionState.Open)
+                {
+                    con.Close();
+                }
+            }
+            return data;
+        }
+
+        public async Task<IEnumerable<mensaje>> EliminarMobile(int MobileID)
+        {
+            IEnumerable<mensaje> data = null;
+            string sp = "EXEC SP_EliminarMobile @MobileID";
+            var con = new SqlConnection(conexion.Value);
+            try
+            {
+                if (con.State == ConnectionState.Closed)
+                {
+                    con.Open();
+                    data = await con.QueryAsync<mensaje>(sp, new { MobileID }, commandType: CommandType.Text);
                 }
             }
             finally

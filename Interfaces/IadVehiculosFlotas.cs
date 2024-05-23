@@ -17,6 +17,9 @@ namespace COMBUSTIBLEAESCORE.Interfaces
         public Task<IEnumerable<rpVehiculoModel>> rpVehiculo(int CompanyID, string FechaIni, string FechaFin);
 
         public Task<IEnumerable<CombustibleMobileModel>> obtenerTipoCombustible();
+        
+        public Task<IEnumerable<mensaje>> ActualizaMobile(int MobileID, int CompanyID, string Placa, string Nombre, int FlotaID , string Marca, string Modelo, float? KmXGalon, float? CapTan, int? CombustibleID , string NumeroVIm);
+        public Task<IEnumerable<mensaje>> EliminarMobile(int MobileID);
 
     }
 }

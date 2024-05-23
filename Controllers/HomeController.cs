@@ -58,10 +58,21 @@ namespace COMBUSTIBLEAESCORE.Controllers
                 ViewData["CompamyLogo"] = logoCompany(user.FirstOrDefault().CompanyID);
                 ViewData["Name"] = user.FirstOrDefault().Nombre + " " + user.FirstOrDefault().Apellido;
                 ViewData["DataUserFull"] = user;
+
+                /*ViewData["Cotancto"] = user.FirstOrDefault().TelMovil;
+                ViewData["Direccion"] = user.FirstOrDefault().Direccion;*/
                 //ViewBag.login = user.FirstOrDefault().login;
                 return View();
             }
 
+        }
+
+        public async Task<JsonResult> GuardarDataCompany()
+        {
+            return await Task.Run(() => {
+                var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
+                return Json(new { CompanyName = user.FirstOrDefault().CompanyName, CompamyLogo = logoCompany(user.FirstOrDefault().CompanyID) , Cotancto  = user.FirstOrDefault().TelMovil, Direccion = user.FirstOrDefault().Direccion });
+            });
         }
 
         protected JsonResult sortMenu()
@@ -72,7 +83,8 @@ namespace COMBUSTIBLEAESCORE.Controllers
                 Name = t.Nombre,
                 codigo = t.Codigo,
                 url = t.UrlPage,
-                Nivel = t.Nivel
+                Nivel = t.Nivel,
+                Icono = t.Icono
             }).Where(t => t.Nivel == 0);
 
             var parent = menu.Select(t => new {
@@ -98,6 +110,7 @@ namespace COMBUSTIBLEAESCORE.Controllers
                 codigo = gp.codigo,
                 url = gp.url,
                 nivel = gp.Nivel,
+                Icono = gp.Icono,
                 HasChildren = parent.Any(p => p.parent == gp.codigo),
                 Children = parent.Select(p => new
                 {

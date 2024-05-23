@@ -852,7 +852,7 @@
     }
     .col-command-2 {
         text-align: center !important;
-        width: 100px;
+        width: 95px;
     }
     .col-data{
         width: 150px;
@@ -868,7 +868,28 @@
         }
     }
 
+    /*@@media only screen and (orientation: landscape) {
+        .col-command-2 {
+            width: 180px;
+            
+        }
 
+        .col-command {
+            width: 130px;
+        }
+    }*/
+    @@media (min-width: 768px) and (max-width: 991.98px) {
+        /* Tus estilos aquí */
+        .col-command {
+            width: 130px;
+        }
+        .col-command-2 {
+            width: 180px;
+        }
+    }
+
+
+    /*-----------------*/
     .btn-tertiary {
         color: #555;
         padding: 0;

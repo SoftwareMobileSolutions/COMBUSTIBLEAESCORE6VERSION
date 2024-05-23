@@ -34,10 +34,10 @@
     <div id="tabstrip">
         <ul>
             <li class="k-state-active">
-                Autos
+                Registro de Autos
             </li>
             <li>
-                Flotas
+                Registro de SubFlotas
             </li>
         </ul>
         <div class="card">
@@ -181,6 +181,95 @@
             </div>
         </div>
     </div>
+    <div id="editarVehiculoModal" class="modal fade">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content ">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"><i class="bi bi-pencil-square"></i> Edicion de Vehiculos</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid"> 
+                        <div class="row">
+                            <div class="col-lg-12 d-flex justify-content-center align-items-center">
+                                <i class="bi bi-car-front me-2"></i> <span id="TXT_Auto"> </span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label>Placa</label>
+                                <input id="Input_Placa" class="form-control text-uppercase" />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label>Nombre</label>
+                                <input id="Input_Nombre" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label>Flota</label>
+                                <input id="DropDown_FlotaModal" />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label>Marca</label>
+                                <input id="Input_Marca" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label>Modelo</label>
+                                <input id="Input_Modelo" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label>Kilometros por galon</label>
+                                <input id="Input_KmxGal" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label>Capacidad tanque</label>
+                                <input id="Input_CapTan" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label>Seleccione el tipo de Combustible</label>
+                                <input id="DropDown_GasolinaModal" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label>Numero de VIN</label>
+                                <input id="Input_VIN" class="form-control text-uppercase" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 mt-lg-1">
+                                <span id="ModalAlert"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" id="BTN_GuardarCambios" disabled> <i class="bi bi-floppy-fill"></i> Guardar Cambios</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 <style type="text/css">
     .k-picker {
@@ -201,6 +290,46 @@
     #btn_nuevaFlota{
         height: 35px;
     }
+
+    .k-grid-Editar {
+        background: #198754;
+        color: white;
+    }
+
+        .k-grid-Editar:hover {
+            background: #157347;
+        }
+
+    .k-grid-Eliminar {
+        background: #dc3545;
+        color: white;
+    }
+
+        .k-grid-Eliminar:hover {
+            background: #bb2d3b;
+            color: white;
+        }
+
+    .col-data {
+        width: 150px;
+    }
+    .col-command {
+        text-align: center !important;
+        width: 170px;
+    }
+
+    @@media screen and (max-width: 576px) {
+        .col-command {
+            width: 195px;
+        }
+    }
+
+    @@media (min-width: 768px) and (max-width: 991.98px) {
+        /* Tus estilos aquí */
+        .col-command {
+            width: 195px;
+        }
+    }
 </style>
 <script>
     (function () {
@@ -220,19 +349,10 @@
 
                         var _this = this
 
-                        /*var dataSource = new kendo.data.DataSource({
-                            data: [
-                                { GasID: 1, GasName: "Gasolina" },
-                                { GasID: 2, GasName: "Diesel" }
-                            ],
-                            sort: { field: "GasName", dir: "asc" }
-                        });*/
                         $("#Drop_Gasolina").kendoDropDownList({
-                            //filter: "contains",
                             optionLabel: 'Seleccione un tipo de gasolina',
                             dataTextField: "tipoCombustible",
                             dataValueField: "combustibleMobileID",
-                            //dataSource: dataSource,
                             theme: "black"
                         });
 
@@ -240,8 +360,27 @@
                             filter: "contains",
                             optionLabel: 'Seleccione la flota',
                             dataTextField: "nombreSubfleet",
+                            dataValueField: "subfleetID"
+                        });
+
+                        $("#DropDown_FlotaModal").kendoDropDownList({
+                            filter: "contains",
+                            optionLabel: 'Seleccione la flota',
+                            dataTextField: "nombreSubfleet",
                             dataValueField: "subfleetID",
-                            //dataSource: dataSource
+                            change: function () {
+                                $.vehiculo.ActualizarVehiculo.activarButton()
+                            }
+                        });
+
+                        $("#DropDown_GasolinaModal").kendoDropDownList({
+                            optionLabel: 'Seleccione un tipo de gasolina',
+                            dataTextField: "tipoCombustible",
+                            dataValueField: "combustibleMobileID",
+                            change: function () {
+                                //console.log("Xd")
+                                $.vehiculo.ActualizarVehiculo.activarButton()
+                            }
                         });
                         _this.DataDropDowns()
 
@@ -249,26 +388,43 @@
                     DataDropDowns: function () {
                         $.get('@Url.Action("obtenerTipoCombustible", "adVehiculosFlotas")', function (GAS) {
                             $("#Drop_Gasolina").data("kendoDropDownList").dataSource.data(GAS);
+                            $("#DropDown_GasolinaModal").data("kendoDropDownList").dataSource.data(GAS);
                         })
 
                         $.get('@Url.Action("obtenerFlotas", "adVehiculosFlotas")', function (flotas) {
                             $("#Drop_Flota").data("kendoDropDownList").dataSource.data(flotas);
+                            $("#DropDown_FlotaModal").data("kendoDropDownList").dataSource.data(flotas);
                         })
                     },
                 },
                 GRID: {
+                    /*Fecha: {
+                        FechaInicio : null,
+                        FechaFin: null
+                    },*/
                     loadGrid: function () {
                         var _this = this;
                         $("#FechaIni").kendoDateTimePicker({
                             dateInput: true,
                             startTime: new Date(2023, 1, 3, 8, 30, 0),
-                            endTime: new Date(2023, 1, 3, 17,00, 0)
+                            endTime: new Date(2023, 1, 3, 17,00, 0),
+                            /*change: function (event) {
+                                var data = this.value()
+                                _this.Fecha.FechaInicio = moment(data).format("YYYY/MM/DD HH:mm:ss")
+                                //console.log(moment(data).format("YYYY/MM/DD HH:mm:ss"))
+                            }*/
                         });
                         $("#FechaIni").data("kendoDateTimePicker").value(kendo.parseDate(moment().subtract(30, 'days').format("YYYY/MM/DD HH:mm:ss")));
+
+
                         $("#FechaFin").kendoDateTimePicker({
                             dateInput: true,
                             startTime: new Date(2023, 1, 3, 8, 30, 0),
-                            endTime: new Date(2023, 1, 3, 17,00, 0)
+                            endTime: new Date(2023, 1, 3, 17,00, 0),
+                            /*change: function (event) {
+                                var data = this.value()
+                                _this.Fecha.FechaFin = moment(data).format("YYYY/MM/DD HH:mm:ss")
+                            }*/
                         });
                         $("#FechaFin").data("kendoDateTimePicker").value(kendo.parseDate(moment().format("YYYY/MM/DD HH:mm:ss")));
 
@@ -282,52 +438,141 @@
                                 {
                                     field: "placa",
                                     title: "Placa",
-                                    width: "100px"
+                                    width: "100px",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data" }
                                 },
                                 {
                                     field: "nombre",
                                     title: "Nombre",
-                                    width: "100px"
+                                    width: "100px",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data" }
                                 },
                                 {
                                     field: "nombreSubfleet",
                                     title: "Flota",
-                                    width: "100px"
+                                    width: "100px",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data" }
                                 },
                                 {
                                     field: "marca",
                                     title: "Marca",
-                                    width: "100px"
+                                    width: "100px",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data" }
                                 },
                                 {
                                     field: "modelo",
                                     title: "Modelo",
-                                    width: "100px"
+                                    width: "100px",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data" }
                                 },
                                 {
                                     field: "fechaCreacion",
                                     title: "Fecha de Creacion",
-                                    width: "150px"
+                                    width: "150px",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data" }
                                 },
                                 {
                                     field: "kmXGalon",
                                     title: "Km. por Gal.",
-                                    width: "100px"
+                                    width: "100px",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data" }
                                 },
                                 {
                                     field: "capacidadTanque",
                                     title: "Cap. Tanque",
-                                    width: "100px"
+                                    width: "100px",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data" }
                                 },
                                 {
                                     field: "tipoCombustible",
                                     title: "Tipo Combustible",
-                                    width: "100px"
+                                    width: "100px",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data" }
                                 },
                                 {
                                     field: "vin",
                                     title: "VIN",
-                                    width: "100px"
+                                    width: "100px",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data" }
+                                },
+                                {
+                                    command: [
+                                        {
+                                            name: "Editar",
+                                            text: '<span> <i class="bi bi-pencil-square"></i> Editar </span>',
+                                            click: function (e) {
+                                                e.preventDefault();
+                                                var tr = $(e.target).closest("tr");
+                                                var data = this.dataItem(tr);
+                                                //console.log(data)
+                                                $("#TXT_Auto").text(data.nombre + " - [" + data.placa + "]")
+
+                                                $("#ModalAlert").text("")
+
+                                                $.vehiculo.ActualizarVehiculo.dataActual.mobileID = data.mobileID
+
+                                                $("#Input_Placa").val(data.placa)
+                                                $.vehiculo.ActualizarVehiculo.dataActual.placa = data.placa
+
+                                                $("#Input_Nombre").val(data.nombre)
+                                                $.vehiculo.ActualizarVehiculo.dataActual.nombre = data.nombre
+
+                                                $("#DropDown_FlotaModal").data("kendoDropDownList").select(data.subfleetID)
+                                                $.vehiculo.ActualizarVehiculo.dataActual.idFlota = data.subfleetID
+
+                                                $("#Input_Marca").val(data.marca)
+                                                $.vehiculo.ActualizarVehiculo.dataActual.marca = data.marca
+
+                                                $("#Input_Modelo").val(data.modelo)
+                                                $.vehiculo.ActualizarVehiculo.dataActual.modelo = data.modelo
+
+                                                $("#Input_KmxGal").val(extraerNumeros(data.kmXGalon))
+                                                $.vehiculo.ActualizarVehiculo.dataActual.kmXGalon = extraerNumeros(data.kmXGalon)
+
+                                                $("#Input_CapTan").val(extraerNumeros(data.capacidadTanque))
+                                                $.vehiculo.ActualizarVehiculo.dataActual.capacidadTanque = extraerNumeros(data.capacidadTanque)
+
+                                                $("#DropDown_GasolinaModal").data("kendoDropDownList").select(data.tipoCombustibleID)
+                                                $.vehiculo.ActualizarVehiculo.dataActual.combustibleID = data.tipoCombustibleID
+
+                                                $("#Input_VIN").val(data.vin)
+                                                $.vehiculo.ActualizarVehiculo.dataActual.numeroVIN = data.vin
+
+                                                function extraerNumeros(cadena) {
+                                                    const regex = /-?\d+(\.\d+)?/g;
+                                                    const coincidencias = cadena.match(regex);
+                                                    return coincidencias[0] 
+                                                }
+
+                                                $('#editarVehiculoModal').modal('show');
+                                            }
+                                        },
+                                        {
+                                            name: "Eliminar",
+                                            text: '<span> <i class="bi bi-trash3"></i> Eliminar </span>',
+                                            click: function (e) {
+                                                e.preventDefault();
+                                                var tr = $(e.target).closest("tr");
+                                                var data = this.dataItem(tr);
+                                                //_this.EliminarProyecto(data.idProyectosVales, data.pep)
+                                                //console.log(data.mobileID)
+                                                $.vehiculo.ActualizarVehiculo.EliminarMobile(data.mobileID)
+                                            }
+                                        }
+
+                                    ],
+                                    attributes: { class: "col-command" },
+                                    headerAttributes: { class: "col-command" },
                                 }
                             ],
                             mobile: "phone",
@@ -340,10 +585,11 @@
                         });
 
 
-                        var FechaInicio = moment($("#FechaIni").data("kendoDateTimePicker").value()).add(6, 'hours').format("YYYYMMDD HH:mm:ss.SSS")
-                        var FechaFin = moment($("#FechaFin").data("kendoDateTimePicker").value()).add(6, 'hours').format("YYYYMMDD HH:mm:ss.SSS")
-
-                        _this.DataGrid(FechaInicio, FechaFin)
+                        /*var FechaInicio = moment($("#FechaIni").data("kendoDateTimePicker").value()).add(6, 'hours').format("YYYYMMDD HH:mm:ss.SSS")
+                        var FechaFin = moment($("#FechaFin").data("kendoDateTimePicker").value()).add(6, 'hours').format("YYYYMMDD HH:mm:ss.SSS")*/
+                        /*var FechaInicio = _this.Fecha.FechaInicio
+                        var FechaFin = _this.Fecha.FechaFin*/
+                        _this.DataGrid(null, null)
                     },
                     DataGrid: function (FechaIni, FechaFin) {
 
@@ -351,12 +597,19 @@
                             FechaIni: FechaIni,
                             FechaFin: FechaFin
                         }
+                        //console.log(arg)
+
+                        //console.log("XD")
                         $.get('@Url.Action("rpVehiculo", "adVehiculosFlotas")', arg, function (autos) {
                             for (let x = 0; x < autos.length; x++) {
+                                
                                 autos[x].fechaCreacion = moment(autos[x].fechaCreacion).subtract(6, "hour").format("DD/MM/YYYY HH:mm:ss")
                                 autos[x].capacidadTanque = autos[x].capacidadTanque + " Gal"
                                 autos[x].kmXGalon = autos[x].kmXGalon + " Km"
+                                
+                                
                             }
+                            console.log(autos)
                             $("#GridFlotas").data("kendoGrid").dataSource.data(autos);
                         });
                     },
@@ -372,7 +625,7 @@
                     },
                 },                            
                 keypress: function () {
-                    $('#Placa').keypress(function (event) {
+                    $('#Placa, #Input_Placa').keypress(function (event) {
 
                         var keyCode = event.which;
 
@@ -383,7 +636,7 @@
                         }
 
                     });
-                    $('#KmXGalon').keypress(function (event) {
+                    $('#KmXGalon, #Input_KmxGal').keypress(function (event) {
 
                         var keyCode = event.which;
                         var inputValue = $(this).val();
@@ -396,7 +649,7 @@
                             event.preventDefault();
                         }
 
-                        if (inputValue.indexOf('.') !== -1 && inputValue.split('.')[1].length >= 1 && keyCode !== 46) {
+                        if (inputValue.indexOf('.') !== -1 && inputValue.split('.')[1].length >= 2 && keyCode !== 46) {
                             event.preventDefault();
                         }
 
@@ -411,7 +664,7 @@
                         }
 
                     });
-                    $('#CapacidadTanque').keypress(function (event) {
+                    $('#CapacidadTanque, #Input_CapTan').keypress(function (event) {
 
                         var keyCode = event.which;
                         var inputValue = $(this).val();
@@ -424,7 +677,7 @@
                             event.preventDefault();
                         }
 
-                        if (inputValue.indexOf('.') !== -1 && inputValue.split('.')[1].length >= 1 && keyCode !== 46) {
+                        if (inputValue.indexOf('.') !== -1 && inputValue.split('.')[1].length >= 2 && keyCode !== 46) {
                             event.preventDefault();
                         }
 
@@ -439,7 +692,7 @@
                         }
 
                     });
-                    $('#Vin').keypress(function (event) {
+                    $('#Vin, #Input_VIN').keypress(function (event) {
 
                         var keyCode = event.which;
                         var inputValue = $(this).val();
@@ -534,7 +787,190 @@
                             });
                         }
                     });
-                },   
+                }, 
+                ActualizarVehiculo: {
+                    dataActual: {
+                        mobileID: 0,
+                        placa: "",
+                        nombre: "",
+                        idFlota: "",
+                        marca: "",
+                        modelo: "",
+                        kmXGalon: "",
+                        capacidadTanque: "",
+                        combustibleID: "",
+                        numeroVIN: ""
+                    }, 
+                    eventoInput: function () {
+                        var _this = this
+                        $("#Input_Placa, #Input_Nombre, #Input_Marca,#Input_Modelo,#Input_KmxGal,#Input_CapTan,#Input_VIN").on("input", function (e) {
+                            _this.activarButton()
+                        })
+                    },
+                    activarButton: function () {
+                        var _this = this
+
+                        if (_this.comparador() === true) {
+                            if ($("#BTN_GuardarCambios").is(':disabled') === true) {
+                                $("#BTN_GuardarCambios").attr("disabled", false)
+                            }
+                        } else {
+                            $("#BTN_GuardarCambios").attr("disabled", true)
+                        }
+                    },
+                    comparador: function () {
+                        var _this = this
+                        var Placa = $("#Input_Placa").val()
+                        var Nombre = $("#Input_Nombre").val()
+                        var FlotaID = $("#DropDown_FlotaModal").data("kendoDropDownList").value()
+                        var Marca = $("#Input_Marca").val()
+                        var Modelo = $("#Input_Modelo").val()
+                        var KmxGal = $("#Input_KmxGal").val()
+                        var CapTan = $("#Input_CapTan").val()
+
+                        var CombustibleID = $("#DropDown_GasolinaModal").data("kendoDropDownList").value()
+                        CombustibleID = CombustibleID !== ""? parseInt(CombustibleID) : 0
+                        var VIN = $("#Input_VIN").val()
+
+                        if (_this.dataActual.placa !== Placa) {
+                            return true
+                        }
+
+                        if (_this.dataActual.nombre !== Nombre) {
+                            return true
+                        }
+                        if (FlotaID !== "") {
+
+                            FlotaID = parseInt(FlotaID)
+
+                            if (_this.dataActual.idFlota !== FlotaID) {
+                                return true
+                            }
+
+                        }
+                        if (_this.dataActual.marca !== Marca) {
+                            return true
+                        }
+
+                        if (_this.dataActual.modelo !== Modelo) {
+                            return true
+                        }
+
+                        if (_this.dataActual.kmXGalon !== KmxGal) {
+                            return true
+                        }
+                        if (_this.dataActual.capacidadTanque !== CapTan) {
+                            return true
+                        }
+                        if (_this.dataActual.combustibleID !== CombustibleID){ 
+                            return true
+                        }
+                        if (_this.dataActual.numeroVIN !== VIN) {
+                            return true
+                        }
+                        
+                        return false
+                    },
+                    validaciones: function () {
+                        var _this = this 
+                        var placa = $("#Input_Placa").val().trim();
+                        var Nombre = $("#Input_Nombre").val().trim();
+                        var Flota = $("#DropDown_FlotaModal").data("kendoDropDownList").value()
+
+                        if (placa === "") {
+                            _this.alert("alerta", "Debe ingresar una placa")
+                            return false;
+                        }
+                        if (Nombre === "") {
+                            this.alert("alerta", "Debe ingresar un nombre")
+
+                            return false;
+                        }
+                        if (Flota === "") {
+                            this.alert("alerta", "Debe seleccionar una flota para el vehiculo")
+                            return false;
+                        }
+                        return true
+                    },
+                    BTN_ActulizarDatos: function () {
+                        var _this = this
+                        $("#BTN_GuardarCambios").on("click", function () {
+                            //var _this = this
+
+                            //console.log("XD")
+
+                            var Placa = $("#Input_Placa").val().toUpperCase()
+                            var Nombre = $("#Input_Nombre").val()
+                            var FlotaModal = $("#DropDown_FlotaModal").val()
+                            FlotaModal = parseInt(FlotaModal)
+                            var Marca = $("#Input_Marca").val()
+                            var Modelo = $("#Input_Modelo").val()
+                            var KmxGal = $("#Input_KmxGal").val()
+                            KmxGal = KmxGal === "" ? null : parseFloat(KmxGal)
+                            var CapTan = $("#Input_CapTan").val()
+                            CapTan = CapTan === "" ? null : parseFloat(CapTan)
+                            var GasolinaModal = $("#DropDown_GasolinaModal").val()
+                            GasolinaModal = GasolinaModal === "" ? null : parseInt(GasolinaModal)
+                            var VIN = $("#Input_VIN").val().toUpperCase()
+                            
+                            var arg = {
+                                MobileID : _this.dataActual.mobileID,
+                                Placa: Placa,
+                                Nombre: Nombre,
+                                FlotaID: FlotaModal,
+                                Marca: Marca,
+                                Modelo: Modelo,
+                                KmXGalon: KmxGal,
+                                CapTan: CapTan,
+                                CombustibleID: GasolinaModal,
+                                NumeroVIm: VIN
+                            }
+                            //console.log(arg)
+                            if (_this.validaciones() === true) {
+                                $.post('@Url.Action("ActualizaMobile", "adVehiculosFlotas")', arg, function (mensaje) {
+                                    //console.log(mensaje)
+                                    mensaje = mensaje[0]
+                                    if (mensaje.bandera === 1) {
+                                        var FechaInicio = moment($("#FechaIni").data("kendoDateTimePicker").value()).add(6, 'hours').format("YYYYMMDD HH:mm:ss.SSS")
+                                        var FechaFin = moment($("#FechaFin").data("kendoDateTimePicker").value()).add(6, 'hours').format("YYYYMMDD HH:mm:ss.SSS")
+                                        $.vehiculo.GRID.DataGrid(FechaInicio, FechaFin)
+                                        _this.alert("suceso", mensaje.resultado)
+                                    } else {
+                                        _this.alert("alerta", mensaje.resultado)
+                                    }
+
+                                });
+                            }
+                        });
+                    },
+                    EliminarMobile: function (_MobileID) {
+                        var arg = {
+                            MobileID: _MobileID
+                        }
+                        $.post('@Url.Action("EliminarMobile", "adVehiculosFlotas")', arg, function (mensaje) {
+                            mensaje = mensaje[0]
+                            if (mensaje.bandera === 1) {
+                                var FechaInicio = moment($("#FechaIni").data("kendoDateTimePicker").value()).add(6, 'hours').format("YYYYMMDD HH:mm:ss.SSS")
+                                var FechaFin = moment($("#FechaFin").data("kendoDateTimePicker").value()).add(6, 'hours').format("YYYYMMDD HH:mm:ss.SSS")
+                                $.vehiculo.GRID.DataGrid(FechaInicio, FechaFin)
+                                $._combustible.alert("success", "Eliminación exitosa", mensaje.resultado)
+                            }else{
+                                $._combustible.alert("error", "Error", mensaje.resultado)
+                                //$._combustible.alert("success", "Eliminación exitosa", mensaje.resultado)
+                            }
+                        })
+                    },
+                    alert: function (tipo, mensaje) {
+                        if (tipo === "alerta") {
+                            $("#ModalAlert").text("Alerta: " + mensaje)
+                            $("#ModalAlert").css("color", "red")
+                        }
+                        if (tipo === "suceso") {
+                            $("#ModalAlert").text("Nota: " + mensaje)
+                            $("#ModalAlert").css("color", "green")
+                        }
+                    }
+                }
                 
             },
             flota:{
@@ -653,6 +1089,8 @@
                 _this.vehiculo.GRID.BTNGeneraGrid()
                 _this.vehiculo.BTN_RegistrarVehiculo();
                 _this.vehiculo.keypress();
+                _this.vehiculo.ActualizarVehiculo.eventoInput();
+                _this.vehiculo.ActualizarVehiculo.BTN_ActulizarDatos();
                 _this.flota.agregarFlota();
                 _this.flotaModal.BTN_Modal();
                 _this.flotaModal.agregarFlota();
