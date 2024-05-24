@@ -101,7 +101,8 @@
                         </div>
                         <div class="row mb-4">                         
                             <div class="col-lg-4 offset-lg-1">
-                                <input type="button" class="btn btn-success w-100" id="" value="Cancelar" style="color:white;" />
+                                @*<input type="button" class="btn btn-success w-100" id="" value="Cancelar" style="color:white;" />*@
+                                <a class="btn btn-success w-100 text-light" href="@Url.Action("Login", "Login")"> Cancelar </a>
                             </div>
                             <div class="col-lg-4 offset-lg-2">
                                 <input type="button" class="btn btn-light gradient-custom w-100" id="btn_create" value="Crear usuario" style="color:white;" />
@@ -322,7 +323,7 @@
 
 <style type="text/css">
     section {
-        background: url(/images/1.jpg);
+        background: url(@Url.Content("~/images/1.jpg"));
         background-position:center;
         background-repeat: no-repeat;
         background-size:cover;

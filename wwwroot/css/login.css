@@ -9,12 +9,7 @@ body {
     height:100vh;
 }
 
-#logIn {
-    width: 100%;
-    height: 100vh !important;
-    background: url(/images/1.jpg);
-    background-size: cover;
-}
+
 /*.fondo {
     opacity: 0.5;
     transition: 1s;

@@ -227,7 +227,7 @@
                         var telefono2 = company.telfijo === null ? "" : company.telfijo.substring(5, 9) + company.telfijo.substring(10)
                         $("#Input_Number2").val(telefono2)
 
-                        _this.logoCompany(data.logo)
+                        _this.logoCompany('@Url.Content("~/")'+data.logo)
                     })
                 },
                 Input_File: function () {
@@ -405,7 +405,8 @@
                             formData.append('img', file);
 
                             $.ajax({
-                                url: "/adConfiguracionCompany/CambiarInformacion",
+                                url: '@Url.Action("CambiarInformacion", "adConfiguracionCompany")',
+                                //url: "/adConfiguracionCompany/CambiarInformacion",
                                 type: "POST",
                                 data: formData,
                                 contentType: false,

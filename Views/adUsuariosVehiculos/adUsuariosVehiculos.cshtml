@@ -180,12 +180,13 @@
                     dataModal: function (_username) {
                         var _this = this;
                         $.get('@Url.Action("ObtenerVehiculosMobileCompany", "AdUsuariosVehiculos")', { username: _username }, function (mobiles) {
-                            //console.log(mobiles)
+                            console.log(mobiles)
                             createDualListboxMobile(mobiles)
                         });
 
                         $("#exampleModalLabel").html("")
-                        $("#exampleModalLabel").append("<span > <img src='../images/user.gif'/> " + _username + "</span>")
+                        //$("#exampleModalLabel").append("<span > <img src='"'@Url.Action("~/")'+"images/user.gif'/> " + _username + "</span>")
+                        $("#exampleModalLabel").append("<span><img src='" + '@Url.Content("~/images/user.gif")' + "'/> " + _username + "</span>");
 
                     }, 
                     buttons: function () { 

@@ -71,7 +71,8 @@ namespace COMBUSTIBLEAESCORE.Controllers
         {
             return await Task.Run(() => {
                 var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
-                return Json(new { CompanyName = user.FirstOrDefault().CompanyName, CompamyLogo = logoCompany(user.FirstOrDefault().CompanyID) , Cotancto  = user.FirstOrDefault().TelMovil, Direccion = user.FirstOrDefault().Direccion });
+                return Json(new { CompanyName = user.FirstOrDefault().CompanyName, CompamyLogo = logoCompany(user.FirstOrDefault().CompanyID) , 
+                    Cotancto  = (user.FirstOrDefault().TelMovil is null? "": user.FirstOrDefault().TelMovil), Direccion = user.FirstOrDefault().Direccion });
             });
         }
 
@@ -138,18 +139,18 @@ namespace COMBUSTIBLEAESCORE.Controllers
 
         protected String logoCompany(int CompanyID)
         {
-            var logoSRC = "/images/default-logo.png";
+            var logoSRC = "images/CompanyLogo/default_logo.png";
             if (System.IO.File.Exists(Path.Combine(_iWebHostEnvironment.WebRootPath, "images", "CompanyLogo", "Company" + CompanyID + "_logo.jpg")))
             {
                 // return "";
                 //bg = 1;
-                logoSRC = "/images/CompanyLogo/" + "Company" + CompanyID + "_logo.jpg";
+                logoSRC = "images/CompanyLogo/" + "Company" + CompanyID + "_logo.jpg";
             }
             if (System.IO.File.Exists(Path.Combine(_iWebHostEnvironment.WebRootPath, "images", "CompanyLogo", "Company" + CompanyID + "_logo.png")))
             {
                 //bg = 2;
                 //return "";
-                logoSRC = "/images/CompanyLogo/" + "Company" + CompanyID + "_logo.png";
+                logoSRC = "images/CompanyLogo/" + "Company" + CompanyID + "_logo.png";
             }
 
             return logoSRC;

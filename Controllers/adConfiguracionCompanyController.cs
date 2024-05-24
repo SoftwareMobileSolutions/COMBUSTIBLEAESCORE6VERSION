@@ -59,14 +59,14 @@ namespace COMBUSTIBLEAESCORE.Controllers
 
         protected String logoCompany(int CompanyID)
         {
-            var logoSRC = "/images/CompanyLogo/default_logo.png";
+            var logoSRC = "images/CompanyLogo/default_logo.png";
             if (System.IO.File.Exists(Path.Combine(iWebHostEnvironment.WebRootPath, "images", "CompanyLogo", "Company" + CompanyID + "_logo.jpg")))
             {
-                logoSRC = "/images/CompanyLogo/" + "Company" + CompanyID + "_logo.jpg";
+                logoSRC = "images/CompanyLogo/" + "Company" + CompanyID + "_logo.jpg";
             }
             if (System.IO.File.Exists(Path.Combine(iWebHostEnvironment.WebRootPath, "images", "CompanyLogo", "Company" + CompanyID + "_logo.png")))
             {
-                logoSRC = "/images/CompanyLogo/" + "Company" + CompanyID + "_logo.png";
+                logoSRC = "images/CompanyLogo/" + "Company" + CompanyID + "_logo.png";
             }
 
             return logoSRC;

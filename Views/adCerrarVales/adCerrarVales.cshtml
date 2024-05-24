@@ -133,13 +133,19 @@
                 BTN_ObtenerVale: function(){
                     var _this = this;
                     $('#ObtenerVale').on('click', function () {
-                        let _placa = $.trim($('#Input_Placa').val());
-                        let _galones = $.trim($("#Input_Galones").val());
-                        let _dolares = $.trim($("#Input_Dolares").val());
-                        let _odometro = $.trim($("#Input_Odometro").val());
+                        //let _placa = $.trim($('#Input_Placa').val());
+                        var _placa = $('#Input_Placa').val().trim()
+                        var _galones = $("#Input_Galones").val().trim() //$.trim();
+
+                        var _dolares = $("#Input_Dolares").val().trim()
+                        var _odometro = $("#Input_Odometro").val().trim()
+                        //this.ariaAutoComplete 
+                        /*let _dolares = $.trim($("#Input_Dolares").val());
+                        let _odometro = $.trim($("#Input_Odometro").val());*/
 
                         if (_placa === "") {
-                            _this.alert("Placa invalida", "Debe insertar una placa valida");
+                            $.alert("Placa invalida", "Debe insertar una placa valida")
+                            //_this.alert("Placa invalida", "Debe insertar una placa valida");
                             return false;
                         }
                         $("#nota").text("");
@@ -186,29 +192,35 @@
                         }
 
                         if (isNaN(_galones)) {
-                            _this.alert("Valor de galones esta vacio", "Debe ingresar la cantidad de galones")
+                            $.alert("Valor de galones esta vacio", "Debe ingresar la cantidad de galones")
+                            //_this.alert("Valor de galones esta vacio", "Debe ingresar la cantidad de galones")
                             return false
                         }
                         if (_galones === 0) {
-                            _this.alert("Valor de galones es igual a 0", "La cantidad de galones debe ser mayor que 0")
+                            $.alert("Valor de galones es igual a 0", "La cantidad de galones debe ser mayor que 0")
+                            //_this.alert("Valor de galones es igual a 0", "La cantidad de galones debe ser mayor que 0")
                             return false
                         }
 
                         if (isNaN(_dolares)) {
-                            _this.alert("Valor de dolares esta vacio", "Debe ingresar el total de dolares")
+                            $.alert("Valor de dolares esta vacio", "Debe ingresar el total de dolares")
+                            //_this.alert("Valor de dolares esta vacio", "Debe ingresar el total de dolares")
                             return false
                         }
                         if (_dolares === 0) {
-                            _this.alert("El total de dolares es igual a 0", "El total de dolares debe ser mayor que 0")
+                            $.alert("El total de dolares es igual a 0", "El total de dolares debe ser mayor que 0")
+                            //_this.alert("El total de dolares es igual a 0", "El total de dolares debe ser mayor que 0")
                             return false
                         }
 
                         if (isNaN(_odometro)) {
-                            _this.alert("Valor de odometro esta vacio", "Debe ingresar el odometro de la unidad")
+                            $.alert("Valor de odometro esta vacio", "Debe ingresar el odometro de la unidad")
+                            //_this.alert("Valor de odometro esta vacio", "Debe ingresar el odometro de la unidad")
                             return false
                         }
                         if (_odometro === 0) {
-                            _this.alert("Valor de odometro es igual a 0", "El odometro debe ser mayor que 0")
+                            $.alert("Valor de odometro es igual a 0", "El odometro debe ser mayor que 0")
+                            //_this.alert("Valor de odometro es igual a 0", "El odometro debe ser mayor que 0")
                             return false
                         }
 

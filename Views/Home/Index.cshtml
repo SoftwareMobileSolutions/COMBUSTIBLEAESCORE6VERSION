@@ -6,7 +6,7 @@
         <a @*href="@Url.Action("Introduccion", "Introduccion")"-*@ url="Introduccion/Introduccion" class="renderView logo d-flex justify-content-between w-100">
 
             <span class="d-none d-lg-block">@ViewData["CompanyName"]</span>
-            <img id="logo" src="@ViewData["CompamyLogo"]" alt="">
+            <img id="logo" @*src="@ViewData["CompamyLogo"]"*@ alt="">
         </a>
 
     </div><!-- End Logo -->
@@ -171,9 +171,15 @@
                 renderView: function (url) {
                     var _this = this;
 
+                    /*if (url != "") { 
+                        let data = url.split('/');
+
+                        console.log(data)
+                    }*/
 
                     if (url != "") {
-                        $.get("/" + url, function (p) {
+                        //$.get("/" + url, function (p) {
+                        $.get("@Url.Content("~/")" + url, function (p) {
                             $("#main").html(p)
                             
                         });
@@ -209,7 +215,8 @@
                 },
                 logOutBTN: function () {
                     $('#BTN_LogOut').on('click', function () {
-                        $.get("/Home/LogOut", function () {
+                        //$.get("/Home/LogOut", function () {
+                        $.get('@Url.Action("LogOut", "Home")', function () {
                             window.location.reload()
                         });
                     });
@@ -223,6 +230,11 @@
                     })
 
 
+                },
+                CargarLogo: function () {
+                    var src = '@ViewData["CompamyLogo"]';
+                    //console.log('@Url.Content("~/")' + src)
+                    $("#logo").attr("src", '@Url.Content("~/")' + src)
                 }
             }
         })
@@ -232,5 +244,6 @@
         $.home_menu.logOutBTN();
         $.home_menu.navbar();
         $.home_menu.CompanyData();
+        $.home_menu.CargarLogo();
     })();
 </script>
