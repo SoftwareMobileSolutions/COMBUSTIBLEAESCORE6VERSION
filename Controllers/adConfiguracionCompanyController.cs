@@ -98,10 +98,20 @@ namespace COMBUSTIBLEAESCORE.Controllers
 
         public async Task<JsonResult> GuardarDataCompany()
         {
-            return await Task.Run(() => {
+            var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
+            var dataCompany = await iadConfiguracionCompany.ObtenerDataCompany(user.FirstOrDefault().CompanyID);
+            //return Json();
+            return Json(new
+            {
+                CompanyName = dataCompany.FirstOrDefault().NombreCompany, //user.FirstOrDefault().CompanyName,
+                CompamyLogo = logoCompany(user.FirstOrDefault().CompanyID),
+                Cotancto = (dataCompany.FirstOrDefault().TelMovil is null? "": dataCompany.FirstOrDefault().TelMovil),//(user.FirstOrDefault().TelMovil is null ? "" : user.FirstOrDefault().TelMovil),
+                Direccion = dataCompany.FirstOrDefault().Direccion
+            });
+            /*return await Task.Run(() => {
                 var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
                 return Json(new { CompanyName = user.FirstOrDefault().CompanyName, CompamyLogo = logoCompany(user.FirstOrDefault().CompanyID), Cotancto = user.FirstOrDefault().TelMovil, Direccion = user.FirstOrDefault().Direccion });
-            });
+            });*/
         }
 
         protected bool ActualizarBackGround(IFormFile img)

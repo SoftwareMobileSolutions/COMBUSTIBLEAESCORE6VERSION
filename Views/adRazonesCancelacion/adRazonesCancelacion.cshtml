@@ -12,8 +12,10 @@
                 <h2 class="text-center ">Razones de Cancelacion</h2>
             </div>
             <div class="row">
+                <label class="mb-2">Ingrese la razón de cancelacion</label>
+            </div>
+            <div class="row">
                 <div class="col-lg-8 col-12 mb-2 mb-lg-0">
-                    <label>Ingrese la razón de cancelacion</label>
                     <input type="text" class="form-control" id="input_RazonCancel">
                 </div>
                 <div class="col-lg-4 col-12">
@@ -37,6 +39,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
+                    <i class="bi bi-pencil-square"></i>
                     <h5 class="modal-title" id="editarModalLabel">Modal title</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -158,10 +161,10 @@
                                             e.preventDefault();
                                             var tr = $(e.target).closest("tr");
                                             var data = this.dataItem(tr);
-                                            $("#editarModalLabel").text(data.razon)
+                                            $("#editarModalLabel").text("Modificar razon de cancelacion")
                                             _this.modal.RazonValeCanceladoID = data.idRazonValeCancelado
                                             $("#ModalAlert").text("")
-                                            $("#InputNombreCentroCosto").val("")
+                                            $("#InputNombreRazonCancel").val(data.razon)
                                             $('#editarModal').modal('show');
 
                                         }

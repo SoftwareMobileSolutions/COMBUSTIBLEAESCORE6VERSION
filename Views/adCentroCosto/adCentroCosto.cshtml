@@ -11,8 +11,10 @@
                 <h2 class="text-center ">Centros de Costo</h2>
             </div>
             <div class="row">
+                <label class="mb-2">Ingrese nombre del centro de costo</label>
+            </div>
+            <div class="row">
                 <div class="col-lg-8 col-12 mb-2 mb-lg-0">
-                    <label>Ingrese nombre del centro de costo</label>
                     <input type="text" class="form-control" id="input_CentroCosto">
                 </div>
                 <div class="col-lg-4 col-12">
@@ -37,6 +39,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
+                    <i class="bi bi-pencil-square"> </i>
                     <h5 class="modal-title" id="editarModalLabel">Modal title</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -154,10 +157,10 @@
                                             e.preventDefault();
                                             var tr = $(e.target).closest("tr");
                                             var data = this.dataItem(tr);
-                                            $("#editarModalLabel").text(data.nombreCentroCosto)
+                                            $("#editarModalLabel").text("Modificar centro de costo")
                                             _this.modal.CentroCostoID = data.centroCostoID
                                             $("#ModalAlert").text("")
-                                            $("#InputNombreCentroCosto").val("")
+                                            $("#InputNombreCentroCosto").val(data.nombreCentroCosto)
                                             $('#editarModal').modal('show');
 
                                         }

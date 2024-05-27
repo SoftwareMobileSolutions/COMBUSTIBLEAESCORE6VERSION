@@ -41,6 +41,7 @@ namespace COMBUSTIBLEAESCORE.Services
             return data;
         }
 
+
         public async Task<IEnumerable<CompanyModel>> ObtenerDataCompany(int CompanyID)
         {
             IEnumerable<CompanyModel> data = null;

@@ -514,7 +514,7 @@
                                                 e.preventDefault();
                                                 var tr = $(e.target).closest("tr");
                                                 var data = this.dataItem(tr);
-                                                //console.log(data)
+                                                console.log(data)
                                                 $("#TXT_Auto").text(data.nombre + " - [" + data.placa + "]")
 
                                                 $("#ModalAlert").text("")
@@ -527,7 +527,7 @@
                                                 $("#Input_Nombre").val(data.nombre)
                                                 $.vehiculo.ActualizarVehiculo.dataActual.nombre = data.nombre
 
-                                                $("#DropDown_FlotaModal").data("kendoDropDownList").select(data.subfleetID)
+                                                $("#DropDown_FlotaModal").data("kendoDropDownList").value(data.subfleetID +"")
                                                 $.vehiculo.ActualizarVehiculo.dataActual.idFlota = data.subfleetID
 
                                                 $("#Input_Marca").val(data.marca)

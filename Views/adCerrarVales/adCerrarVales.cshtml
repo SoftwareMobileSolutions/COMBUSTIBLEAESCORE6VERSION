@@ -299,7 +299,7 @@
             keypress: function () {
                 var _this = this;
                 $('#Input_Dolares').keypress(function (event) {
-
+                    //console.log("XD")
                     var keyCode = event.which;
                     var inputValue = $(this).val();
 
@@ -537,7 +537,7 @@
                 _this.CerrarVale.BTN_CerrarVale()
                 _this.GRID.loadGrid()
                 _this.GRID.BTN_ReloadGrid()
-                _this.keypress
+                _this.keypress()
             }
         })
         $.init()

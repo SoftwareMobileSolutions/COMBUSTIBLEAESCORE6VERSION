@@ -109,6 +109,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
+                    <i class="bi bi-pencil-square"></i>
                     <h5 class="modal-title" id="editarModalLabel">Modal title</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -647,12 +648,15 @@
                                                 e.preventDefault();
                                                 var tr = $(e.target).closest("tr");
                                                 var data = this.dataItem(tr);
-                                                $("#editarModalLabel").text(data.pep)
+                                                console.log(data)
+                                                $("#editarModalLabel").text("Modificar Proyecto: " + data.pep)
                                                 _this.modal.ProyectoID = data.idProyectosVales
                                                 $("#ModalAlert").text("")
-                                                $("#InputNombreResponsable").val("")
+                                                //$("#InputNombreResponsable").val("")
+                                                $("#InputNombreResponsable").val(data.responsable)
                                                 $('#editarModal').modal('show');
-                                                $("#DropDownList").data("kendoDropDownList").value("")
+                                                let estado = data.estado === 'Inactivo'? "0" : "1"
+                                                $("#DropDownList").data("kendoDropDownList").value(estado)
                                             }
                                         },
                                         {
