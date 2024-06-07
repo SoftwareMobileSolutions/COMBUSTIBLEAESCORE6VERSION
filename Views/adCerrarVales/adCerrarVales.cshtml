@@ -45,17 +45,17 @@
 
                                     <div class="form-outline mb-4 mt-3 mt-lg-4">
                                         <label class="form-label" for="form2Example11">Cantidad de galones:</label>
-                                        <input type="text" id="Input_Galones" class="form-control" step="0.0001" disabled  value="0"/>
+                                        <input type="text" id="Input_Galones" class="form-control" step="0.0001" disabled  @*value="0"*@ placeholder="0"/>
                                     </div>
 
                                     <div class="form-outline mb-4 mt-4">
                                         <label class="form-label" for="form2Example11">Total de dolares:</label>
-                                        <input type="text" id="Input_Dolares" class="form-control" step="0.01" disabled value="0" />
+                                        <input type="text" id="Input_Dolares" class="form-control" step="0.01" disabled @*value="0"*@ placeholder="0"/>
                                     </div>
 
                                     <div class="form-outline mb-4 mt-4">
                                         <label class="form-label" for="form2Example11">Odometro:</label>
-                                        <input type="text" id="Input_Odometro" class="form-control" step="0.01" disabled value="0" />
+                                        <input type="text" id="Input_Odometro" class="form-control" step="0.01" disabled @*value="0"*@ placeholder="0"/>
                                     </div>
                                     <div class="d-grid gap-2 col-12 mx-auto">
                                         <input type="button" class="btn btn_lg" id="Enviar" value="Cerrar vale" disabled />
@@ -233,7 +233,7 @@
                                 icon: "success"
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    console.log("El usuario ha hecho clic en el botón OK");
+                                    //console.log("El usuario ha hecho clic en el botón OK");
                                     $('#Input_Placa').val("")
 
                                     $("#Input_Galones").val("")
@@ -268,15 +268,14 @@
                         var valorInput = $(this).val();
                         $.get('@Url.Action("validarPlaca", "adCerrarVales")', function (placa) {
                             if (placa === null) {
-                                console.log("Es nulo")
+                                //console.log("Es nulo")
                             } else {
                                 if (placa != valorInput) {
 
                                     $("#nota").text("*El valor de la placa cambió, debe volver a obtener el vale*");
                                     $("#Input_Placa").css("border", "1px solid red");
                                     $("#Input_Placa").css("background", "#FCC6D3")
-                                    console.log("");
-
+                                    //console.log("");
 
                                     $('#Input_Galones').prop("disabled", true)
                                     $('#Input_Galones').val(0)
@@ -285,13 +284,11 @@
                                     $('#Input_Odometro').prop("disabled", true)
                                     $('#Input_Odometro').val(0)
                                     $('#TXT_Vale').text('Numero de vale: ')
-
                                     $('#Enviar').prop("disabled", true)
 
 
                                 }
                             }
-
                         })
                     });
                 },
@@ -489,7 +486,7 @@
                         //console.log(arg)
 
                         $.get('@Url.Action("getValesCerradosXPlaca", "adCerrarVales")', arg, function (vales) {
-                            console.log(vales)
+                            //console.log(vales)
                             for (x = 0; x < vales.length; x++) {
                                 vales[x].fechaGeneracion = moment(vales[x].fechaGeneracion).subtract(6, 'hours').format("DD/MM/YYYY HH:mm:ss")
                                 vales[x].fechaAutorizado = moment(vales[x].fechaAutorizado).subtract(6, 'hours').format("DD/MM/YYYY HH:mm:ss")

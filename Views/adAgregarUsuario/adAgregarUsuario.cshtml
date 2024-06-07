@@ -73,7 +73,7 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="concontainer-fluid">
-                        <label> Ingrese el correo electronico</label>
+                        <label> Ingrese el correo electrónico</label>
                         <input type="text" class="form-control my-2" id="Input_correo" />
                     </div>
                 </div>
@@ -112,7 +112,8 @@
                    <div class="container-fluid">
                         <div class="row">
                             <div class="col-lg-12 d-flex justify-content-center align-items-center">
-                                <img src="../images/user.gif" />
+                                @*<img src="../images/user.gif" />*@
+                                <img src=" @Url.Content("~/images/user.gif")" />
                                 <span class=" text-center" id="editarModalLabel"> Contraseña nueva</span>
                             </div>
                         </div>
@@ -421,7 +422,7 @@
                                 GasolineraID: _gasolinera,
                                 Telefono: _contacto
                             }
-                            console.log(arg)
+                            //console.log(arg)
                             $.post('@Url.Action("CrearUsuarios", "adAgregarUsuario")', arg, function (mensaje) {
                                 mensaje = mensaje[0]
                                 if (mensaje.bandera === 1) {
@@ -434,7 +435,7 @@
                                     $("#Input_Nombre").val("")
                                     $("#Input_Apellido").val("")
                                     $("#Input_correo").val("")
-                                    $.AgregarUsuario.DropDownList.load()
+                                    //$.AgregarUsuario.DropDownList.load()
                                 } else {
                                     $._combustible.alert("error", "No se creó el usuario", mensaje.resultado)
                                 }
@@ -488,7 +489,7 @@
                             },
                             {
                                 field: "telefono",
-                                title: "Telefono",
+                                title: "Teléfono",
                                 attributes: { class: "col-data" },
                                 headerAttributes: { class: "col-data" }
                             },
@@ -695,6 +696,7 @@
                                         if (mensaje.bandera === 1) {
                                             _this.alertModal("suceso", mensaje.resultado)
                                             $.GRID.DataGrid()
+                                            $("#InputModal_contra").val("")
                                             $("#BTN_Guardar").attr("disabled", true)
                                         } else {
                                             _this.alertModal("alerta", mensaje.resultado)

@@ -7,7 +7,8 @@
 
    
 
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwL4llQcFETOysWDY5Ph_wKSwCUBUrSM8&libraries=places&v=weekly" defer></script>
+    @*<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwL4llQcFETOysWDY5Ph_wKSwCUBUrSM8&libraries=places&v=weekly" defer =""></script>*@
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRI6CLApKKS4f2yxbrDKAj4IDUVcz6TaY&libraries=places&v=weekly"></script>
 
     <!--<link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />-->
     <link rel="stylesheet" href="@Url.Content("~/css/site.css")" />
@@ -104,9 +105,27 @@
                         text: text,
                     });
                 }
+
             }
         });
-        
+        (function () {
+            $.extend({
+                GoogleMaps_API: function () {
+                    const apiKeyLocalhost = 'TU_CLAVE_DE_API_PARA_LOCALHOST';
+                    const apiKeyProduction = 'TU_CLAVE_DE_API_PARA_PRODUCCION';
+
+                    const hostname = window.location.hostname;
+                    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+                        console.log(apiKeyLocalhost)
+                        //return apiKeyLocalhost;
+                    } else {
+                        console.log(apiKeyProduction)
+                        //return apiKeyProduction;
+                    }
+                }
+            })
+            $.GoogleMaps_API()
+        })();
         //$._combustible.loadpage("@Url.Action("rpValesCombustible", "rpValesCombustible")");
     </script>
 </head>
