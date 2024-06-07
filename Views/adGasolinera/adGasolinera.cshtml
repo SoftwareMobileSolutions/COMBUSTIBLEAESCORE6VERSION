@@ -249,7 +249,7 @@
                             {
                                 field: "latLng",
                                 type: "string",
-                                title: "Ubicacion",
+                                title: "Ubicación",
                                 filterable: false,
                                 attributes: { class: "col-ubicacion" },
                                 headerAttributes: { class: "col-ubicacion" },
@@ -263,7 +263,7 @@
                                 }*/
                                 template: function (data) {
                                     if (data.latitud !== 0 && data.longitud !== 0) {
-                                        return '<button type="button" class="btn btn-success" onclick="$.GRID.Modal.Mostrar(' + data.latitud + ', ' + data.longitud + ', \'' + data.nombre + '\')"> <i class="bi bi-geo"></i> Mostrar Ubicacion</button>';
+                                        return '<button type="button" class="btn btn-success" onclick="$.GRID.Modal.Mostrar(' + data.latitud + ', ' + data.longitud + ', \'' + data.nombre + '\')"> <i class="bi bi-geo"></i> Mostrar Ubicación</button>';
                                     } else {
                                         return '<span></span>';
                                     }
