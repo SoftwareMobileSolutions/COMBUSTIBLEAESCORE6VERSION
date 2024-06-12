@@ -109,8 +109,27 @@
                     markers: [],
                     circles: [],
                     CargarMapa: function () {
-                        var _this = this
-                        const map = new google.maps.Map(document.getElementById("map"), {
+                        //var _this = this
+
+                        //console.log(google.maps)
+                        $.LoadAPI().then(() => {
+                            const map = new google.maps.Map(document.getElementById("map"), {
+                                center: { lat: 13.703052612879729, lng: -89.20242358465791 },
+                                zoom: 13,
+                                mapTypeId: "hybrid",
+                                gestureHandling: 'greedy'
+
+                            });
+
+                            map.addListener('click', function (event) {
+                                _this.EliminarMarcador();
+                                _this.AgregarMarcador(event.latLng, map);
+                            });
+                        }).catch((error) => {
+                            console.error("Error loading Google Maps API script: ", error);
+                        });
+
+                        /*const map = new google.maps.Map(document.getElementById("map"), {
                             center: { lat: 13.703052612879729, lng: -89.20242358465791 },
                             zoom: 13,
                             mapTypeId: "hybrid",
@@ -119,9 +138,9 @@
                         });
 
                         map.addListener('click', function (event) {
-                            _this.EminarMarcador();
+                            _this.EliminarMarcador();
                             _this.AgregarMarcador(event.latLng, map);
-                        });
+                        });*/
 
                     },
                     AgregarMarcador: function (location, map) {
@@ -149,7 +168,7 @@
                         _this.markers.push(marker);
                         _this.circles.push(circle)
                     },
-                    EminarMarcador: function () {
+                    EliminarMarcador: function () {
                         var _this = this
                         var circles = _this.circles
                         var markers = _this.markers

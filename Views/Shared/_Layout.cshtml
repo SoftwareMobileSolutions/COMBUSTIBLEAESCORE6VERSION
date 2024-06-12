@@ -6,9 +6,14 @@
     <title>ValesCombustible</title>
 
    
-
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwL4llQcFETOysWDY5Ph_wKSwCUBUrSM8&libraries=places&v=weekly" defer =""></script>
+    @*Producion*@
+    @*<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwL4llQcFETOysWDY5Ph_wKSwCUBUrSM8&libraries=places&v=weekly" defer =""></script>*@
+    @*Local*@
     @*<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRI6CLApKKS4f2yxbrDKAj4IDUVcz6TaY&libraries=places&v=weekly"></script>*@
+
+
+
+    @*<script type="text/javascript" id="Key_API" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwL4llQcFETOysWDY5Ph_wKSwCUBUrSM8&libraries=places&v=weekly" defer=""></script>*@
 
     <!--<link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />-->
     <link rel="stylesheet" href="@Url.Content("~/css/site.css")" />
@@ -111,20 +116,31 @@
         (function () {
             $.extend({
                 GoogleMaps_API: function () {
-                    const apiKeyLocalhost = 'L';
-                    const apiKeyProduction = 'P';
-
                     const hostname = window.location.hostname;
                     if (hostname === 'localhost' || hostname === '127.0.0.1') {
-                        console.log(apiKeyLocalhost)
-                        //return apiKeyLocalhost;
+                        return 'AIzaSyBRI6CLApKKS4f2yxbrDKAj4IDUVcz6TaY&libraries=places&v=weekly';
                     } else {
-                        console.log(apiKeyProduction)
-                        //return apiKeyProduction;
+                        return 'AIzaSyDwL4llQcFETOysWDY5Ph_wKSwCUBUrSM8&libraries=places&v=weekly';
                     }
+                },
+                LoadAPI: function loadGoogleMapsScript() {
+                    //Promesa para cargar mapa, es necesario llamar esta funcion al usar mapas
+                    return new Promise((resolve, reject) => {
+
+                        const apiKey = $.GoogleMaps_API();
+                        const scriptId = 'googleMapsScript';
+                        const script = document.createElement('script');
+                        script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}`;
+                        script.defer = true;
+                        script.id = scriptId;
+
+                        script.onload = () => resolve();
+                        script.onerror = () => reject(new Error(`Script load error for https://maps.googleapis.com/maps/api/js?key=${apiKey}`));
+
+                        document.head.appendChild(script);
+                    });
                 }
-            })
-            $.GoogleMaps_API()
+            });
         })();
         //$._combustible.loadpage("@Url.Action("rpValesCombustible", "rpValesCombustible")");
     </script>

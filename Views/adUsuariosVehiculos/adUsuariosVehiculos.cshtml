@@ -180,8 +180,9 @@
                     dataModal: function (_username) {
                         var _this = this;
                         $.get('@Url.Action("ObtenerVehiculosMobileCompany", "AdUsuariosVehiculos")', { username: _username }, function (mobiles) {
-                            console.log(mobiles)
-                            createDualListboxMobile(mobiles)
+                            //console.log(mobiles)
+                            //createDualListboxMobile(mobiles)
+                            $.cartas.cargarCartas(mobiles)
                         });
 
                         $("#exampleModalLabel").html("")
