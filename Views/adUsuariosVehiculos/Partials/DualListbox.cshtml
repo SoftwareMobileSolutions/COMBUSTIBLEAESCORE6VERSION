@@ -115,7 +115,7 @@
                     for (let i = 0; i < disponibles.length; i++) {
                         let div =
                             '<div class= "carta"  seleccionado = false>' +
-                                '<h2 class="TXT_Mobile px-2">' + disponibles[i].nombre + " - [" + disponibles[i].placa + "] - [" + disponibles[i].subfleet + "]" + '</h2>'
+                            '<h2 class="TXT_Mobile px-2" value = "' + disponibles[i].mobileid + '">' + disponibles[i].nombre + " - [" + disponibles[i].placa + "] - [" + disponibles[i].subfleet + "]" + '</h2>'
                             '</div>'
                         $("#disponibles").append(div);
                     }
@@ -123,7 +123,7 @@
                     for (let i = 0; i < asignados.length; i++) {
                         let div =
                             '<div class= "carta"  seleccionado = false>' +
-                                '<h2 class="TXT_Mobile px-2">' + asignados[i].nombre + " - [" + asignados[i].placa + "] - [" + asignados[i].subfleet + "]" + '</h2>'
+                            '<h2 class="TXT_Mobile px-2" value = "' + asignados[i].mobileid + '">' + asignados[i].nombre + " - [" + asignados[i].placa + "] - [" + asignados[i].subfleet + "]" + '</h2>'
                             '</div>'
                         $("#asignados").append(div);
                     }
@@ -225,7 +225,6 @@
             init: function () {
                 var _this = this
                 //_this.cartas.cargarCartas()
-
                 _this.cartas.contadorCartas()
                 _this.cartas.buscar()
                 _this.cartas.movimientos.init()

@@ -12,7 +12,7 @@ namespace COMBUSTIBLEAESCORE.Interfaces
 
         public Task<IEnumerable<MobileXUserModel>> mobileXUser(string Username, int CompanyID);
 
-        public Task<IEnumerable<ObtenerVehiculosMobileCompany>> obtenerVehiculosMobileCompanie(string username, int CompanyID);
+        public Task<IEnumerable<MobileAsigandosXUserModel>> obtenerObtenerMobileAsigandosXUser(string username, int CompanyID);
 
         public Task<IEnumerable<mensaje>> ActulizarMobileXUser(string mobilesid, string Username);
     }

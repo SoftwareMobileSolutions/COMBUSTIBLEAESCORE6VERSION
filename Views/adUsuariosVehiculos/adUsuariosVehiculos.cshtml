@@ -179,7 +179,7 @@
                     },
                     dataModal: function (_username) {
                         var _this = this;
-                        $.get('@Url.Action("ObtenerVehiculosMobileCompany", "AdUsuariosVehiculos")', { username: _username }, function (mobiles) {
+                        $.get('@Url.Action("obtenerObtenerMobileAsigandosXUser", "AdUsuariosVehiculos")', { username: _username }, function (mobiles) {
                             //console.log(mobiles)
                             //createDualListboxMobile(mobiles)
                             $.cartas.cargarCartas(mobiles)
@@ -193,20 +193,26 @@
                     buttons: function () { 
                         var _this = this; 
                         $("#btnAceptarModal").on("click", function () {
-                            selects = $("#vocupados >")
+                            /*selects = $("#vocupados >")
 
                             var valores = [];
 
                             selects.each(function () {
                                 valores.push($(this).val());
+                            });*/
+
+                            selects = $("#asignados > .carta h2")
+                            var valores = [];
+
+                            selects.each(function () {
+                                valores.push($(this).attr("value"));
                             });
-                            //console.log(valores)
+
                             var arg = {
                                 mobilesid: valores.join(","),
                                 Username: _this.username
                             }
 
-                            //console.log(arg);
                             $.get('@Url.Action("ActulizarMobileXUser", "AdUsuariosVehiculos")', arg , function (resultado) {
                                 if (resultado[0].bandera === 1) {
                                     $.alert("success", "Actualización exitosa", resultado[0].resultado)

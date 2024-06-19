@@ -1,6 +1,6 @@
 ﻿namespace COMBUSTIBLEAESCORE.Models
 {
-    public class ObtenerVehiculosMobileCompany
+    public class MobileAsigandosXUserModel
     {
         public int mobileid { get; set; }
         public string nombre { get; set; }
