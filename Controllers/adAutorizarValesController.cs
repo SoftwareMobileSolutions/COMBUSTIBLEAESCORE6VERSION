@@ -33,6 +33,19 @@ namespace COMBUSTIBLEAESCORE.Controllers
             var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
             var CentrosCosto = await iadAutorizarVales.ObtenerCentrosCosto(user.FirstOrDefault().CompanyID);
             return Json(CentrosCosto);
+        } 
+        public async Task<JsonResult> ObtenerProyectos()
+        {
+            var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
+            var proyectos = await iadAutorizarVales.ObtenerProyectos(user.FirstOrDefault().CompanyID);
+            return Json(proyectos);
+        }
+
+        public async Task<JsonResult> ObtenerValeAutorizar(int ValeID)
+        {
+            var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
+            var vale = await iadAutorizarVales.ObtenerValeAutorizar(ValeID, user.FirstOrDefault().CompanyID);
+            return Json(vale);
         }
     }
 }

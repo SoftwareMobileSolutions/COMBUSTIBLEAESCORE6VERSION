@@ -87,9 +87,9 @@ namespace COMBUSTIBLEAESCORE.Services
             return data;
         }
 
-        public async Task<IEnumerable<PEPModel>> ObtenerPEPS(int CompanyID)
+        public async Task<IEnumerable<ProyectoModel>> ObtenerPEPS(int CompanyID)
         {
-            IEnumerable<PEPModel> data = null;
+            IEnumerable<ProyectoModel> data = null;
             string sp = "EXEC SP_rpProyectos @CompanyID";
             var con = new SqlConnection(conexion.Value);
             try
@@ -97,7 +97,7 @@ namespace COMBUSTIBLEAESCORE.Services
                 if (con.State == ConnectionState.Closed)
                 {
                     con.Open();
-                    data = await con.QueryAsync<PEPModel>(sp, new { CompanyID }, commandType: CommandType.Text);
+                    data = await con.QueryAsync<ProyectoModel>(sp, new { CompanyID }, commandType: CommandType.Text);
                 }
             }
             finally

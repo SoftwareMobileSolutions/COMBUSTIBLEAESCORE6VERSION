@@ -1,0 +1,299 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = null;
+}
+<section>
+    <div id="tabstrip">
+        <ul>
+            <li class="k-state-active">
+                Centros de costo por usuario
+            </li>
+            <li>
+                Centro de costo por vehiculo
+            </li>
+        </ul>
+        <div>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <h2 class="text-center">Centros de costo por usuario</h2>
+                    </div>
+                    <div class="col-12">
+                        <div id="GridCCUsuario">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <h2>Centro de costo por vehiculo</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="Modal">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalAutorizarValeLabel">Autorizar vales</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modal-Container">
+                    <div class="container-fluid">
+                        <div class="row">
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success" id="BTN_AutorizarVale">Autorizar Vale</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    (function () {
+
+        $.extend({
+            Tabstrip: function () {
+                $("#tabstrip").kendoTabStrip({
+                    animation: {
+                        open: {
+                            effects: "fadeIn"
+                        }
+                    },
+                });
+            },
+            CentroCostoUsuario: {
+                GRID: {
+                    CargarGRID: function () {
+                        var _this = this;
+
+                        $("#GridCCUsuario").html("");
+                        $("#GridCCUsuario").kendoGrid({
+                            dataSource: {
+                                pageSize: 10
+                            },
+                            columns: [
+                                {
+                                    field: "nombre",
+                                    title: "Nombre",
+                                    width: "100px"
+                                },
+                                {
+                                    field: "apellido",
+                                    title: "Apellido",
+                                    width: "100px"
+                                },
+                                {
+                                    field: "username",
+                                    title: "Centros de Costo",
+                                    width: "100px"
+                                }
+                            ],
+                            pageable: true,
+                            detailInit: _this.GRIDCCAsignados,
+                            detailCollapse: function (e) {
+                                var detailRow = e.detailRow;
+                                $(detailRow).remove();
+                            },
+                            selectable: "single, row",
+                            dataBound: function () {
+                                var touchtime = 0;
+                                $("#GridCCUsuario > .k-grid-content tbody tr:not(.k-grouping-row)").on("click", function () {
+                                    var grid = $("#GridCCUsuario").data("kendoGrid");
+                                    var row = $(this);
+                                    if (((new Date().getTime()) - touchtime) < 500) {
+                                        var dataItem = grid.dataItem(row);
+                                        //console.log(dataItem.usuarioID)
+                                        $.CentroCostoUsuario.Modal.cartas.dataCartas(dataItem.usuarioID)
+                                    } touchtime = new Date().getTime();
+                                });
+
+                            }
+                        });
+                        $("#GridCCUsuario .k-pager-wrap").append("<span class='w-100 text-center d-none d-lg-block'>Presione doble click para modificar la información</span>")
+                    },
+                    DataGrid: function () {
+                        $.get('@Url.Action("ObtenerUsuarios", "adAsignacionCentrosCosto")', function (usuarios) {
+                            //console.log(usuarios)
+                            $("#GridCCUsuario").data("kendoGrid").dataSource.data(usuarios)
+                        })
+                    }, 
+                    GRIDCCAsignados: function (e) {
+                        var _UsuarioID = e.data.usuarioID
+                        var _this = this;
+
+                        console.log(_UsuarioID)
+
+                        $("<div/>").appendTo(e.detailCell).kendoGrid({
+                            dataSource: {
+                                sort: { field: "nombre", dir: "asc" }
+                            },
+                            toolbar: ["search"],
+                            columns: [
+                                { field: "nombre", title: "Nombre", width: "100px" },
+
+                            ],
+                            resizable: true
+
+                        });
+                    }
+                },
+                Modal:{
+                    cartas: {
+                        dataCartas: function (_UsuarioID) {
+                            var _this = this;
+                            $.get('@Url.Action("ObtenerCentroCostoXUser", "adAsignacionCentrosCosto")', { UsuarioID: _UsuarioID }).then(function (centrosCosto){
+                                //console.log(centrosCosto)
+                                _this.cargarCartas()
+                            });
+                        },
+                        cargarCartas: function (centrosCosto) {
+                            var _this = this
+                            var disponibles = centrosCosto.filter(centroCosto => centroCosto.asignado === false);
+                            var asignados = centrosCosto.filter(centroCosto => centroCosto.asignado === true);
+
+                            $("#disponibles").empty()
+                            $("#asignados").empty()
+                            for (let i = 0; i < disponibles.length; i++) {
+                                let div =
+                                    '<div class= "carta"  seleccionado = false>' +
+                                    '<h2 class="TXT_Mobile px-2" value = "' + disponibles[i].centroCostoID + '">' + disponibles[i].nombreCentroCosto + '</h2>'
+                                '</div>'
+                                $("#disponibles").append(div);
+                            }
+
+                            for (let i = 0; i < asignados.length; i++) {
+                                let div =
+                                    '<div class= "carta"  seleccionado = false>' +
+                                    '<h2 class="TXT_Mobile px-2" value = "' + asignados[i].centroCostoID + '">' + asignados[i].nombreCentroCosto + '</h2>'
+                                '</div>'
+                                $("#asignados").append(div);
+                            }
+                            $(".totalCartas").text(mobiles.length)
+                            _this.contadorCartas();
+                            _this.clickCarta()
+                        },
+                        cambiarEstado: function (_this) {
+                            let seleccionado = _this.attr("seleccionado");
+                            if (seleccionado === "true") {
+                                _this.attr("seleccionado", "false");
+                                //_this.css("background", "white");
+                                _this.removeClass("seleccionado")
+                            } else {
+                                _this.attr("seleccionado", "true");
+                                //_this.css("background", "#1967d2");
+                                _this.addClass("seleccionado")
+                            }
+                        },
+                        clickCarta: function () {
+                            var _this = this;
+
+                            $(".carta").on("click", function () {
+                                var carta = $(this);
+                                _this.cambiarEstado(carta);
+                            });
+                        },
+                        buscar: function (ID_Input, ID_Contenedor) {
+                            let ValorInput = $("#" + ID_Input).val()
+                            let cartas = $("#" + ID_Contenedor + " div")
+
+                            cartas.each(function () {
+                                let carta = $(this);
+                                let NombreMobile = carta.children("h2").text();
+                                NombreMobile.includes(ValorInput) === true ? carta.css("display", "block") : carta.css("display", "none");
+                            });
+
+                        },
+                        contadorCartas: function () {
+                            var _this = this
+                            $("#contadorDisponibles").text($("#disponibles div").length)
+                            $("#contadorAsignados").text($("#asignados div").length)
+                        },
+                        movimientos: {
+                            moverDerecha: function () {
+                                $("#BTN_HaciaDerecha").on("click", function () {
+                                    $('#disponibles div[seleccionado="true"]').each(function () {
+                                        $.cartas.cambiarEstado($(this))
+                                        $("#asignados").append($(this));
+                                        $.cartas.contadorCartas()
+                                    });
+
+                                });
+                            },
+                            moverIzquierda: function () {
+                                $("#BTN_HaciaIzquierda").on("click", function () {
+                                    $('#asignados div[seleccionado="true"]').each(function () {
+                                        $.cartas.cambiarEstado($(this))
+                                        $("#disponibles").append($(this));
+                                        $.cartas.contadorCartas()
+                                    });
+
+                                });
+                            },
+                            moverTodoDerecha: function () {
+                                $("#BTN_TodoHaciaDerecha").on("click", function () {
+                                    $('#disponibles div').each(function () {
+                                        //console.log($(this))
+                                        $(this).attr("seleccionado", "false");
+                                        $(this).removeClass("seleccionado");
+                                        //$(this).css("background", "white");
+                                        $("#asignados").append($(this));
+                                        $.cartas.contadorCartas()
+                                    });
+                                });
+                            },
+                            moverTodoIzquierda: function () {
+                                $("#BTN_TodoHaciaIzquierda").on("click", function () {
+                                    $('#asignados div').each(function () {
+                                        //console.log($(this))
+                                        $(this).attr("seleccionado", "false");
+                                        $(this).removeClass("seleccionado");
+                                        //$(this).css("background", "white");
+                                        $("#disponibles").append($(this));
+                                        $.cartas.contadorCartas()
+                                    });
+                                });
+
+                            },
+                            init: function () {
+                                var _this = this
+                                _this.moverDerecha()
+                                _this.moverIzquierda()
+                                _this.moverTodoDerecha()
+                                _this.moverTodoIzquierda()
+                            }
+                        }
+                    },
+                    init: function () {
+                        var _this = this
+                        _this.cartas.contadorCartas()
+                        _this.cartas.buscar()
+                        _this.cartas.movimientos.init()
+                    }
+                },
+                init: function(){
+                    var _this = this
+                    _this.GRID.CargarGRID()
+                    _this.GRID.DataGrid()
+                }
+            },
+            init: function () {
+                var _this = this
+                _this.Tabstrip();
+                _this.CentroCostoUsuario.init()
+            }
+        })
+        $.init()
+    })()
+</script>

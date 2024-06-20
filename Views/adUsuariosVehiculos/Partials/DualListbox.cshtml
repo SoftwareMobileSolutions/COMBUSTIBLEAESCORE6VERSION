@@ -1,5 +1,8 @@
-﻿@{
-    //Layout = null;
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = null;
 }
 <div>
     <div class="container-fluid">
@@ -45,9 +48,10 @@
     </div>
 </div>
 <style>
-    .modal-body{
+    .modal-body {
         padding: 0px;
     }
+
     .contenedor-cartas {
         height: 20vh;
         width: 100%;
@@ -61,14 +65,16 @@
         box-shadow: none;
     }
 
-    .BTN_Mover{
+    .BTN_Mover {
         height: 25px;
-        width:35px;
-        margin:2px;
+        width: 35px;
+        margin: 2px;
     }
-    .carta{
-        cursor:pointer
+
+    .carta {
+        cursor: pointer
     }
+
     .seleccionado {
         background: #1967d2;
         color: #FFFF;
@@ -116,7 +122,7 @@
                         let div =
                             '<div class= "carta"  seleccionado = false>' +
                             '<h2 class="TXT_Mobile px-2" value = "' + disponibles[i].mobileid + '">' + disponibles[i].nombre + " - [" + disponibles[i].placa + "] - [" + disponibles[i].subfleet + "]" + '</h2>'
-                            '</div>'
+                        '</div>'
                         $("#disponibles").append(div);
                     }
 
@@ -124,7 +130,7 @@
                         let div =
                             '<div class= "carta"  seleccionado = false>' +
                             '<h2 class="TXT_Mobile px-2" value = "' + asignados[i].mobileid + '">' + asignados[i].nombre + " - [" + asignados[i].placa + "] - [" + asignados[i].subfleet + "]" + '</h2>'
-                            '</div>'
+                        '</div>'
                         $("#asignados").append(div);
                     }
                     $(".totalCartas").text(mobiles.length)
@@ -145,7 +151,7 @@
                 },
                 clickCarta: function () {
                     var _this = this;
-                    
+
                     $(".carta").on("click", function () {
                         var carta = $(this);
                         _this.cambiarEstado(carta);

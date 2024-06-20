@@ -1,6 +1,6 @@
 ﻿namespace COMBUSTIBLEAESCORE.Models
 {
-    public class PEPModel
+    public class ProyectoModel
     {
         public int idProyectosVales {  get; set; }
         public string PEP {  get; set; }

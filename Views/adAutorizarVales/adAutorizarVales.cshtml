@@ -33,44 +33,50 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="ModalAutorizarVale" tabindex="-1" aria-labelledby="ModalAutorizarValeLabel" aria-hidden="true">
+    <div class="modal fade" id="ModalAutorizarVale">
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="ModalAutorizarValeLabel">Modal title</h5>
+                    <h5 class="modal-title" id="ModalAutorizarValeLabel">Autorizar vales</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" >
                     <div class="container-fluid">
                         <div class="row">
-                            <div class="col-lg-6">
-                                <span id="Placa"> Placa </span>
+                            <div class="col-lg-4 d-flex justify-content-center">
+                                <span id="NumValeTXT"> Número Vale </span>
                             </div>
-                            <div class="col-lg-6">
-                                <span id="NumVale"> NUmeroVale </span>
+                            <div class="col-lg-4 d-flex justify-content-center">
+                                <span id="PlacaTXT"> Placa </span>                             
+                            </div>
+                            <div class="col-lg-4 d-flex justify-content-center">
+                                <span id="FechaTXT"> Número Vale </span>
                             </div>
                         </div>
-                        <div class="row">
-                            <label>Ingrese la cantidad de dinero</label>
-                            <input type="text" class="form-control"/>
+                        <div >
+                            <span id="TXTTotal" class="mt-3"></span>
                         </div>
-                        <div class="row">
-                            <label>Ingrese la cantidad de Galones</label>
-                            <input type="text" class="form-control" />
+                        <div class="row mt-3" id="ContenedorTotalDinero">
+                            <label id="TXTTotalDinero">Ingrese la cantidad de dinero</label>
+                            <input type="text" class="form-control" id="InputTotalDinero" />
                         </div>
-                        <div class="row">
+                        <div class="row mt-3" id="ContenedorGalones">
+                            <label id="TXTGalones">Ingrese la cantidad de Galones</label>
+                            <input type="text" class="form-control" id="InputGalones" />
+                        </div>
+                        <div class="row mt-3">
                             <label>Seleccione el centro de costo</label>
                             <input id="DropDownListCentroCosto" />
                         </div>
-                        <div class="row">
+                        <div class="row mt-3">
                             <label>Seleccione el Proyecto</label>
                             <input id="DropDownListProyecto" />
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success" id="BTN_AutorizarVale">Autorizar Vale</button>
                 </div>
             </div>
         </div>
@@ -145,28 +151,21 @@
                             }
                         ],
                         selectable: "single, row",
-                        change: function (e) {
-                            //_this.dataItem = e !== null ? e.sender.dataItem(e.sender.select()) : null;
-                            //console.log(e.sender.dataItem(e.sender.select()))
-                            var dataMobile = e.sender.dataItem(e.sender.select());
-
-                            _this.Modal.ValeInformacion.placa = dataMobile.placa
-                            _this.Modal.ValeInformacion.numVale = dataMobile.numVale
-                            _this.Modal.ValeInformacion.tipoCargaValeCombustibleID = dataMobile.tipoCargaValeCombustibleID
-                            _this.Modal.ValeInformacion.cantidadGalones = dataMobile.cantidadGalones
-                            _this.Modal.ValeInformacion.totalPrecio = dataMobile.totalPrecio
-                        },
                         dataBound: function () {
                             var touchtime = 0;
                             $("#GridVales > div span input").attr("placeholder", "Busqueda")
                             $("#GridVales .k-grid-content tbody tr:not(.k-grouping-row)").on("click", function () {
+
+                                var grid = $("#GridVales").data("kendoGrid");
+                                var row = $(this);
+                                
                                 if (((new Date().getTime()) - touchtime) < 500) {
-                                    /*_this.modal.show();
-                                    _this.modal.dataModal(_this.dataItem.username);
-                                    _this.modal.username = _this.dataItem.username;*/
-                                    $("#ModalAutorizarVale").modal("show")
-                                    console.log(_this.Modal.ValeInformacion)
-                                    //console.log("open modal")
+                                    var dataItem = grid.dataItem(row);
+                                    _this.Modal.ValeID = dataItem.valeCombustubibleID;
+                                    _this.Modal.TipoCargaValeCombustibleID = dataItem.tipoCargaValeCombustibleID;
+                                    //_this.Modal.TipoCargaValeCombustibleID = 5
+                                    _this.Modal.DataModal();
+                                    //console.log(dataItem.tipoCargaValeCombustibleID)
                                 } touchtime = new Date().getTime();
                             });
                         },
@@ -201,15 +200,61 @@
                     });
                 },
                 Modal: {
-                    ValeInformacion: {
-                        numVale: "",
-                        placa: "",
-                        tipoCargaValeCombustibleID: 0,
-                        totalPrecio: 0,
-                        cantidadGalones: 0
-                    },
-                    DataModal: {
+                    ValeID : 0,
+                    TipoCargaValeCombustibleID: 0,
+                    DataModal: function(){
+                        var _this = this
+                        
+                        $.get('@Url.Action("ObtenerValeAutorizar", "adAutorizarVales")', { 
+                            ValeID: _this.ValeID                       
+                        }).then(function (vale) {
+                            //console.log(vale)
+                            /*console.log("Entras")*/
+                            vale = vale[0]
+                            //console.log(vale)
+                            $("#ModalAutorizarVale").modal('show');
+                            $("#PlacaTXT").text("Placa: " + vale.placa)
+                            $("#NumValeTXT").text("N° Vale: " + vale.numVale)
+                            $("#FechaTXT").text("Fecha : " + vale.fechaGeneracion)
 
+                            if (vale.tipoCargaValeCombustibleID === 2) {
+                                $("#TXTTotal").css("display", "block")
+                                $("#TXTTotal").text("Total Dolares = $" + vale.totalPrecio)
+
+
+                                $("#ContenedorTotalDinero").css("display", "none")
+                                $("#InputTotalDinero").css("display", "none")
+
+                                $("#ContenedorGalones").css("display", "block")
+                                $("#TXTGalones").text("Ingrese la cantidad de Galones")
+                                $("#InputGalones").val("")
+                                $("#InputGalones").css("display", "block")
+                            } else if (vale.tipoCargaValeCombustibleID === 3) {
+                                $("#TXTTotal").css("display", "block")
+                                $("#TXTTotal").text("Total de Galones = " + vale.cantidadGalones)
+
+                                $("#ContenedorGalones").css("display", "none")
+                                $("#InputGalones").css("display", "none")
+
+                                $("#ContenedorTotalDinero").css("display", "block")
+                                $("#TXTTotalDinero").text("Ingrese la cantidad de dinero")
+                                $("#InputTotalDinero").val("")
+                                $("#InputTotalDinero").css("display", "block")
+                            } else if (vale.tipoCargaValeCombustibleID === 1) {
+                                $("#TXTTotal").css("display", "none")
+                                $("#ContenedorGalones").css("display", "none")
+
+                                $("#ContenedorGalones").css("display", "block")
+                                $("#TXTGalones").text("Ingrese la cantidad de Galones")
+                                $("#InputGalones").val("")
+                                $("#InputGalones").css("display", "block")
+
+                                $("#ContenedorTotalDinero").css("display", "block")
+                                $("#TXTTotalDinero").text("Ingrese la cantidad de dinero")
+                                $("#InputTotalDinero").val("")
+                                $("#InputTotalDinero").css("display", "block")
+                            }
+                        })
                     },
                     DropDownList: {
                         CargarDropDownList: function () {
@@ -222,17 +267,89 @@
 
                             $("#DropDownListProyecto").kendoDropDownList({
                                 filter: "contains",
-                                optionLabel: 'Please select city...',
-                                dataTextField: "CityName",
-                                dataValueField: "CityID"
+                                optionLabel: 'Seleccione el proyecto...',
+                                dataTextField: "nombreProyecto",
+                                dataValueField: "idProyectosVales"
                             });
                         },
-                        DataDropDownList:function(){
+                        DataDropDownList: function () {
+                            var _Proyectos = []
                             $.get('@Url.Action("ObtenerCentrosCosto", "adAutorizarVales")', function (centrosCosto) {
                                 $("#DropDownListCentroCosto").data("kendoDropDownList").dataSource.data(centrosCosto);
                                 //console.log(centrosCosto)
                             })
+                            $.get('@Url.Action("ObtenerProyectos", "adAutorizarVales")', function (Proyectos) {
+                                //$("#DropDownListCentroCosto").data("kendoDropDownList").dataSource.data(centrosCosto);
+                                Proyectos.forEach((proyecto) => {
+                                    //console.log(proyecto)
+                                    _Proyectos.push({ idProyectosVales: proyecto.idProyectosVales, nombreProyecto: proyecto.nombreProyecto + "- [" + proyecto.pep + "]" })
+                                })
+                                //console.log(_Proyectos)
+                                $("#DropDownListProyecto").data("kendoDropDownList").dataSource.data(_Proyectos);
+                            })
                         }
+                    },
+                    keypress: function () {
+                        var _this = this;
+                        $('#InputTotalDinero').keypress(function (event) {
+                            //console.log("XD")
+                            var keyCode = event.which;
+                            var inputValue = $(this).val();
+
+                            if ((keyCode < 48 || keyCode > 57) && keyCode !== 46) {
+                                event.preventDefault();
+                            }
+
+                            if (keyCode === 46 && inputValue.indexOf('.') !== -1) {
+                                event.preventDefault();
+                            }
+
+                            if (inputValue.indexOf('.') !== -1 && inputValue.split('.')[1].length >= 2 && keyCode !== 46) {
+                                event.preventDefault();
+                            }
+
+                        });
+
+                        $('#InputGalones').keypress(function (event) {
+
+                            var keyCode = event.which;
+                            var inputValue = $(this).val();
+
+                            if ((keyCode < 48 || keyCode > 57) && keyCode !== 46) {
+                                event.preventDefault();
+                            }
+
+                            if (keyCode === 46 && inputValue.indexOf('.') !== -1) {
+                                event.preventDefault();
+                            }
+
+                            if (inputValue.indexOf('.') !== -1 && inputValue.split('.')[1].length >= 4 && keyCode !== 46) {
+                                event.preventDefault();
+                            }
+
+                        });
+
+                    },
+                    Validaciones: function (TotalDinero, TotalGalones, CentroCostoID, ProyectoID, TipoCargaID, ValeID) {
+                        if (TipoCargaID === 2) {
+                            console.log("2")
+                        } else if (TipoCargaID === 3) {
+                            console.log("3")
+                        } else if (TipoCargaID === 1) {
+                            console.log("1")
+                        }
+                    },
+                    BTN_AutorizarVale: function(){
+                        var _this = this
+                        $("#BTN_AutorizarVale").on("click", function () {
+                            var TotalDinero = $("#InputTotalDinero").val();
+                            var TotalGalones = $("#InputGalones").val();
+                            var CentroCostoID = $("#DropDownListCentroCosto").data("kendoDropDownList").value();
+                            var ProyectoID = $("#DropDownListProyecto").data("kendoDropDownList").value()
+                            var TipoCargaID = _this.TipoCargaValeCombustibleID
+                            var ValeID = _this.ValeID
+                            _this.Validaciones(TotalDinero, TotalGalones, CentroCostoID, ProyectoID, TipoCargaID, ValeID)
+                        });
                     }
                 }
             },
@@ -242,34 +359,11 @@
                 _this.Grid.BTN_GenerarVales()
                 _this.Grid.Modal.DropDownList.CargarDropDownList()
                 _this.Grid.Modal.DropDownList.DataDropDownList()
+                _this.Grid.Modal.keypress()
+                _this.Grid.Modal.BTN_AutorizarVale()
             }
         })
         $.init()
-    })
-
-    $(document).ready(function () {
-        $("#DropDownListCentroCosto").kendoDropDownList({
-            filter: "contains",
-            optionLabel: 'Seleccione el centro de costo...',
-            dataTextField: "nombreCentroCosto",
-            dataValueField: "centroCostoID"
-        });
-        $("#ModalAutorizarVale").modal("show");
-            (function () {
-                var allEvents = [];
-                for (var key in document) {
-                    if (key.startsWith('on')) {
-                        allEvents.push(key.slice(2));
-                    }
-                }
-
-                allEvents.forEach(function (event) {
-                    document.addEventListener(event, function (e) {
-                        console.log('Event:', e.type, 'Target:', e.target);
-                    }, true);
-                });
-
-                console.log('All event listeners added.');
-            })();
-    });
+    })();
 </script>
+

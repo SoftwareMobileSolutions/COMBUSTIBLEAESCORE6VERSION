@@ -1,0 +1,103 @@
+﻿@{
+    Layout = null;
+}
+<div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 col-lg-5">
+                <input type="text" class="form-control my-2" placeholder="Buscar" id="buscarDisponibles" onkeyup="$.cartas.buscar('buscarDisponibles','disponibles')">
+                <div id="disponibles" class="border border-black contenedor-cartas"></div>
+                <p class="fst-italic">Mostrando <span id="contadorDisponibles">50</span>  de  <span class="totalCartas">100</span></p>
+            </div>
+            <div class="col-12 col-lg-2 d-flex align-items-center justify-content-center">
+                <div class="cotainer-fluid">
+                    <div class="row ">
+                        <div class="col-lg-12 d-flex align-items-center justify-content-center">
+                            <button class="btn btn-outline-secondary BTN_Mover d-flex align-items-center justify-content-center" id="BTN_HaciaDerecha">
+                                <span class="d-none d-md-block text-center"><i class="bi bi-chevron-right"></i></span>
+                                <span class="d-sm-block d-md-none "><i class="bi bi-chevron-down"></i></span>
+                            </button>
+                            <button class="btn btn-outline-secondary BTN_Mover d-flex align-items-center justify-content-center" id="BTN_TodoHaciaDerecha">
+                                <span class="d-none d-md-block text-center"><i class="bi bi-chevron-double-right"></i></span>
+                                <span class="d-sm-block d-md-none"><i class="bi bi-chevron-double-down"></i></span>
+                            </button>
+                        </div>
+                        <div class="col-lg-12 d-flex align-items-center justify-content-center">
+                            <button class="btn btn-outline-secondary BTN_Mover d-flex align-items-center justify-content-center" id="BTN_HaciaIzquierda">
+                                <span class="d-none d-md-block text-center" id="BTN_HaciaIzquierdo"><i class="bi bi-chevron-left"></i></span>
+                                <span class="d-sm-block d-md-none"><i class="bi bi-chevron-up"></i></span>
+                            </button>
+                            <button class="btn btn-outline-secondary BTN_Mover d-flex align-items-center justify-content-center" id="BTN_TodoHaciaIzquierda">
+                                <span class="d-none d-md-block text-center"><i class="bi bi-chevron-double-left"></i></span>
+                                <span class="d-sm-block d-md-none"><i class="bi bi-chevron-double-up"></i></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-5">
+                <input type="text" class="form-control my-2" placeholder="Buscar" id="buscarAsignados" onkeyup="$.cartas.buscar('buscarAsignados','asignados')">
+                <div id="asignados" class="border border-black contenedor-cartas"></div>
+                <!--<span id="contadorAsignados" class="fst-italic" style="color: #6c6c6c;">Mostrando 50 de 100</span>-->
+                <p class="fst-italic">Mostrando <span id="contadorAsignados">50</span>  de  <span class="totalCartas">100</span></p>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .modal-body{
+        padding: 0px;
+    }
+    .contenedor-cartas {
+        height: 20vh;
+        width: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 0px 10px 0px 10px;
+    }
+
+    .form-control:focus {
+        border-color: #dee2e6;
+        box-shadow: none;
+    }
+
+    .BTN_Mover{
+        height: 25px;
+        width:35px;
+        margin:2px;
+    }
+    .carta{
+        cursor:pointer
+    }
+    .seleccionado {
+        background: #1967d2;
+        color: #FFFF;
+    }
+
+
+    .TXT_Mobile {
+        font-size: 15px;
+    }
+
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        -webkit-box-shadow: none;
+        border-radius: 8px;
+        background-color: #aaa;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        -webkit-box-shadow: inset 1px 1px 6px #333;
+        background-color: #666;
+        border-radius: 10px;
+    }
+
+        ::-webkit-scrollbar-thumb:hover {
+            border-radius: 10px;
+            background: rgba(0,0,0,.3);
+        }
+</style>

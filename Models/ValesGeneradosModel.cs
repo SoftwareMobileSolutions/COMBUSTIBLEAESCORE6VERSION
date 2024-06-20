@@ -2,6 +2,7 @@
 {
     public class ValesGeneradosModel
     {
+        public int ValeCombustubibleID { get; set; }
         public string NumVale {  get; set; }
         public string Placa { get; set; }
         public float TotalPrecio { get; set; }

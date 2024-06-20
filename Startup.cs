@@ -45,7 +45,7 @@ namespace COMBUSTIBLEAESCORE
             services.AddScoped<IadGasolinera,adGasolineraService>();
             services.AddScoped<IadAutorizarVales, adAutorizarValesService>();
             services.AddScoped<IadGenerarVales,adGenerarValesService>();   
-
+            services.AddScoped<IadAsignacionCentrosCosto,adAsignacionCentrosCostoService>();
 
             services.AddSingleton(new conexion(Configuration.GetConnectionString("DefaultConnection")));
             
