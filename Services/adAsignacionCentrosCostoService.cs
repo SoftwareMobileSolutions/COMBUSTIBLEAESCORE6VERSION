@@ -18,6 +18,75 @@ namespace COMBUSTIBLEAESCORE.Services
             conexion = _conexion;
         }
 
+        public async Task<IEnumerable<mensaje>> ActualizarCentroCostoXMobile(int MobileID, int CentroCostoID, int UserAsignaID)
+        {
+            IEnumerable<mensaje> data = null;
+            string sp = "EXEC SP_ActualizarCentroCostoXMobile @MobileID, @CentroCostoID, @UserAsignaID";
+            var con = new SqlConnection(conexion.Value);
+            try
+            {
+                if (con.State == ConnectionState.Closed)
+                {
+                    con.Open();
+                    data = await con.QueryAsync<mensaje>(sp, new { MobileID, CentroCostoID, UserAsignaID }, commandType: CommandType.Text);
+                }
+            }
+            finally
+            {
+                if (con.State == ConnectionState.Open)
+                {
+                    con.Close();
+                }
+            }
+            return data;
+        }
+
+        public async Task<IEnumerable<mensaje>> ActualizarCentroCostoXUser(int UsuarioID, string CentrosCostoID, int UserAsignaID)
+        {
+            IEnumerable<mensaje> data = null;
+            string sp = "EXEC SP_ActualizarCentroCostoXUser @UsuarioID, @CentrosCostoID, @UserAsignaID";
+            var con = new SqlConnection(conexion.Value);
+            try
+            {
+                if (con.State == ConnectionState.Closed)
+                {
+                    con.Open();
+                    data = await con.QueryAsync<mensaje>(sp, new { UsuarioID, CentrosCostoID, UserAsignaID }, commandType: CommandType.Text);
+                }
+            }
+            finally
+            {
+                if (con.State == ConnectionState.Open)
+                {
+                    con.Close();
+                }
+            }
+            return data;
+        }
+
+        public async Task<IEnumerable<CentroCostoXMobileModel>> ObtenerCentroCostoXMobile(int CompanyID)
+        {
+            IEnumerable<CentroCostoXMobileModel> data = null;
+            string sp = "EXEC SP_ObtenerCentroCostoXMobile @CompanyID";
+            var con = new SqlConnection(conexion.Value);
+            try
+            {
+                if (con.State == ConnectionState.Closed)
+                {
+                    con.Open();
+                    data = await con.QueryAsync<CentroCostoXMobileModel>(sp, new { CompanyID }, commandType: CommandType.Text);
+                }
+            }
+            finally
+            {
+                if (con.State == ConnectionState.Open)
+                {
+                    con.Close();
+                }
+            }
+            return data;
+        }
+
         public async Task<IEnumerable<CentroCostoXUserModel>> ObtenerCentroCostoXUser(int CompanyID, int UsuarioID)
         {
             IEnumerable<CentroCostoXUserModel> data = null;

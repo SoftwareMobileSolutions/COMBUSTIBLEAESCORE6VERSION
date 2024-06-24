@@ -190,7 +190,7 @@
                         $("#exampleModalLabel").append("<span><img src='" + '@Url.Content("~/images/user.gif")' + "'/> " + _username + "</span>");
 
                     }, 
-                    buttons: function () { 
+                    BTN_ActualizarMobiles: function () { 
                         var _this = this; 
                         $("#btnAceptarModal").on("click", function () {
                             /*selects = $("#vocupados >")
@@ -261,7 +261,7 @@
                 _this.Grid.GridUsers();
                 _this.Grid.dataGrid();
               //  _this.Grid.doubleClik(); 
-                _this.Grid.modal.buttons();
+                _this.Grid.modal.BTN_ActualizarMobiles();
             }
         });
         $.init();

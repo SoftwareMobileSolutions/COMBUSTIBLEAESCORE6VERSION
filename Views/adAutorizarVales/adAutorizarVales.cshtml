@@ -217,7 +217,7 @@
                             $("#NumValeTXT").text("N° Vale: " + vale.numVale)
                             $("#FechaTXT").text("Fecha : " + vale.fechaGeneracion)
 
-                            if (vale.tipoCargaValeCombustibleID === 2) {
+                            /*if (vale.tipoCargaValeCombustibleID === 2) {
                                 $("#TXTTotal").css("display", "block")
                                 $("#TXTTotal").text("Total Dolares = $" + vale.totalPrecio)
 
@@ -240,6 +240,43 @@
                                 $("#TXTTotalDinero").text("Ingrese la cantidad de dinero")
                                 $("#InputTotalDinero").val("")
                                 $("#InputTotalDinero").css("display", "block")
+                            } else if (vale.tipoCargaValeCombustibleID === 1) {
+                                $("#TXTTotal").css("display", "none")
+                                $("#ContenedorGalones").css("display", "none")
+
+                                $("#ContenedorGalones").css("display", "block")
+                                $("#TXTGalones").text("Ingrese la cantidad de Galones")
+                                $("#InputGalones").val("")
+                                $("#InputGalones").css("display", "block")
+
+                                $("#ContenedorTotalDinero").css("display", "block")
+                                $("#TXTTotalDinero").text("Ingrese la cantidad de dinero")
+                                $("#InputTotalDinero").val("")
+                                $("#InputTotalDinero").css("display", "block")
+                            }*/
+
+                            if (vale.tipoCargaValeCombustibleID === 2) {
+                                $("#TXTTotal").css("display", "block")
+                                $("#TXTTotal").text("Total Dolares = $" + vale.totalPrecio)
+
+                                $("#ContenedorGalones").css("display", "none")
+                                $("#InputGalones").css("display", "none")
+
+                                $("#ContenedorTotalDinero").css("display", "block")
+                                $("#TXTTotalDinero").text("Cambiar cantidad en dolares")
+                                $("#InputTotalDinero").val("")
+                                $("#InputTotalDinero").css("display", "block")
+                            } else if (vale.tipoCargaValeCombustibleID === 3) {
+                                $("#TXTTotal").css("display", "block")
+                                $("#TXTTotal").text("Total de Galones = " + vale.cantidadGalones)
+
+                                $("#ContenedorTotalDinero").css("display", "none")
+                                $("#InputTotalDinero").css("display", "none")
+
+                                $("#ContenedorGalones").css("display", "block")
+                                $("#TXTGalones").text("Cambiar cantidad en Galones")
+                                $("#InputGalones").val("")
+                                $("#InputGalones").css("display", "block")
                             } else if (vale.tipoCargaValeCombustibleID === 1) {
                                 $("#TXTTotal").css("display", "none")
                                 $("#ContenedorGalones").css("display", "none")

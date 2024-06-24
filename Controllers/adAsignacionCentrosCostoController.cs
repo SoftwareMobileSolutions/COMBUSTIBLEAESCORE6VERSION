@@ -43,5 +43,27 @@ namespace COMBUSTIBLEAESCORE.Controllers
             var CentroCostosXUser = await iadAsignacionCentrosCosto.ObtenerCentroCostoXUser(user.FirstOrDefault().CompanyID,UsuarioID);
             return Json(CentroCostosXUser);
         }
+        [HttpPost]
+        public  async Task<JsonResult> ActualizarCentroCostoXUser(int UsuarioID, string CentrosCostoID)
+        {
+            var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
+            var mensaje = await iadAsignacionCentrosCosto.ActualizarCentroCostoXUser(UsuarioID, CentrosCostoID, user.FirstOrDefault().UsuarioID);
+            return Json(mensaje);
+        }
+
+        public async Task<JsonResult> ObtenerCentroCostoXMobile()
+        {
+            var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
+            var CentroCostoXMobile = await iadAsignacionCentrosCosto.ObtenerCentroCostoXMobile(user.FirstOrDefault().CompanyID);
+            return Json(CentroCostoXMobile);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> ActualizarCentroCostoXMobile(int MobileID, int CentroCostoID)
+        {
+            var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
+            var mensaje = await iadAsignacionCentrosCosto.ActualizarCentroCostoXMobile(MobileID, CentroCostoID, user.FirstOrDefault().CompanyID);
+            return Json(mensaje);
+        }
     }
 }

@@ -5,7 +5,8 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12 col-lg-5">
-                <input type="text" class="form-control my-2" placeholder="Buscar" id="buscarDisponibles" onkeyup="$.cartas.buscar('buscarDisponibles','disponibles')">
+                <h5 class="text-center mt-2">Disponibles</h5>
+                <input type="text" class="form-control my-2" placeholder="Buscar" id="buscarDisponibles" onkeyup="$.CentroCostoUsuario.Modal.cartas.buscar('buscarDisponibles','disponibles')">
                 <div id="disponibles" class="border border-black contenedor-cartas"></div>
                 <p class="fst-italic">Mostrando <span id="contadorDisponibles">50</span>  de  <span class="totalCartas">100</span></p>
             </div>
@@ -36,7 +37,8 @@
                 </div>
             </div>
             <div class="col-12 col-lg-5">
-                <input type="text" class="form-control my-2" placeholder="Buscar" id="buscarAsignados" onkeyup="$.cartas.buscar('buscarAsignados','asignados')">
+                <h5 class="text-center mt-2">Asignados</h5>
+                <input type="text" class="form-control my-2" placeholder="Buscar" id="buscarAsignados" onkeyup="$.CentroCostoUsuario.Modal.cartas.buscar('buscarAsignados','asignados')">
                 <div id="asignados" class="border border-black contenedor-cartas"></div>
                 <!--<span id="contadorAsignados" class="fst-italic" style="color: #6c6c6c;">Mostrando 50 de 100</span>-->
                 <p class="fst-italic">Mostrando <span id="contadorAsignados">50</span>  de  <span class="totalCartas">100</span></p>
