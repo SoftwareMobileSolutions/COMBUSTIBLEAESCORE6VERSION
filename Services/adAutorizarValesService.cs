@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.Data;
 using Dapper;
 using System.ComponentModel.Design;
+using System.Numerics;
 namespace COMBUSTIBLEAESCORE.Services
 {
     public class adAutorizarValesService : IadAutorizarVales
@@ -18,7 +19,53 @@ namespace COMBUSTIBLEAESCORE.Services
             conexion = _conexion;
         }
 
-        public async Task<IEnumerable<CentroCostoModel>> ObtenerCentrosCosto(int CompanyID)
+        public async Task<IEnumerable<mensaje>> AutorizarVale(int ValeCombustibleID, int TipoCargaID, int CentroCostoID, float? CantidadGalones, float? TotalPrecio, int ProyectoID, int UsuarioAutorizadorID)
+        {
+            IEnumerable<mensaje> data = null;
+            string sp = "EXEC SP_AutorizarValesWEB @ValeCombustibleID, @TipoCargaID , @CentroCostoID , @CantidadGalones , @TotalPrecio , @ProyectoID , @UsuarioAutorizadorID";
+            var con = new SqlConnection(conexion.Value);
+            try
+            {
+                if (con.State == ConnectionState.Closed)
+                {
+                    con.Open();
+                    data = await con.QueryAsync<mensaje>(sp, new { ValeCombustibleID, TipoCargaID , CentroCostoID , CantidadGalones , TotalPrecio , ProyectoID , UsuarioAutorizadorID }, commandType: CommandType.Text);
+                }
+            }
+            finally
+            {
+                if (con.State == ConnectionState.Open)
+                {
+                    con.Close();
+                }
+            }
+            return data;
+        }
+
+        public async Task<IEnumerable<CentroCostoModel>> ObtenerCentrosCostoAutorizalVale(string Placa, int CompanyID, int UserID)
+        {
+            IEnumerable<CentroCostoModel> data = null;
+            string sp = "EXEC SP_ObtenerCentrosCostoAutorizalVale @Placa, @CompanyID, @UserID";
+            var con = new SqlConnection(conexion.Value);
+            try
+            {
+                if (con.State == ConnectionState.Closed)
+                {
+                    con.Open();
+                    data = await con.QueryAsync<CentroCostoModel>(sp, new { Placa, CompanyID, UserID }, commandType: CommandType.Text);
+                }
+            }
+            finally
+            {
+                if (con.State == ConnectionState.Open)
+                {
+                    con.Close();
+                }
+            }
+            return data;
+        }
+
+        /*public async Task<IEnumerable<CentroCostoModel>> ObtenerCentrosCosto(int CompanyID)
         {
             IEnumerable<CentroCostoModel> data = null;
             string sp = "EXEC SP_ObtenerCentrosCostoWEB @CompanyID";
@@ -39,7 +86,6 @@ namespace COMBUSTIBLEAESCORE.Services
                 }
             }
             return data;
-        }
 
         public async Task<IEnumerable<ProyectoModel>> ObtenerProyectos(int CompanyID)
         {

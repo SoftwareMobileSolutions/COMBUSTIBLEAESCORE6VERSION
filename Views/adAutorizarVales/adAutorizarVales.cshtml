@@ -161,18 +161,14 @@
                                 
                                 if (((new Date().getTime()) - touchtime) < 500) {
                                     var dataItem = grid.dataItem(row);
-                                    _this.Modal.ValeID = dataItem.valeCombustubibleID;
-                                    _this.Modal.TipoCargaValeCombustibleID = dataItem.tipoCargaValeCombustibleID;
-                                    //_this.Modal.TipoCargaValeCombustibleID = 5
-                                    _this.Modal.DataModal();
-                                    //console.log(dataItem.tipoCargaValeCombustibleID)
+                                    _this.Modal.MostrarModal(dataItem.valeCombustubibleID, dataItem.tipoCargaValeCombustibleID, dataItem.totalPrecio, dataItem.cantidadGalones, dataItem.placa)
                                 } touchtime = new Date().getTime();
                             });
                         },
                         pageable: true,
                         mobile: "phone",
                     });
-                    $(".k-pager-wrap").append("<span class='w-100 text-center d-none d-lg-block'>Presione doble click para modificar la información</span>")
+                    $(".k-pager-wrap").append("<span class='w-100 text-center d-none d-lg-block'>Presione doble click para autorizar un vale</span>")
                     var FechaIni = moment().utc().subtract(30, 'days').format("YYYYMMDD HH:mm:ss")
                     var FechaFin = moment().utc().format("YYYYMMDD HH:mm:ss")
                     _this.DataGrid(FechaIni, FechaFin)
@@ -189,6 +185,7 @@
                             vale.fechaGeneracion = moment(vale.fechaGeneracion).format("DD/MM/YYYY HH:mm:ss")
                         })
                         $("#GridVales").data("kendoGrid").dataSource.data(vales);
+                        //console.log(vales)
                     })
                 },
                 BTN_GenerarVales: function () {
@@ -202,6 +199,18 @@
                 Modal: {
                     ValeID : 0,
                     TipoCargaValeCombustibleID: 0,
+                    TotalDinero: 0,
+                    TotalGalones: 0,
+                    MostrarModal: function (valeCombustubibleID, tipoCargaValeCombustibleID, totalPrecio, cantidadGalones, placa) {
+                        var _this = this
+                        _this.ValeID = valeCombustubibleID
+                        _this.TipoCargaValeCombustibleID = tipoCargaValeCombustibleID
+                        _this.TotalDinero = totalPrecio
+                        _this.TotalGalones = cantidadGalones
+                        _this.DropDownList.DataDropDownList.DropDownListCentroCosto(placa)
+                        _this.DataModal()
+                        $("#ModalAutorizarVale").modal('show');
+                    },
                     DataModal: function(){
                         var _this = this
                         
@@ -216,42 +225,13 @@
                             $("#PlacaTXT").text("Placa: " + vale.placa)
                             $("#NumValeTXT").text("N° Vale: " + vale.numVale)
                             $("#FechaTXT").text("Fecha : " + vale.fechaGeneracion)
-
-                            /*if (vale.tipoCargaValeCombustibleID === 2) {
-                                $("#TXTTotal").css("display", "block")
-                                $("#TXTTotal").text("Total Dolares = $" + vale.totalPrecio)
-
-
-                                $("#ContenedorTotalDinero").css("display", "none")
-                                $("#InputTotalDinero").css("display", "none")
-
-                                $("#ContenedorGalones").css("display", "block")
-                                $("#TXTGalones").text("Ingrese la cantidad de Galones")
-                                $("#InputGalones").val("")
-                                $("#InputGalones").css("display", "block")
-                            } else if (vale.tipoCargaValeCombustibleID === 3) {
-                                $("#TXTTotal").css("display", "block")
-                                $("#TXTTotal").text("Total de Galones = " + vale.cantidadGalones)
-
-                                $("#ContenedorGalones").css("display", "none")
-                                $("#InputGalones").css("display", "none")
-
-                                $("#ContenedorTotalDinero").css("display", "block")
-                                $("#TXTTotalDinero").text("Ingrese la cantidad de dinero")
-                                $("#InputTotalDinero").val("")
-                                $("#InputTotalDinero").css("display", "block")
-                            } else if (vale.tipoCargaValeCombustibleID === 1) {
-                                $("#TXTTotal").css("display", "none")
-                                $("#ContenedorGalones").css("display", "none")
-
-                                $("#ContenedorGalones").css("display", "block")
-                                $("#TXTGalones").text("Ingrese la cantidad de Galones")
-                                $("#InputGalones").val("")
+                            $("#DropDownListProyecto").data("kendoDropDownList").value(0)
+                            $("#InputGalones").val("")
                                 $("#InputGalones").css("display", "block")
 
                                 $("#ContenedorTotalDinero").css("display", "block")
                                 $("#TXTTotalDinero").text("Ingrese la cantidad de dinero")
-                                $("#InputTotalDinero").val("")
+                            $("#InputTotalDinero").val("")
                                 $("#InputTotalDinero").css("display", "block")
                             }*/
 
@@ -281,15 +261,8 @@
                                 $("#TXTTotal").css("display", "none")
                                 $("#ContenedorGalones").css("display", "none")
 
-                                $("#ContenedorGalones").css("display", "block")
-                                $("#TXTGalones").text("Ingrese la cantidad de Galones")
-                                $("#InputGalones").val("")
-                                $("#InputGalones").css("display", "block")
-
-                                $("#ContenedorTotalDinero").css("display", "block")
-                                $("#TXTTotalDinero").text("Ingrese la cantidad de dinero")
-                                $("#InputTotalDinero").val("")
-                                $("#InputTotalDinero").css("display", "block")
+                                $("#ContenedorGalones").css("display", "none")
+                                $("#ContenedorTotalDinero").css("display", "none")
                             }
                         })
                     },
@@ -309,21 +282,32 @@
                                 dataValueField: "idProyectosVales"
                             });
                         },
-                        DataDropDownList: function () {
-                            var _Proyectos = []
-                            $.get('@Url.Action("ObtenerCentrosCosto", "adAutorizarVales")', function (centrosCosto) {
-                                $("#DropDownListCentroCosto").data("kendoDropDownList").dataSource.data(centrosCosto);
-                                //console.log(centrosCosto)
-                            })
-                            $.get('@Url.Action("ObtenerProyectos", "adAutorizarVales")', function (Proyectos) {
-                                //$("#DropDownListCentroCosto").data("kendoDropDownList").dataSource.data(centrosCosto);
-                                Proyectos.forEach((proyecto) => {
-                                    //console.log(proyecto)
-                                    _Proyectos.push({ idProyectosVales: proyecto.idProyectosVales, nombreProyecto: proyecto.nombreProyecto + "- [" + proyecto.pep + "]" })
+                        DataDropDownList: {
+                            DropDownListCentroCosto: function (_Placa) {
+                                $("#DropDownListCentroCosto").data("kendoDropDownList").dataSource.data([]);
+                                $.get('@Url.Action("ObtenerCentrosCostoAutorizalVale", "adAutorizarVales")', { Placa: _Placa }, function (centrosCosto) {
+                                    $("#DropDownListCentroCosto").data("kendoDropDownList").dataSource.data(centrosCosto);
+                                    var seleccionado = centrosCosto.filter(centroCosto => centroCosto.seleccionado === true);
+
+                                    if (seleccionado.length > 0) {
+                                        $("#DropDownListCentroCosto").data("kendoDropDownList").value(seleccionado[0].centroCostoID)
+                                    }
                                 })
+                            },
+                            DropDownListProyecto: function(){
+                                var _Proyectos = []
+
+                                $.get('@Url.Action("ObtenerProyectos", "adAutorizarVales")', function (Proyectos) {
+                                //$("#DropDownListCentroCosto").data("kendoDropDownList").dataSource.data(centrosCosto);
+                                    Proyectos.forEach((proyecto) => {
+                                    //console.log(proyecto)
+                                        _Proyectos.push({ idProyectosVales: proyecto.idProyectosVales, nombreProyecto: proyecto.nombreProyecto + "- [" + proyecto.pep + "]" })
+                                    })
                                 //console.log(_Proyectos)
-                                $("#DropDownListProyecto").data("kendoDropDownList").dataSource.data(_Proyectos);
-                            })
+                                    $("#DropDownListProyecto").data("kendoDropDownList").dataSource.data(_Proyectos);
+                                })
+                            }
+                            
                         }
                     },
                     keypress: function () {
@@ -367,25 +351,99 @@
                         });
 
                     },
-                    Validaciones: function (TotalDinero, TotalGalones, CentroCostoID, ProyectoID, TipoCargaID, ValeID) {
+                    Validaciones: function (TotalDinero, TotalGalones, CentroCostoID, ProyectoID, TipoCargaID) {
                         if (TipoCargaID === 2) {
-                            console.log("2")
+
+                            if (TotalDinero !== "") {
+                                TotalDinero = parseFloat(TotalDinero)
+                                if (TotalDinero === 0) {
+                                    $._combustible.alert("error", "Total en dolares incorrpeto", "La cantidad  de dolares debe ser mayor a cero")
+                                    return false 
+                                }
+                            } 
+
+                            if (CentroCostoID === "") {
+                                $._combustible.alert("error", "Sin selección", "Debe seleccionar un centro de costo")
+                                return false
+                            }
+
+                            if (ProyectoID === "") {
+                                $._combustible.alert("error", "Sin selección", "Debe seleccionar un proyecto")
+                                return false
+                            }
+                            
                         } else if (TipoCargaID === 3) {
-                            console.log("3")
+                            if (TotalGalones !== "") {
+                                TotalGalones = parseFloat(TotalGalones)
+                                if (TotalGalones === 0) {
+                                    $._combustible.alert("error", "Total en galones incorrpeto", "La cantidad  de galones debe ser mayor a cero")
+                                    return false
+                                }
+                            }
+
+                            if (CentroCostoID === "") {
+                                $._combustible.alert("error", "Sin selección", "Debe seleccionar un centro de costo")
+                                return false
+                            }
+
+                            if (ProyectoID === "") {
+                                $._combustible.alert("error", "Sin selección", "Debe seleccionar un proyecto")
+                                return false
+                            }
                         } else if (TipoCargaID === 1) {
-                            console.log("1")
+                            if (CentroCostoID === "") {
+                                $._combustible.alert("error", "Sin selección", "Debe seleccionar un centro de costo")
+                                return false
+                            }
+
+                            if (ProyectoID === "") {
+                                $._combustible.alert("error", "Sin selección", "Debe seleccionar un proyecto")
+                                return false
+                            }
                         }
+
+                        return true
                     },
                     BTN_AutorizarVale: function(){
                         var _this = this
                         $("#BTN_AutorizarVale").on("click", function () {
-                            var TotalDinero = $("#InputTotalDinero").val();
-                            var TotalGalones = $("#InputGalones").val();
+                            var TotalDineroNuevo = $("#InputTotalDinero").val();
+                            var TotalGalonesNuevo = $("#InputGalones").val();
                             var CentroCostoID = $("#DropDownListCentroCosto").data("kendoDropDownList").value();
                             var ProyectoID = $("#DropDownListProyecto").data("kendoDropDownList").value()
                             var TipoCargaID = _this.TipoCargaValeCombustibleID
                             var ValeID = _this.ValeID
-                            _this.Validaciones(TotalDinero, TotalGalones, CentroCostoID, ProyectoID, TipoCargaID, ValeID)
+
+                            var TotalDinero = _this.TotalDinero
+                            var TotalGalones = _this.TotalGalones
+
+                            let _CantidadGalones = TotalGalonesNuevo === '' ? null : parseFloat(TotalGalonesNuevo)
+                            let _TotalPrecio = TotalDineroNuevo === '' ? null : parseFloat(TotalDineroNuevo)
+                             
+                            if ( (_this.Validaciones(TotalDinero, TotalGalones, CentroCostoID, ProyectoID, TipoCargaID) )=== true){
+                                let arg = {
+                                    ValeCombustibleID: ValeID,
+                                    TipoCargaID: TipoCargaID,
+                                    CentroCostoID: parseInt(CentroCostoID),
+                                    CantidadGalones: _CantidadGalones,
+                                    TotalPrecio: _TotalPrecio,
+                                    ProyectoID: ProyectoID
+                                }
+
+                                $.post('@Url.Action("AutorizarVale", "adAutorizarVales")', arg, function (mensaje) {
+                                    mensaje = mensaje[0]
+
+                                    if (mensaje.bandera === 1) {
+                                        $._combustible.alert("success", "Autorización exitosa", mensaje.resultado)
+                                        $("#ModalAutorizarVale").modal('hide');
+                                        var FechaIni = moment($("#FechaIni").data("kendoDateTimePicker").value()).format("YYYYMMDD HH:mm:ss:SSS")
+                                        $("#FechaFin").data("kendoDateTimePicker").value(kendo.parseDate(moment().format("YYYY/MM/DD HH:mm:ss")));
+                                        var FechaFin = moment($("#FechaFin").data("kendoDateTimePicker").value()).format("YYYYMMDD HH:mm:ss:SSS")
+                                        $.Grid.DataGrid(FechaIni, FechaFin)
+                                    }
+                                    //console.log(mensaje)
+                                })
+                            }
                         });
                     }
                 }
@@ -395,7 +453,7 @@
                 _this.Grid.CargarGrid()
                 _this.Grid.BTN_GenerarVales()
                 _this.Grid.Modal.DropDownList.CargarDropDownList()
-                _this.Grid.Modal.DropDownList.DataDropDownList()
+                _this.Grid.Modal.DropDownList.DataDropDownList.DropDownListProyecto()
                 _this.Grid.Modal.keypress()
                 _this.Grid.Modal.BTN_AutorizarVale()
             }
