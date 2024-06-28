@@ -12,7 +12,8 @@
                     title_tipo = $this.title_tipo,
                     title_variable = $this.title_variable;
 
-
+                /*console.log("Aqui maje")
+                console.log(d)*/
                 $("#columbar2").html("");
                 let datachart = [];
                
@@ -20,7 +21,7 @@
                 //console.log(data);
                 //let colum1data = _.groupBy(data, "placa");
                 let grdata = _.groupBy(d, tipo);
-
+                //console.log(grdata)
                 //console.log(grdata);
                // return false;
 
@@ -34,13 +35,16 @@
                         }); 
                     }
                 }
+
                
                 if (orden === "mayor") {
                     datachart = _.sortBy(datachart, 'y').reverse();
                 } else {
                     datachart = _.sortBy(datachart, 'y');
                 }
-               
+                
+                console.log(xAxisArr)
+                console.log(datachart)
 
                 datachart = datachart.slice(0, 10); 
 

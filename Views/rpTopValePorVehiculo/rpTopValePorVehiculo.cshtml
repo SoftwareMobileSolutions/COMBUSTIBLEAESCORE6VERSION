@@ -1,0 +1,549 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = null;
+}
+<section>
+    <div class=" card">
+        <div class="container-fluid p-4">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2 class="text-center"> Reporte de TOP uso de vales por vehículo</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <label>Fecha Inicio</label>
+                    <input id="FechaIni"/>
+                </div>
+                <div class="col-lg-4">
+                    <label>Fecha Fin</label>
+                    <input id="FechaFin"/>
+                </div>
+                <div class="col-lg-2">
+                    <label>Seleccione el top</label>
+                    <input id="kendoDropDownListTop" />
+                </div>
+                <div class="col-lg-2 d-flex align-items-end">
+                    <button type="button" class="btn btn-success w-100" id="BTN_GenerarReporte"> Generar </button>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-lg-6 offset-lg-3 col-12">
+                    <div id="BarChartGeneral">
+
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-lg-6 offset-lg-3 col-12">
+                    <div id="BarChartVales">
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-lg-12">
+                    <div id="GridVales">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    (function () {
+        $.extend({
+            Data: function () {
+                var _this = this;
+
+                let _Top = parseInt($("#kendoDropDownListTop").data("kendoDropDownList").value())
+                let _FechaIni = moment($("#FechaIni").data("kendoDateTimePicker").value()).add(6, 'hours').format("YYYYMMDD HH:mm:ss")
+                let _FechaFin = moment($("#FechaFin").data("kendoDateTimePicker").value()).add(6, 'hours').format("YYYYMMDD HH:mm:ss")
+                let arg = {
+                    NumTop: _Top,
+                    FechaIni: _FechaIni,
+                    FechaFin: _FechaFin
+                }
+
+                $.get('@Url.Action("ObtenerTopValesPorVehiculo", "rpTopValePorVehiculo")', arg, function (Data) {
+                    _this.GraficaGeneral(Data)
+                    _this.Grid.DataGrid(Data)
+                });
+
+                _this.Grid.SubGrid.FechaIni = _FechaIni
+                _this.Grid.SubGrid.FechaFin = _FechaFin
+            },
+            Datetimepicker: function () {
+                var _this = this
+                $("#FechaIni").kendoDateTimePicker({
+                    dateInput: true,
+                    startTime: new Date(2023, 1, 3, 8, 30, 0),
+                    endTime: new Date(2023, 1, 3, 17,00, 0)
+                });
+                $("#FechaFin").kendoDateTimePicker({
+                    dateInput: true,
+                    startTime: new Date(2023, 1, 3, 8, 30, 0),
+                    endTime: new Date(2023, 1, 3, 17,00, 0)
+                });
+
+
+                var dataSource = new kendo.data.DataSource({
+                    data: [
+                        { TopID: 5, TopName: "Top 5" },
+                        { TopID: 10, TopName: "Top 10" },
+                        { TopID: 15, TopName: "Top 15" }
+                    ],
+                    sort: { field: "CityName", dir: "asc" }
+                });
+
+                $("#kendoDropDownListTop").kendoDropDownList({
+                    filter: "contains",
+                    dataTextField: "TopName",
+                    dataValueField: "TopID",
+                    dataSource: dataSource
+                });
+
+                $("#FechaIni").data("kendoDateTimePicker").value(kendo.parseDate(moment().subtract(30, 'days').format("YYYY/MM/DD HH:mm:ss:SSS")));
+                $("#FechaFin").data("kendoDateTimePicker").value(kendo.parseDate(moment().format("YYYY/MM/DD HH:mm:ss.SSS")));
+
+                /*_FechaIni = moment().subtract(30, 'days').format("YYYY/MM/DD HH:mm:ss:SSS")
+                _FechaFin = moment().format("YYYY/MM/DD HH:mm:ss.SSS")
+
+                let arg = { 
+                    NumTop: 10, 
+                    FechaIni: _FechaIni,
+                    FechaFin: _FechaFin
+                }
+
+                $.get('@Url.Action("ObtenerTopValesPorVehiculo", "rpTopValePorVehiculo")',arg, function (top) {
+                    _this.Grafica(top)
+                });*/
+            },
+            GraficaGeneral: function(Datos){
+                var _this = this 
+
+                $("#BarChartGeneral").html("");
+
+                let TOP = $("#kendoDropDownListTop").data("kendoDropDownList").text()
+                let _categories = Datos.map(item => item.placa)
+
+                let _series = []
+                _series.push({
+                    name: 'Cantidad Vales',
+                    data: Datos.map(item => item.cantVales),
+                    yAxis: 0,
+                    color: '#C70CF2'
+                })
+                _series.push({
+                    name: 'Total de dinero',
+                    data: Datos.map(item => item.totalPrecio),
+                    yAxis: 1,
+                    color: '#274d33'
+                })
+                _series.push({
+                    name: 'Cantidad Galones',
+                    data: Datos.map(item => item.cantGal),
+                    yAxis: 2,
+                    color: '#0C32F2'
+                })
+                //console.log(_series)
+
+                var Grafica = Highcharts.chart('BarChartGeneral', {
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: TOP +  ' de uso de vales por vehiculo',
+                        align: 'left'
+                    }/*,
+                    subtitle: {
+                        text: 'Source: <a ' +
+                            'href="https://en.wikipedia.org/wiki/List_of_continents_and_continental_subregions_by_population"' +
+                            'target="_blank">Wikipedia.org</a>',
+                        align: 'left'
+                    }*/,
+                    xAxis: {
+                        categories: _categories,//['Africa', 'America', 'Asia', 'Europe'],
+                        title: {
+                            text: null
+                        },
+                        gridLineWidth: 2,
+                        lineWidth: 0,
+                        labels: {
+                            events: {
+                                click: function (event) {
+                                    alert('Has hecho clic en ' + event.target.textContent);
+                                    // Puedes agregar más lógica aquí
+                                }
+                            }
+                        }
+                    },
+                    yAxis: [
+                        {
+                            min: 0,
+                            tickInterval: 1,
+                            title: {
+                                text: 'Vales',
+                                align: 'high',
+                                style: {
+                                    color: '#C70CF2'
+                                }
+                            },
+                            labels: {
+                                overflow: 'justify',
+                                style: {
+                                    color: '#C70CF2'
+                                }
+                            },
+                            gridLineWidth: 1
+                           
+                        },
+                        {
+                            min: 0,
+                            tickInterval: 10,
+                            title: {
+                                text: 'Dolares',
+                                align: 'high',
+                                style: {
+                                    color: '#274d33'
+                                }
+                            },
+                            labels: {
+                                overflow: 'justify',
+                                style: {
+                                    color: '#274d33'
+                                }
+                            },
+                            gridLineWidth: 1
+                        },
+                        {
+                            min: 0,
+                            tickInterval: 5,
+                            title: {
+                                text: 'Galones',
+                                align: 'high',
+                                style: {
+                                    color: '#0C32F2'
+                                }
+                            },
+                            labels: {
+                                overflow: 'justify',
+                                style: {
+                                    color: '#0C32F2'
+                                }
+                            },
+                            gridLineWidth: 1
+                        }
+                    ]/*,
+                    tooltip: {
+                        valueSuffix: ' millions'
+                    }*/,
+                    plotOptions: {
+                        column: {
+                            borderRadius: '50%',
+                            dataLabels: {
+                                enabled: true
+                            },
+                            groupPadding: 0.1
+                        }
+                    },
+                    legend: {
+                        layout: 'vertical',
+                        align: 'right',
+                        verticalAlign: 'top',
+                        x: -40,
+                        y: 80,
+                        floating: true,
+                        borderWidth: 1,
+                        backgroundColor:
+                            Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+                        shadow: true
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    series: _series
+                });
+
+
+                
+                Grafica.xAxis[0].labelGroup.element.childNodes.forEach(function (label) {
+                    label.style.cursor = "pointer";
+                    label.onclick = function () {
+                        /*alert('You clicked on ' + this.textContent);*/
+                        let placa = this.textContent
+                        let arg = {
+                            //MobileID: e.data.mobileID,
+                            Placa: placa,
+                            FechaIncio: $.Grid.SubGrid.FechaIni,
+                            FechaFin: $.Grid.SubGrid.FechaFin
+                        }
+                        $.get('@Url.Action("ObtenerValesUsadosXPlaca", "rpTopValePorVehiculo")', arg, function (Data) {
+                            //console.log(Data)
+                            _this.GraficaVales(Data, placa)
+                        })
+                    }
+                });
+            },
+            GraficaVales: function (Datos,Placa) {
+
+
+                $("#BarChartVales").html("");
+                //console.log(Datos)
+                let _categories = Datos.map(item => "N°" + item.numVale)
+                //console.log(_categories)
+                //let placa = 
+
+                let _series = []
+                /*_series.push({
+                    name: 'Cantidad Vales',
+                    data: Datos.map(item => item.cantVales),
+                    yAxis: 0,
+                    color: '#C70CF2'
+                })*/
+                _series.push({
+                    name: 'Total de dinero',
+                    data: Datos.map(item => item.totalPrecio),
+                    yAxis: 0,
+                    color: '#274d33'
+                })
+                _series.push({
+                    name: 'Cantidad Galones',
+                    data: Datos.map(item => item.cantidadGalones),
+                    yAxis: 1,
+                    color: '#0C32F2'
+                })
+                _series.push({
+                    name: 'Odometro',
+                    data: Datos.map(item => item.cantidadGalones),
+                    yAxis: 3,
+                    color: '#0C32F2'
+                })
+                //console.log(_series)
+
+                Highcharts.chart('BarChartVales', {
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: 'Vales usados por la placa ' + Placa ,
+                        align: 'left'
+                    }/*,
+                        subtitle: {
+                            text: 'Source: <a ' +
+                                'href="https://en.wikipedia.org/wiki/List_of_continents_and_continental_subregions_by_population"' +
+                                'target="_blank">Wikipedia.org</a>',
+                            align: 'left'
+                        }*/,
+                    xAxis: {
+                        categories: _categories,//['Africa', 'America', 'Asia', 'Europe'],
+                        title: {
+                            text: null
+                        },
+                        gridLineWidth: 2,
+                        lineWidth: 0/*,
+                        labels: {
+                            events: {
+                                click: function (event) {
+                                    alert('Has hecho clic en ' + event.target.textContent);
+                                    // Puedes agregar más lógica aquí
+                                }
+                            }
+                        }*/
+                    },
+                    yAxis: [
+                        {
+                            min: 0,
+                            tickInterval: 10,
+                            title: {
+                                text: 'Dolares',
+                                align: 'high',
+                                style: {
+                                    color: '#274d33'
+                                }
+                            },
+                            labels: {
+                                overflow: 'justify',
+                                style: {
+                                    color: '#274d33'
+                                }
+                            },
+                            gridLineWidth: 1
+                        },
+                        {
+                            min: 0,
+                            tickInterval: 5,
+                            title: {
+                                text: 'Galones',
+                                align: 'high',
+                                style: {
+                                    color: '#0C32F2'
+                                }
+                            },
+                            labels: {
+                                overflow: 'justify',
+                                style: {
+                                    color: '#0C32F2'
+                                }
+                            },
+                            gridLineWidth: 1
+                        },
+                        {
+                            min: 0,
+                            tickInterval: 1,
+                            title: {
+                                text: 'Odometro',
+                                align: 'high',
+                                style: {
+                                    color: '#C70CF2'
+                                }
+                            },
+                            labels: {
+                                overflow: 'justify',
+                                style: {
+                                    color: '#C70CF2'
+                                }
+                            },
+                            gridLineWidth: 1
+
+                        }
+                    ],
+                        /*tooltip: {
+                            valueSuffix: ' millions'
+                        },*/
+                    plotOptions: {
+                        column: {
+                            borderRadius: '50%',
+                            dataLabels: {
+                                enabled: true
+                            },
+                            groupPadding: 0.1
+                        }
+                    },
+                    legend: {
+                        layout: 'vertical',
+                        align: 'right',
+                        verticalAlign: 'top',
+                        x: -40,
+                        y: 80,
+                        floating: true,
+                        borderWidth: 1,
+                        backgroundColor:
+                            Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+                        shadow: true
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    series: _series
+                });
+
+            },
+            Grid: {
+                LoadGrid: function () {
+                    var _this = this
+                    $("#GridVales").html("");
+                    $("#GridVales").kendoGrid({
+                        dataSource: {
+                            pageSize: 10
+                        },
+                        toolbar: ["excel", "search"],
+                        columns: [
+                            {
+                                field: "placa",
+                                title: "Placa",
+                                width: "100px"
+                            },
+                            {
+                                field: "cantVales",
+                                title: "Cantidad Vales",
+                                width: "100px"
+                            },
+                            {
+                                field: "totalPrecio",
+                                title: "Total$",
+                                width: "100px"
+                            },
+                            {
+                                field: "cantGal",
+                                title: "Cantidad Galones",
+                                width: "100px"
+                            }
+                        ],
+                        pageable: true,
+                        selectable: "single, row",
+                        mobile: "phone",
+                        excel: {
+                            fileName: "ReporteDeVales.xlsx"
+                        },
+                        detailInit: _this.SubGrid.LoadGrid
+                    });
+                },
+                DataGrid: function (data) { 
+                    $("#GridVales").data("kendoGrid").dataSource.data(data);
+                },
+                SubGrid: {
+                    FechaIni: "",
+                    FechaFin: "",
+                    LoadGrid: function (e) {
+                        let arg = {
+                            //MobileID: e.data.mobileID,
+                            Placa: e.data.placa,
+                            FechaIncio: $.Grid.SubGrid.FechaIni,
+                            FechaFin: $.Grid.SubGrid.FechaFin
+                        }
+                        console.log(arg)
+                        $.get('@Url.Action("ObtenerValesUsadosXPlaca", "rpTopValePorVehiculo")', arg, function (Data) {
+                            //console.log(Data)
+
+                            $("<div/>").appendTo(e.detailCell).kendoGrid({
+                                dataSource: Data,
+                                toolbar: ["excel", "search"],
+                                columns: [
+                                    { field: "numVale", title: "N° Vale", width: "100px" },
+                                    { field: "placa", title: "Placa", width: "100px" },
+                                    { field: "cantidadGalones", title: "Cant. Gal.", width: "100px" },
+                                    { field: "totalPrecio", title: "Total $", width: "100px" },
+                                    { field: "odometro", title: "Odometro", width: "100px" },
+                                    { field: "gasolinera", title: "Gasolinera", width: "200px" },
+                                    //{ field: "tipoCarga", title: "Tipo de Carga", width: "150px" },
+                                    { field: "userCierra", title: "Usuario Cierra", width: "150px" },
+                                    { field: "fechaCierre", title: "Fecha Cierre", width: "200px" }
+
+                                ], selectable: "single, row",
+                                /*change: function (e) {
+                                    //Grid_adusuarios_dataitem = e !== null ? e.sender.dataItem(e.sender.select()) : null;
+                                    //console.log(e);
+                                    //console.log(e.sender.dataItem(e.sender.select()));
+                                },*/
+                                resizable: true/*,
+                                excel: {
+                                    fileName: "ReporteDeVales-" + placa + ".xlsx"
+                                }*/
+
+                            });
+                        });
+
+                    }
+                }
+            },
+            BTN_GenerarData: function () {
+                var _this = this;
+                $("#BTN_GenerarReporte").on("click", function () {
+                    //console.log("XD")
+                    _this.Data()
+                });
+            },
+            init: function () {
+                var _this = this
+                _this.Datetimepicker()
+                _this.Grid.LoadGrid()
+                _this.Data()
+                _this.BTN_GenerarData()
+            }
+        })
+        $.init()
+    })();
+</script>
