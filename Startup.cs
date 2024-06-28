@@ -44,6 +44,7 @@ namespace COMBUSTIBLEAESCORE
             services.AddScoped<IadAnulacionEliminacionVales,adAnulacionEliminacionValesService>();
             services.AddScoped<IadGasolinera,adGasolineraService>();
 
+
             services.AddSingleton(new conexion(Configuration.GetConnectionString("DefaultConnection")));
             
             services.AddControllersWithViews();
