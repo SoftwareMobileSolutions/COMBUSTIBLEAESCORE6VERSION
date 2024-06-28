@@ -85,7 +85,7 @@ namespace COMBUSTIBLEAESCORE.Services
                     con.Close();
                 }
             }
-            return data;
+            return data;*/
 
         public async Task<IEnumerable<ProyectoModel>> ObtenerProyectos(int CompanyID)
         {

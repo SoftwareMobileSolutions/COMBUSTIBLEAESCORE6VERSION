@@ -13,11 +13,11 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-lg-4">
+                <div class="col-lg-3">
                     <label>Fecha Inicio</label>
                     <input id="FechaIni"/>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-3">
                     <label>Fecha Fin</label>
                     <input id="FechaFin"/>
                 </div>
@@ -25,23 +25,33 @@
                     <label>Seleccione el top</label>
                     <input id="kendoDropDownListTop" />
                 </div>
+                <div class="col-lg-2">
+                    <label>Seleccione la variable</label>
+                    <input id="kendoDropDownListVariable" />
+                </div>
                 <div class="col-lg-2 d-flex align-items-end">
                     <button type="button" class="btn btn-success w-100" id="BTN_GenerarReporte"> Generar </button>
                 </div>
             </div>
             <div class="row mt-5">
-                <div class="col-lg-6 offset-lg-3 col-12">
+                <div class="col-lg-6 offset-lg-3  col-12" id="ContenedorGraficaGeneral">
                     <div id="BarChartGeneral">
 
                     </div>
                 </div>
-            </div>
-            <div class="row mt-5">
-                <div class="col-lg-6 offset-lg-3 col-12">
+                <div class="col-lg-6 col-12" style="display:none; position:relative;" id="ContenedorGraficaVales">
+                    
+
                     <div id="BarChartVales">
                     </div>
                 </div>
             </div>
+            @*<div class="row mt-5">
+                <div class="col-lg-6 col-12">
+                    <div id="BarChartVales">
+                    </div>
+                </div>
+            </div>*@
             <div class="row mt-4">
                 <div class="col-lg-12">
                     <div id="GridVales">
@@ -52,6 +62,23 @@
         </div>
     </div>
 </section>
+<style>
+    /*#BTN_Ocultar {
+        border-radius: 1em;
+        position: absolute;
+        z-index: 1;
+        bottom:1px;
+        left: 25px;
+        font-size: 0.85em;
+        font-weight: 600;
+    }*/
+    /*.legendCuston{
+        background:red;
+    }
+    .legendCuston:hover{
+        opacity:5;
+    }*/
+</style>
 <script>
     (function () {
         $.extend({
@@ -59,10 +86,12 @@
                 var _this = this;
 
                 let _Top = parseInt($("#kendoDropDownListTop").data("kendoDropDownList").value())
+                let _OrderByID = parseInt($("#kendoDropDownListVariable").data("kendoDropDownList").value())
                 let _FechaIni = moment($("#FechaIni").data("kendoDateTimePicker").value()).add(6, 'hours').format("YYYYMMDD HH:mm:ss")
                 let _FechaFin = moment($("#FechaFin").data("kendoDateTimePicker").value()).add(6, 'hours').format("YYYYMMDD HH:mm:ss")
                 let arg = {
                     NumTop: _Top,
+                    OrderByID: _OrderByID,
                     FechaIni: _FechaIni,
                     FechaFin: _FechaFin
                 }
@@ -89,7 +118,7 @@
                 });
 
 
-                var dataSource = new kendo.data.DataSource({
+                var dataTOP = new kendo.data.DataSource({
                     data: [
                         { TopID: 5, TopName: "Top 5" },
                         { TopID: 10, TopName: "Top 10" },
@@ -102,8 +131,25 @@
                     filter: "contains",
                     dataTextField: "TopName",
                     dataValueField: "TopID",
-                    dataSource: dataSource
+                    dataSource: dataTOP
                 });
+
+                var dataVariable = new kendo.data.DataSource({
+                    data: [
+                        { TopID: 1, TopName: "Cantidad de vales" },
+                        { TopID: 2, TopName: "Suma de Galones" },
+                        { TopID: 3, TopName: "Suma de Dolares" }
+                    ],
+                    sort: { field: "CityName", dir: "asc" }
+                });
+
+                $("#kendoDropDownListVariable").kendoDropDownList({
+                    filter: "contains",
+                    dataTextField: "TopName",
+                    dataValueField: "TopID",
+                    dataSource: dataVariable
+                });
+                
 
                 $("#FechaIni").data("kendoDateTimePicker").value(kendo.parseDate(moment().subtract(30, 'days').format("YYYY/MM/DD HH:mm:ss:SSS")));
                 $("#FechaFin").data("kendoDateTimePicker").value(kendo.parseDate(moment().format("YYYY/MM/DD HH:mm:ss.SSS")));
@@ -121,8 +167,8 @@
                     _this.Grafica(top)
                 });*/
             },
-            GraficaGeneral: function(Datos){
-                var _this = this 
+            GraficaGeneral: function (Datos) {
+                var _this = this
 
                 $("#BarChartGeneral").html("");
 
@@ -131,10 +177,9 @@
 
                 let _series = []
                 _series.push({
-                    name: 'Cantidad Vales',
-                    data: Datos.map(item => item.cantVales),
-                    yAxis: 0,
-                    color: '#C70CF2'
+                    name: 'Cantidad Galones',
+                    data: Datos.map(item => item.cantGal),
+                    yAxis: 2,
                 })
                 _series.push({
                     name: 'Total de dinero',
@@ -143,19 +188,18 @@
                     color: '#274d33'
                 })
                 _series.push({
-                    name: 'Cantidad Galones',
-                    data: Datos.map(item => item.cantGal),
-                    yAxis: 2,
-                    color: '#0C32F2'
+                    name: 'Cantidad Vales',
+                    data: Datos.map(item => item.cantVales),
+                    yAxis: 0,
+                    color: '#C70CF2'
                 })
-                //console.log(_series)
 
                 var Grafica = Highcharts.chart('BarChartGeneral', {
                     chart: {
                         type: 'column'
                     },
                     title: {
-                        text: TOP +  ' de uso de vales por vehiculo',
+                        text: TOP + ' de uso de vales por vehiculo',
                         align: 'left'
                     }/*,
                     subtitle: {
@@ -167,23 +211,16 @@
                     xAxis: {
                         categories: _categories,//['Africa', 'America', 'Asia', 'Europe'],
                         title: {
-                            text: null
+                            text: "Placas"
                         },
                         gridLineWidth: 2,
-                        lineWidth: 0,
-                        labels: {
-                            events: {
-                                click: function (event) {
-                                    alert('Has hecho clic en ' + event.target.textContent);
-                                    // Puedes agregar más lógica aquí
-                                }
-                            }
-                        }
+                        lineWidth: 0
                     },
                     yAxis: [
                         {
                             min: 0,
                             tickInterval: 1,
+                            opposite: true,
                             title: {
                                 text: 'Vales',
                                 align: 'high',
@@ -198,11 +235,12 @@
                                 }
                             },
                             gridLineWidth: 1
-                           
+
                         },
                         {
                             min: 0,
                             tickInterval: 10,
+                            opposite: true,
                             title: {
                                 text: 'Dolares',
                                 align: 'high',
@@ -221,6 +259,7 @@
                         {
                             min: 0,
                             tickInterval: 5,
+                            opposite: true,
                             title: {
                                 text: 'Galones',
                                 align: 'high',
@@ -250,11 +289,12 @@
                         }
                     },
                     legend: {
+                        className: 'legendCuston',
                         layout: 'vertical',
-                        align: 'right',
+                        align: 'left',
                         verticalAlign: 'top',
-                        x: -40,
-                        y: 80,
+                        x: 0,
+                        y: 35,
                         floating: true,
                         borderWidth: 1,
                         backgroundColor:
@@ -268,11 +308,12 @@
                 });
 
 
-                
+
                 Grafica.xAxis[0].labelGroup.element.childNodes.forEach(function (label) {
                     label.style.cursor = "pointer";
                     label.onclick = function () {
                         /*alert('You clicked on ' + this.textContent);*/
+                        console.log(this)
                         let placa = this.textContent
                         let arg = {
                             //MobileID: e.data.mobileID,
@@ -282,164 +323,175 @@
                         }
                         $.get('@Url.Action("ObtenerValesUsadosXPlaca", "rpTopValePorVehiculo")', arg, function (Data) {
                             //console.log(Data)
-                            _this.GraficaVales(Data, placa)
+                            _this.GraficaVales.Mostrar(Data, placa)
                         })
                     }
                 });
             },
-            GraficaVales: function (Datos,Placa) {
+            GraficaVales: {
+                Mostrar: function (Datos, Placa) {
+
+                    $("#BarChartVales").html("");
+
+                    $("#ContenedorGraficaGeneral").removeClass("offset-lg-3")
+                    $("#ContenedorGraficaVales").css("display", "block")
+
+                    /*let btn = '<button type="button>" id="BTN_Ocultar" class="btn btn-success"> Ocultar </button>'
+                    $("#BarChartVales").append(btn)*/
+                    let _categories = Datos.map(item => "N°" + item.numVale)
+
+                    let _series = []
+                    _series.push({
+                        name: 'Cantidad Galones',
+                        data: Datos.map(item => item.cantidadGalones),
+                        yAxis: 1,
+                        color: '#0C32F2'
+                    })
+                    _series.push({
+                        name: 'Total de dinero',
+                        data: Datos.map(item => item.totalPrecio),
+                        yAxis: 0,
+                        color: '#274d33'
+                    })
+                    _series.push({
+                        name: 'Odometro',
+                        data: Datos.map(item => item.cantidadGalones),
+                        yAxis: 2,
+                        color: '#C70CF2'
+                    })
 
 
-                $("#BarChartVales").html("");
-                //console.log(Datos)
-                let _categories = Datos.map(item => "N°" + item.numVale)
-                //console.log(_categories)
-                //let placa = 
 
-                let _series = []
-                /*_series.push({
-                    name: 'Cantidad Vales',
-                    data: Datos.map(item => item.cantVales),
-                    yAxis: 0,
-                    color: '#C70CF2'
-                })*/
-                _series.push({
-                    name: 'Total de dinero',
-                    data: Datos.map(item => item.totalPrecio),
-                    yAxis: 0,
-                    color: '#274d33'
-                })
-                _series.push({
-                    name: 'Cantidad Galones',
-                    data: Datos.map(item => item.cantidadGalones),
-                    yAxis: 1,
-                    color: '#0C32F2'
-                })
-                _series.push({
-                    name: 'Odometro',
-                    data: Datos.map(item => item.cantidadGalones),
-                    yAxis: 3,
-                    color: '#0C32F2'
-                })
-                //console.log(_series)
 
-                Highcharts.chart('BarChartVales', {
-                    chart: {
-                        type: 'column'
-                    },
-                    title: {
-                        text: 'Vales usados por la placa ' + Placa ,
-                        align: 'left'
-                    }/*,
-                        subtitle: {
-                            text: 'Source: <a ' +
-                                'href="https://en.wikipedia.org/wiki/List_of_continents_and_continental_subregions_by_population"' +
-                                'target="_blank">Wikipedia.org</a>',
-                            align: 'left'
-                        }*/,
-                    xAxis: {
-                        categories: _categories,//['Africa', 'America', 'Asia', 'Europe'],
+                    Highcharts.chart('BarChartVales', {
+                        chart: {
+                            type: 'column'
+                        },
                         title: {
-                            text: null
+                            //enabled: false,
+                            //text: 'Vales usados por la placa ' + Placa,
+                            text:`<div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-10 d-flex align-items-center">
+                                                <h6 class="text-start">Vales usados por la placa ${Placa}</h6>
+                                        </div>
+                                        <div class="col-2 d-flex align-items-center">
+                                            <button type="button" id="BTN_Ocultar" class="btn btn-danger rounded-circle"> x </button>
+                                        </div>
+                                     </div>
+                                  </div>`,
+                            useHTML:true 
+                            //align: 'left'
                         },
-                        gridLineWidth: 2,
-                        lineWidth: 0/*,
-                        labels: {
-                            events: {
-                                click: function (event) {
-                                    alert('Has hecho clic en ' + event.target.textContent);
-                                    // Puedes agregar más lógica aquí
-                                }
+                        credits: {
+                            enabled: false
+                        },
+                        exporting: {
+                            enabled: false
+                        },
+                        xAxis: {
+                            categories: _categories,
+                            title: {
+                                text: 'N° de vales'
+                            },
+                            gridLineWidth: 2,
+                            lineWidth: 0
+                        },
+                        yAxis: [
+                            {
+                                min: 0,
+                                opposite: true,
+                                tickInterval: 100,
+                                title: {
+                                    text: 'Odometro',
+                                    align: 'high',
+                                    style: {
+                                        color: '#C70CF2'
+                                    }
+                                },
+                                labels: {
+                                    overflow: 'justify',
+                                    style: {
+                                        color: '#C70CF2'
+                                    }
+                                },
+                                gridLineWidth: 1
+
+                            },
+                            {
+                                min: 0,
+                                opposite: true,
+                                tickInterval: 10,
+                                title: {
+                                    text: 'Dolares',
+                                    align: 'high',
+                                    style: {
+                                        color: '#274d33'
+                                    }
+                                },
+                                labels: {
+                                    overflow: 'justify',
+                                    style: {
+                                        color: '#274d33'
+                                    }
+                                },
+                                gridLineWidth: 1
+                            },
+                            {
+                                min: 0,
+                                opposite: true,
+                                tickInterval: 5,
+                                title: {
+                                    text: 'Galones',
+                                    align: 'high',
+                                    style: {
+                                        color: '#0C32F2'
+                                    }
+                                },
+                                labels: {
+                                    overflow: 'justify',
+                                    style: {
+                                        color: '#0C32F2'
+                                    }
+                                },
+                                gridLineWidth: 1
+                            },
+                        ],
+                        plotOptions: {
+                            column: {
+                                borderRadius: '50%',
+                                dataLabels: {
+                                    enabled: true
+                                },
+                                groupPadding: 0.1
                             }
-                        }*/
-                    },
-                    yAxis: [
-                        {
-                            min: 0,
-                            tickInterval: 10,
-                            title: {
-                                text: 'Dolares',
-                                align: 'high',
-                                style: {
-                                    color: '#274d33'
-                                }
-                            },
-                            labels: {
-                                overflow: 'justify',
-                                style: {
-                                    color: '#274d33'
-                                }
-                            },
-                            gridLineWidth: 1
                         },
-                        {
-                            min: 0,
-                            tickInterval: 5,
-                            title: {
-                                text: 'Galones',
-                                align: 'high',
-                                style: {
-                                    color: '#0C32F2'
-                                }
-                            },
-                            labels: {
-                                overflow: 'justify',
-                                style: {
-                                    color: '#0C32F2'
-                                }
-                            },
-                            gridLineWidth: 1
+                        legend: {
+                            layout: 'vertical',
+                            align: 'left',
+                            verticalAlign: 'top',
+                            x: 0,
+                            y: 35,
+                            floating: true,
+                            borderWidth: 1,
+                            backgroundColor:
+                                Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+                            shadow: true
                         },
-                        {
-                            min: 0,
-                            tickInterval: 1,
-                            title: {
-                                text: 'Odometro',
-                                align: 'high',
-                                style: {
-                                    color: '#C70CF2'
-                                }
-                            },
-                            labels: {
-                                overflow: 'justify',
-                                style: {
-                                    color: '#C70CF2'
-                                }
-                            },
-                            gridLineWidth: 1
-
-                        }
-                    ],
-                        /*tooltip: {
-                            valueSuffix: ' millions'
-                        },*/
-                    plotOptions: {
-                        column: {
-                            borderRadius: '50%',
-                            dataLabels: {
-                                enabled: true
-                            },
-                            groupPadding: 0.1
-                        }
-                    },
-                    legend: {
-                        layout: 'vertical',
-                        align: 'right',
-                        verticalAlign: 'top',
-                        x: -40,
-                        y: 80,
-                        floating: true,
-                        borderWidth: 1,
-                        backgroundColor:
-                            Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
-                        shadow: true
-                    },
-                    credits: {
-                        enabled: false
-                    },
-                    series: _series
-                });
-
+                        credits: {
+                            enabled: false
+                        },
+                        series: _series
+                    });
+                    $.GraficaVales.BTN_Ocultar()
+                },
+                BTN_Ocultar: function () {
+                    $("#BTN_Ocultar").on("click", function () { 
+                        //console.log("XD")
+                        $("#ContenedorGraficaGeneral").addClass("offset-lg-3")
+                        $("#ContenedorGraficaVales").css("display", "none")
+                    });
+                }
             },
             Grid: {
                 LoadGrid: function () {
@@ -542,6 +594,7 @@
                 _this.Grid.LoadGrid()
                 _this.Data()
                 _this.BTN_GenerarData()
+                //_this.GraficaVales.BTN_Ocultar()
             }
         })
         $.init()

@@ -17,17 +17,17 @@ namespace COMBUSTIBLEAESCORE.Services
         {
             conexion = _conexion;
         }
-        public async Task<IEnumerable<rpTopValePorVehiculoModel>> ObtenerTopValesPorVehiculo(int NumTop, int CompanyID, string FechaIni, string FechaFin)
+        public async Task<IEnumerable<rpTopValePorVehiculoModel>> ObtenerTopValesPorVehiculo(int NumTop, int OrderByID, int CompanyID, string FechaIni, string FechaFin)
         {
             IEnumerable<rpTopValePorVehiculoModel> data = null;
-            string sp = "EXEC SP_TopValesXVehiculo @NumTop, @CompanyID, @FechaIni, @FechaFin";
+            string sp = "EXEC SP_TopValesXVehiculo @NumTop,@OrderByID, @CompanyID, @FechaIni, @FechaFin";
             var con = new SqlConnection(conexion.Value);
             try
             {
                 if (con.State == ConnectionState.Closed)
                 {
                     con.Open();
-                    data = await con.QueryAsync<rpTopValePorVehiculoModel>(sp, new { NumTop,CompanyID, FechaIni, FechaFin }, commandType: CommandType.Text);
+                    data = await con.QueryAsync<rpTopValePorVehiculoModel>(sp, new { NumTop, OrderByID, CompanyID, FechaIni, FechaFin }, commandType: CommandType.Text);
                 }
             }
             finally

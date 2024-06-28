@@ -28,6 +28,13 @@ namespace COMBUSTIBLEAESCORE.Controllers
             return Json(vales);
 
         }
+        /*public async Task<JsonResult> ObtenerCentrosCosto()
+        {
+            var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
+            var CentrosCosto = await iadAutorizarVales.ObtenerCentrosCosto(user.FirstOrDefault().CompanyID);
+            return Json(CentrosCosto);
+        }*/
+
         public async Task<JsonResult> ObtenerCentrosCostoAutorizalVale(string Placa)
         {
             var Sesion = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
@@ -48,8 +55,7 @@ namespace COMBUSTIBLEAESCORE.Controllers
             var vale = await iadAutorizarVales.ObtenerValeAutorizar(ValeID, user.FirstOrDefault().CompanyID);
             return Json(vale);
         }
-<<<<<<< HEAD
-=======
+
 
         [HttpPost]
         public async Task<JsonResult> AutorizarVale(int ValeCombustibleID, int TipoCargaID, int CentroCostoID, float? CantidadGalones, float? TotalPrecio, int ProyectoID)

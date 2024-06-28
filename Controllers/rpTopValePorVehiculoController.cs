@@ -24,10 +24,10 @@ namespace COMBUSTIBLEAESCORE.Controllers
             return View();
         }
 
-        public async Task<JsonResult> ObtenerTopValesPorVehiculo(int NumTop, string FechaIni, string FechaFin)
+        public async Task<JsonResult> ObtenerTopValesPorVehiculo(int NumTop,int OrderByID, string FechaIni, string FechaFin)
         {
             var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
-            var TOP = await irpTopValePorVehiculo.ObtenerTopValesPorVehiculo(NumTop, user.FirstOrDefault().CompanyID, FechaIni, FechaFin);
+            var TOP = await irpTopValePorVehiculo.ObtenerTopValesPorVehiculo(NumTop, OrderByID, user.FirstOrDefault().CompanyID, FechaIni, FechaFin);
             return Json(TOP); 
         }
 
