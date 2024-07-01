@@ -9,27 +9,27 @@
         <div class="container-fluid p-4">
             <div class="row">
                 <div class="col-lg-12">
-                    <h2 class="text-center"> Reporte de TOP uso de vales por vehículo</h2>
+                    <h2 class="text-center"> Reporte de uso de vales por vehículo</h2>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-3">
+            <div class="row mt-2">
+                <div class="col-lg-3 col-12">
                     <label>Fecha Inicio</label>
                     <input id="FechaIni"/>
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-3 col-12 mt-2 mt-lg-0">
                     <label>Fecha Fin</label>
                     <input id="FechaFin"/>
                 </div>
-                <div class="col-lg-2">
+                <div class="col-lg-2 col-12 mt-2 mt-lg-0">
                     <label>Seleccione el top</label>
                     <input id="kendoDropDownListTop" />
                 </div>
-                <div class="col-lg-2">
+                <div class="col-lg-2 col-12 mt-2 mt-lg-0">
                     <label>Seleccione la variable</label>
                     <input id="kendoDropDownListVariable" />
                 </div>
-                <div class="col-lg-2 d-flex align-items-end">
+                <div class="col-lg-2 d-flex align-items-end col-12 mt-2 mt-lg-0">
                     <button type="button" class="btn btn-success w-100" id="BTN_GenerarReporte"> Generar </button>
                 </div>
             </div>
@@ -173,13 +173,15 @@
                 $("#BarChartGeneral").html("");
 
                 let TOP = $("#kendoDropDownListTop").data("kendoDropDownList").text()
+                let variable = $("#kendoDropDownListVariable").data("kendoDropDownList").text()
                 let _categories = Datos.map(item => item.placa)
 
                 let _series = []
                 _series.push({
                     name: 'Cantidad Galones',
                     data: Datos.map(item => item.cantGal),
-                    yAxis: 2,
+                    yAxis: 0,
+                    color: "#0C32F2"
                 })
                 _series.push({
                     name: 'Total de dinero',
@@ -190,7 +192,7 @@
                 _series.push({
                     name: 'Cantidad Vales',
                     data: Datos.map(item => item.cantVales),
-                    yAxis: 0,
+                    yAxis: 2,
                     color: '#C70CF2'
                 })
 
@@ -199,43 +201,48 @@
                         type: 'column'
                     },
                     title: {
-                        text: TOP + ' de uso de vales por vehiculo',
+                        text: TOP + ' de uso de vales por vehículo por ' + variable,
                         align: 'left'
-                    }/*,
-                    subtitle: {
-                        text: 'Source: <a ' +
-                            'href="https://en.wikipedia.org/wiki/List_of_continents_and_continental_subregions_by_population"' +
-                            'target="_blank">Wikipedia.org</a>',
-                        align: 'left'
-                    }*/,
+                    },
                     xAxis: {
-                        categories: _categories,//['Africa', 'America', 'Asia', 'Europe'],
+                        categories: _categories,
                         title: {
                             text: "Placas"
                         },
                         gridLineWidth: 2,
-                        lineWidth: 0
+                        lineWidth: 0,
+                        labels: {
+                            formatter: function () {
+                                return '<span class="ObtenerPlaca" title="' + this.value + '">' + this.value + '</span>';
+                            },
+                            useHTML: true
+                        }
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    exporting: {
+                        enabled: false
                     },
                     yAxis: [
                         {
                             min: 0,
-                            tickInterval: 1,
+                            tickInterval: 5,
                             opposite: true,
                             title: {
-                                text: 'Vales',
+                                text: 'Galones',
                                 align: 'high',
                                 style: {
-                                    color: '#C70CF2'
+                                    color: '#0C32F2'
                                 }
                             },
                             labels: {
                                 overflow: 'justify',
                                 style: {
-                                    color: '#C70CF2'
+                                    color: '#0C32F2'
                                 }
                             },
                             gridLineWidth: 1
-
                         },
                         {
                             min: 0,
@@ -258,22 +265,23 @@
                         },
                         {
                             min: 0,
-                            tickInterval: 5,
+                            tickInterval: 1,
                             opposite: true,
                             title: {
-                                text: 'Galones',
+                                text: 'Vales',
                                 align: 'high',
                                 style: {
-                                    color: '#0C32F2'
+                                    color: '#C70CF2'
                                 }
                             },
                             labels: {
                                 overflow: 'justify',
                                 style: {
-                                    color: '#0C32F2'
+                                    color: '#C70CF2'
                                 }
                             },
                             gridLineWidth: 1
+
                         }
                     ]/*,
                     tooltip: {
@@ -307,28 +315,23 @@
                     series: _series
                 });
 
-
-
-                Grafica.xAxis[0].labelGroup.element.childNodes.forEach(function (label) {
-                    label.style.cursor = "pointer";
-                    label.onclick = function () {
-                        /*alert('You clicked on ' + this.textContent);*/
-                        console.log(this)
-                        let placa = this.textContent
-                        let arg = {
-                            //MobileID: e.data.mobileID,
-                            Placa: placa,
-                            FechaIncio: $.Grid.SubGrid.FechaIni,
-                            FechaFin: $.Grid.SubGrid.FechaFin
-                        }
-                        $.get('@Url.Action("ObtenerValesUsadosXPlaca", "rpTopValePorVehiculo")', arg, function (Data) {
-                            //console.log(Data)
-                            _this.GraficaVales.Mostrar(Data, placa)
-                        })
-                    }
+                $(".ObtenerPlaca").on("click", function () {
+                    var _data = $(this);
+                    _this.GraficaVales.DataGrafica(_data.attr("title"))
                 });
             },
             GraficaVales: {
+                DataGrafica: function (Placa) {
+                    var _this = this
+                    let arg = {
+                        Placa: Placa,
+                        FechaIncio: $.Grid.SubGrid.FechaIni,
+                        FechaFin: $.Grid.SubGrid.FechaFin
+                    }
+                    $.get('@Url.Action("ObtenerValesUsadosXPlaca", "rpTopValePorVehiculo")', arg, function (Data) {
+                        _this.Mostrar(Data, Placa)
+                    })
+                },
                 Mostrar: function (Datos, Placa) {
 
                     $("#BarChartVales").html("");
@@ -336,15 +339,13 @@
                     $("#ContenedorGraficaGeneral").removeClass("offset-lg-3")
                     $("#ContenedorGraficaVales").css("display", "block")
 
-                    /*let btn = '<button type="button>" id="BTN_Ocultar" class="btn btn-success"> Ocultar </button>'
-                    $("#BarChartVales").append(btn)*/
                     let _categories = Datos.map(item => "N°" + item.numVale)
 
                     let _series = []
                     _series.push({
                         name: 'Cantidad Galones',
                         data: Datos.map(item => item.cantidadGalones),
-                        yAxis: 1,
+                        yAxis: 2,
                         color: '#0C32F2'
                     })
                     _series.push({
@@ -356,32 +357,26 @@
                     _series.push({
                         name: 'Odometro',
                         data: Datos.map(item => item.cantidadGalones),
-                        yAxis: 2,
+                        yAxis: 1,
                         color: '#C70CF2'
                     })
-
-
-
 
                     Highcharts.chart('BarChartVales', {
                         chart: {
                             type: 'column'
                         },
                         title: {
-                            //enabled: false,
-                            //text: 'Vales usados por la placa ' + Placa,
                             text:`<div class="container-fluid">
                                     <div class="row">
                                         <div class="col-10 d-flex align-items-center">
                                                 <h6 class="text-start">Vales usados por la placa ${Placa}</h6>
                                         </div>
                                         <div class="col-2 d-flex align-items-center">
-                                            <button type="button" id="BTN_Ocultar" class="btn btn-danger rounded-circle"> x </button>
+                                                <button type="button" id="BTN_Ocultar" class="btn btn-danger"> <i class="bi bi-x-circle"></i> </button>
                                         </div>
                                      </div>
                                   </div>`,
                             useHTML:true 
-                            //align: 'left'
                         },
                         credits: {
                             enabled: false
@@ -401,22 +396,21 @@
                             {
                                 min: 0,
                                 opposite: true,
-                                tickInterval: 100,
+                                tickInterval: 5,
                                 title: {
-                                    text: 'Odometro',
+                                    text: 'Galones',
                                     align: 'high',
                                     style: {
-                                        color: '#C70CF2'
+                                        color: '#0C32F2'
                                     }
                                 },
                                 labels: {
                                     overflow: 'justify',
                                     style: {
-                                        color: '#C70CF2'
+                                        color: '#0C32F2'
                                     }
                                 },
                                 gridLineWidth: 1
-
                             },
                             {
                                 min: 0,
@@ -440,22 +434,23 @@
                             {
                                 min: 0,
                                 opposite: true,
-                                tickInterval: 5,
+                                tickInterval: 100,
                                 title: {
-                                    text: 'Galones',
+                                    text: 'Odometro',
                                     align: 'high',
                                     style: {
-                                        color: '#0C32F2'
+                                        color: '#C70CF2'
                                     }
                                 },
                                 labels: {
                                     overflow: 'justify',
                                     style: {
-                                        color: '#0C32F2'
+                                        color: '#C70CF2'
                                     }
                                 },
                                 gridLineWidth: 1
-                            },
+
+                            }
                         ],
                         plotOptions: {
                             column: {
@@ -530,7 +525,10 @@
                         excel: {
                             fileName: "ReporteDeVales.xlsx"
                         },
-                        detailInit: _this.SubGrid.LoadGrid
+                        detailInit: _this.SubGrid.LoadGrid,
+                        dataBound: function (e) {
+                            $("#GridVales > div span input").attr("placeholder", "Busqueda")
+                        }
                     });
                 },
                 DataGrid: function (data) { 
@@ -541,14 +539,12 @@
                     FechaFin: "",
                     LoadGrid: function (e) {
                         let arg = {
-                            //MobileID: e.data.mobileID,
                             Placa: e.data.placa,
                             FechaIncio: $.Grid.SubGrid.FechaIni,
                             FechaFin: $.Grid.SubGrid.FechaFin
                         }
-                        console.log(arg)
+                        //console.log(arg)
                         $.get('@Url.Action("ObtenerValesUsadosXPlaca", "rpTopValePorVehiculo")', arg, function (Data) {
-                            //console.log(Data)
 
                             $("<div/>").appendTo(e.detailCell).kendoGrid({
                                 dataSource: Data,
@@ -560,21 +556,11 @@
                                     { field: "totalPrecio", title: "Total $", width: "100px" },
                                     { field: "odometro", title: "Odometro", width: "100px" },
                                     { field: "gasolinera", title: "Gasolinera", width: "200px" },
-                                    //{ field: "tipoCarga", title: "Tipo de Carga", width: "150px" },
                                     { field: "userCierra", title: "Usuario Cierra", width: "150px" },
                                     { field: "fechaCierre", title: "Fecha Cierre", width: "200px" }
 
                                 ], selectable: "single, row",
-                                /*change: function (e) {
-                                    //Grid_adusuarios_dataitem = e !== null ? e.sender.dataItem(e.sender.select()) : null;
-                                    //console.log(e);
-                                    //console.log(e.sender.dataItem(e.sender.select()));
-                                },*/
-                                resizable: true/*,
-                                excel: {
-                                    fileName: "ReporteDeVales-" + placa + ".xlsx"
-                                }*/
-
+                                resizable: true
                             });
                         });
 
