@@ -109,7 +109,7 @@
                     markers: [],
                     circles: [],
                     CargarMapa: function () {
-                        //var _this = this
+                        var _this = this
 
                         //console.log(google.maps)
                         $.LoadAPI().then(() => {
@@ -122,6 +122,7 @@
                             });
 
                             map.addListener('click', function (event) {
+                                console.log("XD")
                                 _this.EliminarMarcador();
                                 _this.AgregarMarcador(event.latLng, map);
                             });

@@ -6,34 +6,30 @@ using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Data;
 using Dapper;
-using System.Linq;
-using ImageMagick;
+using System.ComponentModel.Design;
 namespace COMBUSTIBLEAESCORE.Services
 {
-    public class adRegistarCompanyService : IadRegistarCompany
+    public class rpLineaTimpoValeService: IrpLineaTimpoVale
     {
-        public readonly conexion conexion;
+        private readonly conexion conexion;
 
-        public adRegistarCompanyService(conexion _conexion)
+        public rpLineaTimpoValeService(conexion _conexion)
         {
             conexion = _conexion;
         }
 
-        public async Task<IEnumerable<mensaje>> ActivarUsuario(string Username)
+        public async Task<IEnumerable<MobileXCompanyModel>> ObtenerPlacas(int CompanyID)
         {
-            IEnumerable<mensaje> data = null;
-            string sp = "EXEC SP_ActivarUsuario @Username";
+            IEnumerable<MobileXCompanyModel> data = null;
+            string sp = "EXEC SP_ObtenerMobileXCompany @CompanyID";
             var con = new SqlConnection(conexion.Value);
-
             try
             {
                 if (con.State == ConnectionState.Closed)
                 {
                     con.Open();
-                    data = await con.QueryAsync<mensaje>(sp, new { Username }, commandType: System.Data.CommandType.Text);
+                    data = await con.QueryAsync<MobileXCompanyModel>(sp, new { CompanyID }, commandType: CommandType.Text);
                 }
-
-
             }
             finally
             {
@@ -45,22 +41,18 @@ namespace COMBUSTIBLEAESCORE.Services
             return data;
         }
 
-        public async Task<IEnumerable<mensaje>> RegisterCompany(string Nombre, string Apellido, string Username, string Clave, string Correo, string NombreCompany, string DireccionCompany)
+        public async Task<IEnumerable<rpLineaTimpoValeModel>> ObtenerVales(int CompanyID, int MobileID, string FechaIni, string FechaFin)
         {
-
-            IEnumerable<mensaje> data = null;
-            string sp = "EXEC SP_adCrearCompany @Nombre,@Apellido, @Username,@Clave ,@Correo,@NombreCompany,@DireccionCompany";
+            IEnumerable<rpLineaTimpoValeModel> data = null;
+            string sp = "EXEC SP_rpLineaTiempoVales @CompanyID, @MobileID, @FechaIni, @FechaFin ";
             var con = new SqlConnection(conexion.Value);
-
             try
             {
                 if (con.State == ConnectionState.Closed)
                 {
                     con.Open();
-                    data = await con.QueryAsync<mensaje>(sp, new { Nombre, Apellido, Username, Clave, Correo, NombreCompany, DireccionCompany }, commandType: System.Data.CommandType.Text);
+                    data = await con.QueryAsync<rpLineaTimpoValeModel>(sp, new { CompanyID, MobileID, FechaIni, FechaFin }, commandType: CommandType.Text);
                 }
-
-
             }
             finally
             {

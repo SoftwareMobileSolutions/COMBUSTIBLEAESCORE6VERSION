@@ -21,7 +21,28 @@ namespace COMBUSTIBLEAESCORE.Services
         {
             conexion = _conexion;
         }
-
+        public async Task<IEnumerable<CentroCostoModel>> ObtenerCentrosCosto(int CompanyID)
+        {
+            IEnumerable<CentroCostoModel> data = null;
+            string sp = "EXEC SP_ObtenerCentrosCostoWEB @CompanyID";
+            var con = new SqlConnection(conexion.Value);
+            try
+            {
+                if (con.State == ConnectionState.Closed)
+                {
+                    con.Open();
+                    data = await con.QueryAsync<CentroCostoModel>(sp, new { CompanyID }, commandType: CommandType.Text);
+                }
+            }
+            finally
+            {
+                if (con.State == ConnectionState.Open)
+                {
+                    con.Close();
+                }
+            }
+            return data;
+        }
         public async Task<IEnumerable<mensaje>> agregarVehiculo(int CompanyID, string PlacaNew, string NombreNew, string Marca, string Modelo, int FlotaID, float KmXGalon, float CapacidadTanque, int TipoCombustibleID, string VINNew)
         {
             IEnumerable<mensaje> data = null;

@@ -22,17 +22,17 @@ namespace COMBUSTIBLEAESCORE.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<JsonResult> InsertarPEPS(string PEPS_NombreProyecto, string Responsable_Estado) {
+        public async Task<JsonResult> InsertarProyectos(string CodigoProyecto_NombreProyecto, string Responsable_Estado) {
 
             var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
-            var resultado = await iProyecto.InsertarPEPS(PEPS_NombreProyecto, Responsable_Estado, user.FirstOrDefault().CompanyID, user.FirstOrDefault().UsuarioID);
+            var resultado = await iProyecto.InsertarProyectos(CodigoProyecto_NombreProyecto, Responsable_Estado, user.FirstOrDefault().CompanyID, user.FirstOrDefault().UsuarioID);
             return Json(resultado);
         }
 
-        public async Task<JsonResult> ObtenerPEPS()
+        public async Task<JsonResult> ObtenerProyectos()
         {
             var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
-            var PEPS = await iProyecto.ObtenerPEPS(user.FirstOrDefault().CompanyID);
+            var PEPS = await iProyecto.ObtenerProyectos(user.FirstOrDefault().CompanyID);
             return Json(PEPS);
         }
 

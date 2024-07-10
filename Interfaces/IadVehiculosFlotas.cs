@@ -20,6 +20,7 @@ namespace COMBUSTIBLEAESCORE.Interfaces
         
         public Task<IEnumerable<mensaje>> ActualizaMobile(int MobileID, int CompanyID, string Placa, string Nombre, int FlotaID , string Marca, string Modelo, float? KmXGalon, float? CapTan, int? CombustibleID , string NumeroVIm);
         public Task<IEnumerable<mensaje>> EliminarMobile(int MobileID);
+        public Task<IEnumerable<CentroCostoModel>> ObtenerCentrosCosto(int CompanyID);
 
     }
 }

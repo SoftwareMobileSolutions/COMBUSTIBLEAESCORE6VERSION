@@ -15,7 +15,7 @@
                             <div class="card-body p-lg-5 ">
 
                                 <div class="text-center">
-                                    <h4 class="mt-lg-1 mb-lg-5 pb-lg-1 mt-4 mb-5">Cerrar Vales Combustible</h4>
+                                    <h4 class="mt-lg-1 mb-lg-5 pb-lg-1 mt-4 mb-5">Liquidar Vales Combustible</h4>
                                 </div>
 
                                 <form>
@@ -58,7 +58,7 @@
                                         <input type="text" id="Input_Odometro" class="form-control" step="0.01" disabled @*value="0"*@ placeholder="0"/>
                                     </div>
                                     <div class="d-grid gap-2 col-12 mx-auto">
-                                        <input type="button" class="btn btn_lg" id="Enviar" value="Cerrar vale" disabled />
+                                        <input type="button" class="btn btn_lg" id="BTN_Liquidar" value="Cerrar vale" disabled />
                                         @*<button class="btn" type="button" id="Enviar">
                                             Enviar
                                         </button>*@
@@ -75,7 +75,7 @@
     </div>
     <div class="container-fluid">
         <div class="card rounded-3">
-            <h2 class="text-center mt-lg-3 mt-2">Vales cerrados</h2>    
+            <h2 class="text-center mt-lg-3 mt-2">Vales Liquidados</h2>    
             <div class="row ">
                 <div class="col-lg-4 col-12 d-flex  align-items-center ps-lg-5 " >
                     <h4 class="w-50 ps-2 ps-lg-5 text-start text-lg-center">Fecha inicio:</h4>
@@ -175,9 +175,9 @@
                         });
                     });
                 },
-                BTN_CerrarVale: function () {
+                BTN_LiquidarVale: function () {
                     var _this = this;
-                    $('#Enviar').on('click', function () {
+                    $('#BTN_Liquidar').on('click', function () {
                         let _placa = $.trim($('#Input_Placa').val().toUpperCase());
                         let _galones = parseFloat($("#Input_Galones").val());
                         let _dolares = parseFloat($("#Input_Dolares").val());
@@ -221,8 +221,8 @@
                             //_this.alert("Valor de odometro es igual a 0", "El odometro debe ser mayor que 0")
                             return false
                         }
-
-                        $.get('@Url.Action("cerrarVale", "adCerrarVales")', arg, function (mensaje) {
+                        
+                        $.post('@Url.Action("LiquidarVale", "adLiquidarVales")', arg, function (mensaje) {
                             var _this = this;
                             $.GRID.FechaFin = moment().add(6, 'hours').format("YYYY/MM/DD HH:mm:ss")
                             Swal.fire({
@@ -264,7 +264,7 @@
                     $("#Input_Placa").off('blur');
                     $("#Input_Placa").on("blur", function () {
                         var valorInput = $(this).val();
-                        $.get('@Url.Action("validarPlaca", "adCerrarVales")', function (placa) {
+                        $.get('@Url.Action("validarPlaca", "adLiquidarVales")', function (placa) {
                             if (placa === null) {
                                 //console.log("Es nulo")
                             } else {
@@ -424,7 +424,7 @@
                     _this.dataGrid(arg);
                 },
                 dataGrid: function (arg) {
-                    $.get('@Url.Action("getValesCerrados", "adCerrarVales")', arg, function (valesCerrados) {
+                    $.get('@Url.Action("ObtenerValesLiquidados", "adLiquidarVales")', arg, function (valesCerrados) {
                         var valesXPlacas = [];
                         for (let i = 0; i < valesCerrados.length; i++) {
                             let found = false;
@@ -483,7 +483,7 @@
                         }
                         //console.log(arg)
 
-                        $.get('@Url.Action("getValesCerradosXPlaca", "adCerrarVales")', arg, function (vales) {
+                        $.get('@Url.Action("ObtenerValesLiquidadosXPlaca", "adLiquidarVales")', arg, function (vales) {
                             //console.log(vales)
                             for (x = 0; x < vales.length; x++) {
                                 vales[x].fechaGeneracion = moment(vales[x].fechaGeneracion).subtract(6, 'hours').format("DD/MM/YYYY HH:mm:ss")
@@ -529,7 +529,7 @@
             init: function () {
                 var _this = this 
                 _this.CerrarVale.BTN_ObtenerVale()
-                _this.CerrarVale.BTN_CerrarVale()
+                _this.CerrarVale.BTN_LiquidarVale()
                 _this.GRID.loadGrid()
                 _this.GRID.BTN_ReloadGrid()
                 _this.keypress()

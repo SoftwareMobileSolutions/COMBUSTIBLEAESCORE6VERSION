@@ -299,10 +299,11 @@
                                 var _Proyectos = []
 
                                 $.get('@Url.Action("ObtenerProyectos", "adAutorizarVales")', function (Proyectos) {
+                                    console.log(Proyectos)
                                 //$("#DropDownListCentroCosto").data("kendoDropDownList").dataSource.data(centrosCosto);
                                     Proyectos.forEach((proyecto) => {
                                     //console.log(proyecto)
-                                        _Proyectos.push({ idProyectosVales: proyecto.idProyectosVales, nombreProyecto: proyecto.nombreProyecto + "- [" + proyecto.pep + "]" })
+                                        _Proyectos.push({ idProyectosVales: proyecto.idProyectosVales, nombreProyecto: proyecto.nombreProyecto + "- [" + proyecto.codigoProyecto + "]" })
                                     })
                                 //console.log(_Proyectos)
                                     $("#DropDownListProyecto").data("kendoDropDownList").dataSource.data(_Proyectos);

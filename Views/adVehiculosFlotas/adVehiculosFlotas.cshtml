@@ -41,21 +41,21 @@
             </li>
         </ul>
         <div class="card">
-            <div class="container-fluid card">
+            <div class="container-fluid card p-lg-3 p-2">
                 <form class="row">
-                    <div class="col-lg-12 mt-lg-3 mt-2">
+                    <div class="col-lg-12">
                         <h2 class="text-center">Registo de vehiculo</h2>
                     </div>
-                    <div class=" p-lg-4 row">
+                    <div class="row">
                         <div class="col-lg-6">
                             <div class="form-outline mb-4">
-                                <label class="form-label" for="">Placa</label>
+                                <label class="form-label" for="">Placa<span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="Placa" style="text-transform:uppercase" />
 
                             </div>
 
                             <div class="form-outline mb-4">
-                                <label class="form-label" for="">Nombre</label>
+                                <label class="form-label" for="">Nombre<span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="Nombre" />
 
                             </div>
@@ -73,7 +73,7 @@
                             </div>
 
                             <div class="form-outline mb-4">
-                                <label class="form-label" for="">Seleccione la flota del vehiculo</label>
+                                <label class="form-label" for="">Seleccione la flota del vehiculo<span class="text-danger">*</span></label>
                                 <div class="container-fluid p-0">
                                     <div class="row">
                                         <div class="col-lg-10 ">
@@ -113,11 +113,28 @@
 
                             </div>
                             <div class="form-outline mb-4">
-                                <input type="button" class="btn btn-success w-100" id="btn_registrar" value="Registrar vehiculo" />
+                                <label class="form-label" for="">Seleccione el centro de costo del vehiculo<span class="text-danger">*</span></label>
+                                <div class="container-fluid p-0">
+                                    <div class="row">
+                                        <div class="col-lg-10 ">
+                                            <input id="Drop_CentroCosto" class="w-100" />
+                                        </div>
+                                        <div class="col-lg-2 mt-4 mt-3 mt-lg-0">
+                                            <div class="bg-success w-100 rounded d-flex justify-content-center align-items-center " style="cursor: pointer;" id="btn_nuevoCentroCosto">
+                                                <span class="d-sm-block d-md-none me-1 me-lg-0 text-light">Agregar un centro de costo</span>
+                                                <i class="bi bi-plus-circle text-light fs-5"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-
+                    <div class="row">
+                        <div class="col-lg-6 col-12 offset-lg-3">
+                            <input type="button" class="btn btn-success w-100" id="btn_registrar" value="Registrar vehiculo" />
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="container-fluid card mt-lg-5 p-lg-5">
@@ -155,9 +172,10 @@
                 </div>
                 <div class="row mt-lg-2">
                     <div class="form-outline col-12 col-lg-6">
+                        <label class="form-label" for="">Ingrese el nomnbre de la flota<span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="Flota" />
                     </div>
-                    <div class="form-outline col-12 col-lg-6 mt-3 mt-lg-0">
+                    <div class="form-outline col-12 col-lg-6 mt-3 mt-lg-0 d-flex align-items-end">
                         <input type="button" id="BTN_AgregarFlota" class="btn btn-success w-100" value="Registrar Flota" />
                     </div>
                 </div>
@@ -273,23 +291,23 @@
 </section>
 <style type="text/css">
     .k-picker {
-        height:35px;
+        height:37px;
     }
 
-    #btn_nuevaFlota {
+    #btn_nuevaFlota, #btn_nuevoCentroCosto {
         height: 35px;
     }
-    #btn_registrar{
+    /*#btn_registrar{
         margin-top: 30px;
-    }
+    }*/
 
     .k-tabstrip > .k-content {
         background: #f6f9ff;
     }
 
-    #btn_nuevaFlota{
+    /*#btn_nuevaFlota{
         height: 35px;
-    }
+    }*/
 
     .k-grid-Editar {
         background: #198754;
@@ -372,6 +390,12 @@
                                 $.vehiculo.ActualizarVehiculo.activarButton()
                             }
                         });
+                        $("#Drop_CentroCosto").kendoDropDownList({
+                            filter: "contains",
+                            optionLabel: 'Seleccione el centro de costo',
+                            dataTextField: "nombreCentroCosto",
+                            dataValueField: "centroCostoID"
+                        });
 
                         $("#DropDown_GasolinaModal").kendoDropDownList({
                             optionLabel: 'Seleccione un tipo de gasolina',
@@ -395,7 +419,14 @@
                             $("#Drop_Flota").data("kendoDropDownList").dataSource.data(flotas);
                             $("#DropDown_FlotaModal").data("kendoDropDownList").dataSource.data(flotas);
                         })
-                    },
+
+                        $.get('@Url.Action("ObtenerCentrosCosto", "adVehiculosFlotas")', function (centrosCosto) {
+                            /*$("#Drop_Flota").data("kendoDropDownList").dataSource.data(flotas);
+                            $("#DropDown_FlotaModal").data("kendoDropDownList").dataSource.data(flotas);*/
+                            //console.log(
+                            $("#Drop_CentroCosto").data("kendoDropDownList").dataSource.data(centrosCosto);
+                        })
+                    }
                 },
                 GRID: {
                     /*Fecha: {
@@ -527,7 +558,7 @@
                                                 $("#Input_Nombre").val(data.nombre)
                                                 $.vehiculo.ActualizarVehiculo.dataActual.nombre = data.nombre
 
-                                                $("#DropDown_FlotaModal").data("kendoDropDownList").value(data.subfleetID +"")
+                                                $("#DropDown_FlotaModal").data("kendoDropDownList").value(data.subfleetID + "")
                                                 $.vehiculo.ActualizarVehiculo.dataActual.idFlota = data.subfleetID
 
                                                 $("#Input_Marca").val(data.marca)
@@ -551,7 +582,7 @@
                                                 function extraerNumeros(cadena) {
                                                     const regex = /-?\d+(\.\d+)?/g;
                                                     const coincidencias = cadena.match(regex);
-                                                    return coincidencias[0] 
+                                                    return coincidencias[0]
                                                 }
 
                                                 $('#editarVehiculoModal').modal('show');
@@ -602,12 +633,12 @@
                         //console.log("XD")
                         $.get('@Url.Action("rpVehiculo", "adVehiculosFlotas")', arg, function (autos) {
                             for (let x = 0; x < autos.length; x++) {
-                                
+
                                 autos[x].fechaCreacion = moment(autos[x].fechaCreacion).subtract(6, "hour").format("DD/MM/YYYY HH:mm:ss")
                                 autos[x].capacidadTanque = autos[x].capacidadTanque + " Gal"
                                 autos[x].kmXGalon = autos[x].kmXGalon + " Km"
-                                
-                                
+
+
                             }
                             console.log(autos)
                             $("#GridFlotas").data("kendoGrid").dataSource.data(autos);
@@ -623,7 +654,7 @@
                         });
 
                     },
-                },                            
+                },
                 keypress: function () {
                     $('#Placa, #Input_Placa').keypress(function (event) {
 
@@ -644,7 +675,7 @@
                         if ((keyCode < 48 || keyCode > 57) && keyCode !== 46) {
                             event.preventDefault();
                         }
-                        
+
                         if (keyCode === 46 && inputValue.indexOf('.') !== -1) {
                             event.preventDefault();
                         }
@@ -697,7 +728,7 @@
                         var keyCode = event.which;
                         var inputValue = $(this).val();
                         //console.log(inputValue)
-                        if (inputValue.length > 16){
+                        if (inputValue.length > 16) {
                             event.preventDefault();
                         }
                         if (!((keyCode >= 48 && keyCode <= 57) ||
@@ -705,7 +736,7 @@
                             (keyCode >= 97 && keyCode <= 122))) {
                             event.preventDefault();
                         }
-                        
+
 
                     });
                 },
@@ -724,7 +755,7 @@
 
                         return false;
                     }
-                    if (Flota ==="") {
+                    if (Flota === "") {
                         $.alert("Sin seleccionar", "Debe seleccionar una flota para el vehiculo", "warning");
                         return false;
                     }
@@ -746,7 +777,7 @@
 
                         if (_TipoCombustible === "") {
                             _TipoCombustible = ""
-                        } else { 
+                        } else {
                             parseInt($("#Drop_Gasolina").data("kendoDropDownList").value())
                         }
 
@@ -787,7 +818,7 @@
                             });
                         }
                     });
-                }, 
+                },
                 ActualizarVehiculo: {
                     dataActual: {
                         mobileID: 0,
@@ -800,7 +831,7 @@
                         capacidadTanque: "",
                         combustibleID: "",
                         numeroVIN: ""
-                    }, 
+                    },
                     eventoInput: function () {
                         var _this = this
                         $("#Input_Placa, #Input_Nombre, #Input_Marca,#Input_Modelo,#Input_KmxGal,#Input_CapTan,#Input_VIN").on("input", function (e) {
@@ -829,7 +860,7 @@
                         var CapTan = $("#Input_CapTan").val()
 
                         var CombustibleID = $("#DropDown_GasolinaModal").data("kendoDropDownList").value()
-                        CombustibleID = CombustibleID !== ""? parseInt(CombustibleID) : 0
+                        CombustibleID = CombustibleID !== "" ? parseInt(CombustibleID) : 0
                         var VIN = $("#Input_VIN").val()
 
                         if (_this.dataActual.placa !== Placa) {
@@ -862,17 +893,17 @@
                         if (_this.dataActual.capacidadTanque !== CapTan) {
                             return true
                         }
-                        if (_this.dataActual.combustibleID !== CombustibleID){ 
+                        if (_this.dataActual.combustibleID !== CombustibleID) {
                             return true
                         }
                         if (_this.dataActual.numeroVIN !== VIN) {
                             return true
                         }
-                        
+
                         return false
                     },
                     validaciones: function () {
-                        var _this = this 
+                        var _this = this
                         var placa = $("#Input_Placa").val().trim();
                         var Nombre = $("#Input_Nombre").val().trim();
                         var Flota = $("#DropDown_FlotaModal").data("kendoDropDownList").value()
@@ -912,9 +943,9 @@
                             var GasolinaModal = $("#DropDown_GasolinaModal").val()
                             GasolinaModal = GasolinaModal === "" ? null : parseInt(GasolinaModal)
                             var VIN = $("#Input_VIN").val().toUpperCase()
-                            
+
                             var arg = {
-                                MobileID : _this.dataActual.mobileID,
+                                MobileID: _this.dataActual.mobileID,
                                 Placa: Placa,
                                 Nombre: Nombre,
                                 FlotaID: FlotaModal,
@@ -954,7 +985,7 @@
                                 var FechaFin = moment($("#FechaFin").data("kendoDateTimePicker").value()).add(6, 'hours').format("YYYYMMDD HH:mm:ss.SSS")
                                 $.vehiculo.GRID.DataGrid(FechaInicio, FechaFin)
                                 $._combustible.alert("success", "Eliminación exitosa", mensaje.resultado)
-                            }else{
+                            } else {
                                 $._combustible.alert("error", "Error", mensaje.resultado)
                                 //$._combustible.alert("success", "Eliminación exitosa", mensaje.resultado)
                             }
@@ -971,9 +1002,9 @@
                         }
                     }
                 }
-                
+
             },
-            flota:{
+            flota: {
                 agregarFlota: function () {
                     var _this = this
 
@@ -1000,7 +1031,7 @@
                     var Flota = $("#Flota").val().trim()
 
                     //console.log(Flota)
-                    if (Flota ==="") {
+                    if (Flota === "") {
                         return false
                     }
 
@@ -1023,14 +1054,14 @@
                                 } else {
                                     _this.nota(mensaje[0].resultado, "success")
                                     $.vehiculo.DropDowns.DataDropDowns();
-                                    $("#Flota_Modal").val("")                                   
+                                    $("#Flota_Modal").val("")
                                 }
                             })
                         }
 
                     });
                 },
-                BTN_Modal: function () { 
+                BTN_Modal: function () {
 
                     $("#btn_nuevaFlota").on("click", function () {
                         $("#nota").text("")
@@ -1080,7 +1111,7 @@
                     title: title,
                     text: text,
                 });
-            }, 
+            },
             init: function () {
                 var _this = this;
                 _this.tabstrip()
@@ -1096,6 +1127,10 @@
                 _this.flotaModal.agregarFlota();
                 _this.flotaModal.focus();
             }
+        
+
+            
+            
         })
         $.init()
     })();

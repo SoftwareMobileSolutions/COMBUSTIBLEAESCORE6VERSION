@@ -34,6 +34,12 @@ namespace COMBUSTIBLEAESCORE.Controllers
             return Json(flotas);
         }
 
+        public async Task<JsonResult> ObtenerCentrosCosto()
+        {
+            var sesion = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
+            var centrosCosto = await iadVehiculosFlotas.ObtenerCentrosCosto(sesion.FirstOrDefault().CompanyID); 
+            return Json(centrosCosto);
+        }
         public async Task<JsonResult> agregarFlota(string SubfleetName) {
             var sesion = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
             var resultado = await iadVehiculosFlotas.agregarFlota(sesion.FirstOrDefault().CompanyID, SubfleetName);

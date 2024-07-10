@@ -5,24 +5,7 @@
     Layout = null;
 }
 <section>
-    <div class="card">
-        <div class="container-fluid p-lg-4 p-3">
-            <div class="row">
-                <h2 class="text-center ">Centros de Costo</h2>
-            </div>
-            <div class="row">
-                <label class="mb-2">Ingrese nombre del centro de costo</label>
-            </div>
-            <div class="row">
-                <div class="col-lg-8 col-12 mb-2 mb-lg-0">
-                    <input type="text" class="form-control" id="input_CentroCosto">
-                </div>
-                <div class="col-lg-4 col-12">
-                    <button type="button" class="btn btn-success w-100" id="BTN_CenCost"><i class="bi bi-plus-circle fs-6"></i> <span> Agregar Centro de Costos</span></button>
-                </div>
-            </div>
-        </div>       
-    </div>
+    @await Html.PartialAsync("~/Views/adCentroCosto/Partials/AgregarCentroCosto.cshtml");
     <div class="card">
         <div class="container-fluid p-lg-5">
             @*<div class="row mt-3 mt-lg-0">
@@ -68,40 +51,11 @@
         </div>
     </div>
 </section>
-<style type="text/css">
-    .k-grid-Editar {
-        background: #198754;
-        color: white;
-    }
 
-        .k-grid-Editar:hover {
-            background: #157347;
-        }
-
-    .k-grid-Eliminar {
-        background: #dc3545;
-        color: white;
-    }
-
-        .k-grid-Eliminar:hover {
-            background: #bb2d3b;
-            color: white;
-        }
-    .col-command {
-        text-align: center !important;
-        width:195px;
-    }
-    @@media screen and (max-width: 576px) {
-        .col-command {
-            width: 60%; 
-        }
-    }
-
-</style>
 <script type="text/javascript">
     (function () {
         $.extend({
-            CentroCosto: {
+            /*CentroCosto: {
                 BTN_AgregarCentroCosto: function () {
                     var _this = this
                     $("#BTN_CenCost").on("click", function () {
@@ -133,7 +87,7 @@
                     }
                     return true
                 }
-            },
+            },*/
             Grid: {
                 loadGrid: function () {
                     var _this = this
@@ -281,7 +235,7 @@
             },
             init: function () {
                 var _this = this
-                _this.CentroCosto.BTN_AgregarCentroCosto()
+                //_this.CentroCosto.BTN_AgregarCentroCosto()
                 _this.Grid.loadGrid()
                 _this.Grid.modal.BTN_GuardarCambios()
             }
@@ -289,3 +243,35 @@
         $.init()
     })();
 </script>
+<style type="text/css">
+    .k-grid-Editar {
+        background: #198754;
+        color: white;
+    }
+
+        .k-grid-Editar:hover {
+            background: #157347;
+        }
+
+    .k-grid-Eliminar {
+        background: #dc3545;
+        color: white;
+    }
+
+        .k-grid-Eliminar:hover {
+            background: #bb2d3b;
+            color: white;
+        }
+
+    .col-command {
+        text-align: center !important;
+        width: 195px;
+    }
+
+    @@media screen and (max-width: 576px) {
+        .col-command {
+            width: 60%;
+        }
+    }
+
+</style>

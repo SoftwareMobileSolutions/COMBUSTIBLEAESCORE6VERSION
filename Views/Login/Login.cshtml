@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>COMBUSTIBLEAESCORE</title>
+    <title>ValesCombustible - Login</title>
     <link rel="stylesheet" href="@Url.Content("~/lib/bootstrap/css/bootstrap.min.css")" />
     <link rel="stylesheet" href="@Url.Content("~/css/login.css")" />
 
@@ -187,9 +187,9 @@
             },
             DataCompany: function () {
                 if (localStorage.companydatos !== undefined) {
-
+                       
                     var DataCompany = JSON.parse(localStorage.getItem("companydatos"))
-                    console.log('@Url.Content("~/")' + DataCompany.compamyLogo)
+                    //console.log('@Url.Content("~/")' + DataCompany.compamyLogo)
                     $("#Company_logo").attr("src", '@Url.Content("~/")'+ DataCompany.compamyLogo);
                     $("#Company_name").text(DataCompany.companyName);
                     $("#Company_contacto").html("")

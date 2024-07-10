@@ -4,7 +4,7 @@
 @{
     Layout = null;
 }
-<section>
+<section id="moduloTimeLine">
     <div class="card">
         <div class="container-fluid p-4">
             <div class="row">
@@ -14,71 +14,29 @@
             </div>
             <div class="row mt-2">
                 <div class="col-lg-3 col-12">
-                    <label>Fecha Inicio</label>
-                    <input id="FechaIni" />
+                    @*<label>Fecha Inicio</label>
+                    <input id="FechaIni" />*@
+                    <input id="datepicker"/>
                 </div>
-                <div class="col-lg-3 col-12 mt-2 mt-lg-0 offset-lg-4">
+                @*<div class="col-lg-3 col-12 mt-2 mt-lg-0 offset-lg-2">
                     <label>Fecha Fin</label>
                     <input id="FechaFin" />
+                </div>*@
+                <div class="col-lg-2 col-12 d-flex align-items-end">
+                    <input id="DropDownListPlacas">
                 </div>
+
+                <div class="col-lg-2 col-12 d-flex align-items-end">
+                    <input id="DropDownListEstadoVales">
+                </div>
+
                 <div class="col-lg-2 d-flex align-items-end col-12 mt-2 mt-lg-0">
                     <button type="button" class="btn btn-success w-100" id="BTN_GenerarReporte"> Generar </button>
                 </div>
             </div>
+        </div>
+        <div class="container-fluid" id="ContenedorGrficas">
 
-            <div class="row mt-5 pt-5">
-                <div class="col-lg-1 d-flex align-items-center justify-content-end">
-                    <span>P44454</span>
-                </div>
-                <div class="col-lg-10 d-flex">
-                    <div class="contenedor">
-                        <div class="barra-generado">
-
-                        </div>
-                        <div class="circulo circulo-generado" Fecha="18/05/00" Usuario="Henryhrra" TipoUsuario="Generador">
-
-                        </div>
-                    </div>
-                    <div class="contenedor">
-                        <div class="barra-autorizado">
-                        </div>
-                        <div class="circulo circulo-autorizado" Fecha="18/05/00" Usuario="Henryhrra" TipoUsuario="Autorizador">
-                        </div>
-                    </div>
-                    <div class="contenedor">
-                        <div class="barra-cancelado">
-                        </div>
-                        <div class="circulo circulo-cancelado" Fecha="18/05/00" Usuario="Henryhrra" TipoUsuario="Cerrador">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row mt-5 pt-5">
-                <div class="col-lg-1 d-flex align-items-center justify-content-end">
-                    <span>P44454</span>
-                </div>
-                <div class="col-lg-10 d-flex">
-                    <div class="contenedor">
-                        <div class="barra-anulado">
-                        </div>
-                        <div class="circulo-anulado" Fecha="18/05/00" Usuario="Henryhrra" >
-                        </div>
-                    </div>
-                    <div class="contenedor">
-                        <div class="barra-anulado">
-                        </div>
-                        <div class="circulo-anulado" Fecha="18/05/00" Usuario="Henryhrra" >
-                        </div>
-                    </div>
-                    <div class="contenedor">
-                        <div class="barra-anulado">
-                        </div>
-                        <div class="circulo circulo-anulado" Fecha="18/05/00" Usuario="Henryhrra" TipoUsuario="Cancelador">
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </section>
@@ -90,103 +48,187 @@
         align-items:center;
     }
 
-    .barra-generado {
+    .barra{
         flex: 1;
-        background: linear-gradient(to bottom, #b3ffb3, #66ff66);
         height: 10px;
         border-radius: 30px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), inset 0 -3px 5px rgba(0, 0, 0, 0.2);
     }
 
-    .circulo-generado{
-        height: 20px;
-        width:20px;
-        border-radius:100%;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), inset 0 -3px 5px rgba(0, 0, 0, 0.2);
-        background: linear-gradient(to bottom, #b3ffb3, #66ff66);
-    }
-
-    .barra-autorizado {
-        flex: 1;
-        background: linear-gradient(to bottom, #b3e0ff, #3385ff);
-        height: 10px;
-        border-radius: 30px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), inset 0 -3px 5px rgba(0, 0, 0, 0.2);
-    }
-
-    .circulo-autorizado {
+    .circulo {
         height: 20px;
         width: 20px;
         border-radius: 100%;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), inset 0 -3px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .generado {
+        /*background: linear-gradient(to bottom, #b3ffb3, #66ff66);*/
         background: linear-gradient(to bottom, #b3e0ff, #3385ff);
     }
 
-    .barra-cancelado {
-        flex: 1;
-        background: linear-gradient(to bottom, #ffffcc, #ffcc00);
-        height: 10px;
-        border-radius: 30px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), inset 0 -3px 5px rgba(0, 0, 0, 0.2);
-    }
-    .circulo-cancelado {
-        height: 20px;
-        width: 20px;
-        border-radius: 100%;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), inset 0 -3px 5px rgba(0, 0, 0, 0.2);
-        background: linear-gradient(to bottom, #ffffcc, #ffcc00);
+    .autorizado {
+        /*background: linear-gradient(to bottom, #b3e0ff, #3385ff);*/
+        background: linear-gradient(to bottom, #b3ffb3, #66ff66);
     }
 
-    .barra-anulado {
-        flex: 1;
-        background: linear-gradient(to bottom, #d9d9d9, #a6a6a6);
-        height: 10px;
-        border-radius: 30px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), inset 0 -3px 5px rgba(0, 0, 0, 0.2);
+    .cerrado {
+        /*background: linear-gradient(to bottom, #ffffcc, #ffcc00);*/
+        background: linear-gradient(to bottom, #b19cd9, #4b0082);
     }
 
-    .circulo-anulado {
-        height: 20px;
-        width: 20px;
-        border-radius: 100%;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), inset 0 -3px 5px rgba(0, 0, 0, 0.2);
-        background: linear-gradient(to bottom, #d9d9d9, #a6a6a6);
+    .anulado {
+        /*background: linear-gradient(to bottom, #d9d9d9, #a6a6a6);*/
+        background: linear-gradient(to bottom, #ff6666, #cc0000);
     }
 </style>
 <script>
-    (function () {
+   (function () {
         $.extend({
-            MostrarData: {
-                Circulo: {
-                    Generar: function(){
-                        var _this = this
-                        var Circulos = $(".circulo");
+            ObtenerData: function () {
+                var _this = this
+                let dia = moment($("#datepicker").data("kendoDatePicker").value()).format("YYYYMMDD")
+                let DataDropPlaca = $("#DropDownListPlacas").data("kendoDropDownList").value()
+                let _MobileID = DataDropPlaca === "" ? 0 : parseInt(DataDropPlaca)
 
+                let arg = {
+                    MobileID: _MobileID,
+                    FechaIni: dia + ' 00:00:01',
+                    FechaFin: dia + ' 23:59:59'
+                }
+
+                //console.log(arg)
+                /*let arg = {
+                    MobileID: 9,
+                    FechaIni: '20240101 00:00:01' ,
+                    FechaFin: '20240709 23:59:59'
+                }*/
+                $.get('@Url.Action("ObtenerVales","rpLineaTimpoVale")', arg, function (vales) {
+                    _this.Grafica.GenerarGrafica(vales)
+                });
+            },
+            Grafica: {
+                GenerarGrafica: function (vales) {
+                    var _this = this
+                    var ContenedorGraficas = $("#ContenedorGrficas")
+                    ContenedorGraficas.empty()
+                    _this.Tooltip.EliminarResiduales()
+
+                    console.log(vales)
+                    
+                    let estadoID = parseInt($("#DropDownListEstadoVales").data("kendoDropDownList").value())
+
+                    if (estadoID === 2) {
+                        vales = vales.filter((vale) => vale.estado === "Generado")
+                    }
+                    if (estadoID === 3) {
+                        vales = vales.filter((vale) => vale.estado === "Autorizado")
+                    }
+                    if (estadoID === 4) {
+                        vales = vales.filter((vale) => vale.estado === "Liquidado")
+                    }
+                    vales.forEach((vale) => {
+                        let row =
+                            '<div class="row mt-5 pt-5" id="Vale_' + vale.numVale + '">' +
+                            '   <div class="col-lg-1 d-flex align-items-center justify-content-end">' +
+                            '        <span> Vale N°' + vale.numVale + '</span>' +
+                            '   </div>' +
+                            '    <div class="col-lg-11 d-flex"">';
+                        
+                        let contenedor;
+                        if (vale.anulado === true) {
+                            contenedor = _this.GraficaXVale("anulado", vale.fechaGenerado, vale.usuarioGenera, 'Generador', vale.usuarioAutoriza === null ? true : false, vale.fechaAnulacion, vale.usuarioAnula)
+                            row = row + contenedor
+
+                            if (vale.usuarioAutoriza !== null) {
+                                contenedor = _this.GraficaXVale("anulado", vale.fechaAutorizado, vale.usuarioAutoriza, 'Autorizador', true, vale.fechaAnulacion, vale.usuarioAnula)
+                                row = row + contenedor
+                            }
+
+                        }else {
+                            contenedor = _this.GraficaXVale("generado", vale.fechaGenerado, vale.usuarioGenera, 'Generador',false,"","")
+                            row = row + contenedor
+
+                            if (vale.usuarioAutoriza !== null) {
+                                contenedor = _this.GraficaXVale("autorizado", vale.fechaAutorizado, vale.usuarioAutoriza, 'Autorizador', false, "", "")
+                                row = row + contenedor
+                            }
+
+                            if (vale.usuarioCancela !== null) {
+                                contenedor = _this.GraficaXVale("cerrado", vale.fechaCancelacion, vale.usuarioCancela, 'Liquidador', false, "", "")
+                                row = row + contenedor
+                            }
+
+                        }
+                        row = row + '</div>'
+                        
+                        ContenedorGraficas.append(row)
+                    });
+                    _this.Tooltip.GenerarTooltip()
+                    
+                },
+                GraficaXVale: function (clase, Fecha, usuario, TipoUsuario, TooltipAnulado, FechaAnulacion, UsuarioAnulador) {
+
+                    let contenedor =
+                        '        <div class="contenedor" >';
+                    let Barra =
+                        '            <div class="barra ' + clase + '">' +
+                        '            </div>';
+
+                    let TooltipAnuladoData = TooltipAnulado === true ? (' TooltipAnulado  FechaAnulacion="' + moment(FechaAnulacion).subtract(6, 'hours').format("DD/MM/YYYY hh:mm A") + '" UsuarioAnulador="' + UsuarioAnulador + '"') : ''
+
+                    let circulo =
+                        '           <div class="circulo ' + clase + ' Tooltip" Fecha="' + moment(Fecha).subtract(6, 'hours').format("DD/MM/YYYY hh:mm A") + '" Usuario="' + usuario + '" TipoUsuario="' + TipoUsuario + '"' + TooltipAnuladoData + '>' +
+                        '			</div>';
+
+                    contenedor = contenedor + Barra;
+                    contenedor = contenedor + circulo;
+                    contenedor = contenedor + '		</div>'
+
+                    return contenedor
+                },
+                Tooltip: {
+                    GenerarTooltip: function () {
+                        var _this = this
+                        var Circulos = $(".Tooltip");
                         Circulos.each(function (index) {
                             var Fecha = $(this).attr("Fecha");
                             var Usuario = $(this).attr("Usuario");
                             var TipoUsuario = $(this).attr("TipoUsuario");
+                            var TipoFecha = TipoUsuario.slice(0, -1)
+                            var TooltipAnulado = $(this).attr("TooltipAnulado")
+                            var FechaAnulacion = $(this).attr("FechaAnulacion")
+                            var UsuarioAnulador = $(this).attr("UsuarioAnulador")
+                            var Plantilla;
 
-                            let data = `<div style="display: inline-block;"><h6>Us. ${TipoUsuario}: ${Usuario}</h6><span> Fecha de cierre: ${Fecha}</span></div>`;
-
+                            if (TooltipAnulado === undefined) {
+                                Plantilla = `<div style="display: inline-block;"><h6>Us. ${TipoUsuario}: ${Usuario}</h6><span> Fecha ${TipoFecha}: ${Fecha}</span></div>`;
+                            } else {
+                                Plantilla = `<div style="display: inline-block;"><h6>Us. ${TipoUsuario}: ${Usuario}</h6><span> Fecha ${TipoFecha}: ${Fecha}</span><h6>Us. Anulador: ${UsuarioAnulador}</h6><span> Fecha Anulado: ${FechaAnulacion}</span></div>`;
+                            }
+                            //console.log(this)
                             let instance = tippy(this, {
-                                content: data,
+                                content: Plantilla,
                                 theme: 'light',
                                 placement: 'top',
                                 hideOnClick: false,
                                 trigger: 'manual',
-                                interactive: true,
+                                interactive: false,
                                 allowHTML: true,
-                                offset: [0, 10], 
+                                offset: [0, 10],
+                                zIndex:0,
+                                sticky: true,
+                                boundary: this, // Cambiar a 'viewport'
+                                flip: true, // Habilitar el flip
+                                interactive: true
                             });
 
                             instance.show();
 
-                            _this.ActualizarPocision(this, instance)
+                            //_this.ActualizarPocisionTooltip(this, instance)
                         });
-
-                    }, 
-                    ActualizarPocision: function (circulo, tooltip) {
+                    },
+                    /*ActualizarPocisionTooltip: function (circulo, tooltip) {
                         var pocisionDataAnterior = $(circulo).offset();
                         var PosXAnterior = pocisionDataAnterior.left
 
@@ -196,7 +238,7 @@
                             var PosX = pocisionData.left
 
                             if (PosX !== PosXAnterior) {
-                                
+
                                 let X = PosXAnterior - PosX
 
                                 tooltip.setProps({
@@ -207,58 +249,77 @@
                             }
                         }
                         setInterval(verificarPosicion, 10);
+                    },*/
+                    EliminarResiduales: function () {
+                        let divs = $("body div")
+                        divs.each(function (index) {
+                            if ($(this).attr("data-tippy-root") !== undefined) {
+                                $(this).remove()
+                            }
+                        })
                     }
-                },
-                Barrras: {
-
                 }
             },
             BarrraOpciones: {
                 Load: function () {
-                    $("#FechaIni").kendoDateTimePicker({
-                        dateInput: true,
-                        startTime: new Date(2023, 1, 3, 8, 30, 0),
-                        endTime: new Date(2023, 1, 3, 17,00, 0)
-                    });
-                    $("#FechaFin").kendoDateTimePicker({
-                        dateInput: true,
-                        startTime: new Date(2023, 1, 3, 8, 30, 0),
-                        endTime: new Date(2023, 1, 3, 17,00, 0)
-                    });
+                    var _this = this
 
-                    /*var dataVariable = new kendo.data.DataSource({
-                        data: [
-                            { EstadoID: 1, EstadoName: "Vales Generdos" },
-                            { EstadoID: 2, EstadoName: "Suma de Galones" },
-                            { EstadoID: 3, EstadoName: "Suma de Dolares" },
-                            { EstadoID: 3, EstadoName: "Suma de Dolares" }
-                        ],
-                        sort: { field: "CityName", dir: "asc" }
+                    $("#datepicker").kendoDatePicker({
+                        dateInput: true
                     });
-
-                    $("#kendoDropDownListVariable").kendoDropDownList({
+                    $("#DropDownListPlacas").kendoDropDownList({
                         filter: "contains",
-                        dataTextField: "TopName",
-                        dataValueField: "TopID",
-                        dataSource: dataVariable
-                    });*/
+                        optionLabel: 'Seleccione una placa...',
+                        dataTextField: "placa",
+                        dataValueField: "mobileID"/*,
+                        select: function (e) {
+                            console.log(e.dataItem.mobileID)
+                            let mobile = e.dataItem.placa
+                            //if(){}
+                        }*/
+                    });
 
+                    var dataSource = new kendo.data.DataSource({
+                        data: [
+                            { ValeEstadoID: 1, ValeEstadoNombre: "Todos los estados" },
+                            { ValeEstadoID: 2, ValeEstadoNombre: "Generado" },
+                            { ValeEstadoID: 3, ValeEstadoNombre: "Autorizado" },
+                            { ValeEstadoID: 4, ValeEstadoNombre: "Liquidado" }
+                        ]
+                    });
 
-                    
-                    $("#FechaIni").data("kendoDateTimePicker").value(kendo.parseDate(moment().subtract(30, 'days').format("YYYY/MM/DD HH:mm:ss:SSS")));
-                    $("#FechaFin").data("kendoDateTimePicker").value(kendo.parseDate(moment().format("YYYY/MM/DD HH:mm:ss.SSS")));
+                    $("#DropDownListEstadoVales").kendoDropDownList({
+                        filter: "contains",
+                        dataTextField: "ValeEstadoNombre",
+                        dataValueField: "ValeEstadoID",
+                        dataSource: dataSource
+                        /*,
+                            select: function (e) {
+                                console.log(e.dataItem.mobileID)
+                                let mobile = e.dataItem.placa
+                                //if(){}
+                            }*/
+                    });
 
+                    _this.Data()
                 },
                 Data: function () {
-
+                    $.get('@Url.Action("ObtenerPlacas", "rpLineaTimpoVale")').then(function (placas) {
+                        $("#DropDownListPlacas").data("kendoDropDownList").dataSource.data(placas);
+                        $("#datepicker").data("kendoDatePicker").value(moment().format("DD/MM/YYYY"))
+                    })
+                },
+                BTN_Generar: function () {
+                    $("#BTN_GenerarReporte").on("click", function () {
+                        //console.log("XD")
+                        $.ObtenerData()
+                    })
                 }
             },
             init: function () {
                 var _this = this
-               // _this.MostrarData()
-                _this.MostrarData.Circulo.Generar()
-                //_this.MostrarData.Circulo.ActualizarPocision()
-                _this.BarrraOpciones.Load()
+               _this.BarrraOpciones.Load()
+               _this.BarrraOpciones.BTN_Generar()
             }
         })
         $.init()

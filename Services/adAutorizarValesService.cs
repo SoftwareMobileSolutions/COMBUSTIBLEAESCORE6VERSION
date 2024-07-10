@@ -90,7 +90,7 @@ namespace COMBUSTIBLEAESCORE.Services
         public async Task<IEnumerable<ProyectoModel>> ObtenerProyectos(int CompanyID)
         {
             IEnumerable<ProyectoModel> data = null;
-            string sp = "EXEC SP_ObtenerProyectosWEB @CompanyID";
+            string sp = "EXEC SP_ObtenerProyectosActivosWEB @CompanyID";
             var con = new SqlConnection(conexion.Value);
             try
             {

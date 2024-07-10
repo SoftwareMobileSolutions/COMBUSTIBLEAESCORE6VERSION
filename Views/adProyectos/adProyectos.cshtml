@@ -17,7 +17,7 @@
                 <div class="container-fluid mt-lg-2">
                     <div class="row mb-lg-2 col-12">
                         <div class="col-lg-3">
-                            <h4 class="text-center">Ingrese su archivo PEP</h4>
+                            <h4 class="text-center">Ingrese su archivo EXEL</h4>
                         </div>
 
                     </div>
@@ -37,7 +37,7 @@
                             <button type="button" class="btn btn-success w-100" id="cargarDatos" disabled> <i class="bi bi-upload"></i> Guardar datos</button>
                         </div>
                         <div class="col-lg-3 offset-lg-2 offset-1 col-10 d-flex align-items-center justify-content-center mt-2 mt-lg-0 order-lg-4 order-3">
-                            <button type="button" class="btn btn-primary w-100" id="BTN_downloadFormato"> <i class="bi bi-download"></i> Descargar formato archivo PEP</button>
+                            <button type="button" class="btn btn-primary w-100" id="BTN_downloadFormato"> <i class="bi bi-download"></i> Descargar formato archivo EXEL</button>
                         </div>
                         <div class="col-lg-2 mt-3 col-10 offset-1 offset-lg-0 mt-lg-0 d-flex align-items-center justify-content-center order-lg-4 order-4">
                             <button type="button" class="btn btn-success w-100 d-flex justify-content-between" id="BTN_ShowHidePEP">
@@ -50,14 +50,14 @@
                         <div class="container-fluid p-0 mb-lg-4">
                             <div class="row pt-lg-3 pt-3">
                                 <div class="col-lg-3">
-                                    <h4 class="text-center">Ingrese los datos del PEP</h4>
+                                    <h4 class="text-center">Ingrese los datos del Proyecto</h4>
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-lg-2">
-                                    <label class="mb-lg-1">Ingrese el codigo PEP</label>
-                                    <input type="text" class="form-control" id="codigoPEP" />
+                                    <label class="mb-lg-1">Ingrese el codigo del Proyecto</label>
+                                    <input type="text" class="form-control" id="codigoProyecto" />
                                 </div>
                                 <div class="col-lg-3">
                                     <label class="mb-lg-1">Nombre del proyecto</label>
@@ -69,7 +69,7 @@
                                 </div>
                                 <div class="col-lg-2">
                                     <label class="mb-lg-1">Estado</label>
-                                    <input type="text" class="form-control" id="estado" />
+                                    <input type="text" class="form-control" id="kendoDropDownListEstado" />
                                 </div>
                                 <div class="col-lg-2 d-flex justify-content-center align-items-center mt-3 mt-lg-0">
                                     <button type="button" class="btn btn-success w-100 mt-lg-4" id="BTN_AgregarPEP"><i class="bi bi-plus-circle"></i> Agregar PEP </button>
@@ -79,7 +79,7 @@
                         </div>
                     </div>
                     <div class="row mt-3 mt-lg-0">
-                        <div id="gridPeps">
+                        <div @*id="gridPeps"*@ id="GridProyectos">
                         </div>
                     </div>
                 </div>
@@ -96,7 +96,7 @@
                     
                     <div class="row">
                         <div class="col-lg-12">
-                            <div id="GridAdministrarPeps">
+                            <div id="GridAdministrarProyectos">
 
                             </div>
                         </div>
@@ -157,51 +157,48 @@
                 }
             },
             IngresoProyectos: {
-                PEP: {
-                    PEPS: [],
-                    PEPManual: {
+                Proyecto: {
+                    Proyectos: [],
+                    ProyectoManual: {
                         visibilidad: function () {
                             $('#content').hide()
                             $('#BTN_ShowHidePEP').click(function () {
-                                //console.log($("#content").css("display"));
                                 if ($("#content").css("display") === "block") {
                                     //console.log("Se oculta")
                                     $("#flecha").removeClass("bi-chevron-up")
                                     $("#flecha").addClass("bi-chevron-down")
                                     $("#TXT_ShowHidePEP").text("Añadir manualmente")
-                                    //$("#BTN_ShowHidePEP").children()[0].innerHTML = "Añadir manualmente"
 
                                 } else {
-                                    //console.log("Se Muestra")
                                     $("#flecha").removeClass("bi-chevron-down")
                                     $("#flecha").addClass("bi-chevron-up")
                                     $("#TXT_ShowHidePEP").text("Ocultar")
-                                    //$("#BTN_ShowHidePEP").children()[0].innerHTML = "Contraer"
                                 }
                                 $('#content').slideToggle();
                             })
 
 
                         },
-                        agregarPEP: function () {
+                        BTN_agregarProyecto: function () {
                             var _this = this;
                             $("#BTN_AgregarPEP").on("click", function () {
                                 if (_this.validaciones()) {
-                                    var _PEP = $("#codigoPEP").val().trim()
+                                    var _CodigoProyecto = $("#codigoProyecto").val().trim()
                                     var _Nombre = $("#nombreProyecto").val().trim()
                                     var _Responsable = $("#responsable").val().trim()
-                                    var _Estado = $("#estado").val().trim()
+                                    /*var _Estado = $("#estado").val().trim()*/
+                                    var _Estado = $("#kendoDropDownListEstado").data("kendoDropDownList").text()
 
                                     var arg = [{
-                                        PEP: _PEP,
+                                        ["Codigo Proyecto"]: _CodigoProyecto,
                                         ["Nombre del Proyecto"]: _Nombre,
                                         Responsable: _Responsable,
                                         Estado: _Estado
                                     }]
                                     var JSON;
+
+                                    //Formatar la data para ingresar al Grid
                                     JSON = $.IngresoProyectos.GRID.formatoDataGrid(arg)
-                                    //JSON = $.GRID.formatoDataGrid(arg)
-                                    //$.GRID.dataGrid(JSON);
                                     $.IngresoProyectos.GRID.dataGrid(JSON)
                                     $('#cargarDatos').prop("disabled", false)
                                     $("#codigoPEP").val("")
@@ -213,7 +210,7 @@
                             });
                         },
                         validaciones: function () {
-                            var PEP = $("#codigoPEP").val().trim()
+                            var PEP = $("#codigoProyecto").val().trim()
                             var Nombre = $("#nombreProyecto").val().trim()
                             if (PEP === "") {
                                 $.alert("error", "Campo vacio", "Debe ingresar el codigo PEP")
@@ -236,6 +233,22 @@
                             }
 
                             return true
+                        },
+                        DropDownList: function () {
+
+                            var dataSource = new kendo.data.DataSource({
+                                data: [
+                                    { EstadoID: 1, NombreEstado: "Activo" },
+                                    { EstadoID: 2, NombreEstado: "Inactivo" }
+                                ]
+                            });
+
+                            $("#kendoDropDownListEstado").kendoDropDownList({
+                                filter: "contains",
+                                dataTextField: "NombreEstado",
+                                dataValueField: "EstadoID",
+                                dataSource: dataSource
+                            });
                         }
                     },
                     archivoPEP: {
@@ -245,18 +258,24 @@
                                 var jsonData;
                                 var titles;
 
+                                //Funcion para leer el archivo 
                                 reader.onload = function (event) {
+                                    //Se obtiene el archivo
                                     var data = new Uint8Array(event.target.result);
+                                    //Se obtienen los datos del libro como un array
                                     var workbook = XLSX.read(data, { type: 'array' });
+
+                                    //Se obtine solamente la primera hoja
                                     var sheetName = workbook.SheetNames[0];
                                     var sheet = workbook.Sheets[sheetName];
-                                    //console.log(sheet)
+
+                                    //Se obtienen los titulos
                                     var PrimeraFila = XLSX.utils.sheet_to_json(sheet, { header: ["Titulo-1", "Titulo-2", "Titulo-3", "Titulo-4"] });
                                     titles = PrimeraFila[0]
                                     jsonData = XLSX.utils.sheet_to_json(sheet);
-                                    /*console.log(jsonData)
-                                    console.log(titles)*/
+
                                     console.log("Paso1")
+                                    //Se devuelen los datos 
                                     resolve([titles, jsonData]);
                                     
                                 };
@@ -264,7 +283,7 @@
                                 reader.onerror = function (error) {
                                     reject(error);
                                 };
-
+                                //Se pasan los datos a la funcion 
                                 reader.readAsArrayBuffer(file);
                             });
                         },
@@ -276,21 +295,21 @@
                             }
 
                             var titles = data[0];
-                            if (titles["Titulo-1"] != "PEP" || titles["Titulo-2"] != "Nombre del Proyecto" || titles["Titulo-3"] != "Responsable" || titles["Titulo-4"] != "Estado") {
+                            if (titles["Titulo-1"] != "Codigo Proyecto" || titles["Titulo-2"] != "Nombre del Proyecto" || titles["Titulo-3"] != "Responsable" || titles["Titulo-4"] != "Estado") {
                                 //console.log(titles)
                                 $.alert("error", "Archivo sin formato", "Debe seleccionar un archivo de exel con el formato correcto")
                                 return false
                             }
                             console.log("Validacion")
                             for (let i = 0; i < JSON.length; i++) {
-                                if (!("PEP" in JSON[i])) {
-                                    $.alert("error", "Dato faltante", "No se pude omitir el codigo PEP, verificar la fila N° " + (JSON[i].__rowNum__ + 1))
+                                if (!("Codigo Proyecto" in JSON[i])) {
+                                    $.alert("error", "Dato faltante", "No se pude omitir el codigo del Proyecto, verificar la fila N° " + (JSON[i].__rowNum__ + 1))
                                     return false
                                     break
                                 }
 
-                                if (JSON[i].PEP.length < 2) {
-                                    $.alert("error", "Dato demasiado corto", "El codigo PEP debe tener como minimo 2 caracteres, verificar la fila N° " + (JSON[i].__rowNum__ + 1))
+                                if (JSON[i]["Codigo Proyecto"].trim().length < 2) {
+                                    $.alert("error", "Dato demasiado corto", "El codigo del Proyecto debe tener como minimo 2 caracteres, verificar la fila N° " + (JSON[i].__rowNum__ + 1))
                                     return false
                                     break
                                 }
@@ -300,14 +319,15 @@
                                     return false
                                     break
                                 }*/
-                                console.log(JSON[i])
+
+                                //console.log(JSON[i])
                                 if (!JSON[i].hasOwnProperty("Nombre del Proyecto")) {
                                     $.alert("error", "Dato faltante", "No se pude omitir el Nombre del Proyecto, verificar la fila N° " + (JSON[i].__rowNum__ + 1))
                                     return false
                                     break
                                 }
 
-                                if (JSON[i]["Nombre del Proyecto"].length < 3) {
+                                if (JSON[i]["Nombre del Proyecto"].trim().length < 3) {
                                     $.alert("error", "Dato demasiado corto", "El Nombre del Proyecto debe tener como minimo 3 caracteres, verificar la fila N° " + (JSON[i].__rowNum__ + 1))
                                     return false
                                     break
@@ -337,14 +357,13 @@
                                         //var PEPS = $.GRID.formatoDataGrid(data[1])
                                         console.log("Paso 2")
                                         
-                                        console.log("Paso 2")
                                         if (_this.validaciones(data) === true) {
-                                            var PEPS = $.IngresoProyectos.GRID.formatoDataGrid(data[1])
-                                            $.IngresoProyectos.GRID.dataGrid(PEPS);
+                                            var Proyectos = $.IngresoProyectos.GRID.formatoDataGrid(data[1])
+                                            $.IngresoProyectos.GRID.dataGrid(Proyectos);
                                             $('#cargarDatos').prop("disabled", false)
 
                                         } else {
-                                            var dataGrid = $("#gridPeps").data("kendoGrid").dataSource.data();
+                                            var dataGrid = $("#GridProyectos").data("kendoGrid").dataSource.data();
                                             if (dataGrid.length > 0) {
                                                 $('#cargarDatos').prop("disabled", false)
                                             } else {
@@ -358,36 +377,36 @@
                         },
                         BTN_Download: function () {
                             $("#BTN_downloadFormato").on("click", function () {
-                                window.open("@Url.Content("~/archivos/PEP_Formato.xlsx")")
+                                window.open("@Url.Content("~/archivos/Proyectos_Formato.xlsx")")
                             });
                         },
                     },
                     BTN_Cargar: function () {
                         $("#cargarDatos").on("click", function () {
                             //var PEPS = $.PEPS;
-                            var PEPS = $("#gridPeps").data("kendoGrid").dataSource.data()
+                            var Proyectos = $("#GridProyectos").data("kendoGrid").dataSource.data()
                             var Tabla1 = "";
                             var Tabla2 = "";
 
-                            for (let i = 0; i < PEPS.length; i++) {
+                            for (let i = 0; i < Proyectos.length; i++) {
                                 if (i === 0) {
-                                    Tabla1 = PEPS[i].PEP + "₩" + PEPS[i].NombreProyecto;
-                                    Tabla2 = PEPS[i].Responsable + "₩" + estado(PEPS[i].Estado);
+                                    Tabla1 = Proyectos[i].codigoProyecto + "₩" + Proyectos[i].NombreProyecto;
+                                    Tabla2 = Proyectos[i].Responsable + "₩" + estado(Proyectos[i].Estado);
                                 } else {
-                                    Tabla1 = Tabla1 + "¥" + PEPS[i].PEP + "₩" + PEPS[i].NombreProyecto;
-                                    Tabla2 = Tabla2 + "¥" + PEPS[i].Responsable + "₩" + estado(PEPS[i].Estado);
+                                    Tabla1 = Tabla1 + "¥" + Proyectos[i].codigoProyecto + "₩" + Proyectos[i].NombreProyecto;
+                                    Tabla2 = Tabla2 + "¥" + Proyectos[i].Responsable + "₩" + estado(Proyectos[i].Estado);
                                 }
                             }
 
                             var arg = {
-                                PEPS_NombreProyecto: Tabla1,
+                                CodigoProyecto_NombreProyecto: Tabla1,
                                 Responsable_Estado: Tabla2
                             }
   
-                            $.post('@Url.Action("InsertarPEPS", "adProyectos")', arg, function (resultado) {
+                            $.post('@Url.Action("InsertarProyectos", "adProyectos")', arg, function (resultado) {
                                 if (resultado[0].bandera === 1) {
                                     $.alert("success", "Actualización exitosa", resultado[0].resultado)
-                                    $("#gridPeps").data("kendoGrid").dataSource.data("");
+                                    $("#GridProyectos").data("kendoGrid").dataSource.data("");
                                     $.AdministracionProyectos.GRID.DataGrid()
                                     $('#cargarDatos').prop("disabled", true)
                                     $('#content').hide()
@@ -416,14 +435,14 @@
                 },
                 GRID: {
                     loadGrid: function () {
-                        $("#gridPeps").html("");
-                        $("#gridPeps").kendoGrid({
+                        $("#GridProyectos").html("");
+                        $("#GridProyectos").kendoGrid({
                             dataSource: {
                                 pageSize: 15,
                                 schema: {
                                     model: {
                                         fields: {
-                                            PEP: { type: "string" },
+                                            CodigoProyecto: { type: "string" },
                                             NombreProyecto: { type: "string" },
                                             Responsable: { type: "string" },
                                             Estado: { type: "string" }
@@ -437,8 +456,8 @@
                             themeColor: "Purple",
                             columns: [                              
                                 {
-                                    field: "PEP",
-                                    title: "PEP",
+                                    field: "codigoProyecto",
+                                    title: "Codigo Proyecto",
                                     attributes: { class: "col-data" },
                                     headerAttributes: { class: "col-data" },
                                     filterable: {
@@ -493,8 +512,8 @@
                                                 e.preventDefault();
                                                 var tr = $(e.target).closest("tr");
                                                 var data = this.dataItem(tr);
-                                                $("#gridPeps").data("kendoGrid").dataSource.remove(data)
-                                                var filas = $("#gridPeps").data("kendoGrid").dataSource.data().length;
+                                                $("#GridProyectos").data("kendoGrid").dataSource.remove(data)
+                                                var filas = $("#GridProyectos").data("kendoGrid").dataSource.data().length;
                                                 if (filas < 1) {
                                                     $('#cargarDatos').prop("disabled", true)
                                                 }
@@ -520,24 +539,24 @@
                         });
 
                     },
-                    dataGrid: function (PEPS) {
-                        var dataGrid = $.IngresoProyectos.PEP.PEPS
+                    dataGrid: function (_Proyectos) {
+                        var dataGrid = $.IngresoProyectos.Proyecto.Proyectos
                         if (dataGrid.length < 1) {
-                            $.IngresoProyectos.PEP.PEPS = PEPS
-                            $("#gridPeps").data("kendoGrid").dataSource.data(PEPS);
+                            $.IngresoProyectos.Proyecto.Proyectos = _Proyectos
+                            $("#GridProyectos").data("kendoGrid").dataSource.data(_Proyectos);
                         } else {
-                            let temporal = PEPS.concat(dataGrid)
-                            $.IngresoProyectos.PEP.PEPS = temporal
-                            $("#gridPeps").data("kendoGrid").dataSource.data(temporal);
+                            let temporal = _Proyectos.concat(dataGrid)
+                            $.IngresoProyectos.Proyecto.Proyectos = temporal
+                            $("#GridProyectos").data("kendoGrid").dataSource.data(temporal);
                         }
 
                     },
                     formatoDataGrid: function (JSON) {
-                        var PEPS = [];
-                        console.log(JSON)
+                        var Proyectos = [];
+                        //console.log(JSON)
                         for (let i = 0; i < JSON.length; i++) {
                             console.log(i)
-                            PEPS.push({ PEP: JSON[i].PEP.toString().trim(), NombreProyecto: JSON[i]["Nombre del Proyecto"].toString().trim(), Responsable: responsable(JSON[i].Responsable), Estado: estado(JSON[i].Estado) })
+                            Proyectos.push({ codigoProyecto: JSON[i]["Codigo Proyecto"].toString().trim(), NombreProyecto: JSON[i]["Nombre del Proyecto"].toString().trim(), Responsable: responsable(JSON[i].Responsable), Estado: estado(JSON[i].Estado) })
                         }
                         function estado(dato) {
                             if (dato === undefined) {
@@ -555,10 +574,10 @@
                             }
                             return dato.toString().trim();
                         }
-                        return PEPS
+                        return Proyectos
                     },
                     BTN_BorarTodo: function () {
-                        $("#gridPeps").data("kendoGrid").dataSource.data([]);
+                        $("#GridProyectos").data("kendoGrid").dataSource.data([]);
                         $('#cargarDatos').prop("disabled", true)
                         $("#fileInput").val("")
                         $(".js-fileName").text("Selecciona un archivo")
@@ -569,14 +588,14 @@
                 GRID: {
                     loadGrid: function () {
                         var _this =  this
-                        $("#GridAdministrarPeps").html("");
-                        $("#GridAdministrarPeps").kendoGrid({
+                        $("#GridAdministrarProyectos").html("");
+                        $("#GridAdministrarProyectos").kendoGrid({
                             dataSource: {
                                 pageSize: 15,
                                 schema: {
                                     model: {
                                         fields: {
-                                            pep: { type: "string" },
+                                            codigoProyecto: { type: "string" },
                                             nombreProyecto: { type: "string" },
                                             responsable: { type: "string" },
                                             estado: { type: "string" }
@@ -588,8 +607,8 @@
                             themeColor: "Purple",
                             columns: [                              
                                 {
-                                    field: "pep",
-                                    title: "PEP",
+                                    field: "codigoProyecto",
+                                    title: "Codigo Proyecto",
                                     //width: "100px",
                                     attributes: { class: "col-data" },
                                     headerAttributes: { class: "col-data" },
@@ -678,14 +697,14 @@
                             pageable: true,
                             mobile: "phone",
                             dataBound: function (e) {
-                                $("#GridAdministrarPeps > div span input").attr("placeholder", "Busqueda")
+                                $("#GridAdministrarProyectos > div span input").attr("placeholder", "Busqueda")
                             }
                         });
 
                     },
                     DataGrid: function () {
-                        $.get('@Url.Action("ObtenerPEPS", "adProyectos")', function (PEPS) { 
-                            
+                        $.get('@Url.Action("ObtenerProyectos", "adProyectos")', function (PEPS) {
+
                             for (let i = 0; i < PEPS.length; i++) {
                                 //console.log(PEPS[i])
                                 PEPS[i].estado = estado(PEPS[i].estado)
@@ -698,9 +717,9 @@
                                     return "Activo"
                                 }
                             }
-                            $("#GridAdministrarPeps").data("kendoGrid").dataSource.data([]);
+                            $("#GridAdministrarProyectos").data("kendoGrid").dataSource.data([]);
                             //console.log(PEPS)
-                            $("#GridAdministrarPeps").data("kendoGrid").dataSource.data(PEPS);
+                            $("#GridAdministrarProyectos").data("kendoGrid").dataSource.data(PEPS);
                         })
                     },
                     EliminarProyecto: function (_ProyectoID,_PEP) {
@@ -814,16 +833,29 @@
             init: function () {
                 var _this = this;
                 _this.Tabstrip.loadTabstrip();
+
+                //Documento EXEl
+                _this.IngresoProyectos.Proyecto.archivoPEP.BTN_File();
+                _this.IngresoProyectos.Proyecto.archivoPEP.BTN_Download();
+
+                //Agregar manualmente 
+                _this.IngresoProyectos.Proyecto.ProyectoManual.visibilidad();
+                _this.IngresoProyectos.Proyecto.ProyectoManual.BTN_agregarProyecto()
+                _this.IngresoProyectos.Proyecto.ProyectoManual.DropDownList()
+
+                //Grid ingreso proyectos
                 _this.IngresoProyectos.GRID.loadGrid();
-                _this.IngresoProyectos.PEP.archivoPEP.BTN_File();
-                _this.IngresoProyectos.PEP.archivoPEP.BTN_Download();
-                _this.IngresoProyectos.PEP.PEPManual.visibilidad();
-                _this.IngresoProyectos.PEP.PEPManual.agregarPEP();
-                _this.IngresoProyectos.PEP.BTN_Cargar();
+
+                //Grid Administrar Proyectos
                 _this.AdministracionProyectos.GRID.loadGrid();
                 _this.AdministracionProyectos.GRID.DataGrid();
+
+                //Modal
                 _this.AdministracionProyectos.GRID.modal.loadDropDownList();
                 _this.AdministracionProyectos.GRID.modal.BTN_Guardar();
+
+                //GuardarProyectos
+                _this.IngresoProyectos.Proyecto.BTN_Cargar();
             }
         })
         $.init()

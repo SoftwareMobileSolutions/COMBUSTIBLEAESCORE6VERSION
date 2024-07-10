@@ -176,12 +176,17 @@
 
                         console.log(data)
                     }*/
-
+                    let divs = $("body div")
+                    divs.each(function (index) {
+                        if ($(this).attr("data-tippy-root") !== undefined) {
+                            $(this).remove()
+                        }
+                    })
                     if (url != "") {
                         //$.get("/" + url, function (p) {
                         $.get("@Url.Content("~/")" + url, function (p) {
-                            $("#main").html(p)
-                            
+                            $('#main').empty();
+                            $("#main").html(p);                  
                         });
                     }
                 },

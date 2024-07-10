@@ -543,7 +543,6 @@
                             FechaIncio: $.Grid.SubGrid.FechaIni,
                             FechaFin: $.Grid.SubGrid.FechaFin
                         }
-                        //console.log(arg)
                         $.get('@Url.Action("ObtenerValesUsadosXPlaca", "rpTopValePorVehiculo")', arg, function (Data) {
 
                             $("<div/>").appendTo(e.detailCell).kendoGrid({

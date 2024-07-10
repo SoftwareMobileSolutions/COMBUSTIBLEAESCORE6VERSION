@@ -4,20 +4,22 @@
 @{
     Layout = null;
 }
-<section>
+
+@await Html.PartialAsync("~/Views/adProyectos/adProyectos.cshtml");
+
+@*<section>
     <div class="card p-3 d-flex justify-content-center align-items-center">
         <h2 class="text-center text-light">Sistema de Vales Combustible</h2>
     </div>
-</section>
-<style>
+</section>*@
+@*<style>
     .card{
         height: 80vh;
         background: url(@Url.Content("~/images/intro.jpg"));
         background-size:cover;
         background-position:center;
-        /*background-repeat:no-repeat;*/
     }
     h2{
         font-size:150px;
     }
-</style>
+</style>*@
