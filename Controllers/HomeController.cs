@@ -52,17 +52,25 @@ namespace COMBUSTIBLEAESCORE.Controllers
             }
             else
             {
-                ViewData["user"] = user.FirstOrDefault().Username;
-                ViewData["CompanyName"] = user.FirstOrDefault().CompanyName;
-                ViewData["modulos"] = sortMenu();
-                ViewData["CompamyLogo"] = logoCompany(user.FirstOrDefault().CompanyID);
-                ViewData["Name"] = user.FirstOrDefault().Nombre + " " + user.FirstOrDefault().Apellido;
-                ViewData["DataUserFull"] = user;
+                var TutorialEstado = user.FirstOrDefault().Tutorial;
+                if (TutorialEstado == false)
+                {
+                    return RedirectToAction("adTutorial", "adTutorial");
+                }else
+                {
+                    ViewData["user"] = user.FirstOrDefault().Username;
+                    ViewData["CompanyName"] = user.FirstOrDefault().CompanyName;
+                    ViewData["modulos"] = sortMenu();
+                    ViewData["CompamyLogo"] = logoCompany(user.FirstOrDefault().CompanyID);
+                    ViewData["Name"] = user.FirstOrDefault().Nombre + " " + user.FirstOrDefault().Apellido;
+                    ViewData["DataUserFull"] = user;
 
-                /*ViewData["Cotancto"] = user.FirstOrDefault().TelMovil;
-                ViewData["Direccion"] = user.FirstOrDefault().Direccion;*/
-                //ViewBag.login = user.FirstOrDefault().login;
-                return View();
+                    /*ViewData["Cotancto"] = user.FirstOrDefault().TelMovil;
+                    ViewData["Direccion"] = user.FirstOrDefault().Direccion;*/
+                    //ViewBag.login = user.FirstOrDefault().login;
+                    return View();
+                }
+
             }
 
         }

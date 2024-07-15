@@ -22,9 +22,11 @@ namespace COMBUSTIBLEAESCORE.Controllers
             return PartialView();
         }
 
-        public async Task<JsonResult> agregarVehiculo(string PlacaNew, string NombreNew, string Marca, string Modelo,int FlotaID, float KmXGalon, float CapacidadTanque, int TipoCombustibleID, string VINNew) {
+        public async Task<JsonResult> agregarVehiculo(string PlacaNew, string NombreNew, string Marca, string Modelo,int FlotaID, float KmXGalon, float CapacidadTanque, int TipoCombustibleID, string VINNew, int CentroCostoID) {
             var usuario = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
-            var vehiculo = await iadVehiculosFlotas.agregarVehiculo(usuario.FirstOrDefault().CompanyID, PlacaNew,  NombreNew,  Marca,  Modelo, FlotaID,  KmXGalon,  CapacidadTanque, TipoCombustibleID,  VINNew);
+            var vehiculo = await iadVehiculosFlotas.agregarVehiculo(usuario.FirstOrDefault().CompanyID, PlacaNew,  NombreNew,  Marca,  Modelo, FlotaID,  KmXGalon,  CapacidadTanque, TipoCombustibleID,  VINNew, CentroCostoID,
+                usuario.FirstOrDefault().UsuarioID
+                );
             return Json(vehiculo);
         }
 
@@ -69,6 +71,30 @@ namespace COMBUSTIBLEAESCORE.Controllers
         public async Task<JsonResult> EliminarMobile(int MobileID)
         {
             var mensaje = await iadVehiculosFlotas.EliminarMobile(MobileID);
+            return Json(mensaje);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> CrearCentroCosto(string Nombre)
+        {
+            var usuario = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
+            var mensaje = await iadVehiculosFlotas.CrearCentroCosto(Nombre, usuario.FirstOrDefault().CompanyID);
+            return Json(mensaje);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> EliminarSubfleet(int SubfleetID)
+        {
+            var usuario = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
+            var mensaje = await iadVehiculosFlotas.EliminarSubfleet(SubfleetID, usuario.FirstOrDefault().CompanyID);
+            return Json(mensaje);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> ActulizarSubfleet(int SubfleetID, string NombreSubfleetNuevo)
+        {
+            var usuario = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
+            var mensaje = await iadVehiculosFlotas.ActualizarSubfleet(SubfleetID, usuario.FirstOrDefault().CompanyID, NombreSubfleetNuevo);
             return Json(mensaje);
         }
     }

@@ -4,6 +4,15 @@
 *@
 @{
     Layout = null;
+    string guid = System.Guid.NewGuid().ToString().Replace("-", ""),
+    Input_RazonCancel = "Input_RazonCancel_" + guid,
+    BTN_RazonCancel = "BTN_RazonCancel_" + guid,
+    GRIDRazonCancel = "GRIDRazonCancel_" + guid,
+    EditarModal = "EditarModal_" + guid,
+    EditarModalLabel = "EditarModalLabel_" + guid,
+    InputNombreRazonCancel = "InputNombreRazonCancel_" + guid,
+    ModalAlert = "ModalAlert_" + guid,
+    BTN_Guardar = "BTN_Guardar_" + guid;
 }
 <section>
     <div class="card">
@@ -16,10 +25,10 @@
             </div>
             <div class="row">
                 <div class="col-lg-8 col-12 mb-2 mb-lg-0">
-                    <input type="text" class="form-control" id="input_RazonCancel">
+                    <input type="text" class="form-control" id="@{@Input_RazonCancel}">
                 </div>
                 <div class="col-lg-4 col-12">
-                    <button type="button" class="btn btn-success w-100" id="BTN_RazonCancel"><i class="bi bi-plus-circle fs-6"></i> <span> Agregar razón de anulación</span></button>
+                    <button type="button" class="btn btn-success w-100" id="@{@BTN_RazonCancel}"><i class="bi bi-plus-circle fs-6"></i> <span> Agregar razón de anulación</span></button>
                 </div>
             </div>
         </div>
@@ -30,17 +39,17 @@
             <h2 class="text-center">Centros de costo</h2>
             </div>*@
             <div class="row mt-lg-2 mt-3">
-                <div id="GridRazonCancel">
+                <div id="@{@GRIDRazonCancel}">
                 </div>
             </div>
         </div>
     </div>
-    <div class="modal fade" id="editarModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="@{@EditarModal}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <i class="bi bi-pencil-square"></i>
-                    <h5 class="modal-title" id="editarModalLabel">Modal title</h5>
+                    <h5 class="modal-title" id="@{@EditarModalLabel}">Modal title</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -50,19 +59,19 @@
                         </div>
                         <div class="row pt-lg-2">
                             <div class="col-lg-12">
-                                <input type="text" id="InputNombreRazonCancel" class="form-control" />
+                                <input type="text" id="@{@InputNombreRazonCancel}" class="form-control" />
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-12 mt-lg-1">
-                                <span id="ModalAlert"></span>
+                                <span id="@{@ModalAlert}"></span>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn btn-success" id="BTN_Guardar"><i class="bi bi-floppy"></i> Guardar cambios</button>
+                    <button type="button" class="btn btn btn-success" id="@{@BTN_Guardar}"><i class="bi bi-floppy"></i> Guardar cambios</button>
                 </div>
             </div>
         </div>
@@ -101,203 +110,206 @@
 <script>
     (function () {
         $.extend({
-            RazonCancel: {
-                BTN_AgregarRazonCancel: function () {
-                    var _this = this
-                    $("#BTN_RazonCancel").on("click", function () {
-                        //console.log("XD")
-                        var razon = $("#input_RazonCancel").val().trim()
-                        if (_this.validaciones(razon) === true) {
-                            //console.log("Entra")
-                            $.post('@Url.Action("crearRazonCancelacion", "adRazonesCancelacion")', { Razon: razon }, function (mensaje) {
-                                //console.log(mensaje)
-                                mensaje = mensaje[0]
-                                if (mensaje.bandera === 0) {
-                                    $._combustible.alert("error", "Error", mensaje.resultado)
-                                } else {
-                                    $._combustible.alert("success", "Creacion exitosa", mensaje.resultado)
-                                    $.Grid.DataGrid();
-                                    $("#input_RazonCancel").val("")
-                                    //$("#InputNombreCentroCosto").val("")
-                                }
-                            })
-                        }
-                    });
-                },
-                validaciones: function (Razon) {
-                    if (Razon === "") {
-                        $._combustible.alert("error", "Campo vacio", "Debe insertar una Razon de cancelación")
-                        return false
-                    }
-                    if (Razon.length < 10) {
-                        $._combustible.alert("error", "Razon demasiada corta", "La razon de cancelación debe tener al menos 10 caracteres")
-                        return false
-                    }
-                    return true
-                }
-            },
-            Grid: {
-                loadGrid: function () {
-                    var _this = this
-                    $("#GridRazonCancel").html("");
-                    $("#GridRazonCancel").kendoGrid({
-                        dataSource: {
-                            pageSize: 10
-                        },
-                        toolbar: ["search"],
-                        columns: [                            
-                            {
-                                field: "razon",
-                                title: "Razon",
-                                //width: "85%"
-                            },
-                            {
-                                command: [
-                                    
-                                    {
-                                        name: "Editar",
-                                        text: '<span> <i class="bi bi-pencil-square"></i></i> Editar </span>',
-                                        click: function (e) {
-                                            e.preventDefault();
-                                            var tr = $(e.target).closest("tr");
-                                            var data = this.dataItem(tr);
-                                            $("#editarModalLabel").text("Modificar razon de cancelacion")
-                                            _this.modal.RazonValeCanceladoID = data.idRazonValeCancelado
-                                            $("#ModalAlert").text("")
-                                            $("#InputNombreRazonCancel").val(data.razon)
-                                            $('#editarModal').modal('show');
-
-                                        }
-                                    },
-                                    {
-                                        name: "Eliminar",
-                                        text: '<span> <i class="bi bi-trash3"></i> Eliminar </span>',
-                                        click: function (e) {
-                                            e.preventDefault();
-                                            var tr = $(e.target).closest("tr");
-                                            var data = this.dataItem(tr);
-                                            //$.Grid.modal.EliminarCentroCosto(data.centroCostoID)
-                                            //console.log(data)
-                                            _this.EliminarRazonCancelacion(data.idRazonValeCancelado, data.razon)
-
-                                        }
-                                    }
-                                ],
-                                attributes: { /*style: "text-align: center; width:15vw" */ class: "col-command" },
-                                headerAttributes: { class: "col-command" }
-                                //width: "15%"
-                            }
-
-                        ],
-                        dataBound: function (e) {
-                            $("#GridRazonCancel > div span input").attr("placeholder", "Busqueda")
-                        },
-                        pageable: true,
-                        mobile: "phone",
-                    });
-                    _this.DataGrid();
-                },
-                DataGrid: function () {
-                    $("#GridRazonCancel").data("kendoGrid").dataSource.data([])
-                    $.get('@Url.Action("ObtenerRazonCancelacion", "adRazonesCancelacion")', function (Razones) {
-                        //console.log(Razones)
-                        $("#GridRazonCancel").data("kendoGrid").dataSource.data(Razones)
-                    })
-                },
-                EliminarRazonCancelacion: function (_RazonValeCanceladoID,_Razon) {                   
-                    Swal.fire({
-                        title: "¿Esta seguro?",
-                        text: 'La eliminacion de "' + _Razon + '" no es reversible',
-                        icon: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#3085d6",
-                        cancelButtonColor: "#d33",
-                        cancelButtonText: "Cancelar",
-                        confirmButtonText: "Si, eliminar!"
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                           $.post('@Url.Action("EliminarRazonCancelacion", "adRazonesCancelacion")', { RazonValeCanceladoID: _RazonValeCanceladoID }, function (mensaje) {
-                               mensaje = mensaje[0]
-                               if (mensaje.bandera === 1) {
-                                   $._combustible.alert("success", "Eliminación exitosa", mensaje.resultado)
-                                   $.Grid.DataGrid()
-                               } else {
-                                   $._combustible.alert("error", "Error", mensaje.resultado)
-                               }
-                           })
-                            /*Swal.fire({
-                                title: "Eliminado!",
-                                text: "Your file has been deleted.",
-                                icon: "success"
-                            });*/
-                        }
-                    });
-                },
-                modal: {
-                    RazonValeCanceladoID: "",
-                    BTN_GuardarCambios: function () {
+            ModuloRazonesCancelacion :{
+                RazonCancel: {
+                    BTN_AgregarRazonCancel: function () {
                         var _this = this
-                        $("#BTN_Guardar").on("click", function () {
-                            var RazonCancelNuevo = $("#InputNombreRazonCancel").val().trim()
-                            if (_this.validaciones(RazonCancelNuevo) === true) {
-                                var arg = {
-                                    RazonValeCanceladoID: _this.RazonValeCanceladoID,
-                                    RazonNuevo: RazonCancelNuevo
-                                }
-                                //console.log(arg)
-                                $.post('@Url.Action("ActualizarRazonCancelacion", "adRazonesCancelacion")', arg, function (mensaje) {
-
-                                    mensaje = mensaje[0]
+                        $("#@{@BTN_RazonCancel}").on("click", function () {
+                            //console.log("XD")
+                            var razon = $("#@{@Input_RazonCancel}").val().trim()
+                            if (_this.validaciones(razon) === true) {
+                                //console.log("Entra")
+                                $.post('@Url.Action("crearRazonCancelacion", "adRazonesCancelacion")', { Razon: razon }, function (mensaje) {
                                     //console.log(mensaje)
-                                    if (mensaje.bandera === 1) {
-                                        //$._combustible.alert("success", "Actualizacion exitosa", mensaje.resultado)
-                                        _this.alertModal("suceso", mensaje.resultado)
-                                        $.Grid.DataGrid()
+                                    mensaje = mensaje[0]
+                                    if (mensaje.bandera === 0) {
+                                        $._combustible.alert("error", "Error", mensaje.resultado)
                                     } else {
-                                        //$._combustible.alert("error", "Error", mensaje.resultado)
-                                        _this.alertModal("alerta", mensaje.resultado)
+                                        $._combustible.alert("success", "Creacion exitosa", mensaje.resultado)
+                                        $.ModuloRazonesCancelacion.Grid.DataGrid();
+                                        $("#@{@Input_RazonCancel}").val("")
+                                        //$("#InputNombreCentroCosto").val("")
                                     }
-
                                 })
                             }
                         });
-
                     },
-                    validaciones: function (razon) {
-                        var _this = this
-
-                        $("#ModalAlert").text("")
-                        if (razon === "") {
-                            _this.alertModal("alerta", "Debe ingresar el nuevo nombre")
+                    validaciones: function (Razon) {
+                        if (Razon === "") {
+                            $._combustible.alert("error", "Campo vacio", "Debe insertar una Razon de cancelación")
                             return false
                         }
-
-                        if (razon.length < 10) {
-                            _this.alertModal("alerta", "El Nombre debe tener al menos diez carácteres")
+                        if (Razon.length < 10) {
+                            $._combustible.alert("error", "Razon demasiada corta", "La razon de cancelación debe tener al menos 10 caracteres")
                             return false
                         }
-
                         return true
+                    }
+                },
+                Grid: {
+                    loadGrid: function () {
+                        var _this = this
+                        $("#@{@GRIDRazonCancel}").html("");
+                        $("#@{@GRIDRazonCancel}").kendoGrid({
+                            dataSource: {
+                                pageSize: 10
+                            },
+                            toolbar: ["search"],
+                            columns: [                            
+                                {
+                                    field: "razon",
+                                    title: "Razon",
+                                    //width: "85%"
+                                },
+                                {
+                                    command: [
+                                    
+                                        {
+                                            name: "Editar",
+                                            text: '<span> <i class="bi bi-pencil-square"></i></i> Editar </span>',
+                                            click: function (e) {
+                                                e.preventDefault();
+                                                var tr = $(e.target).closest("tr");
+                                                var data = this.dataItem(tr);
+                                                $("#@{@EditarModalLabel}").text("Modificar razon de cancelacion")
+                                                _this.modal.RazonValeCanceladoID = data.idRazonValeCancelado
+                                                $("#@{@ModalAlert}").text("")
+                                                $("#@{@InputNombreRazonCancel}").val(data.razon)
+                                                $('#@{@EditarModal}').modal('show');
+
+                                            }
+                                        },
+                                        {
+                                            name: "Eliminar",
+                                            text: '<span> <i class="bi bi-trash3"></i> Eliminar </span>',
+                                            click: function (e) {
+                                                e.preventDefault();
+                                                var tr = $(e.target).closest("tr");
+                                                var data = this.dataItem(tr);
+                                                //$.Grid.modal.EliminarCentroCosto(data.centroCostoID)
+                                                //console.log(data)
+                                                _this.EliminarRazonCancelacion(data.idRazonValeCancelado, data.razon)
+
+                                            }
+                                        }
+                                    ],
+                                    attributes: { /*style: "text-align: center; width:15vw" */ class: "col-command" },
+                                    headerAttributes: { class: "col-command" }
+                                    //width: "15%"
+                                }
+
+                            ],
+                            dataBound: function (e) {
+                                $("#@{@GRIDRazonCancel} > div span input").attr("placeholder", "Busqueda")
+                            },
+                            pageable: true,
+                            mobile: "phone",
+                        });
+                        _this.DataGrid();
                     },
-                    alertModal: function (tipo, mensaje) {
-                        if (tipo === "alerta") {
-                            $("#ModalAlert").text("Alerta: " + mensaje)
-                            $("#ModalAlert").css("color", "red")
-                        }
-                        if (tipo === "suceso") {
-                            $("#ModalAlert").text("Nota: " + mensaje)
-                            $("#ModalAlert").css("color", "green")
+                    DataGrid: function () {
+                        $("#@{@GRIDRazonCancel}").data("kendoGrid").dataSource.data([])
+                        $.get('@Url.Action("ObtenerRazonCancelacion", "adRazonesCancelacion")', function (Razones) {
+                            //console.log(Razones)
+                            $("#@{@GRIDRazonCancel}").data("kendoGrid").dataSource.data(Razones)
+                        })
+                    },
+                    EliminarRazonCancelacion: function (_RazonValeCanceladoID,_Razon) {                   
+                        Swal.fire({
+                            title: "¿Esta seguro?",
+                            text: 'La eliminacion de "' + _Razon + '" no es reversible',
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#3085d6",
+                            cancelButtonColor: "#d33",
+                            cancelButtonText: "Cancelar",
+                            confirmButtonText: "Si, eliminar!"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                               $.post('@Url.Action("EliminarRazonCancelacion", "adRazonesCancelacion")', { RazonValeCanceladoID: _RazonValeCanceladoID }, function (mensaje) {
+                                   mensaje = mensaje[0]
+                                   if (mensaje.bandera === 1) {
+                                       $._combustible.alert("success", "Eliminación exitosa", mensaje.resultado)
+                                        $.ModuloRazonesCancelacion.Grid.DataGrid()
+                                   } else {
+                                       $._combustible.alert("error", "Error", mensaje.resultado)
+                                   }
+                               })
+                                /*Swal.fire({
+                                    title: "Eliminado!",
+                                    text: "Your file has been deleted.",
+                                    icon: "success"
+                                });*/
+                            }
+                        });
+                    },
+                    modal: {
+                        RazonValeCanceladoID: "",
+                        BTN_GuardarCambios: function () {
+                            var _this = this
+                            $("#@{@BTN_Guardar}").on("click", function () {
+                                var RazonCancelNuevo = $("#@{@InputNombreRazonCancel}").val().trim()
+                                if (_this.validaciones(RazonCancelNuevo) === true) {
+                                    var arg = {
+                                        RazonValeCanceladoID: _this.RazonValeCanceladoID,
+                                        RazonNuevo: RazonCancelNuevo
+                                    }
+                                    //console.log(arg)
+                                    $.post('@Url.Action("ActualizarRazonCancelacion", "adRazonesCancelacion")', arg, function (mensaje) {
+
+                                        mensaje = mensaje[0]
+                                        //console.log(mensaje)
+                                        if (mensaje.bandera === 1) {
+                                            //$._combustible.alert("success", "Actualizacion exitosa", mensaje.resultado)
+                                            _this.alertModal("suceso", mensaje.resultado)
+                                            $.ModuloRazonesCancelacion.Grid.DataGrid()
+                                        } else {
+                                            //$._combustible.alert("error", "Error", mensaje.resultado)
+                                            _this.alertModal("alerta", mensaje.resultado)
+                                        }
+
+                                    })
+                                }
+                            });
+
+                        },
+                        validaciones: function (razon) {
+                            var _this = this
+
+                            $("#@{@ModalAlert}").text("")
+                            if (razon === "") {
+                                _this.alertModal("alerta", "Debe ingresar el nuevo nombre")
+                                return false
+                            }
+
+                            if (razon.length < 10) {
+                                _this.alertModal("alerta", "El Nombre debe tener al menos diez carácteres")
+                                return false
+                            }
+
+                            return true
+                        },
+                        alertModal: function (tipo, mensaje) {
+                            if (tipo === "alerta") {
+                                $("#@{@ModalAlert}").text("Alerta: " + mensaje)
+                                $("#@{@ModalAlert}").css("color", "red")
+                            }
+                            if (tipo === "suceso") {
+                                $("#@{@ModalAlert}").text("Nota: " + mensaje)
+                                $("#@{@ModalAlert}").css("color", "green")
+                            }
                         }
                     }
+                },
+                init: function () {
+                    var _this = this
+                    _this.Grid.loadGrid()
+                    _this.RazonCancel.BTN_AgregarRazonCancel()
+                    _this.Grid.modal.BTN_GuardarCambios()
                 }
-            },
-            init: function () {
-                var _this = this
-                _this.Grid.loadGrid()
-                _this.RazonCancel.BTN_AgregarRazonCancel()
-                _this.Grid.modal.BTN_GuardarCambios()
             }
+
         })
-        $.init()
+        $.ModuloRazonesCancelacion.init()
     })();
 </script>

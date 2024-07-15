@@ -3,6 +3,20 @@
 *@
 @{
     Layout = null;
+
+    string guid = System.Guid.NewGuid().ToString().Replace("-", ""),
+    Input_NombreGasolinera = "Input_NombreGasolinera_" + guid,
+    BTN_ShowHideMapa = "BTN_ShowHideMapa_" + guid,
+    TXT_ShowHideMapa = "TXT_ShowHideMapa_" + guid,
+    Flecha = "Flecha_" + guid,
+    BTN_GuardarGasolinera = "BTN_GuardarGasolinera_" + guid,
+    DIV_Mapa = "DIV_Mapa_" + guid,
+    Map = "Map_" + guid,
+    GRID_Gasolinera = "GRID_Gasolinera_" + guid,
+    ModalMapa = "ModalMapa_" + guid,
+    TXT_NombreGasolineraModal = "TXT_NombreGasolineraModal_" + guid,
+    Modal_body_mapa = "Modal_body_mapa_" + guid,
+    MapaModal = "MapaModal_" + guid;
 }
 <section>
     <div class="container-fluid card p-lg-4 p-3">
@@ -14,23 +28,23 @@
         <div class="row align-items-end">
             <div class="col-lg-8">
                 <label>Ingrese el nombre de la Gasolinera</label>
-                <input type="text" class="form-control mt-lg-2" id="Input_NombreGasolinera" />
+                <input type="text" class="form-control mt-lg-2" id="@{@Input_NombreGasolinera}" />
             </div>
             <div class="col-lg-2">
-                <button type="button" class="btn btn-success w-100 my-2 my-lg-0" id="BTN_ShowHideMapa"> <i class="bi bi-pin-map"></i> <span id="TXT_ShowHideMapa" class="ms-2"> Agregar Ubicación</span> <i id="flecha" class="bi bi-chevron-down"></i></button>
+                <button type="button" class="btn btn-success w-100 my-2 my-lg-0" id="@{@BTN_ShowHideMapa}"> <i class="bi bi-pin-map"></i> <span id="TXT_ShowHideMapa" class="ms-2"> Agregar Ubicación</span> <i id="@{@Flecha}" class="bi bi-chevron-down"></i></button>
             </div>
             <div class="col-lg-2">
-                <button type="button" class="btn btn-success w-100" id="BTN_GuardarGasolinera"> <i class="bi bi-plus-circle"></i> <span> Guardar Gasolinera</span></button>
+                <button type="button" class="btn btn-success w-100" id="@{@BTN_GuardarGasolinera}"> <i class="bi bi-plus-circle"></i> <span> Guardar Gasolinera</span></button>
             </div>
         </div>
     </div>
-    <div class="container-fluid " id="DIV_Mapa">
+    <div class="container-fluid " id="@{@DIV_Mapa}">
         <div class="card p-lg-4 p-3">
             <div class="col-lg-12">
                 <h2 class="text-center"> Agregar Ubicación</h2>
             </div>
             <div class="col-lg-12">
-                <div id="map">
+                <div id="@{@Map}">
                 </div>
             </div>
         </div>
@@ -43,20 +57,20 @@
         </div>
         <div class="row ">
             <div class="col-lg-12">
-                <div id="GRID_Gasolinera">
+                <div id="@{@GRID_Gasolinera}">
 
                 </div>
             </div>
         </div>
     </div>
-    <div class="modal fade rounded" id="ModalMapa" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade rounded" id="@{@ModalMapa}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"> <i class="bi bi-geo"></i> <span id="TXT_NombreGasolineraModal"></span></h5>
+                    <h5 class="modal-title"> <i class="bi bi-geo"></i> <span id="@{@TXT_NombreGasolineraModal}"></span></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" id="modal-body-mapa">
+                <div class="modal-body" id="@{@Modal_body_mapa}">
 
                 </div>
             </div>
@@ -64,7 +78,7 @@
     </div>
 </section>
 <style>
-    #map{
+    #@{@Map}{
         height:50vh;
 
     }
@@ -104,16 +118,34 @@
 <script>
     (function () {
         $.extend({
-            AgregarGasolinera: {
-                AgregarUbicaion: {
-                    markers: [],
-                    circles: [],
-                    CargarMapa: function () {
-                        var _this = this
+            ModuloGasolinera:{
+                AgregarGasolinera: {
+                    AgregarUbicaion: {
+                        markers: [],
+                        circles: [],
+                        CargarMapa: function () {
+                            var _this = this
 
-                        //console.log(google.maps)
-                        $.LoadAPI().then(() => {
-                            const map = new google.maps.Map(document.getElementById("map"), {
+                            //console.log(google.maps)
+                            $.LoadAPI().then(() => {
+                                const map = new google.maps.Map(document.getElementById("@{@Map}"), {
+                                    center: { lat: 13.703052612879729, lng: -89.20242358465791 },
+                                    zoom: 13,
+                                    mapTypeId: "hybrid",
+                                    gestureHandling: 'greedy'
+
+                                });
+
+                                map.addListener('click', function (event) {
+                                    console.log("XD")
+                                    _this.EliminarMarcador();
+                                    _this.AgregarMarcador(event.latLng, map);
+                                });
+                            }).catch((error) => {
+                                console.error("Error loading Google Maps API script: ", error);
+                            });
+
+                            /*const map = new google.maps.Map(document.getElementById("map"), {
                                 center: { lat: 13.703052612879729, lng: -89.20242358465791 },
                                 zoom: 13,
                                 mapTypeId: "hybrid",
@@ -122,231 +154,215 @@
                             });
 
                             map.addListener('click', function (event) {
-                                console.log("XD")
                                 _this.EliminarMarcador();
                                 _this.AgregarMarcador(event.latLng, map);
+                            });*/
+
+                        },
+                        AgregarMarcador: function (location, map) {
+                            var _this = this
+                            var marker = new google.maps.Marker({
+                                position: location,
+                                Draggable: true,
+                                map: map
                             });
-                        }).catch((error) => {
-                            console.error("Error loading Google Maps API script: ", error);
-                        });
 
-                        /*const map = new google.maps.Map(document.getElementById("map"), {
-                            center: { lat: 13.703052612879729, lng: -89.20242358465791 },
-                            zoom: 13,
-                            mapTypeId: "hybrid",
-                            gestureHandling: 'greedy'
+                            const circle = new google.maps.Circle({
+                                strokeColor: "#FF0000",
+                                strokeOpacity: 0.8,
+                                strokeWeight: 2,
+                                fillColor: "#FF0000",
+                                fillOpacity: 0.35,
+                                clickable: false,
+                                map,
+                                center: location,
+                                radius: 50
+                            });
 
-                        });
+                            circle.bindTo('center', marker, 'position');
 
-                        map.addListener('click', function (event) {
-                            _this.EliminarMarcador();
-                            _this.AgregarMarcador(event.latLng, map);
-                        });*/
+                            _this.markers.push(marker);
+                            _this.circles.push(circle)
+                        },
+                        EliminarMarcador: function () {
+                            var _this = this
+                            var circles = _this.circles
+                            var markers = _this.markers
 
-                    },
-                    AgregarMarcador: function (location, map) {
-                        var _this = this
-                        var marker = new google.maps.Marker({
-                            position: location,
-                            Draggable: true,
-                            map: map
-                        });
-
-                        const circle = new google.maps.Circle({
-                            strokeColor: "#FF0000",
-                            strokeOpacity: 0.8,
-                            strokeWeight: 2,
-                            fillColor: "#FF0000",
-                            fillOpacity: 0.35,
-                            clickable: false,
-                            map,
-                            center: location,
-                            radius: 50
-                        });
-
-                        circle.bindTo('center', marker, 'position');
-
-                        _this.markers.push(marker);
-                        _this.circles.push(circle)
-                    },
-                    EliminarMarcador: function () {
-                        var _this = this
-                        var circles = _this.circles
-                        var markers = _this.markers
-
-                        for (var i = 0; i < markers.length; i++) {
-                            markers[i].setMap(null);
-                        }
-
-                        for (var i = 0; i < circles.length; i++) {
-                            circles[i].setMap(null);
-                        }
-
-                        markers = [];
-                        circles = [];
-                        _this.circles = circles
-                        _this.markers = markers
-                    },
-                    Visibilidad: function () {
-                        $('#DIV_Mapa').hide()
-                        $('#BTN_ShowHideMapa').click(function () {
-                            if ($("#DIV_Mapa").css("display") === "none") {
-                                $("#flecha").removeClass("bi-chevron-down")
-                                $("#flecha").addClass("bi-chevron-up")
-                                $("#TXT_ShowHideMapa").text("Ocultar")
-                            } else {
-                                $("#flecha").removeClass("bi-chevron-up")
-                                $("#flecha").addClass("bi-chevron-down")
-                                $("#TXT_ShowHideMapa").text("Agregar Ubicación")
+                            for (var i = 0; i < markers.length; i++) {
+                                markers[i].setMap(null);
                             }
-                            $('#DIV_Mapa').slideToggle();
-                        })
-                    }
 
-                },
-                Validaciones: function (NombreGasolinera) {
-                    if (NombreGasolinera === ""){
-                        $._combustible.alert("error", "Campo vacio", "Debe insertar el nombre de la gasolinera")
-                        return false
-                    }
-                    if (NombreGasolinera.length < 3) {
-                        $._combustible.alert("error", "Campo vacio", "El nombre debe tener al menos tres caracteres")
-                        return false
-                    }
-
-                    return true
-                },
-                BTN_GuardaGasolinera: function () {
-                    var _this = this
-                    $("#BTN_GuardarGasolinera").on("click", function () {
-                        var NombreGasolinera = $("#Input_NombreGasolinera").val().trim()
-                        if (_this.Validaciones(NombreGasolinera) === true) {
-                            var market = _this.AgregarUbicaion.markers[0]
-                            arg = {
-                                DescriEstacionServicio: NombreGasolinera,
-                                Latitud: (market === undefined ? null : market.getPosition().lat()),
-                                Longitud: (market === undefined ? null : market.getPosition().lng())
+                            for (var i = 0; i < circles.length; i++) {
+                                circles[i].setMap(null);
                             }
-                            
-                            $.post('@Url.Action("CrearGasolinera", "adGasolinera")',arg,function (mensaje) {
-                                mensaje = mensaje[0]
-                                if (mensaje.bandera === 1) {
-                                    $._combustible.alert("success", "Registro Exitoso", mensaje.resultado)
-                                    $("#map").html("")
-                                    $.AgregarGasolinera.AgregarUbicaion.CargarMapa()
-                                    $("#Input_NombreGasolinera").val("")
-                                    //$('#DIV_Mapa').slideToggle();
-                                    $('#DIV_Mapa').hide()
-                                    $("#flecha").removeClass("bi-chevron-up")
-                                    $("#flecha").addClass("bi-chevron-down")
-                                    $("#TXT_ShowHideMapa").text("Agregar Ubicación")
-                                    $.GRID.DataGrid()
+
+                            markers = [];
+                            circles = [];
+                            _this.circles = circles
+                            _this.markers = markers
+                        },
+                        Visibilidad: function () {
+                            $('#@{@DIV_Mapa}').hide()
+                            $('#@{@BTN_ShowHideMapa}').click(function () {
+                                if ($("#@{@DIV_Mapa}").css("display") === "none") {
+                                    $("#@{@Flecha}").removeClass("bi-chevron-down")
+                                    $("#@{@Flecha}").addClass("bi-chevron-up")
+                                    $("#@{@TXT_ShowHideMapa}").text("Ocultar")
                                 } else {
-                                    $._combustible.alert("error", "Error", mensaje.resultado)
+                                    $("#@{@Flecha}").removeClass("bi-chevron-up")
+                                    $("#@{@Flecha}").addClass("bi-chevron-down")
+                                    $("#@{@TXT_ShowHideMapa}").text("Agregar Ubicación")
                                 }
-                                
+                                $('#@{@DIV_Mapa}').slideToggle();
                             })
                         }
-                    });
-                }
-            },
-            GRID: {
-                CargarGrid: function () {
-                    $("#GRID_Gasolinera").html("");
-                    $("#GRID_Gasolinera").kendoGrid({
-                        dataSource: {
-                            pageSize: 15
-                        },
-                        toolbar: ["search"],
-                        themeColor: "Purple",
-                        columns: [
-                            {
-                                field: "nombre",
-                                title: "Nombre",
-                                attributes: { class: "col-data" },
-                                headerAttributes: { class: "col-data" },
-                            },
-                            {
-                                field: "latLng",
-                                type: "string",
-                                title: "Ubicación",
-                                filterable: false,
-                                attributes: { class: "col-ubicacion" },
-                                headerAttributes: { class: "col-ubicacion" },
-                                /*template: function (data) {
-                                    if (data.latitud !== 0 && data.longitud !== 0) {
-                                        return '<button type="button" class="btn btn-success " onclick = "$.GRID.Modal.Mostrar(' + data.latitud + ',' + data.longitud + ',' +'"' + data.nombre+'"' + ' )"> <i class="bi bi-geo"></i> Mostrar Ubicacion</button>'
-                                    }else{
-                                        return '<span></span>'
-                                    }
-                                    console.log(data)
-                                }*/
-                                template: function (data) {
-                                    if (data.latitud !== 0 && data.longitud !== 0) {
-                                        return '<button type="button" class="btn btn-success" onclick="$.GRID.Modal.Mostrar(' + data.latitud + ', ' + data.longitud + ', \'' + data.nombre + '\')"> <i class="bi bi-geo"></i> Mostrar Ubicación</button>';
+
+                    },
+                    Validaciones: function (NombreGasolinera) {
+                        if (NombreGasolinera === ""){
+                            $._combustible.alert("error", "Campo vacio", "Debe insertar el nombre de la gasolinera")
+                            return false
+                        }
+                        if (NombreGasolinera.length < 3) {
+                            $._combustible.alert("error", "Campo vacio", "El nombre debe tener al menos tres caracteres")
+                            return false
+                        }
+
+                        return true
+                    },
+                    BTN_GuardaGasolinera: function () {
+                        var _this = this
+                        $("#@{@BTN_GuardarGasolinera}").on("click", function () {
+                            var NombreGasolinera = $("#@{@Input_NombreGasolinera}").val().trim()
+                            if (_this.Validaciones(NombreGasolinera) === true) {
+                                var market = _this.AgregarUbicaion.markers[0]
+                                arg = {
+                                    DescriEstacionServicio: NombreGasolinera,
+                                    Latitud: (market === undefined ? null : market.getPosition().lat()),
+                                    Longitud: (market === undefined ? null : market.getPosition().lng())
+                                }
+                            
+                                $.post('@Url.Action("CrearGasolinera", "adGasolinera")',arg,function (mensaje) {
+                                    mensaje = mensaje[0]
+                                    if (mensaje.bandera === 1) {
+                                        $._combustible.alert("success", "Registro Exitoso", mensaje.resultado)
+                                        $("#@{@Map}").html("")
+                                        $.ModuloGasolinera.AgregarGasolinera.AgregarUbicaion.CargarMapa()
+                                        $("#@{@Input_NombreGasolinera}").val("")
+                                        //$('#DIV_Mapa').slideToggle();
+                                        $('#@{@DIV_Mapa}').hide()
+                                        $("#@{@Flecha}").removeClass("bi-chevron-up")
+                                        $("#@{@Flecha}").addClass("bi-chevron-down")
+                                        $("#@{@TXT_ShowHideMapa}").text("Agregar Ubicación")
+                                        $.ModuloGasolinera.GRID.DataGrid()
                                     } else {
-                                        return '<span></span>';
+                                        $._combustible.alert("error", "Error", mensaje.resultado)
                                     }
+                                
+                                })
+                            }
+                        });
+                    }
+                },
+                GRID: {
+                    CargarGrid: function () {
+                        $("#@{@GRID_Gasolinera}").html("");
+                        $("#@{@GRID_Gasolinera}").kendoGrid({
+                            dataSource: {
+                                pageSize: 15
+                            },
+                            toolbar: ["search"],
+                            themeColor: "Purple",
+                            columns: [
+                                {
+                                    field: "nombre",
+                                    title: "Nombre",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data" },
+                                },
+                                {
+                                    field: "latLng",
+                                    type: "string",
+                                    title: "Ubicación",
+                                    filterable: false,
+                                    attributes: { class: "col-ubicacion" },
+                                    headerAttributes: { class: "col-ubicacion" },
+                                    /*template: function (data) {
+                                        if (data.latitud !== 0 && data.longitud !== 0) {
+                                            return '<button type="button" class="btn btn-success " onclick = "$.GRID.Modal.Mostrar(' + data.latitud + ',' + data.longitud + ',' +'"' + data.nombre+'"' + ' )"> <i class="bi bi-geo"></i> Mostrar Ubicacion</button>'
+                                        }else{
+                                            return '<span></span>'
+                                        }
+                                        console.log(data)
+                                    }*/
+                                    template: function (data) {
+                                        if (data.latitud !== 0 && data.longitud !== 0) {
+                                            return '<button type="button" class="btn btn-success" onclick="$.ModuloGasolinera.GRID.Modal.Mostrar(' + data.latitud + ', ' + data.longitud + ', \'' + data.nombre + '\')"> <i class="bi bi-geo"></i> Mostrar Ubicación</button>';
+                                        } else {
+                                            return '<span></span>';
+                                        }
+                                    }
+
+
                                 }
 
-
+                            ],
+                            pageable: true,
+                            mobile: "phone",
+                            dataBound: function (e) {
+                                $("#@{@GRID_Gasolinera} > div span input").attr("placeholder", "Busqueda")
                             }
+                        });
 
-                        ],
-                        pageable: true,
-                        mobile: "phone",
-                        dataBound: function (e) {
-                            $("#GRID_Gasolinera > div span input").attr("placeholder", "Busqueda")
+                    },
+                    DataGrid: function () {
+                        $.get('@Url.Action("ObtenerGasolineras", "adGasolinera")', function (Gasolineras) {
+                            $("#@{@GRID_Gasolinera}").data("kendoGrid").dataSource.data(Gasolineras)
+                        })
+                    },
+                    Modal: {
+                        Mostrar: function (latitud, longitud,Nombre) {
+                            $("#@{@Modal_body_mapa}").html("");
+                            var DIV = '<div id="@{@MapaModal}" style="height:50vh;"><div>'
+                            $("#@{@Modal_body_mapa}").html(DIV);
+                            $("#@{@TXT_NombreGasolineraModal}").text(Nombre)
+                            const map = new google.maps.Map(document.getElementById("@{@MapaModal}"), {
+                                center: { lat: latitud, lng: longitud },
+                                zoom: 19,
+                                mapTypeId: "hybrid",
+                            });
+
+                            const cityCircle = new google.maps.Circle({
+                                strokeColor: "#FF0000",
+                                strokeOpacity: 0.8,
+                                strokeWeight: 2,
+                                fillColor: "#FF0000",
+                                fillOpacity: 0.35,
+                                map,
+                                center: { lat: latitud, lng: longitud },
+                                radius: 50
+                            });
+
+                            var marker = new google.maps.Marker({
+                                position: { lat: latitud, lng: longitud },
+                                map: map
+                            });
+                            $("#@{@ModalMapa}").modal("show")
                         }
-                    });
-
-                },
-                DataGrid: function () {
-                    $.get('@Url.Action("ObtenerGasolineras", "adGasolinera")', function (Gasolineras) {
-                        $("#GRID_Gasolinera").data("kendoGrid").dataSource.data(Gasolineras)
-                    })
-                },
-                Modal: {
-                    Mostrar: function (latitud, longitud,Nombre) {
-                        $("#modal-body-mapa").html("");
-                        var DIV = '<div id="mapaModal" style="height:50vh;"><div>'
-                        $("#modal-body-mapa").html(DIV);
-                        $("#TXT_NombreGasolineraModal").text(Nombre)
-                        const map = new google.maps.Map(document.getElementById("mapaModal"), {
-                            center: { lat: latitud, lng: longitud },
-                            zoom: 19,
-                            mapTypeId: "hybrid",
-                        });
-
-                        const cityCircle = new google.maps.Circle({
-                            strokeColor: "#FF0000",
-                            strokeOpacity: 0.8,
-                            strokeWeight: 2,
-                            fillColor: "#FF0000",
-                            fillOpacity: 0.35,
-                            map,
-                            center: { lat: latitud, lng: longitud },
-                            radius: 50
-                        });
-
-                        var marker = new google.maps.Marker({
-                            position: { lat: latitud, lng: longitud },
-                            map: map
-                        });
-                        $("#ModalMapa").modal("show")
                     }
-                }
-            },
-            init: function () {
-                var _this = this;
-                _this.AgregarGasolinera.AgregarUbicaion.CargarMapa()
-                _this.AgregarGasolinera.AgregarUbicaion.Visibilidad()
-                _this.AgregarGasolinera.BTN_GuardaGasolinera()
-                _this.GRID.CargarGrid()
-                _this.GRID.DataGrid()
+                },
+                init: function () {
+                    var _this = this;
+                    _this.AgregarGasolinera.AgregarUbicaion.CargarMapa()
+                    _this.AgregarGasolinera.AgregarUbicaion.Visibilidad()
+                    _this.AgregarGasolinera.BTN_GuardaGasolinera()
+                    _this.GRID.CargarGrid()
+                    _this.GRID.DataGrid()
 
+                }
             }
         })
-        $.init()  
+        $.ModuloGasolinera.init()  
     })();
 </script>

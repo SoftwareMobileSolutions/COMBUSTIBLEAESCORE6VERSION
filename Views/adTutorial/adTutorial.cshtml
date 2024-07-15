@@ -1,0 +1,73 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+
+}
+<section>
+    <!-- SmartWizard html -->
+    <div id="smartwizard">
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link" href="#step-1">
+                    <div class="num">1</div>
+                    Completar informacion compañia
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#step-2">
+                    <span class="num">2</span>
+                    Añadir Centros de costo
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#step-3">
+                    <span class="num">3</span>
+                    Añadir Proyectos
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " href="#step-4">
+                    <span class="num">4</span>
+                    Añadir razones de cancelacion de vales
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " href="#step-5">
+                    <span class="num">5</span>
+                    Añadir gasolineras
+                </a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div id="step-1" class="tab-pane" role="tabpanel" aria-labelledby="step-1">
+                @await Html.PartialAsync("~/Views/adConfiguracionCompany/adConfiguracionCompany.cshtml");
+            </div>
+            <div id="step-2" class="tab-pane" role="tabpanel" aria-labelledby="step-2">
+                @await Html.PartialAsync("~/Views/adCentroCosto/adCentroCosto.cshtml");
+            </div>
+            <div id="step-3" class="tab-pane" role="tabpanel" aria-labelledby="step-3">
+                @await Html.PartialAsync("~/Views/adProyectos/adProyectos.cshtml");
+            </div>
+            <div id="step-4" class="tab-pane" role="tabpanel" aria-labelledby="step-4">
+                @await Html.PartialAsync("~/Views/adRazonesCancelacion/adRazonesCancelacion.cshtml");
+            </div>
+            <div id="step-5" class="tab-pane" role="tabpanel" aria-labelledby="step-4">
+                @await Html.PartialAsync("~/Views/adGasolinera/adGasolinera.cshtml");
+            </div>
+        </div>
+
+        <!-- Include optional progressbar HTML -->
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    </div>
+</section>
+<script>
+    $(function () {
+        // SmartWizard initialize
+        $('#smartwizard').smartWizard();
+
+    });
+</script>

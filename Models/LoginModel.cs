@@ -13,6 +13,7 @@
         public string Correo { get; set; }
 
         public int Estado { get; set; }
+        public int PerfilID { get; set; }
         //Data Compañia
         public int CompanyID { get; set; }
 
@@ -27,6 +28,7 @@
         public string SitioWeb { get; set; }*/
 
         public string TelMovil { get; set; }
+        public bool Tutorial { get; set; }
 
        /* public string Telfijo { get; set; }
 

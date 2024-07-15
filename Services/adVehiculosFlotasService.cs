@@ -43,17 +43,17 @@ namespace COMBUSTIBLEAESCORE.Services
             }
             return data;
         }
-        public async Task<IEnumerable<mensaje>> agregarVehiculo(int CompanyID, string PlacaNew, string NombreNew, string Marca, string Modelo, int FlotaID, float KmXGalon, float CapacidadTanque, int TipoCombustibleID, string VINNew)
+        public async Task<IEnumerable<mensaje>> agregarVehiculo(int CompanyID, string PlacaNew, string NombreNew, string Marca, string Modelo, int FlotaID, float KmXGalon, float CapacidadTanque, int TipoCombustibleID, string VINNew, int CentroCostoID, int UserAsignaID)
         {
             IEnumerable<mensaje> data = null;
-            string sp = "EXEC SP_adAgregarVehiculo @CompanyID,@PlacaNew,@NombreNew,@Marca,@Modelo,@FlotaID,@KmXGalon,@CapacidadTanque,@TipoCombustibleID,@VINNew";
+            string sp = "EXEC SP_adAgregarVehiculo @CompanyID,@PlacaNew,@NombreNew,@Marca,@Modelo,@FlotaID,@KmXGalon,@CapacidadTanque,@TipoCombustibleID,@VINNew, @CentroCostoID,  @UserAsignaID";
             var con = new SqlConnection(conexion.Value);
             try
             {
                 if (con.State == ConnectionState.Closed)
                 {
                     con.Open();
-                    data = await con.QueryAsync<mensaje>(sp, new { CompanyID, PlacaNew, NombreNew, Marca, Modelo, FlotaID, KmXGalon, CapacidadTanque, TipoCombustibleID, VINNew }, commandType: CommandType.Text);
+                    data = await con.QueryAsync<mensaje>(sp, new { CompanyID, PlacaNew, NombreNew, Marca, Modelo, FlotaID, KmXGalon, CapacidadTanque, TipoCombustibleID, VINNew, CentroCostoID,  UserAsignaID }, commandType: CommandType.Text);
                 }
             }
             finally
@@ -192,6 +192,75 @@ namespace COMBUSTIBLEAESCORE.Services
                 {
                     con.Open();
                     data = await con.QueryAsync<mensaje>(sp, new { MobileID }, commandType: CommandType.Text);
+                }
+            }
+            finally
+            {
+                if (con.State == ConnectionState.Open)
+                {
+                    con.Close();
+                }
+            }
+            return data;
+        }
+
+        public async Task<IEnumerable<mensaje>> CrearCentroCosto(string Nombre, int CompanyID)
+        {
+            IEnumerable<mensaje> data = null;
+            string sp = "EXEC SP_CrearCentroCosto @Nombre,@CompanyID";
+            var con = new SqlConnection(conexion.Value);
+            try
+            {
+                if (con.State == ConnectionState.Closed)
+                {
+                    con.Open();
+                    data = await con.QueryAsync<mensaje>(sp, new { Nombre, CompanyID }, commandType: CommandType.Text);
+                }
+            }
+            finally
+            {
+                if (con.State == ConnectionState.Open)
+                {
+                    con.Close();
+                }
+            }
+            return data;
+        }
+
+        public async Task<IEnumerable<mensaje>> EliminarSubfleet(int SubfleetID, int CompanyID)
+        {
+            IEnumerable<mensaje> data = null;
+            string sp = "EXEC SP_EliminarSubfleet @SubfleetID,@CompanyID";
+            var con = new SqlConnection(conexion.Value);
+            try
+            {
+                if (con.State == ConnectionState.Closed)
+                {
+                    con.Open();
+                    data = await con.QueryAsync<mensaje>(sp, new { SubfleetID, CompanyID }, commandType: CommandType.Text);
+                }
+            }
+            finally
+            {
+                if (con.State == ConnectionState.Open)
+                {
+                    con.Close();
+                }
+            }
+            return data;
+        }
+
+        public async Task<IEnumerable<mensaje>> ActualizarSubfleet(int SubfleetID, int CompanyID, string NombreSubfleetNuevo)
+        {
+            IEnumerable<mensaje> data = null;
+            string sp = "EXEC SP_ActulizarSubfleet @SubfleetID, @CompanyID, @NombreSubfleetNuevo";
+            var con = new SqlConnection(conexion.Value);
+            try
+            {
+                if (con.State == ConnectionState.Closed)
+                {
+                    con.Open();
+                    data = await con.QueryAsync<mensaje>(sp, new { SubfleetID,CompanyID, NombreSubfleetNuevo }, commandType: CommandType.Text);
                 }
             }
             finally
