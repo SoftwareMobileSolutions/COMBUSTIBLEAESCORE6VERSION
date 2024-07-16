@@ -3,9 +3,27 @@
 *@
 @{
     Layout = null;
+    string guid = System.Guid.NewGuid().ToString().Replace("-", ""),
+    Tabstrip = "Tabstrip_" + guid,
+    GRIDCC_Usuario = "GRIDCC_Usuario_" + guid,
+    GRIDCCMobile = "GRIDCCMobile_" + guid,
+    ModalAsignarCCXUsuario = "ModalAsignarCCXUsuario_" + guid,
+    TXT_Username_ModalAsignarCCXUsuario = "TXT_Username_ModalAsignarCCXUsuario_" + guid,
+    Input_BuscarDisponibles_ModalAsignarCCXUsuario = "Input_BuscarDisponibles_ModalAsignarCCXUsuario_" + guid,
+    Contenedor_Disponibles_ModalAsignarCCXUsuario = "Contenedor_Disponibles_ModalAsignarCCXUsuario_" + guid,
+    TXT_ContadorDisponibles_ModalAsignarCCXUsuario = "TXT_ContadorDisponibles_ModalAsignarCCXUsuario_" + guid,
+    BTN_HaciaDerecha_ModalAsignarCCXUsuario = "BTN_HaciaDerecha_ModalAsignarCCXUsuario_" + guid,
+    BTN_TodoHaciaDerecha_ModalAsignarCCXUsuario = "BTN_TodoHaciaDerecha_ModalAsignarCCXUsuario_" + guid,
+    BTN_HaciaIzquierda_ModalAsignarCCXUsuario = "BTN_HaciaIzquierda_ModalAsignarCCXUsuario_" + guid,
+    BTN_TodoHaciaIzquierda_ModalAsignarCCXUsuario = "BTN_TodoHaciaIzquierda_ModalAsignarCCXUsuario_" + guid,
+    Input_BuscarAsignados_ModalAsignarCCXUsuario = "Input_BuscarAsignados_ModalAsignarCCXUsuario_" + guid,
+    Contenedor_Asignados_ModalAsignarCCXUsuario = "Contenedor_Asignados_ModalAsignarCCXUsuario_" + guid,
+    TXT_ContadorAsignados_ModalAsignarCCXUsuario = "TXT_ContadorAsignados_ModalAsignarCCXUsuario_" + guid,
+    BTN_Guardar_ModalAsignarCCXUsuario = "BTN_Guardar_ModalAsignarCCXUsuario_" + guid;
+        //TXT_Username_ModalAsignarCCXUsuario = "TXT_Username_ModalAsignarCCXUsuario_" + guid,
 }
 <section>
-    <div id="tabstrip">
+    <div id="@{@Tabstrip}">
         <ul>
             <li class="k-state-active">
                 Centros de costo por usuario
@@ -21,7 +39,7 @@
                         <h2 class="text-center">Centros de costo por usuario</h2>
                     </div>
                     <div class="col-12">
-                        <div id="GridCCUsuario">
+                        <div id="@{@GRIDCC_Usuario}">
                         </div>
                         <span class="d-block d-lg-none mt-2 text-center">Presione doble click para modificar la información</span>
                     </div>
@@ -35,7 +53,7 @@
                         <h2 class="text-center">Centro de costo por vehículo</h2>
                     </div>
                     <div class="col-12 mt-3">
-                        <div id="GridCCMobile">
+                        <div id="@{@GRIDCCMobile}">
 
                         </div>
                     </div>
@@ -43,19 +61,19 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="Modal">
+    <div class="modal fade" id="@{@ModalAsignarCCXUsuario}">
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="ModalLabel">Usuario</h5>
+                    <h5 class="modal-title" id="@{@TXT_Username_ModalAsignarCCXUsuario}">Usuario</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" id="modal-Container">
-                    
+                <div class="modal-body" @*id="modal-Container"*@>
+                    @await Html.PartialAsync("~/Views/adAsignacionCentrosCosto/Partials/DualListboxUsuariosCC.cshtml", new ViewDataDictionary(this.ViewData) { { "guid", guid } })
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-success" id="BTN_ActualizarCentrosCosto">Actulizar Centros de Costo</button>
+                    <button type="button" class="btn btn-success" id="@{@BTN_Guardar_ModalAsignarCCXUsuario}">Actulizar Centros de Costo</button>
                 </div>
             </div>
         </div>
@@ -87,377 +105,379 @@
     (function () {
 
         $.extend({
-            Tabstrip: function () {
-                $("#tabstrip").kendoTabStrip({
-                    animation: {
-                        open: {
-                            effects: "fadeIn"
+            ModuloAsignacionCentroCosto: {
+                Tabstrip: function () {
+                    $("#@{@Tabstrip}").kendoTabStrip({
+                        animation: {
+                            open: {
+                                effects: "fadeIn"
                             
-                        }
-                    },
-                });
-            },
-            CentroCostoUsuario: {
-                GRID: {
-                    CargarGRID: function () {
-                        var _this = this;
-
-                        $("#GridCCUsuario").html("");
-                        $("#GridCCUsuario").kendoGrid({
-                            dataSource: {
-                                pageSize: 10
-                            },
-                            columns: [
-                                {
-                                    field: "username",
-                                    title: "Username",
-                                    width: "100px"
-                                },
-                                {
-                                    field: "nombre",
-                                    title: "Nombre",
-                                    width: "100px"
-                                },
-                                {
-                                    field: "apellido",
-                                    title: "Apellido",
-                                    width: "100px"
-                                }
-                            ],
-                            pageable: true,
-                            detailInit: _this.GRIDCCAsignados,
-                            detailCollapse: function (e) {
-                                var detailRow = e.detailRow;
-                                $(detailRow).remove();
-                            },
-                            selectable: "single, row",
-                            dataBound: function () {
-                                var touchtime = 0;
-                                $("#GridCCUsuario > .k-grid-content tbody tr:not(.k-grouping-row)").on("click", function () {
-                                    var grid = $("#GridCCUsuario").data("kendoGrid");
-                                    var row = $(this);
-                                    if (((new Date().getTime()) - touchtime) < 500) {
-                                        var dataItem = grid.dataItem(row);
-                                        $("#ModalLabel").empty()
-                                        $("#ModalLabel").append("<span><img src='" + '@Url.Content("~/images/user.gif")' + "'/> " + dataItem.username + "</span>")
-                                        $.CentroCostoUsuario.Modal.cartas.dataCartas(dataItem.usuarioID)
-                                        $.CentroCostoUsuario.Modal.UsuarioID = dataItem.usuarioID
-                                    } touchtime = new Date().getTime();
-                                });
-
                             }
-                        });
-                        $("#GridCCUsuario .k-pager-wrap").append("<span class='w-100 text-center d-none d-lg-block'>Presione doble click para modificar la información</span>")
-                    },
-                    DataGrid: function () {
-                        $.get('@Url.Action("ObtenerUsuarios", "adAsignacionCentrosCosto")', function (usuarios) {
-                            //console.log(usuarios)
-                            $("#GridCCUsuario").data("kendoGrid").dataSource.data(usuarios)
-                        })
-                    }, 
-                    GRIDCCAsignados: function (e) {
-                        var _UsuarioID = e.data.usuarioID
-                        var _this = this;
-                        $.get('@Url.Action("ObtenerCentroCostoXUser", "adAsignacionCentrosCosto")', { UsuarioID: _UsuarioID }).then(function (centrosCosto) {
-                            var asignados = centrosCosto.filter(centroCosto => centroCosto.asignado === true);
-                            $("<div/>").appendTo(e.detailCell).kendoGrid({
+                        },
+                    });
+                },
+                CentroCostoUsuario: {
+                    GRID: {
+                        CargarGRID: function () {
+                            var _this = this;
+
+                            $("#@{@GRIDCC_Usuario}").html("");
+                            $("#@{@GRIDCC_Usuario}").kendoGrid({
                                 dataSource: {
-                                    data: asignados,
-                                    sort: { field: "nombre", dir: "asc" }
+                                    pageSize: 10
                                 },
-                                toolbar: ["search"],
                                 columns: [
-                                    { field: "nombreCentroCosto", title: "Centros de costo asignados", width: "100px" },
-
+                                    {
+                                        field: "username",
+                                        title: "Username",
+                                        width: "100px"
+                                    },
+                                    {
+                                        field: "nombre",
+                                        title: "Nombre",
+                                        width: "100px"
+                                    },
+                                    {
+                                        field: "apellido",
+                                        title: "Apellido",
+                                        width: "100px"
+                                    }
                                 ],
-                                resizable: true
+                                pageable: true,
+                                detailInit: _this.GRIDCCAsignados,
+                                detailCollapse: function (e) {
+                                    var detailRow = e.detailRow;
+                                    $(detailRow).remove();
+                                },
+                                selectable: "single, row",
+                                dataBound: function () {
+                                    var touchtime = 0;
+                                    $("#@{@GRIDCC_Usuario} > .k-grid-content tbody tr:not(.k-grouping-row)").on("click", function () {
+                                        var grid = $("#@{@GRIDCC_Usuario}").data("kendoGrid");
+                                        var row = $(this);
+                                        if (((new Date().getTime()) - touchtime) < 500) {
+                                            var dataItem = grid.dataItem(row);
+                                            $("#@{@TXT_Username_ModalAsignarCCXUsuario}").empty()
+                                            $("#@{@TXT_Username_ModalAsignarCCXUsuario}").append("<span><img src='" + '@Url.Content("~/images/user.gif")' + "'/> " + dataItem.username + "</span>")
+                                            $.ModuloAsignacionCentroCosto.CentroCostoUsuario.Modal.cartas.dataCartas(dataItem.usuarioID)
+                                            $.ModuloAsignacionCentroCosto.CentroCostoUsuario.Modal.UsuarioID = dataItem.usuarioID
+                                        } touchtime = new Date().getTime();
+                                    });
 
+                                }
                             });
-                        });
-                    }
-                },
-                Modal:{
-                    UsuarioID:0,
-                    DualListbox: function () {
-                        var _this = this 
-                        let DualListbox = `@await Html.PartialAsync("~/Views/adAsignacionCentrosCosto/Partials/DualListboxUsuariosCC.cshtml")`
-                        $("#modal-Container").empty()
-                        $("#modal-Container").html(DualListbox)
-                        _this.init()
-                    },
-                    cartas: {
-                        dataCartas: function (_UsuarioID) {
+                            $("#@{@GRIDCC_Usuario} .k-pager-wrap").append("<span class='w-100 text-center d-none d-lg-block'>Presione doble click para modificar la información</span>")
+                        },
+                        DataGrid: function () {
+                            $.get('@Url.Action("ObtenerUsuarios", "adAsignacionCentrosCosto")', function (usuarios) {
+                                //console.log(usuarios)
+                                $("#@{@GRIDCC_Usuario}").data("kendoGrid").dataSource.data(usuarios)
+                            })
+                        }, 
+                        GRIDCCAsignados: function (e) {
+                            var _UsuarioID = e.data.usuarioID
                             var _this = this;
-                            $.get('@Url.Action("ObtenerCentroCostoXUser", "adAsignacionCentrosCosto")', { UsuarioID: _UsuarioID }).then(function (centrosCosto){
-                                $.CentroCostoUsuario.Modal.DualListbox()
-                                _this.cargarCartas(centrosCosto)
-                                $("#Modal").modal('show');
+                            $.get('@Url.Action("ObtenerCentroCostoXUser", "adAsignacionCentrosCosto")', { UsuarioID: _UsuarioID }).then(function (centrosCosto) {
+                                var asignados = centrosCosto.filter(centroCosto => centroCosto.asignado === true);
+                                $("<div/>").appendTo(e.detailCell).kendoGrid({
+                                    dataSource: {
+                                        data: asignados,
+                                        sort: { field: "nombre", dir: "asc" }
+                                    },
+                                    toolbar: ["search"],
+                                    columns: [
+                                        { field: "nombreCentroCosto", title: "Centros de costo asignados", width: "100px" },
+
+                                    ],
+                                    resizable: true
+
+                                });
                             });
-                        },
-                        cargarCartas: function (centrosCosto) {
-                            var _this = this
-                            var disponibles = centrosCosto.filter(centroCosto => centroCosto.asignado === false);
-                            var asignados = centrosCosto.filter(centroCosto => centroCosto.asignado === true);
-                            $("#disponibles").empty()
-                            $("#asignados").empty()
-                            for (let i = 0; i < disponibles.length; i++) {
-                                let div =
-                                    '<div class= "carta"  seleccionado = false>' +
-                                    '<h2 class="TXT_Mobile px-2" value = "' + disponibles[i].centroCostoID + '">' + disponibles[i].nombreCentroCosto + '</h2>'+
-                                '</div>'
-                                $("#disponibles").append(div);
-                            }
-
-                            for (let i = 0; i < asignados.length; i++) {
-                                let div =
-                                    '<div class= "carta"  seleccionado = false>' +
-                                    '<h2 class="TXT_Mobile px-2" value = "' + asignados[i].centroCostoID + '">' + asignados[i].nombreCentroCosto + '</h2>'+
-                                '</div>'
-                                $("#asignados").append(div);
-                            }
-                            $(".totalCartas").text(centrosCosto.length)
-                            _this.contadorCartas();
-                            _this.clickCarta()
-                            _this.movimientos.init()
-                        },
-                        cambiarEstado: function (_this) {
-                            let seleccionado = _this.attr("seleccionado");
-                            if (seleccionado === "true") {
-                                _this.attr("seleccionado", "false");
-                                _this.removeClass("seleccionado")
-                            } else {
-                                _this.attr("seleccionado", "true");
-                                _this.addClass("seleccionado")
-                            }
-                        },
-                        clickCarta: function () {
-                            var _this = this;
-
-                            $(".carta").on("click", function () {
-                                var carta = $(this);
-                                _this.cambiarEstado(carta);
-                            });
-                        },
-                        buscar: function (ID_Input, ID_Contenedor) {
-                            let ValorInput = $("#" + ID_Input).val()
-                            let cartas = $("#" + ID_Contenedor + " div")
-
-                            cartas.each(function () {
-                                let carta = $(this);
-                                let NombreMobile = carta.children("h2").text();
-                                NombreMobile.includes(ValorInput) === true ? carta.css("display", "block") : carta.css("display", "none");
-                            });
-
-                        },
-                        contadorCartas: function () {
-                            var _this = this
-                            $("#contadorDisponibles").text($("#disponibles div").length)
-                            $("#contadorAsignados").text($("#asignados div").length)
-                        },
-                        movimientos: {
-                            moverDerecha: function () {
-                                $("#BTN_HaciaDerecha").on("click", function () {
-                                    $('#disponibles div[seleccionado="true"]').each(function () {
-                                        $.CentroCostoUsuario.Modal.cartas.cambiarEstado($(this))
-                                        $("#asignados").append($(this));
-                                        $.CentroCostoUsuario.Modal.cartas.contadorCartas()
-                                    });
-
-                                });
-                            },
-                            moverIzquierda: function () {
-                                $("#BTN_HaciaIzquierda").on("click", function () {
-                                    $('#asignados div[seleccionado="true"]').each(function () {
-                                        $.CentroCostoUsuario.Modal.cartas.cambiarEstado($(this))
-                                        $("#disponibles").append($(this));
-                                        $.CentroCostoUsuario.Modal.cartas.contadorCartas()
-                                    });
-
-                                });
-                            },
-                            moverTodoDerecha: function () {
-                                $("#BTN_TodoHaciaDerecha").on("click", function () {
-                                    $('#disponibles div').each(function () {
-                                        $(this).attr("seleccionado", "false");
-                                        $(this).removeClass("seleccionado");
-                                        $("#asignados").append($(this));
-                                        $.CentroCostoUsuario.Modal.cartas.contadorCartas()
-                                    });
-                                });
-                            },
-                            moverTodoIzquierda: function () {
-                                $("#BTN_TodoHaciaIzquierda").on("click", function () {
-                                    $('#asignados div').each(function () {
-                                        $(this).attr("seleccionado", "false");
-                                        $(this).removeClass("seleccionado");
-                                        $("#disponibles").append($(this));
-                                        $.CentroCostoUsuario.Modal.cartas.contadorCartas()
-                                    });
-                                });
-
-                            },
-                            init: function () {
-                                var _this = this
-                                _this.moverDerecha()
-                                _this.moverIzquierda()
-                                _this.moverTodoDerecha()
-                                _this.moverTodoIzquierda()
-                            }
                         }
                     },
-                    BTN_ActualizarCentrosCosto: function () {
-                        var _this = this
-                        $("#BTN_ActualizarCentrosCosto").on("click", function () {
-                            selects = $("#asignados > .carta h2")
-                            var valores = [];
-
-                            selects.each(function () {
-                                valores.push($(this).attr("value"));
-                            });
-
-                            var arg = {
-                                UsuarioID: _this.UsuarioID,
-                                CentrosCostoID: valores.join(",")
-                            }
-
-                            $.post('@Url.Action("ActualizarCentroCostoXUser", "adAsignacionCentrosCosto")', arg, function (resultado) {
-                                if (resultado[0].bandera === 1) {
-                                    $._combustible.alert("success", "Actualización exitosa", resultado[0].resultado)
-                                }
-
-                            });
-
-                        });
-                    },
-                    init: function () {
-                        var _this = this
-                        _this.cartas.buscar()
-                        _this.BTN_ActualizarCentrosCosto()
-                        _this.cartas.movimientos.init()
-                    }
-                },
-                init: function(){
-                    var _this = this
-                    _this.GRID.CargarGRID()
-                    _this.GRID.DataGrid()
-                }
-            },
-            CentroCostoMobile: {
-                GRID: {
-                    CargarGRID: function () {
-                        var _this = this
-                        $("#GridCCMobile").html("");
-                        $("#GridCCMobile").kendoGrid({
-                            dataSource: {
-                                pageSize: 10
+                    Modal:{
+                        UsuarioID:0,
+                        /*DualListbox: function () {
+                            var _this = this 
+                            @*let DualListbox = `@await Html.PartialAsync("~/Views/adAsignacionCentrosCosto/Partials/DualListboxUsuariosCC.cshtml")`*@
+                            $("#modal-Container").empty()
+                            $("#modal-Container").html(DualListbox)
+                            _this.init()
+                        },*/
+                        cartas: {
+                            dataCartas: function (_UsuarioID) {
+                                var _this = this;
+                                $.get('@Url.Action("ObtenerCentroCostoXUser", "adAsignacionCentrosCosto")', { UsuarioID: _UsuarioID }).then(function (centrosCosto){
+                                    //$.CentroCostoUsuario.Modal.DualListbox()
+                                    _this.cargarCartas(centrosCosto)
+                                    $("#@{@ModalAsignarCCXUsuario}").modal('show');
+                                });
                             },
-                            columns: [
-                                {
-                                    field: "placa",
-                                    title: "Placa",
-                                    attributes: { class: "col-data" },
-                                    headerAttributes: { class: "col-data" }
-                                },
-                                {
-                                    field: "nombre",
-                                    title: "Nombre",
-                                    attributes: { class: "col-data" },
-                                    headerAttributes: { class: "col-data" }
-                                },
-                                {
-                                    field: "centroCostoID",
-                                    title: "Centro Costo Asociado",
-                                    template: "<input class=" + "dropDownTemplate" + "> </input>",
-                                    attributes: { class: "col-template" },
-                                    headerAttributes: { class: "col-template" }
+                            cargarCartas: function (centrosCosto) {
+                                var _this = this
+                                var disponibles = centrosCosto.filter(centroCosto => centroCosto.asignado === false);
+                                var asignados = centrosCosto.filter(centroCosto => centroCosto.asignado === true);
+                                $("#@{@Contenedor_Disponibles_ModalAsignarCCXUsuario}").empty()
+                                $("#@{@Contenedor_Asignados_ModalAsignarCCXUsuario}").empty()
+                                for (let i = 0; i < disponibles.length; i++) {
+                                    let div =
+                                        '<div class= "carta"  seleccionado = false>' +
+                                        '<h2 class="TXT_Mobile px-2" value = "' + disponibles[i].centroCostoID + '">' + disponibles[i].nombreCentroCosto + '</h2>'+
+                                    '</div>'
+                                    $("#@{@Contenedor_Disponibles_ModalAsignarCCXUsuario}").append(div);
                                 }
-                            ],
-                            pageable: true,
-                            dataBound: function (e) {
 
-                                var grid = e.sender;
-                                var items = e.sender.items();
+                                for (let i = 0; i < asignados.length; i++) {
+                                    let div =
+                                        '<div class= "carta"  seleccionado = false>' +
+                                        '<h2 class="TXT_Mobile px-2" value = "' + asignados[i].centroCostoID + '">' + asignados[i].nombreCentroCosto + '</h2>'+
+                                    '</div>'
+                                    $("#@{@Contenedor_Asignados_ModalAsignarCCXUsuario}").append(div);
+                                }
+                                $(".totalCartas").text(centrosCosto.length)
+                                _this.contadorCartas();
+                                _this.clickCarta()
+                                _this.movimientos.init()
+                            },
+                            cambiarEstado: function (_this) {
+                                let seleccionado = _this.attr("seleccionado");
+                                if (seleccionado === "true") {
+                                    _this.attr("seleccionado", "false");
+                                    _this.removeClass("seleccionado")
+                                } else {
+                                    _this.attr("seleccionado", "true");
+                                    _this.addClass("seleccionado")
+                                }
+                            },
+                            clickCarta: function () {
+                                var _this = this;
 
-                                $.get('@Url.Action("ObtenerCentrosCosto", "adAsignacionCentrosCosto")', function (CentrosCosto) {
+                                $(".carta").on("click", function () {
+                                    var carta = $(this);
+                                    _this.cambiarEstado(carta);
+                                });
+                            },
+                            buscar: function (ID_Input, ID_Contenedor) {
+                                let ValorInput = $("#" + ID_Input).val()
+                                let cartas = $("#" + ID_Contenedor + " div")
 
-                                    items.each(function (e) {
-                                        var dataItem = grid.dataItem(this);
-                                        var ddt = $(this).find('.dropDownTemplate');
+                                cartas.each(function () {
+                                    let carta = $(this);
+                                    let NombreMobile = carta.children("h2").text();
+                                    NombreMobile.includes(ValorInput) === true ? carta.css("display", "block") : carta.css("display", "none");
+                                });
 
-                                        $(ddt).kendoDropDownList({
-                                            value: dataItem.centroCostoID,
-                                            filter: "contains",
-                                            optionLabel: 'Sin seleccion...',
-                                            dataSource: CentrosCosto,
-                                            dataTextField: "nombreCentroCosto",
-                                            dataValueField: "centroCostoID",
-                                            change: _this.SelecionarCentroCosto
+                            },
+                            contadorCartas: function () {
+                                var _this = this
+                                $("#@{@TXT_ContadorDisponibles_ModalAsignarCCXUsuario}").text($("#@{@Contenedor_Disponibles_ModalAsignarCCXUsuario} div").length)
+                                $("#@{@TXT_ContadorAsignados_ModalAsignarCCXUsuario}").text($("#@{@Contenedor_Asignados_ModalAsignarCCXUsuario} div").length)
+                            },
+                            movimientos: {
+                                moverDerecha: function () {
+                                    $("#@{@BTN_HaciaDerecha_ModalAsignarCCXUsuario}").on("click", function () {
+                                        $('#@{@Contenedor_Disponibles_ModalAsignarCCXUsuario} div[seleccionado="true"]').each(function () {
+                                            $.ModuloAsignacionCentroCosto.CentroCostoUsuario.Modal.cartas.cambiarEstado($(this))
+                                            $("#@{@Contenedor_Asignados_ModalAsignarCCXUsuario}").append($(this));
+                                            $.ModuloAsignacionCentroCosto.CentroCostoUsuario.Modal.cartas.contadorCartas()
+                                        });
+
+                                    });
+                                },
+                                moverIzquierda: function () {
+                                    $("#@{@BTN_HaciaIzquierda_ModalAsignarCCXUsuario}").on("click", function () {
+                                        $('#@{@Contenedor_Asignados_ModalAsignarCCXUsuario} div[seleccionado="true"]').each(function () {
+                                            $.ModuloAsignacionCentroCosto.CentroCostoUsuario.Modal.cartas.cambiarEstado($(this))
+                                            $("#@{@Contenedor_Disponibles_ModalAsignarCCXUsuario}").append($(this));
+                                            $.ModuloAsignacionCentroCosto.CentroCostoUsuario.Modal.cartas.contadorCartas()
+                                        });
+
+                                    });
+                                },
+                                moverTodoDerecha: function () {
+                                    $("#@{@BTN_TodoHaciaDerecha_ModalAsignarCCXUsuario}").on("click", function () {
+                                        $('#@{@Contenedor_Disponibles_ModalAsignarCCXUsuario} div').each(function () {
+                                            $(this).attr("seleccionado", "false");
+                                            $(this).removeClass("seleccionado");
+                                            $("#@{@Contenedor_Asignados_ModalAsignarCCXUsuario}").append($(this));
+                                            $.ModuloAsignacionCentroCosto.CentroCostoUsuario.Modal.cartas.contadorCartas()
                                         });
                                     });
-                                })
+                                },
+                                moverTodoIzquierda: function () {
+                                    $("#@{@BTN_TodoHaciaIzquierda_ModalAsignarCCXUsuario}").on("click", function () {
+                                        $('#@{@Contenedor_Asignados_ModalAsignarCCXUsuario} div').each(function () {
+                                            $(this).attr("seleccionado", "false");
+                                            $(this).removeClass("seleccionado");
+                                            $("#@{@Contenedor_Disponibles_ModalAsignarCCXUsuario}").append($(this));
+                                            $.ModuloAsignacionCentroCosto.CentroCostoUsuario.Modal.cartas.contadorCartas()
+                                        });
+                                    });
+
+                                },
+                                init: function () {
+                                    var _this = this
+                                    _this.moverDerecha()
+                                    _this.moverIzquierda()
+                                    _this.moverTodoDerecha()
+                                    _this.moverTodoIzquierda()
+                                }
                             }
-                        });
-                    },
-                    DataGRID: function () {
-                        var _this = this
-                        $.get('@Url.Action("ObtenerCentroCostoXMobile", "adAsignacionCentrosCosto")', function (CentrosCostoXMobile) {
-                            $("#GridCCMobile").data("kendoGrid").dataSource.data(CentrosCostoXMobile)
-                        })
-                    },
-                    SelecionarCentroCosto: function (e) {
-                        var _this = this
-                        var element = e.sender.element;
-                        var row = element.closest("tr");
-                        var grid = $("#GridCCMobile").data("kendoGrid");
-                        var dataItem = grid.dataItem(row);
+                        },
+                        BTN_ActualizarCentrosCosto: function () {
+                            var _this = this
+                            $("#@{@BTN_Guardar_ModalAsignarCCXUsuario}").on("click", function () {
+                                selects = $("#@{@Contenedor_Asignados_ModalAsignarCCXUsuario} > .carta h2")
+                                var valores = [];
 
-                        var seleccioanado = dataItem.centroCostoID;
-                        var nuevo = isNaN(parseInt(this.value())) ? 0 : parseInt(this.value());
+                                selects.each(function () {
+                                    valores.push($(this).attr("value"));
+                                });
 
-                        if (seleccioanado !== nuevo){
-                            Swal.fire({
-                                title: "Estas seguro?",
-                                text: "Deseas confimar la actualizacions",
-                                icon: "warning",
-                                showCancelButton: true,
-                                confirmButtonColor: "#3085d6",
-                                cancelButtonColor: "#d33",
-                                confirmButtonText: "Si , Actulizar!",
-                                cancelButtonText: "Cancelar"
-                            }).then((result) => {
-                                if (result.isConfirmed) {
+                                var arg = {
+                                    UsuarioID: _this.UsuarioID,
+                                    CentrosCostoID: valores.join(",")
+                                }
 
-                                    let arg = {
-                                        MobileID: dataItem.mobileID,
-                                        CentroCostoID: nuevo
+                                $.post('@Url.Action("ActualizarCentroCostoXUser", "adAsignacionCentrosCosto")', arg, function (resultado) {
+                                    if (resultado[0].bandera === 1) {
+                                        $._combustible.alert("success", "Actualización exitosa", resultado[0].resultado)
                                     }
 
-                                    $.post('@Url.Action("ActualizarCentroCostoXMobile", "adAsignacionCentrosCosto")', arg).then(function (mensaje) {
-                                        if (mensaje[0].bandera === 1) {
-                                            $._combustible.alert("success", "Actualizacion exitosa", mensaje[0].resultado)
-                                            _this.DataGRID()
-                                        } else {
-                                            $._combustible.alert("error", "Error", mensaje[0].resultado)
-                                        }
+                                });
+
+                            });
+                        },
+                        init: function () {
+                            var _this = this
+                            _this.cartas.buscar()
+                            _this.BTN_ActualizarCentrosCosto()
+                            _this.cartas.movimientos.init()
+                        }
+                    },
+                    init: function(){
+                        var _this = this
+                        _this.GRID.CargarGRID()
+                        _this.GRID.DataGrid()
+                    }
+                },
+                CentroCostoMobile: {
+                    GRID: {
+                        CargarGRID: function () {
+                            var _this = this
+                            $("#@{@GRIDCCMobile}").html("");
+                            $("#@{@GRIDCCMobile}").kendoGrid({
+                                dataSource: {
+                                    pageSize: 10
+                                },
+                                columns: [
+                                    {
+                                        field: "placa",
+                                        title: "Placa",
+                                        attributes: { class: "col-data" },
+                                        headerAttributes: { class: "col-data" }
+                                    },
+                                    {
+                                        field: "nombre",
+                                        title: "Nombre",
+                                        attributes: { class: "col-data" },
+                                        headerAttributes: { class: "col-data" }
+                                    },
+                                    {
+                                        field: "centroCostoID",
+                                        title: "Centro Costo Asociado",
+                                        template: "<input class=" + "dropDownTemplate" + "> </input>",
+                                        attributes: { class: "col-template" },
+                                        headerAttributes: { class: "col-template" }
+                                    }
+                                ],
+                                pageable: true,
+                                dataBound: function (e) {
+
+                                    var grid = e.sender;
+                                    var items = e.sender.items();
+
+                                    $.get('@Url.Action("ObtenerCentrosCosto", "adAsignacionCentrosCosto")', function (CentrosCosto) {
+
+                                        items.each(function (e) {
+                                            var dataItem = grid.dataItem(this);
+                                            var ddt = $(this).find('.dropDownTemplate');
+
+                                            $(ddt).kendoDropDownList({
+                                                value: dataItem.centroCostoID,
+                                                filter: "contains",
+                                                optionLabel: 'Sin seleccion...',
+                                                dataSource: CentrosCosto,
+                                                dataTextField: "nombreCentroCosto",
+                                                dataValueField: "centroCostoID",
+                                                change: _this.SelecionarCentroCosto
+                                            });
+                                        });
                                     })
                                 }
                             });
+                        },
+                        DataGRID: function () {
+                            var _this = this
+                            $.get('@Url.Action("ObtenerCentroCostoXMobile", "adAsignacionCentrosCosto")', function (CentrosCostoXMobile) {
+                                $("#@{@GRIDCCMobile}").data("kendoGrid").dataSource.data(CentrosCostoXMobile)
+                            })
+                        },
+                        SelecionarCentroCosto: function (e) {
+                            var _this = this
+                            var element = e.sender.element;
+                            var row = element.closest("tr");
+                            var grid = $("#@{@GRIDCCMobile}").data("kendoGrid");
+                            var dataItem = grid.dataItem(row);
+
+                            var seleccioanado = dataItem.centroCostoID;
+                            var nuevo = isNaN(parseInt(this.value())) ? 0 : parseInt(this.value());
+
+                            if (seleccioanado !== nuevo){
+                                Swal.fire({
+                                    title: "Estas seguro?",
+                                    text: "Deseas confimar la actualizacions",
+                                    icon: "warning",
+                                    showCancelButton: true,
+                                    confirmButtonColor: "#3085d6",
+                                    cancelButtonColor: "#d33",
+                                    confirmButtonText: "Si , Actulizar!",
+                                    cancelButtonText: "Cancelar"
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+
+                                        let arg = {
+                                            MobileID: dataItem.mobileID,
+                                            CentroCostoID: nuevo
+                                        }
+
+                                        $.post('@Url.Action("ActualizarCentroCostoXMobile", "adAsignacionCentrosCosto")', arg).then(function (mensaje) {
+                                            if (mensaje[0].bandera === 1) {
+                                                $._combustible.alert("success", "Actualizacion exitosa", mensaje[0].resultado)
+                                                _this.DataGRID()
+                                            } else {
+                                                $._combustible.alert("error", "Error", mensaje[0].resultado)
+                                            }
+                                        })
+                                    }
+                                });
+                            }
                         }
+                    },
+                    init: function () {
+                        var _this = this
+                        _this.GRID.CargarGRID()
+                        _this.GRID.DataGRID()
                     }
                 },
                 init: function () {
                     var _this = this
-                    _this.GRID.CargarGRID()
-                    _this.GRID.DataGRID()
+                    _this.Tabstrip();
+                    _this.CentroCostoUsuario.init()
+                    _this.CentroCostoMobile.init()
                 }
-            },
-            init: function () {
-                var _this = this
-                _this.Tabstrip();
-                _this.CentroCostoUsuario.init()
-                _this.CentroCostoMobile.init()
             }
         })
-        $.init()
+        $.ModuloAsignacionCentroCosto.init()
     })()
 </script>

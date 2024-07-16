@@ -3,34 +3,45 @@
 *@
 @{
     Layout = null;
+    string guid = (string)ViewData["guid"],
+    Input_BuscarDisponibles_ModalAsignarVehiculos = "Input_BuscarDisponibles_ModalAsignarVehiculos_" + guid,
+    Contenedor_Disponibles_ModalAsignarVehiculos = "Contenedor_Disponibles_ModalAsignarVehiculos_" + guid,
+    TXT_ContadorDisponibles_ModalAsignarVehiculos = "TXT_ContadorDisponibles_ModalAsignarVehiculos_" + guid,
+    BTN_HaciaDerecha_ModalAsignarVehiculos = "BTN_HaciaDerecha_ModalAsignarVehiculos_" + guid,
+    BTN_TodoHaciaDerecha_ModalAsignarVehiculos = "BTN_TodoHaciaDerecha_ModalAsignarVehiculos_" + guid,
+    BTN_HaciaIzquierda_ModalAsignarVehiculos = "BTN_HaciaIzquierda_ModalAsignarVehiculos_" + guid,
+    BTN_TodoHaciaIzquierda_ModalAsignarVehiculos = "BTN_TodoHaciaIzquierda_ModalAsignarVehiculos_" + guid,
+    Input_BuscarAsignados_ModalAsignarVehiculos = "Input_BuscarAsignados_ModalAsignarVehiculos_" + guid,
+    Contenedor_Asignados_ModalAsignarVehiculos = "Contenedor_Asignados_ModalAsignarVehiculos_" + guid,
+    TXT_ContadorAsignados_ModalAsignarVehiculos = "TXT_ContadorAsignados_ModalAsignarVehiculos_" + guid;
 }
 <div>
     <div class="container-fluid">
         <div class="row">
             <div class="col-12 col-lg-5">
-                <input type="text" class="form-control my-2" placeholder="Buscar" id="buscarDisponibles" onkeyup="$.cartas.buscar('buscarDisponibles','disponibles')">
-                <div id="disponibles" class="border border-black contenedor-cartas"></div>
-                <p class="fst-italic">Mostrando <span id="contadorDisponibles">50</span>  de  <span class="totalCartas">100</span></p>
+                <input type="text" class="form-control my-2" placeholder="Buscar" id="@{@Input_BuscarDisponibles_ModalAsignarVehiculos}" onkeyup="$.Cartas_ModuloAsignarVehiculos.cartas.buscar('@{@Input_BuscarDisponibles_ModalAsignarVehiculos}','@{@Contenedor_Disponibles_ModalAsignarVehiculos}')">
+                <div id="@{@Contenedor_Disponibles_ModalAsignarVehiculos}" class="border border-black contenedor-cartas"></div>
+                <p class="fst-italic">Mostrando <span id="@{@TXT_ContadorDisponibles_ModalAsignarVehiculos}">50</span>  de  <span class="totalCartas">100</span></p>
             </div>
             <div class="col-12 col-lg-2 d-flex align-items-center justify-content-center">
                 <div class="cotainer-fluid">
                     <div class="row ">
                         <div class="col-lg-12 d-flex align-items-center justify-content-center">
-                            <button class="btn btn-outline-secondary BTN_Mover d-flex align-items-center justify-content-center" id="BTN_HaciaDerecha">
+                            <button class="btn btn-outline-secondary BTN_Mover d-flex align-items-center justify-content-center" id="@{@BTN_HaciaDerecha_ModalAsignarVehiculos}">
                                 <span class="d-none d-md-block text-center"><i class="bi bi-chevron-right"></i></span>
                                 <span class="d-sm-block d-md-none "><i class="bi bi-chevron-down"></i></span>
                             </button>
-                            <button class="btn btn-outline-secondary BTN_Mover d-flex align-items-center justify-content-center" id="BTN_TodoHaciaDerecha">
+                            <button class="btn btn-outline-secondary BTN_Mover d-flex align-items-center justify-content-center" id="@{@BTN_TodoHaciaDerecha_ModalAsignarVehiculos}">
                                 <span class="d-none d-md-block text-center"><i class="bi bi-chevron-double-right"></i></span>
                                 <span class="d-sm-block d-md-none"><i class="bi bi-chevron-double-down"></i></span>
                             </button>
                         </div>
                         <div class="col-lg-12 d-flex align-items-center justify-content-center">
-                            <button class="btn btn-outline-secondary BTN_Mover d-flex align-items-center justify-content-center" id="BTN_HaciaIzquierda">
-                                <span class="d-none d-md-block text-center" id="BTN_HaciaIzquierdo"><i class="bi bi-chevron-left"></i></span>
+                            <button class="btn btn-outline-secondary BTN_Mover d-flex align-items-center justify-content-center" id="@{@BTN_HaciaIzquierda_ModalAsignarVehiculos}">
+                                <span class="d-none d-md-block text-center"><i class="bi bi-chevron-left"></i></span>
                                 <span class="d-sm-block d-md-none"><i class="bi bi-chevron-up"></i></span>
                             </button>
-                            <button class="btn btn-outline-secondary BTN_Mover d-flex align-items-center justify-content-center" id="BTN_TodoHaciaIzquierda">
+                            <button class="btn btn-outline-secondary BTN_Mover d-flex align-items-center justify-content-center" id="@{@BTN_TodoHaciaIzquierda_ModalAsignarVehiculos}">
                                 <span class="d-none d-md-block text-center"><i class="bi bi-chevron-double-left"></i></span>
                                 <span class="d-sm-block d-md-none"><i class="bi bi-chevron-double-up"></i></span>
                             </button>
@@ -39,10 +50,10 @@
                 </div>
             </div>
             <div class="col-12 col-lg-5">
-                <input type="text" class="form-control my-2" placeholder="Buscar" id="buscarAsignados" onkeyup="$.cartas.buscar('buscarAsignados','asignados')">
-                <div id="asignados" class="border border-black contenedor-cartas"></div>
+                <input type="text" class="form-control my-2" placeholder="Buscar" id="@{@Input_BuscarAsignados_ModalAsignarVehiculos}" onkeyup="$.Cartas_ModuloAsignarVehiculos.cartas.buscar('@{@Input_BuscarAsignados_ModalAsignarVehiculos}','@{@Contenedor_Asignados_ModalAsignarVehiculos}')">
+                <div id="@{@Contenedor_Asignados_ModalAsignarVehiculos}" class="border border-black contenedor-cartas"></div>
                 <!--<span id="contadorAsignados" class="fst-italic" style="color: #6c6c6c;">Mostrando 50 de 100</span>-->
-                <p class="fst-italic">Mostrando <span id="contadorAsignados">50</span>  de  <span class="totalCartas">100</span></p>
+                <p class="fst-italic">Mostrando <span id="@{@TXT_ContadorAsignados_ModalAsignarVehiculos}">50</span>  de  <span class="totalCartas">100</span></p>
             </div>
         </div>
     </div>
@@ -110,133 +121,135 @@
 <script>
     (function () {
         $.extend({
-            cartas: {
-                cargarCartas: function (mobiles) {
-                    var _this = this
-                    var disponibles = mobiles.filter(mobile => mobile.disponible === true);
-                    var asignados = mobiles.filter(mobile => mobile.disponible === false);
-
-                    $("#disponibles").empty()
-                    $("#asignados").empty()
-                    for (let i = 0; i < disponibles.length; i++) {
-                        let div =
-                            '<div class= "carta"  seleccionado = false>' +
-                            '<h2 class="TXT_Mobile px-2" value = "' + disponibles[i].mobileid + '">' + disponibles[i].nombre + " - [" + disponibles[i].placa + "] - [" + disponibles[i].subfleet + "]" + '</h2>'
-                        '</div>'
-                        $("#disponibles").append(div);
-                    }
-
-                    for (let i = 0; i < asignados.length; i++) {
-                        let div =
-                            '<div class= "carta"  seleccionado = false>' +
-                            '<h2 class="TXT_Mobile px-2" value = "' + asignados[i].mobileid + '">' + asignados[i].nombre + " - [" + asignados[i].placa + "] - [" + asignados[i].subfleet + "]" + '</h2>'
-                        '</div>'
-                        $("#asignados").append(div);
-                    }
-                    $(".totalCartas").text(mobiles.length)
-                    _this.contadorCartas();
-                    _this.clickCarta()
-                },
-                cambiarEstado: function (_this) {
-                    let seleccionado = _this.attr("seleccionado");
-                    if (seleccionado === "true") {
-                        _this.attr("seleccionado", "false");
-                        //_this.css("background", "white");
-                        _this.removeClass("seleccionado")
-                    } else {
-                        _this.attr("seleccionado", "true");
-                        //_this.css("background", "#1967d2");
-                        _this.addClass("seleccionado")
-                    }
-                },
-                clickCarta: function () {
-                    var _this = this;
-
-                    $(".carta").on("click", function () {
-                        var carta = $(this);
-                        _this.cambiarEstado(carta);
-                    });
-                },
-                buscar: function (ID_Input, ID_Contenedor) {
-                    let ValorInput = $("#" + ID_Input).val()
-                    let cartas = $("#" + ID_Contenedor + " div")
-
-                    cartas.each(function () {
-                        let carta = $(this);
-                        let NombreMobile = carta.children("h2").text();
-                        NombreMobile.includes(ValorInput) === true ? carta.css("display", "block") : carta.css("display", "none");
-                    });
-
-                },
-                contadorCartas: function () {
-                    var _this = this
-                    $("#contadorDisponibles").text($("#disponibles div").length)
-                    $("#contadorAsignados").text($("#asignados div").length)
-                },
-                movimientos: {
-                    moverDerecha: function () {
-                        $("#BTN_HaciaDerecha").on("click", function () {
-                            $('#disponibles div[seleccionado="true"]').each(function () {
-                                $.cartas.cambiarEstado($(this))
-                                $("#asignados").append($(this));
-                                $.cartas.contadorCartas()
-                            });
-
-                        });
-                    },
-                    moverIzquierda: function () {
-                        $("#BTN_HaciaIzquierda").on("click", function () {
-                            $('#asignados div[seleccionado="true"]').each(function () {
-                                $.cartas.cambiarEstado($(this))
-                                $("#disponibles").append($(this));
-                                $.cartas.contadorCartas()
-                            });
-
-                        });
-                    },
-                    moverTodoDerecha: function () {
-                        $("#BTN_TodoHaciaDerecha").on("click", function () {
-                            $('#disponibles div').each(function () {
-                                //console.log($(this))
-                                $(this).attr("seleccionado", "false");
-                                $(this).removeClass("seleccionado");
-                                //$(this).css("background", "white");
-                                $("#asignados").append($(this));
-                                $.cartas.contadorCartas()
-                            });
-                        });
-                    },
-                    moverTodoIzquierda: function () {
-                        $("#BTN_TodoHaciaIzquierda").on("click", function () {
-                            $('#asignados div').each(function () {
-                                //console.log($(this))
-                                $(this).attr("seleccionado", "false");
-                                $(this).removeClass("seleccionado");
-                                //$(this).css("background", "white");
-                                $("#disponibles").append($(this));
-                                $.cartas.contadorCartas()
-                            });
-                        });
-
-                    },
-                    init: function () {
+            Cartas_ModuloAsignarVehiculos: {
+                cartas: {
+                    cargarCartas: function (mobiles) {
                         var _this = this
-                        _this.moverDerecha()
-                        _this.moverIzquierda()
-                        _this.moverTodoDerecha()
-                        _this.moverTodoIzquierda()
+                        var disponibles = mobiles.filter(mobile => mobile.disponible === true);
+                        var asignados = mobiles.filter(mobile => mobile.disponible === false);
+                        @*console.log("Segunda Vista: "+"@{@ID_GRID_RANGO}")*@
+                        $("#@{@Contenedor_Disponibles_ModalAsignarVehiculos}").empty()
+                        $("#@{@Contenedor_Asignados_ModalAsignarVehiculos}").empty()
+                        for (let i = 0; i < disponibles.length; i++) {
+                            let div =
+                                '<div class= "carta"  seleccionado = false>' +
+                                '<h2 class="TXT_Mobile px-2" value = "' + disponibles[i].mobileid + '">' + disponibles[i].nombre + " - [" + disponibles[i].placa + "] - [" + disponibles[i].subfleet + "]" + '</h2>'
+                            '</div>'
+                            $("#@{@Contenedor_Disponibles_ModalAsignarVehiculos}").append(div);
+                        }
+
+                        for (let i = 0; i < asignados.length; i++) {
+                            let div =
+                                '<div class= "carta"  seleccionado = false>' +
+                                '<h2 class="TXT_Mobile px-2" value = "' + asignados[i].mobileid + '">' + asignados[i].nombre + " - [" + asignados[i].placa + "] - [" + asignados[i].subfleet + "]" + '</h2>'
+                            '</div>'
+                            $("#@{@Contenedor_Asignados_ModalAsignarVehiculos}").append(div);
+                        }
+                        $(".totalCartas").text(mobiles.length)
+                        _this.contadorCartas();
+                        _this.clickCarta()
+                    },
+                    cambiarEstado: function (_this) {
+                        let seleccionado = _this.attr("seleccionado");
+                        if (seleccionado === "true") {
+                            _this.attr("seleccionado", "false");
+                            //_this.css("background", "white");
+                            _this.removeClass("seleccionado")
+                        } else {
+                            _this.attr("seleccionado", "true");
+                            //_this.css("background", "#1967d2");
+                            _this.addClass("seleccionado")
+                        }
+                    },
+                    clickCarta: function () {
+                        var _this = this;
+
+                        $(".carta").on("click", function () {
+                            var carta = $(this);
+                            _this.cambiarEstado(carta);
+                        });
+                    },
+                    buscar: function (ID_Input, ID_Contenedor) {
+                        let ValorInput = $("#" + ID_Input).val()
+                        let cartas = $("#" + ID_Contenedor + " div")
+
+                        cartas.each(function () {
+                            let carta = $(this);
+                            let NombreMobile = carta.children("h2").text();
+                            NombreMobile.includes(ValorInput) === true ? carta.css("display", "block") : carta.css("display", "none");
+                        });
+
+                    },
+                    contadorCartas: function () {
+                        var _this = this
+                        $("#@{@TXT_ContadorDisponibles_ModalAsignarVehiculos}").text($("#@{@Contenedor_Disponibles_ModalAsignarVehiculos} div").length)
+                        $("#@{@TXT_ContadorAsignados_ModalAsignarVehiculos}").text($("#@{@Contenedor_Asignados_ModalAsignarVehiculos} div").length)
+                    },
+                    movimientos: {
+                        moverDerecha: function () {
+                            $("#@{@BTN_HaciaDerecha_ModalAsignarVehiculos}").on("click", function () {
+                                $('#@{@Contenedor_Disponibles_ModalAsignarVehiculos} div[seleccionado="true"]').each(function () {
+                                    $.Cartas_ModuloAsignarVehiculos.cartas.cambiarEstado($(this))
+                                    $("#@{@Contenedor_Asignados_ModalAsignarVehiculos}").append($(this));
+                                    $.Cartas_ModuloAsignarVehiculos.cartas.contadorCartas()
+                                });
+
+                            });
+                        },
+                        moverIzquierda: function () {
+                            $("#@{@BTN_HaciaIzquierda_ModalAsignarVehiculos}").on("click", function () {
+                                $('#@{@Contenedor_Asignados_ModalAsignarVehiculos} div[seleccionado="true"]').each(function () {
+                                    $.Cartas_ModuloAsignarVehiculos.cartas.cambiarEstado($(this))
+                                    $("#@{@Contenedor_Disponibles_ModalAsignarVehiculos}").append($(this));
+                                    $.Cartas_ModuloAsignarVehiculos.cartas.contadorCartas()
+                                });
+
+                            });
+                        },
+                        moverTodoDerecha: function () {
+                            $("#@{@BTN_TodoHaciaDerecha_ModalAsignarVehiculos}").on("click", function () {
+                                $('#@{@Contenedor_Disponibles_ModalAsignarVehiculos} div').each(function () {
+                                    //console.log($(this))
+                                    $(this).attr("seleccionado", "false");
+                                    $(this).removeClass("seleccionado");
+                                    //$(this).css("background", "white");
+                                    $("#@{@Contenedor_Asignados_ModalAsignarVehiculos}").append($(this));
+                                    $.Cartas_ModuloAsignarVehiculos.cartas.contadorCartas()
+                                });
+                            });
+                        },
+                        moverTodoIzquierda: function () {
+                            $("#@{@BTN_TodoHaciaIzquierda_ModalAsignarVehiculos}").on("click", function () {
+                                $('#@{@Contenedor_Asignados_ModalAsignarVehiculos} div').each(function () {
+                                    //console.log($(this))
+                                    $(this).attr("seleccionado", "false");
+                                    $(this).removeClass("seleccionado");
+                                    //$(this).css("background", "white");
+                                    $("#@{@Contenedor_Disponibles_ModalAsignarVehiculos}").append($(this));
+                                    $.Cartas_ModuloAsignarVehiculos.cartas.contadorCartas()
+                                });
+                            });
+
+                        },
+                        init: function () {
+                            var _this = this
+                            _this.moverDerecha()
+                            _this.moverIzquierda()
+                            _this.moverTodoDerecha()
+                            _this.moverTodoIzquierda()
+                        }
                     }
+                },
+                init: function () {
+                    var _this = this
+                    //_this.cartas.cargarCartas()
+                    _this.cartas.contadorCartas()
+                    _this.cartas.buscar()
+                    _this.cartas.movimientos.init()
+                    //_this.cartas.clickCarta()
                 }
-            },
-            init: function () {
-                var _this = this
-                //_this.cartas.cargarCartas()
-                _this.cartas.contadorCartas()
-                _this.cartas.buscar()
-                _this.cartas.movimientos.init()
-                //_this.cartas.clickCarta()
             }
         })
-        $.init()
+        $.Cartas_ModuloAsignarVehiculos.init()
     })();
 </script>

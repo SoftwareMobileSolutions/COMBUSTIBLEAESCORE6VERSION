@@ -21,7 +21,8 @@
     Input_ResponsableProyectoModal = "Input_ResponsableProyectoModal_" + guid,
     DropDownListEstadoProyectoModal = "DropDownListEstadoProyectoModal_" + guid,
     ModalAlert = "ModalAlert_" + guid,
-    BTN_Guardar = "BTN_Guardar_" + guid;
+    BTN_Guardar = "BTN_Guardar_" + guid,
+    GUI_CSS = guid; 
     //BTN_DownloadFormato = "BTN_DownloadFormato_" + guid;
 
 }
@@ -483,8 +484,8 @@
                                     {
                                         field: "codigoProyecto",
                                         title: "Codigo Proyecto",
-                                        attributes: { class: "col-data" },
-                                        headerAttributes: { class: "col-data" },
+                                        attributes: { class: "col-data_@{@GUI_CSS}" },
+                                        headerAttributes: { class: "col-data_@{@GUI_CSS}" },
                                         filterable: {
                                             cell: {
                                                 operator: "contains",
@@ -495,8 +496,8 @@
                                     {
                                         field: "NombreProyecto",
                                         title: "Nombre del proyecto",
-                                        attributes: { class: "col-data" },
-                                        headerAttributes: { class: "col-data" },
+                                        attributes: { class: "col-data_@{@GUI_CSS}" },
+                                        headerAttributes: { class: "col-data_@{@GUI_CSS}" },
                                         filterable: {
                                             cell: {
                                                 operator: "contains",
@@ -507,8 +508,8 @@
                                     {
                                         field: "Responsable",
                                         title: "Responsable",
-                                        attributes: { class: "col-data" },
-                                        headerAttributes: { class: "col-data" },
+                                        attributes: { class: "col-data_@{@GUI_CSS}" },
+                                        headerAttributes: { class: "col-data_@{@GUI_CSS}" },
                                         filterable: {
                                             cell: {
                                                 operator: "contains",
@@ -519,8 +520,8 @@
                                     {
                                         field: "Estado",
                                         title: "Estado",
-                                        attributes: { class: "col-data" },
-                                        headerAttributes: { class: "col-data" },
+                                        attributes: { class: "col-data_@{@GUI_CSS}" },
+                                        headerAttributes: { class: "col-data_@{@GUI_CSS}" },
                                         filterable: {
                                             cell: {
                                                 operator: "contains",
@@ -551,8 +552,8 @@
                                             }
 
                                         ],
-                                        attributes: { class: "col-command" },
-                                        headerAttributes: { class: "col-command" }
+                                        attributes: { class: "col-command_@{@GUI_CSS}" },
+                                        headerAttributes: { class: "col-command_@{@GUI_CSS}" }
                                     }
 
                                 ],
@@ -641,8 +642,8 @@
                                         field: "codigoProyecto",
                                         title: "Codigo Proyecto",
                                         //width: "100px",
-                                        attributes: { class: "col-data" },
-                                        headerAttributes: { class: "col-data" },
+                                        attributes: { class: "col-data_@{@GUI_CSS}" },
+                                        headerAttributes: { class: "col-data_@{@GUI_CSS}" },
                                         /*filterable: {
                                             cell: {
                                                 operator: "contains",
@@ -654,8 +655,8 @@
                                         field: "nombreProyecto",
                                         title: "Nombre del proyecto",
                                         //width: "100px",
-                                        attributes: { class: "col-data" },
-                                        headerAttributes: { class: "col-data" },
+                                        attributes: { class: "col-data_@{@GUI_CSS}" },
+                                        headerAttributes: { class: "col-data_@{@GUI_CSS}" },
                                         /*filterable: {
                                             cell: {
                                                 operator: "contains",
@@ -667,8 +668,8 @@
                                         field: "responsable",
                                         title: "Responsable",
                                         //width: "100px",
-                                        attributes: { class: "col-data" },
-                                        headerAttributes: { class: "col-data" },
+                                        attributes: { class: "col-data_@{@GUI_CSS}" },
+                                        headerAttributes: { class: "col-data_@{@GUI_CSS}" },
                                         /*filterable: {
                                             cell: {
                                                 operator: "contains",
@@ -680,8 +681,8 @@
                                         field: "estado",
                                         title: "Estado",
                                         //width: "100px",
-                                        attributes: { class: "col-data" },
-                                        headerAttributes: { class: "col-data" },
+                                        attributes: { class: "col-data_@{@GUI_CSS}" },
+                                        headerAttributes: { class: "col-data_@{@GUI_CSS}" },
                                         /*filterable: {
                                             cell: {
                                                 operator: "contains",
@@ -721,8 +722,8 @@
                                             }
 
                                         ],
-                                        attributes: { class: "col-command-2" },
-                                        headerAttributes: { class: "col-command-2" },
+                                        attributes: { class: "col-command-2_@{@GUI_CSS}" },
+                                        headerAttributes: { class: "col-command-2_@{@GUI_CSS}" },
                                     }
                                 ],
                                 pageable: true,
@@ -915,23 +916,23 @@
         background: #bb2d3b;
         color: white;
     }
-    .col-command {
+    .col-command_@{@GUI_CSS} {
         text-align: center !important;
         width: 70px;
     }
-    .col-command-2 {
+    .col-command-2_@{@GUI_CSS} {
         text-align: center !important;
         width: 95px;
     }
-    .col-data{
+    .col-data_@{@GUI_CSS}{
         width: 150px;
     }
     @@media screen and (max-width: 576px) {
-        .col-command {
+        .col-command_@{@GUI_CSS} {
             width: 140px;
         }
 
-        .col-command-2 {
+        .col-command-2_@{@GUI_CSS} {
             text-align: center !important;
             width: 200px;
         }
@@ -949,10 +950,10 @@
     }*/
     @@media (min-width: 768px) and (max-width: 991.98px) {
         /* Tus estilos aquí */
-        .col-command {
+        .col-command_@{@GUI_CSS} {
             width: 130px;
         }
-        .col-command-2 {
+        .col-command-2_@{@GUI_CSS} {
             width: 180px;
         }
     }

@@ -38,6 +38,30 @@
                     Añadir gasolineras
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link " href="#step-6">
+                    <span class="num">6</span>
+                    Añadir Flotas y Vehiculos
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " href="#step-7">
+                    <span class="num">7</span>
+                    Creacion de Usuarios
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " href="#step-8">
+                    <span class="num">8</span>
+                    Asignación de vehiculos a usuarios
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " href="#step-9">
+                    <span class="num">9</span>
+                    Asignación de Centros de Costo
+                </a>
+            </li>
         </ul>
 
         <div class="tab-content">
@@ -53,8 +77,20 @@
             <div id="step-4" class="tab-pane" role="tabpanel" aria-labelledby="step-4">
                 @await Html.PartialAsync("~/Views/adRazonesCancelacion/adRazonesCancelacion.cshtml");
             </div>
-            <div id="step-5" class="tab-pane" role="tabpanel" aria-labelledby="step-4">
+            <div id="step-5" class="tab-pane" role="tabpanel" aria-labelledby="step-5">
                 @await Html.PartialAsync("~/Views/adGasolinera/adGasolinera.cshtml");
+            </div>
+            <div id="step-6" class="tab-pane" role="tabpanel" aria-labelledby="step-6">
+                @await Html.PartialAsync("~/Views/adVehiculosFlotas/adVehiculosFlotas.cshtml");
+            </div>
+            <div id="step-7" class="tab-pane" role="tabpanel" aria-labelledby="step-7">
+                @await Html.PartialAsync("~/Views/adAgregarUsuario/adAgregarUsuario.cshtml");
+            </div>
+            <div id="step-8" class="tab-pane" role="tabpanel" aria-labelledby="step-8">
+                @await Html.PartialAsync("~/Views/AdUsuariosVehiculos/AdUsuariosVehiculos.cshtml");
+            </div>
+            <div id="step-9" class="tab-pane" role="tabpanel" aria-labelledby="step-9">
+                @await Html.PartialAsync("~/Views/adAsignacionCentrosCosto/adAsignacionCentrosCosto.cshtml");
             </div>
         </div>
 
@@ -65,9 +101,116 @@
     </div>
 </section>
 <script>
-    $(function () {
+   
+
+    (function () {
+        $.extend({
+            ModuloTutorial: {
+                Smartwizard: {
+                    Cargar: function () {
+
+                        var btnFinish = $('<button></button>').text('Atras')
+                            .addClass('btn btn-success me-2')
+                            .on('click', function () {
+                                //alert('Finish button clicked');
+                                $('#smartwizard').smartWizard("prev");
+                            });
+                        var btnCancel = $('<button></button>').text('Sigueinte')
+                            .addClass('btn btn-danger')
+                            .on('click', function () {
+                                //$('#smartwizard').smartWizard("reset");
+                                //$('#smartwizard').smartWizard("next");
+                                $.ModuloTutorial.Smartwizard.BTN_Siguiente()
+                            });
+                        $('#smartwizard').smartWizard({
+                            toolbar: {
+                                toolbarPosition: 'bottom', // both: Barra de herramientas en la parte superior e inferior
+                                showNextButton: false, // show/hide a Next button
+                                showPreviousButton: false,
+                                extraHtml: [btnFinish, btnCancel] // Añadir botones personalizados
+                            }
+                        });
+                    },
+                    BTN_Siguiente: function(){
+                        let data =  $('#smartwizard').smartWizard("getStepInfo");
+                        _Paso = data.currentStep
+                        
+                        $.get('@Url.Action("ValidarPaso", "adTutorial")', { Paso: _Paso }, function (mensaje) {
+                            mensaje = mensaje[0]
+                            if (mensaje.bandera === 0) {
+                                $._combustible.alert("error", "Información incompleta", mensaje.resultado)
+                            } else {
+                                //$('#smartwizard').smartWizard("prev");
+                                $('#smartwizard').smartWizard("next");
+                            }
+                        })
+                    }
+
+                },
+                init: function () {
+                    var _this = this 
+                    _this.Smartwizard.Cargar()
+                    //_this.Smartwizard.EventoLeaveStep()
+                }
+            }
+        })
+        $.ModuloTutorial.init()
+    })();
+</script>
+<script>
+    @*$(function () {
         // SmartWizard initialize
+        //var contador = 0;
         $('#smartwizard').smartWizard();
 
-    });
+        $("#smartwizard").on("leaveStep", function (e, anchorObject, currentStepIndex, nextStepIndex, stepDirection) {
+
+        /*let stepInfo = $('#smartwizard').smartWizard("getStepInfo");
+        console.log(stepInfo);*/
+
+        /*if (stepDirection === 'forward') {
+        console.log(stepNumber)
+        }*/
+        /*console.log("Boton presionaodo: " + stepDirection)
+        console.log("currentStepIndex :" + currentStepIndex)
+        console.log("Siguiente : " + nextStepIndex)*/
+
+
+        if (stepDirection === 'forward') {
+        switch (currentStepIndex) {
+        case 3:
+        let prueba = false;
+
+        if (prueba === false) {
+        $._combustible.alert("error", "F en el chat", "Debe completar la información")
+
+        }else{
+        $._combustible.alert("success", "LOL", "Pasa")
+        }
+        return prueba;
+        break;
+        default:
+        return true;
+
+        }
+
+        }
+        //console.log(stepNumber)
+        /*if (stepDirection === 'forward') {
+        var inputVal = $('#input1').val();
+        if (inputVal === '') {
+        alert('Please enter something in Step 1');
+        return false; // return false to stay on current step
+        }
+        }*/
+        /*if (contador > 0) {
+        $._combustible.alert("success", "Prueba", "XD")
+        }*/
+        //contador++;
+        //return true;
+        });
+
+
+
+        });*@
 </script>

@@ -1,10 +1,6 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
     Layout = null;
     string guid = System.Guid.NewGuid().ToString().Replace("-", ""),
-
     TabstripVehiculosFlotas = "TabstripVehiculosFlotas_" + guid,
     Input_Placa = "Input_Placa_" + guid,
     Input_Nombre = "Input_Nombre_" + guid,
@@ -36,10 +32,20 @@
     ModalAgregarCentroCosto = "ModalAgregarCentroCosto_" + guid,
     Input_CentroCosto_ModalAgregarCentroCosto = "Input_CentroCosto_ModalAgregarCentroCosto_" + guid,
     ModalAlert_ModalAgregarCentroCosto = "ModalAlert_ModalAgregarCentroCosto_" + guid,
-    BTN_AgregarCentroCosto_ModalAgregarCentroCosto = "BTN_AgregarCentroCosto_ModalAgregarCentroCosto_" + guid;
-    @*ModalEditarVehiculo = "ModalEditarVehiculo_" + guid,
-    TXT_Nombre = "ModalEditarVehiculo_" + guid;*@
-
+    BTN_AgregarCentroCosto_ModalAgregarCentroCosto = "BTN_AgregarCentroCosto_ModalAgregarCentroCosto_" + guid,
+    ModalEditarVehiculo = "ModalEditarVehiculo_" + guid,
+    TXT_NombrePlacaVehiculo_ModalEditarVehiculo = "TXT_NombrePlacaVehiculo_ModalEditarVehiculo_" + guid,
+    Input_Placa_ModalEditarVehiculo = "Input_Placa_ModalEditarVehiculo_" + guid,
+    Input_Nombre_ModalEditarVehiculo = "Input_Nombre_ModalEditarVehiculo_" + guid,
+    DropDown_Flota_ModalEditarVehiculo = "DropDown_Flota_ModalEditarVehiculo_" + guid,
+    Input_Marca_ModalEditarVehiculo = "Input_Marca_ModalEditarVehiculo_" + guid,
+    Input_Modelo_ModalEditarVehiculo = "Input_Modelo_ModalEditarVehiculo_" + guid,
+    Input_KmxGal_ModalEditarVehiculo = "Input_KmxGal_ModalEditarVehiculo_" + guid,
+    Input_CapTan_ModalEditarVehiculo = "Input_CapTan_ModalEditarVehiculo_" + guid,
+    DropDown_Gasolina_ModalEditarVehiculo = "DropDown_Gasolina_ModalEditarVehiculo_" + guid,
+    Input_VIN_ModalEditarVehiculo = "Input_VIN_ModalEditarVehiculo_" + guid,
+    ModalAlert_ModalEditarVehiculo = "ModalAlert_ModalEditarVehiculo_" + guid,
+    BTN_GuardarCambios_ModalEditarVehiculo = "BTN_GuardarCambios_ModalEditarVehiculo_" + guid;
 }
 <section>
     <div id="@{@TabstripVehiculosFlotas}">
@@ -167,7 +173,6 @@
                         <input class="ms-lg-3 btn btn-success w-100" id="@{@BTN_ReloadGRID_Vehiculo}" type="button" value="Generar" />
                     </div>
                 </div>
-
                 <div class="row">
                     <div id="@{@GRID_Vehiculos}">
                     </div>
@@ -201,14 +206,12 @@
                 <div class="row mt-lg-2 mt-3">
                     <div class="col-lg-12">
                         <div id="@{@GRID_Flotas}">
-
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
     <div class="modal fade" id="@{@ModalEditarFlota}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
@@ -295,7 +298,7 @@
             </div>
         </div>
     </div>
-    <div id="editarVehiculoModal" class="modal fade">
+    <div id="@{@ModalEditarVehiculo}" class="modal fade">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content ">
                 <div class="modal-header">
@@ -306,80 +309,80 @@
                     <div class="container-fluid"> 
                         <div class="row">
                             <div class="col-lg-12 d-flex justify-content-center align-items-center">
-                                <i class="bi bi-car-front me-2"></i> <span id="TXT_Auto"> </span>
+                                <i class="bi bi-car-front me-2"></i> <span id="@{@TXT_NombrePlacaVehiculo_ModalEditarVehiculo}"> </span>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-12">
                                 <label>Placa</label>
-                                <input id="Input_Placa" class="form-control text-uppercase" />
+                                <input id="@{@Input_Placa_ModalEditarVehiculo}" class="form-control text-uppercase" />
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-lg-12">
                                 <label>Nombre</label>
-                                <input id="Input_Nombre" class="form-control" />
+                                <input id="@{@Input_Nombre_ModalEditarVehiculo}" class="form-control" />
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-lg-12">
                                 <label>Flota</label>
-                                <input id="DropDown_FlotaModal" />
+                                <input id="@{@DropDown_Flota_ModalEditarVehiculo}" />
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-lg-12">
                                 <label>Marca</label>
-                                <input id="Input_Marca" class="form-control" />
+                                <input id="@{@Input_Marca_ModalEditarVehiculo}" class="form-control" />
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-lg-12">
                                 <label>Modelo</label>
-                                <input id="Input_Modelo" class="form-control" />
+                                <input id="@{@Input_Modelo_ModalEditarVehiculo}" class="form-control" />
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-lg-12">
                                 <label>Kilometros por galon</label>
-                                <input id="Input_KmxGal" class="form-control" />
+                                <input id="@{@Input_KmxGal_ModalEditarVehiculo}" class="form-control" />
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-lg-12">
                                 <label>Capacidad tanque</label>
-                                <input id="Input_CapTan" class="form-control" />
+                                <input id="@{@Input_CapTan_ModalEditarVehiculo}" class="form-control" />
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-lg-12">
                                 <label>Seleccione el tipo de Combustible</label>
-                                <input id="DropDown_GasolinaModal" />
+                                <input id="@{@DropDown_Gasolina_ModalEditarVehiculo}" />
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-12">
                                 <label>Numero de VIN</label>
-                                <input id="Input_VIN" class="form-control text-uppercase" />
+                                <input id="@{@Input_VIN_ModalEditarVehiculo}" class="form-control text-uppercase" />
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-12 mt-lg-1">
-                                <span id="ModalAlert"></span>
+                                <span id="@{@ModalAlert_ModalEditarVehiculo}"></span>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-success" id="BTN_GuardarCambios" disabled> <i class="bi bi-floppy-fill"></i> Guardar Cambios</button>
+                    <button type="button" class="btn btn-success" id="@{@BTN_GuardarCambios_ModalEditarVehiculo}" disabled> <i class="bi bi-floppy-fill"></i> Guardar Cambios</button>
                 </div>
             </div>
         </div>
@@ -490,9 +493,8 @@
                                 dataValueField: "centroCostoID"
                             });
 
-                            $("#DropDown_FlotaModal").kendoDropDownList({
+                            $("#@{@DropDown_Flota_ModalEditarVehiculo}").kendoDropDownList({
                                 filter: "contains",
-                                optionLabel: 'Seleccione la flota',
                                 dataTextField: "nombreSubfleet",
                                 dataValueField: "subfleetID",
                                 change: function () {
@@ -500,7 +502,7 @@
                                 }
                             });
 
-                            $("#DropDown_GasolinaModal").kendoDropDownList({
+                            $("#@{@DropDown_Gasolina_ModalEditarVehiculo}").kendoDropDownList({
                                 optionLabel: 'Seleccione un tipo de gasolina',
                                 dataTextField: "tipoCombustible",
                                 dataValueField: "combustibleMobileID",
@@ -515,12 +517,12 @@
                         DataDropDowns: function () {
                             $.get('@Url.Action("obtenerTipoCombustible", "adVehiculosFlotas")', function (GAS) {
                                 $("#@{@DropDown_Gasolina}").data("kendoDropDownList").dataSource.data(GAS);
-                                $("#DropDown_GasolinaModal").data("kendoDropDownList").dataSource.data(GAS);
+                                $("#@{@DropDown_Gasolina_ModalEditarVehiculo}").data("kendoDropDownList").dataSource.data(GAS);
                             })
 
                             $.get('@Url.Action("obtenerFlotas", "adVehiculosFlotas")', function (flotas) {
                                 $("#@{@DropDown_Flota}").data("kendoDropDownList").dataSource.data(flotas);
-                                $("#DropDown_FlotaModal").data("kendoDropDownList").dataSource.data(flotas);
+                                $("#@{@DropDown_Flota_ModalEditarVehiculo}").data("kendoDropDownList").dataSource.data(flotas);
                             })
 
                             $.get('@Url.Action("ObtenerCentrosCosto", "adVehiculosFlotas")', function (centrosCosto) {
@@ -636,37 +638,37 @@
                                                     var tr = $(e.target).closest("tr");
                                                     var data = this.dataItem(tr);
                                                     console.log(data)
-                                                    $("#TXT_Auto").text(data.nombre + " - [" + data.placa + "]")
+                                                    $("#@{@TXT_NombrePlacaVehiculo_ModalEditarVehiculo}").text(data.nombre + " - [" + data.placa + "]")
 
-                                                    $("#ModalAlert").text("")
+                                                    $("#@{@ModalAlert_ModalEditarVehiculo}").text("")
 
                                                     $.ModuloVehiculosFlotas.vehiculo.ActualizarVehiculo.dataActual.mobileID = data.mobileID
 
-                                                    $("#Input_Placa").val(data.placa)
+                                                    $("#@{@Input_Placa_ModalEditarVehiculo}").val(data.placa)
                                                     $.ModuloVehiculosFlotas.vehiculo.ActualizarVehiculo.dataActual.placa = data.placa
 
-                                                    $("#Input_Nombre").val(data.nombre)
+                                                    $("#@{@Input_Nombre_ModalEditarVehiculo}").val(data.nombre)
                                                     $.ModuloVehiculosFlotas.vehiculo.ActualizarVehiculo.dataActual.nombre = data.nombre
 
-                                                    $("#DropDown_FlotaModal").data("kendoDropDownList").value(data.subfleetID + "")
+                                                    $("#@{@DropDown_Flota_ModalEditarVehiculo}").data("kendoDropDownList").value(data.subfleetID + "")
                                                     $.ModuloVehiculosFlotas.vehiculo.ActualizarVehiculo.dataActual.idFlota = data.subfleetID
 
-                                                    $("#Input_Marca").val(data.marca)
+                                                    $("#@{@Input_Marca_ModalEditarVehiculo}").val(data.marca)
                                                     $.ModuloVehiculosFlotas.vehiculo.ActualizarVehiculo.dataActual.marca = data.marca
 
-                                                    $("#Input_Modelo").val(data.modelo)
+                                                    $("#@{@Input_Modelo_ModalEditarVehiculo}").val(data.modelo)
                                                     $.ModuloVehiculosFlotas.vehiculo.ActualizarVehiculo.dataActual.modelo = data.modelo
 
-                                                    $("#Input_KmxGal").val(extraerNumeros(data.kmXGalon))
+                                                    $("#@{@Input_KmxGal_ModalEditarVehiculo}").val(extraerNumeros(data.kmXGalon))
                                                     $.ModuloVehiculosFlotas.vehiculo.ActualizarVehiculo.dataActual.kmXGalon = extraerNumeros(data.kmXGalon)
 
-                                                    $("#Input_CapTan").val(extraerNumeros(data.capacidadTanque))
+                                                    $("#@{@Input_CapTan_ModalEditarVehiculo}").val(extraerNumeros(data.capacidadTanque))
                                                     $.ModuloVehiculosFlotas.vehiculo.ActualizarVehiculo.dataActual.capacidadTanque = extraerNumeros(data.capacidadTanque)
 
-                                                    $("#DropDown_GasolinaModal").data("kendoDropDownList").select(data.tipoCombustibleID)
+                                                    $("#@{@DropDown_Gasolina_ModalEditarVehiculo}").data("kendoDropDownList").select(data.tipoCombustibleID)
                                                     $.ModuloVehiculosFlotas.vehiculo.ActualizarVehiculo.dataActual.combustibleID = data.tipoCombustibleID
 
-                                                    $("#Input_VIN").val(data.vin)
+                                                    $("#@{@Input_VIN_ModalEditarVehiculo}").val(data.vin)
                                                     $.ModuloVehiculosFlotas.vehiculo.ActualizarVehiculo.dataActual.numeroVIN = data.vin
 
                                                     function extraerNumeros(cadena) {
@@ -675,7 +677,7 @@
                                                         return coincidencias[0]
                                                     }
 
-                                                    $('#editarVehiculoModal').modal('show');
+                                                    $('#@{@ModalEditarVehiculo}').modal('show');
                                                 }
                                             },
                                             {
@@ -746,7 +748,7 @@
                         },
                     },
                     keypress: function () {
-                        $('#@{@Input_Placa}, #Input_Placa').keypress(function (event) {
+                        $('#@{@Input_Placa}, #@{@Input_Placa_ModalEditarVehiculo}').keypress(function (event) {
 
                             var keyCode = event.which;
                             var inputValue = $(this).val();
@@ -761,7 +763,7 @@
                             }
 
                         });
-                        $('#@{@Input_KmXGalon}, #Input_KmxGal').keypress(function (event) {
+                        $('#@{@Input_KmXGalon}, #@{@Input_KmxGal_ModalEditarVehiculo}').keypress(function (event) {
 
                             var keyCode = event.which;
                             var inputValue = $(this).val();
@@ -789,7 +791,7 @@
                             }
 
                         });
-                        $('#@{@Input_CapacidadTanque}, #Input_CapTan').keypress(function (event) {
+                        $('#@{@Input_CapacidadTanque}, #@{@Input_CapTan_ModalEditarVehiculo}').keypress(function (event) {
 
                             var keyCode = event.which;
                             var inputValue = $(this).val();
@@ -817,7 +819,7 @@
                             }
 
                         });
-                        $('#@{@Input_Vin}, #Input_VIN').keypress(function (event) {
+                        $('#@{@Input_Vin}, #@{@Input_VIN_ModalEditarVehiculo}').keypress(function (event) {
 
                             var keyCode = event.which;
                             var inputValue = $(this).val();
@@ -834,7 +836,7 @@
 
                         });
 
-                        $('#@{@Input_Nombre}, #@{@Input_Marca}, #@{@Input_Modelo}').keypress(function (event) {
+                        $('#@{@Input_Nombre}, #@{@Input_Nombre_ModalEditarVehiculo}, #@{@Input_Marca}, #@{@Input_Marca_ModalEditarVehiculo},#@{@Input_Modelo_ModalEditarVehiculo}, #@{@Input_Modelo}').keypress(function (event) {
 
                             var keyCode = event.which;
                             var inputValue = $(this).val();
@@ -948,7 +950,7 @@
                         },
                         eventoInput: function () {
                             var _this = this
-                            $("#Input_Placa, #Input_Nombre, #Input_Marca,#Input_Modelo,#Input_KmxGal,#Input_CapTan,#Input_VIN").on("input", function (e) {
+                            $("#@{@Input_Placa_ModalEditarVehiculo}, #@{@Input_Nombre_ModalEditarVehiculo}, #@{@Input_Marca_ModalEditarVehiculo},#Input_Modelo,#Input_KmxGal,#Input_CapTan,#Input_VIN").on("input", function (e) {
                                 _this.activarButton()
                             })
                         },
@@ -956,26 +958,26 @@
                             var _this = this
 
                             if (_this.comparador() === true) {
-                                if ($("#BTN_GuardarCambios").is(':disabled') === true) {
-                                    $("#BTN_GuardarCambios").attr("disabled", false)
+                                if ($("#@{@BTN_GuardarCambios_ModalEditarVehiculo}").is(':disabled') === true) {
+                                    $("#@{@BTN_GuardarCambios_ModalEditarVehiculo}").attr("disabled", false)
                                 }
                             } else {
-                                $("#BTN_GuardarCambios").attr("disabled", true)
+                                $("#@{@BTN_GuardarCambios_ModalEditarVehiculo}").attr("disabled", true)
                             }
                         },
                         comparador: function () {
                             var _this = this
-                            var Placa = $("#Input_Placa").val()
-                            var Nombre = $("#Input_Nombre").val()
-                            var FlotaID = $("#DropDown_FlotaModal").data("kendoDropDownList").value()
-                            var Marca = $("#Input_Marca").val()
-                            var Modelo = $("#Input_Modelo").val()
-                            var KmxGal = $("#Input_KmxGal").val()
-                            var CapTan = $("#Input_CapTan").val()
+                            var Placa = $("#@{@Input_Placa_ModalEditarVehiculo}").val()
+                            var Nombre = $("#@{@Input_Nombre_ModalEditarVehiculo}").val()
+                            var FlotaID = $("#@{@DropDown_Flota_ModalEditarVehiculo}").data("kendoDropDownList").value()
+                            var Marca = $("#@{@Input_Marca_ModalEditarVehiculo}").val()
+                            var Modelo = $("#@{@Input_Modelo_ModalEditarVehiculo}").val()
+                            var KmxGal = $("#@{@Input_KmxGal_ModalEditarVehiculo}").val()
+                            var CapTan = $("#@{@Input_CapTan_ModalEditarVehiculo}").val()
 
-                            var CombustibleID = $("#DropDown_GasolinaModal").data("kendoDropDownList").value()
+                            var CombustibleID = $("#@{@DropDown_Gasolina_ModalEditarVehiculo}").data("kendoDropDownList").value()
                             CombustibleID = CombustibleID !== "" ? parseInt(CombustibleID) : 0
-                            var VIN = $("#Input_VIN").val()
+                            var VIN = $("#@{@Input_VIN_ModalEditarVehiculo}").val()
 
                             if (_this.dataActual.placa !== Placa) {
                                 return true
@@ -1018,9 +1020,9 @@
                         },
                         validaciones: function () {
                             var _this = this
-                            var placa = $("#Input_Placa").val().trim();
-                            var Nombre = $("#Input_Nombre").val().trim();
-                            var Flota = $("#DropDown_FlotaModal").data("kendoDropDownList").value()
+                            var placa = $("#@{@Input_Placa_ModalEditarVehiculo}").val().trim();
+                            var Nombre = $("#@{@Input_Nombre_ModalEditarVehiculo}").val().trim();
+                            var Flota = $("#@{@DropDown_Flota_ModalEditarVehiculo}").data("kendoDropDownList").value()
 
                             if (placa === "") {
                                 _this.alert("alerta", "Debe ingresar una placa")
@@ -1039,24 +1041,24 @@
                         },
                         BTN_ActulizarDatos: function () {
                             var _this = this
-                            $("#BTN_GuardarCambios").on("click", function () {
+                            $("#@{@BTN_GuardarCambios_ModalEditarVehiculo}").on("click", function () {
                                 //var _this = this
 
                                 //console.log("XD")
 
-                                var Placa = $("#Input_Placa").val().toUpperCase()
-                                var Nombre = $("#Input_Nombre").val()
-                                var FlotaModal = $("#DropDown_FlotaModal").val()
+                                var Placa = $("#@{@Input_Placa_ModalEditarVehiculo}").val().toUpperCase()
+                                var Nombre = $("#@{@Input_Nombre_ModalEditarVehiculo}").val()
+                                var FlotaModal = $("#@{@DropDown_Flota_ModalEditarVehiculo}").val()
                                 FlotaModal = parseInt(FlotaModal)
-                                var Marca = $("#Input_Marca").val()
-                                var Modelo = $("#Input_Modelo").val()
-                                var KmxGal = $("#Input_KmxGal").val()
+                                var Marca = $("#@{@Input_Marca_ModalEditarVehiculo}").val()
+                                var Modelo = $("#@{@Input_Modelo_ModalEditarVehiculo}").val()
+                                var KmxGal = $("#@{@Input_KmxGal_ModalEditarVehiculo}").val()
                                 KmxGal = KmxGal === "" ? null : parseFloat(KmxGal)
-                                var CapTan = $("#Input_CapTan").val()
+                                var CapTan = $("#@{@Input_CapTan_ModalEditarVehiculo}").val()
                                 CapTan = CapTan === "" ? null : parseFloat(CapTan)
-                                var GasolinaModal = $("#DropDown_GasolinaModal").val()
+                                var GasolinaModal = $("#@{@DropDown_Gasolina_ModalEditarVehiculo}").val()
                                 GasolinaModal = GasolinaModal === "" ? null : parseInt(GasolinaModal)
-                                var VIN = $("#Input_VIN").val().toUpperCase()
+                                var VIN = $("#@{@Input_VIN_ModalEditarVehiculo}").val().toUpperCase()
 
                                 var arg = {
                                     MobileID: _this.dataActual.mobileID,
@@ -1107,12 +1109,12 @@
                         },
                         alert: function (tipo, mensaje) {
                             if (tipo === "alerta") {
-                                $("#ModalAlert").text("Alerta: " + mensaje)
-                                $("#ModalAlert").css("color", "red")
+                                $("#@{@ModalAlert_ModalEditarVehiculo}").text("Alerta: " + mensaje)
+                                $("#@{@ModalAlert_ModalEditarVehiculo}").css("color", "red")
                             }
                             if (tipo === "suceso") {
-                                $("#ModalAlert").text("Nota: " + mensaje)
-                                $("#ModalAlert").css("color", "green")
+                                $("#@{@ModalAlert_ModalEditarVehiculo}").text("Nota: " + mensaje)
+                                $("#@{@ModalAlert_ModalEditarVehiculo}").css("color", "green")
                             }
                         }
                     }

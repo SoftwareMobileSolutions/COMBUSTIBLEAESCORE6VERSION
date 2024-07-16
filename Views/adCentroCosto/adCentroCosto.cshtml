@@ -11,7 +11,8 @@
     EditarModalLabel = "EditarModalLabel_" + guid,
     Input_NombreCentroCosto_Modal = "Input_NombreCentroCosto_Modal_" + guid,
     ModalAlert = "ModalAlert_" + guid,
-    BTN_GuardarCentroCosto = "BTN_GuardarCentroCosto_" + guid;
+    BTN_GuardarCentroCosto = "BTN_GuardarCentroCosto_" + guid,
+    GUI_CSS = guid;
 }
 
 <section>
@@ -160,8 +161,8 @@
                                             }
                                         }
                                     ],
-                                    attributes: { /*style: "text-align: center; width:15vw" */ class: "col-command" },
-                                    headerAttributes: { class: "col-command" }
+                                    attributes: { /*style: "text-align: center; width:15vw" */ class: "col-command_@{@GUI_CSS}" },
+                                    headerAttributes: { class: "col-command_@{@GUI_CSS}" }
                                     //width: "15%"
                                 }
                             ],
@@ -292,13 +293,13 @@
             color: white;
         }
 
-    .col-command {
+    .col-command_@{@GUI_CSS} {
         text-align: center !important;
         width: 195px;
     }
 
     @@media screen and (max-width: 576px) {
-        .col-command {
+        .col-command_@{@GUI_CSS} {
             width: 60%;
         }
     }

@@ -12,7 +12,8 @@
     EditarModalLabel = "EditarModalLabel_" + guid,
     InputNombreRazonCancel = "InputNombreRazonCancel_" + guid,
     ModalAlert = "ModalAlert_" + guid,
-    BTN_Guardar = "BTN_Guardar_" + guid;
+    BTN_Guardar = "BTN_Guardar_" + guid,
+    GUI_CSS = guid;
 }
 <section>
     <div class="card">
@@ -96,13 +97,13 @@
             background: #bb2d3b;
             color: white;
         }
-    .col-command {
+    .col-command_@{@GUI_CSS} {
         text-align: center !important;
         width: 200px;
     }
 
     @@media screen and (max-width: 576px) {
-        .col-command {
+        .col-command_@{@GUI_CSS} {
             width: 60%;
         }
     }
@@ -193,8 +194,8 @@
                                             }
                                         }
                                     ],
-                                    attributes: { /*style: "text-align: center; width:15vw" */ class: "col-command" },
-                                    headerAttributes: { class: "col-command" }
+                                    attributes: { /*style: "text-align: center; width:15vw" */ class: "col-command_@{@GUI_CSS}" },
+                                    headerAttributes: { class: "col-command_@{@GUI_CSS}" }
                                     //width: "15%"
                                 }
 

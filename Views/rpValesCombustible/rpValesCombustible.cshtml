@@ -390,6 +390,7 @@
                 };
 
                  $.get("@Url.Action("getDataValesCombustible", "rpValesCombustible")", arg, function (d) {
+                     console.log(d)
                      for (let i = 0; i < d.length; i++) {
                          var vale = d[i]
                          var claves = Object.keys(vale);
