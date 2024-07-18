@@ -637,7 +637,7 @@
                                                     e.preventDefault();
                                                     var tr = $(e.target).closest("tr");
                                                     var data = this.dataItem(tr);
-                                                    console.log(data)
+                                                    //console.log(data)
                                                     $("#@{@TXT_NombrePlacaVehiculo_ModalEditarVehiculo}").text(data.nombre + " - [" + data.placa + "]")
 
                                                     $("#@{@ModalAlert_ModalEditarVehiculo}").text("")
@@ -732,7 +732,7 @@
 
 
                                 }
-                                console.log(autos)
+                                //console.log(autos)
                                 $("#@{@GRID_Vehiculos}").data("kendoGrid").dataSource.data(autos);
                             });
                         },
@@ -1278,11 +1278,11 @@
                                         NombreSubfleetNuevo: _NombreNuevoSubfleet
                                     }
 
-                                    console.log(arg)
+                                    //console.log(arg)
                                     $.post('@Url.Action("ActulizarSubfleet", "adVehiculosFlotas")', arg, function (mensaje) {
 
                                             mensaje = mensaje[0]
-                                            console.log(mensaje)
+                                            //console.log(mensaje)
                                             if (mensaje.bandera === 1) {
                                                 _this.alertModal("suceso", mensaje.resultado)
                                                 //$.ModuloCentroCosto.Grid.dataGrid()

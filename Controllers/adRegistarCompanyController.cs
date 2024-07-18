@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System;
 using System.Security.Cryptography;
 using System.Text;
+using System.Net.Http;
 //using System.IO;
 
 namespace COMBUSTIBLEAESCORE.Controllers
@@ -29,49 +30,83 @@ namespace COMBUSTIBLEAESCORE.Controllers
         {
             return PartialView();
         }
-
+        [HttpPost]
         public async Task<JsonResult> registerCompany(string Nombre, string Apellido, string Username, string Clave, string Correo, string NombreCompany, string DireccionCompany)
         {
-            var data = await iRegister.RegisterCompany(Nombre, Apellido, Username, Clave, Correo, NombreCompany, DireccionCompany);            
-            //var Fullname = Nombre + " " + Apellido;
-            await enviarCorreo(NombreCompany, Username, Correo);
+            var data = await iRegister.RegisterCompany(Nombre, Apellido, Username, Clave, Correo, NombreCompany, DireccionCompany);
+
+            if (data.FirstOrDefault().bandera == 1) {
+                /**************CORREO PARA IDC*********************************************************************************************************************/
+                var EncabezadoCorreo_IDC = "Notificaión para activacion de usuario - " + Username;
+                var URL_Activacion = GetAbsoluteRootUrl() + "/ActivarUsuario/" + Encrypt(Username, EncryptKey);
+                var CuerpoCorreo_IDC = "<html><body>" +
+                                    "<p>Saludos cordiales.</p>" +
+                                    "<p>Se creo la compañía con el nombre <strong>" + NombreCompany + "</strong>  por favor activarla en el siguiente enlace</p>" +
+                                    "<ul>" +
+                                    "<li>Enlace de activacion de usuario: <a href=" + URL_Activacion + ">Click Aquí</a> </li>" +
+                                    "</ul>" +
+                                    "</body></html>";
+
+                var ResultadoCorreoIDC =  await enviarCorreo("henry.herrera@sms-open.com", CuerpoCorreo_IDC, EncabezadoCorreo_IDC);
+                /*************************************************************************************************************************************************/
+
+
+                /**************CORREO PARA USUARIO***************************************************************************************************************/
+
+
+                var EncabezadoCorreo_Usuario = "Notificacion de creacion de compañia  " + NombreCompany;
+                var CuerpoCorreo_Usuario = "<html><body>" +
+                                            "<p>Saludos cordiales de parte de Software Mobile Solutions</p>" +
+                                            "<p>Por este medio le comunicamos qué la compañia <strong>" + NombreCompany + "</strong>  se creó exitosamente</p>" +
+                                            "<br />" +
+                                            "<p>Con las siguientes credenciales para el usuario administrador</p>" +
+                                            "<ul>" +
+                                            "<li>Usuario: " + Username + "</li>" +
+                                            "<li>Contraseña: " + Clave + "</li>" +
+                                            "</ul>" +
+                                            "<p>Quedamos a la orden</p>" +
+
+                                            "</body></html>";
+                var ResultadoCorreoUsuario = await enviarCorreo(Correo, CuerpoCorreo_Usuario, EncabezadoCorreo_Usuario);
+                /*************************************************************************************************************************************************/
+            }
+
             return Json(data.FirstOrDefault());
             //return Json(new {  });
         }
 
-        protected async Task enviarCorreo(string NombreCompany/*, string name*/, string username, string correo) {
+        protected async Task<bool> enviarCorreo(string correo, string CuerpoCorreo, string EncabezadoCorreo) {
             string SendMailFrom = "smsnotificaciones@sms-open.com";
             string SendMailPassword = "Notificac_ones09183$192";
 
-            var URL_Activacion = GetAbsoluteRootUrl() + "/ActivarUsuario/" + Encrypt(username, EncryptKey);
-
             MailMessage email = new MailMessage();
             email.From = new MailAddress(SendMailFrom);
-            email.To.Add("henry.herrera@sms-open.com");
-            email.Subject = "Notificaión para activacion de usuario - " + username;
+            email.To.Add(correo + "");
+            //email.To.Add("henryhrra@gmail.com");
+            email.Subject = EncabezadoCorreo;/*"Notificaión para activacion de usuario - " + username;*/
 
             email.IsBodyHtml = true;
-            AlternateView htmlView = AlternateView.CreateAlternateViewFromString(
-            "<html><body>" +
-            "<p>Saludos cordiales.</p>" +
-            "<p>Se creó la compañía <strong>" + NombreCompany + "</strong>  con la siguiente información </p>" +
-            "<ul>" +
-            "<li>Usuario: " + username + "</li>" +
-            "<li>Correo: " + correo + "</li>" +
-            "<li>Enlace de activacion de usuario: <a href="+ URL_Activacion + ">Click Aquí</a> </li>" +
-            "</ul>" +
-            "<p>La cual está en espera de que su usuario sea activado.</p>" +
-            "</body></html>",
-            null, "text/html");
+            AlternateView htmlView = AlternateView.CreateAlternateViewFromString(CuerpoCorreo,null, "text/html");
             email.AlternateViews.Add(htmlView);
 
             SmtpClient SmtpServer = new SmtpClient("smtp.mydomain.com", 587);
             SmtpServer.DeliveryMethod = SmtpDeliveryMethod.Network;
-            SmtpServer.EnableSsl = true;
+            SmtpServer.EnableSsl = false;
             SmtpServer.UseDefaultCredentials = false;
 
             SmtpServer.Credentials = new NetworkCredential(SendMailFrom, SendMailPassword);
-            SmtpServer.Send(email);
+
+            try
+            {
+                await SmtpServer.SendMailAsync(email);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            
+
         }
 
         [Route("ActivarUsuario/{encrypted_username}")]

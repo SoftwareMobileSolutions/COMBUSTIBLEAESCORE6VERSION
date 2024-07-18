@@ -37,7 +37,7 @@ namespace COMBUSTIBLEAESCORE.Controllers
                 }
                 else
                 {
-                    return RedirectToAction("Home", "Home");
+                    return RedirectToAction("Index", "Home");
                 }
 
             }
@@ -48,6 +48,21 @@ namespace COMBUSTIBLEAESCORE.Controllers
             var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
             var mensaje = await iadTutorial.ValidarPaso(user.FirstOrDefault().CompanyID, Paso);
             return Json(mensaje);
+        }
+
+        public async Task<JsonResult> TerminarTutorial()
+        {
+
+            return await Task.Run(() =>
+            {
+                var usuario = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
+
+                usuario.FirstOrDefault().Tutorial = true;
+
+                _Sesion.Set(HttpContext.Session, "usuario", null);
+                _Sesion.Set(HttpContext.Session, "usuario", usuario);
+                return Json(new { bandera = true});
+            });
         }
     }
 }

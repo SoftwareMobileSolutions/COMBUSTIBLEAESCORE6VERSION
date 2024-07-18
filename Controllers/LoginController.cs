@@ -48,8 +48,8 @@ namespace COMBUSTIBLEAESCORE.Controllers
                     }
                     else
                     {
-                        //return Json(new { mensaje = "Debe pagar su suscripción y esperar a que se le active el usario", estado = 0 });
-                        return Json(new { mensaje = "Usuario o contraseña incorrecta", estado = 0 });
+                        return Json(new { mensaje = "Su usuario aún no se ha activado, por favor ponerse en contacto al siguiente número: 7737 8432", estado = 0 });
+                        //return Json(new { mensaje = "Usuario o contraseña incorrecta", estado = 0 });
                     }
                 }
                 else

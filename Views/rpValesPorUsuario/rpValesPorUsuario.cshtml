@@ -1,0 +1,322 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = null;
+    string guid = System.Guid.NewGuid().ToString().Replace("-", ""),
+    Datepicker = "Datepicker_" + guid,
+    DropDownList_TipoUsaurio = "DropDownList_TipoUsaurio_" + guid,
+    GRID_ValesXUsuario = "GRID_ValesXUsuario_" + guid,
+    BarChart = "BarChart_" + guid;
+}
+<section>
+    <div class="card">
+        <div class="container-fluid p-2 p-lg-3">
+            <div class="row" >
+                <div class="col-lg-12">
+                    <h2 class="text-center">Reporte de Actividad de Vales</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3">
+                    <input id="@{@Datepicker}" />
+                </div>
+                <div class="col-lg-3">
+                    <input id="@{@DropDownList_TipoUsaurio}" />
+                </div>
+            </div>
+            <div class="row">
+               <div class="col-lg-8 offset-lg-2">
+                   <div id="@{@BarChart}">
+
+                   </div>
+               </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <h4 class="text-center">Vales por Usuario</h4>
+                </div>
+                <div class="col-lg-12">
+                    <div id="@{@GRID_ValesXUsuario}">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    (function () {
+        $.extend({
+            ReporteActividadVales: {
+                /*InfoVales: {
+                    InfoGrid : [],
+                    InfoSubgrid : [],
+                    InfoGrafica : []
+                },*/
+                BarraOpciones:{
+                    DatePicker: function () {
+                        $("#@{@Datepicker}").kendoDatePicker({
+                            dateInput: true
+                        });
+                        //$("#@{@Datepicker}").data("kendoDatePicker").value(moment().format("DD/MM/YYYY"))
+
+                        $("#@{@Datepicker}").data("kendoDatePicker").value("06/06/2024")
+                    },
+                    DropDownList: function(){
+                        var data = [
+                            { text: "Usuario Generador", value: "1" },
+                            { text: "Usuario Autorizador", value: "2" }
+                        ];
+
+                        // create DropDownList from input HTML element
+                        $("#@{@DropDownList_TipoUsaurio}").kendoDropDownList({
+                            dataTextField: "text",
+                            dataValueField: "value",
+                            dataSource: data,
+                            index: 0/*,
+                            change: onChange*/
+                        });
+                    },
+                    init: function () { 
+                        var _this = this 
+                        _this.DatePicker()
+                        _this.DropDownList()
+                    }
+                },
+                GRID: {
+                    load: function () {
+                        var _this = this 
+                        $("#@{@GRID_ValesXUsuario}").html("");
+                        $("#@{@GRID_ValesXUsuario}").kendoGrid({
+                            dataSource: {
+                                pageSize: 10
+                            },
+                            toolbar: ["excel", "search"],
+                            columns: [
+                                {
+                                    field: "usuario",
+                                    title: "Usuario",
+                                    width: "100px"
+                                },
+                                {
+                                    field: "CantidadVales",
+                                    title: "Cantidad Vales",
+                                    width: "100px"
+                                },
+                                {
+                                    field: "Total",
+                                    title: "Total$",
+                                    width: "100px"
+                                },
+                                {
+                                    field: "CantidadGalones",
+                                    title: "Cantidad Galones",
+                                    width: "100px"
+                                }
+                            ],
+                            pageable: true,
+                            selectable: "single, row",
+                            mobile: "phone",
+                            excel: {
+                                fileName: "ReporteDeVales.xlsx"
+                            },
+                            detailInit: _this.SubGrid.load
+                        });
+                    },
+                    DataGRID: function () {
+                        var _this = this
+                        let Dia = moment($("#@{@Datepicker}").data("kendoDatePicker").value()).format("YYYY-MM-DD")
+
+
+                        var _FechaIni = Dia + " 00:00:01"
+                        var _FechaFin = Dia + " 23:23:59"
+                        var _PerfilUsuarioID = $("#@{@DropDownList_TipoUsaurio}").data("kendoDropDownList").value()
+
+                        _FechaIni = moment(_FechaIni).subtract(6, "hours").format("YYYYMMDD HH:mm:ss")
+                        _FechaFin = moment(_FechaFin).subtract(6, "hours").format("YYYYMMDD HH:mm:ss")
+                        _PerfilUsuarioID = parseInt(_PerfilUsuarioID)
+                        let arg = {
+                            FechaIni: _FechaIni,
+                            FechaFin: _FechaFin,
+                            PerfilUsuarioID: _PerfilUsuarioID
+                        }
+                        $.get('@Url.Action("ObtenerDataValesGeneral", "rpValesPorUsuario")', arg, function (vales) {
+                            if (vales.length === 0) {
+                                $._combustible.alert("info", "No hay datos", "No hay datos para este día")
+                            } else {
+
+                                var DataGrid = []
+                                //console.log(vales)
+                                vales.forEach((vale) => {
+                                    DataGrid.push({ usuario: vale.username, CantidadVales: vale.totalVales, Total: vale.totalPrecio, CantidadGalones: vale.cantidadGalones })
+                                });
+                                //console.log(DataGrid)
+                                $("#@{@GRID_ValesXUsuario}").data("kendoGrid").dataSource.data(DataGrid);
+                                _this.SubGrid.arg.FechaIni = _FechaIni
+                                _this.SubGrid.arg.FechaFin = _FechaFin
+                                _this.SubGrid.arg.PerfilUsuarioID = _PerfilUsuarioID
+                            }
+
+                        });
+                    },
+                    SubGrid: {
+                        arg : {
+                            FechaIni: "",
+                            FechaFin: "",
+                            PerfilUsuarioID: 0
+                        },
+                        load: function (e) {
+                            //var _this = this;
+                            //console.log($.ReporteActividadVales.GRID.SubGrid.arg)
+                            //e.data.placa, 
+                            let _PerfilUsuarioID = $.ReporteActividadVales.GRID.SubGrid.arg.PerfilUsuarioID
+                            let arg = {
+                                FechaIni: $.ReporteActividadVales.GRID.SubGrid.arg.FechaIni,
+                                FechaFin: $.ReporteActividadVales.GRID.SubGrid.arg.FechaFin,
+                                username: e.data.usuario,
+                                PerfilUsuarioID: _PerfilUsuarioID
+                            }
+
+                            console.log(arg)
+                            $.get('@Url.Action("ObtenerDataValesDetalle", "rpValesPorUsuario")', arg, function (vales) {
+                                //console.log(vales)
+
+                                if (_PerfilUsuarioID === 1) {
+                                    $("<div/>").appendTo(e.detailCell).kendoGrid({
+                                        dataSource: vales,
+                                        toolbar: ["excel", "search"],
+                                        columns: [
+                                            { field: "numVale", title: "N° Vale", width: "100px" },
+                                            { field: "placa", title: "Placa", width: "100px" },
+                                            { field: "userGenera", title: "Usuario Abre", width: "150px" },
+                                            { field: "fechaGenerado", title: "Fecha de Generacion", width: "200px" },
+                                            { field: "tipoCarga", title: "Tipo de Carga", width: "150px" },
+                                            { field: "totalPrecio", title: "Total $", width: "100px" },
+                                            { field: "cantidadGalones", title: "Cant. Gal.", width: "100px" }
+
+                                            /*{ field: "odometro", title: "Odometro", width: "100px" },
+                                            { field: "gasolinera", title: "Gasolinera", width: "200px" },
+                                            { field: "usuarioCierra", title: "Usuario Cierra", width: "150px" },
+                                            { field: "fechaCierre", title: "Fecha Cierre", width: "200px" }*/
+
+                                        ], selectable: "single, row",
+                                        change: function (e) {
+                                            //Grid_adusuarios_dataitem = e !== null ? e.sender.dataItem(e.sender.select()) : null;
+                                            //console.log(e);
+                                            //console.log(e.sender.dataItem(e.sender.select()));
+                                        },
+                                        resizable: true,
+                                        /*excel: {
+                                            fileName: "ReporteDeVales-" + placa + ".xlsx"
+                                        }*/
+
+                                    });
+                                } else {
+                                    $("<div/>").appendTo(e.detailCell).kendoGrid({
+                                        dataSource: vales,
+                                        toolbar: ["excel", "search"],
+                                        columns: [
+                                            { field: "numVale", title: "N° Vale", width: "100px" },
+                                            { field: "placa", title: "Placa", width: "100px" },
+                                            { field: "userGenera", title: "Usuario Abre", width: "150px" },
+                                            { field: "fechaGenerado", title: "Fecha de Generacion", width: "200px" },
+                                            { field: "tipoCarga", title: "Tipo de Carga", width: "150px" },
+                                            { field: "totalPrecio", title: "Total $", width: "100px" },
+                                            { field: "cantidadGalones", title: "Cant. Gal.", width: "100px" },
+
+                                            { field: "usuarioAuto", title: "Usuario Autoriza", width: "150px" },
+                                            { field: "fechaAutorizado", title: "Fecha Autorizado", width: "200px" }
+
+                                            /*{ field: "odometro", title: "Odometro", width: "100px" },
+                                            { field: "gasolinera", title: "Gasolinera", width: "200px" },
+                                            { field: "usuarioCierra", title: "Usuario Cierra", width: "150px" },
+                                            { field: "fechaCierre", title: "Fecha Cierre", width: "200px" }*/
+
+                                        ], selectable: "single, row",
+                                        change: function (e) {
+                                            //Grid_adusuarios_dataitem = e !== null ? e.sender.dataItem(e.sender.select()) : null;
+                                            //console.log(e);
+                                            //console.log(e.sender.dataItem(e.sender.select()));
+                                        },
+                                        resizable: true,
+                                        /*excel: {
+                                            fileName: "ReporteDeVales-" + placa + ".xlsx"
+                                        }*/
+
+                                    });
+                                }
+                                /*if (_PerfilUsuarioID === 1) {
+                                    subgrid.hideColumn([7,8]);
+                                }*/
+
+                            })
+                        
+
+
+
+                            @*$.get('@Url.Action("ObtenerValesLiquidadosXPlaca", "adLiquidarVales")', arg, function (vales) {
+
+
+                                //console.log(vales)
+                                /*for (x = 0; x < vales.length; x++) {
+                                    vales[x].fechaGeneracion = moment(vales[x].fechaGeneracion).subtract(6, 'hours').format("DD/MM/YYYY HH:mm:ss")
+                                    vales[x].fechaAutorizado = moment(vales[x].fechaAutorizado).subtract(6, 'hours').format("DD/MM/YYYY HH:mm:ss")
+                                    vales[x].fechaCierre = moment(vales[x].fechaCierre).subtract(6, 'hours').format("DD/MM/YYYY HH:mm:ss")
+                                }*/
+                                /*$("<div/>").appendTo(e.detailCell).kendoGrid({
+                                    dataSource: vales,
+                                    toolbar: ["excel", "search"],
+                                    columns: [
+                                        { field: "numVale", title: "N° Vale", width: "100px" },
+                                        { field: "placa", title: "Placa", width: "100px" },
+                                        { field: "cantidadGalones", title: "Cant. Gal.", width: "100px" },
+                                        { field: "totalPrecio", title: "Total $", width: "100px" },
+                                        { field: "odometro", title: "Odometro", width: "100px" },
+                                        //{ field: "tipoCombustible", title: "Tipo Combustible", width: "150px" },
+                                        { field: "gasolinera", title: "Gasolinera", width: "200px" },
+                                        { field: "tipoCarga", title: "Tipo de Carga", width: "150px" },
+                                        { field: "usuarioAbre", title: "Usuario Abre", width: "150px" },
+                                        { field: "fechaGeneracion", title: "Fecha de Generacion", width: "200px" },
+                                        { field: "usuarioAutoriza", title: "Usuario Autoriza", width: "150px" },
+                                        { field: "fechaAutorizado", title: "Fecha Autorizado", width: "200px" },
+                                        { field: "usuarioCierra", title: "Usuario Cierra", width: "150px" },
+                                        { field: "fechaCierre", title: "Fecha Cierre", width: "200px" }
+
+                                    ], selectable: "single, row",
+                                    change: function (e) {
+                                        //Grid_adusuarios_dataitem = e !== null ? e.sender.dataItem(e.sender.select()) : null;
+                                        //console.log(e);
+                                        //console.log(e.sender.dataItem(e.sender.select()));
+                                    },
+                                    resizable: true,
+                                    excel: {
+                                        fileName: "ReporteDeVales-" + placa + ".xlsx"
+                                    }
+
+                                });*/
+
+                            });*@
+                            /*let arg = {
+                                Placa: placa,
+                                FechaIncio: $.GRID.FechaInicio,
+                                fechaFin: $.GRID.FechaFin
+                            }*/
+                        }
+                    }
+                },
+                Grafica: {
+
+                }
+                init: function () {
+                    var _this = this
+                    _this.BarraOpciones.init()
+                    _this.GRID.load()
+                    _this.GRID.DataGRID()
+                    
+                }
+            }
+        })
+        $.ReporteActividadVales.init()
+    })()
+</script>

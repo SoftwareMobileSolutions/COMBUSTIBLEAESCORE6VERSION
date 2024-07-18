@@ -238,6 +238,8 @@
                                 _this.contadorCartas();
                                 _this.clickCarta()
                                 _this.movimientos.init()
+                                //_this.BTN_ActualizarCentrosCosto()
+                                $.ModuloAsignacionCentroCosto.CentroCostoUsuario.Modal.BTN_ActualizarCentrosCosto()
                             },
                             cambiarEstado: function (_this) {
                                 let seleccionado = _this.attr("seleccionado");
@@ -326,10 +328,11 @@
                         },
                         BTN_ActualizarCentrosCosto: function () {
                             var _this = this
+                            console.log("@{@BTN_Guardar_ModalAsignarCCXUsuario}")
                             $("#@{@BTN_Guardar_ModalAsignarCCXUsuario}").on("click", function () {
                                 selects = $("#@{@Contenedor_Asignados_ModalAsignarCCXUsuario} > .carta h2")
                                 var valores = [];
-
+                                console.log("BTN_CentroCosto")
                                 selects.each(function () {
                                     valores.push($(this).attr("value"));
                                 });
@@ -351,7 +354,7 @@
                         init: function () {
                             var _this = this
                             _this.cartas.buscar()
-                            _this.BTN_ActualizarCentrosCosto()
+                            //_this.BTN_ActualizarCentrosCosto()
                             _this.cartas.movimientos.init()
                         }
                     },

@@ -104,7 +104,14 @@
                     FechaFin: '20240709 23:59:59'
                 }*/
                 $.get('@Url.Action("ObtenerVales","rpLineaTimpoVale")', arg, function (vales) {
-                    _this.Grafica.GenerarGrafica(vales)
+                    console.log(vales.length)
+
+                    if (vales.length === 0) {
+                        $._combustible.alert("info", "Sin datos", "No hay vales de su seleccions")
+                    } else {
+                        _this.Grafica.GenerarGrafica(vales)
+                    }
+                    
                 });
             },
             Grafica: {
@@ -114,7 +121,7 @@
                     ContenedorGraficas.empty()
                     _this.Tooltip.EliminarResiduales()
 
-                    console.log(vales)
+                    //console.log(vales)
                     
                     let estadoID = parseInt($("#DropDownListEstadoVales").data("kendoDropDownList").value())
 
