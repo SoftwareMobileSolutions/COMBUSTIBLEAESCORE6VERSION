@@ -1,0 +1,275 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = null;
+    string guid = System.Guid.NewGuid().ToString().Replace("-", ""),
+    DateTimePicker_FechaIni = "DateTimePicker_FechaIni_" + guid,
+    DateTimePicker_FechaFin = "DateTimePicker_FechaFin_" + guid,
+    DropDownList_Variable = "DropDownList_Variable_" + guid,
+    BTN_GenerarReporte = "BTN_GenerarReporte_" + guid,
+    Contenedor_Chart = "Contenedor_Chart_" + guid,
+    GRID_Vales = "GRID_Vales_" + guid;
+}
+<section>
+    <div class=" card">
+        <div class="container-fluid p-4">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2 class="text-center"> Reporte de uso de vales por Sub Flota</h2>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-lg-3 col-12">
+                    <h5 class="text-lg-center text-start">Fecha Inicio</h5>
+                    <input id="@{@DateTimePicker_FechaIni}"/>
+                </div>
+                <div class="col-lg-3 col-12 mt-2 mt-lg-0">
+                    <h5 class="text-lg-center text-start">Fecha Fin</h5>
+                    <input id="@{@DateTimePicker_FechaFin}"/>
+                </div>
+                <div class="col-lg-3 col-12 mt-2 mt-lg-0">
+                    <h5 class="text-lg-center text-start">Seleccione la variable</h5>
+                    <input id="@{@DropDownList_Variable}" />
+                </div>
+                <div class="col-lg-3 d-flex align-items-end col-12 mt-2 mt-lg-0">
+                    <button type="button" class="btn btn-success w-100" id="@{@BTN_GenerarReporte}"><i class="bi bi-bar-chart-line-fill"></i> Generar </button>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-lg-6 offset-lg-3  col-12" >
+                    <div id="@{@Contenedor_Chart}">
+
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-lg-12">
+                    <div id="@{@GRID_Vales}">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<style>
+    /*#BTN_Ocultar {
+        border-radius: 1em;
+        position: absolute;
+        z-index: 1;
+        bottom:1px;
+        left: 25px;
+        font-size: 0.85em;
+        font-weight: 600;
+    }*/
+    /*.legendCuston{
+        background:red;
+    }
+    .legendCuston:hover{
+        opacity:5;
+    }*/
+</style>
+<script>
+    (function () {
+        $.extend({
+            ReporteValesPorSubFlota: {
+                Data: {
+                    ObtenerData: function () {
+                        var _this = this;
+
+                        let _FechaIni = moment($("#@{@DateTimePicker_FechaIni}").data("kendoDateTimePicker").value()).add(6, 'hours').format("YYYYMMDD HH:mm:ss")
+                        let _FechaFin = moment($("#@{@DateTimePicker_FechaFin}").data("kendoDateTimePicker").value()).add(6, 'hours').format("YYYYMMDD HH:mm:ss")
+
+                        let arg = {
+                            FechaIni: _FechaIni,
+                            FechaFin: _FechaFin
+                        }
+
+                        $.get('@Url.Action("ObtenerValeXSubFlota", "rpValePorSubFlota")', arg, function (Data) {
+                            $.ReporteValesPorSubFlota.Grid.DataGrid(Data)
+                            $.ReporteValesPorSubFlota.Grafica(_this.FormatoData.FormatoDataGrafica(Data))
+                        
+                        });
+                    },
+                    FormatoData: {
+                        FormatoDataGrafica: function(_Vales){
+                            let variable = $("#@{@DropDownList_Variable}").data("kendoDropDownList").text()
+                            let VariableID =  $("#@{@DropDownList_Variable}").data("kendoDropDownList").value()
+                            var series = {
+                                name: variable,
+                                data: []
+                            }
+                            var _data = [];
+                            _Vales.forEach((vale) => {
+                                if (VariableID === "1") {
+                                    _data.push({ name: vale.nombreSubfleet, y: vale.cantVales })
+                                } else if (VariableID === "2") {
+                                    _data.push({ name: vale.nombreSubfleet, y: vale.cantGal })
+                                } else{
+                                    _data.push({ name: vale.nombreSubfleet, y: vale.totalDinero })
+                                }
+                           
+                            });
+
+                            _data.sort((a, b) => b.y - a.y);
+                            series.data = _data.slice(0, 10)
+                            return series
+                        }
+                    }
+
+                },
+                Datetimepicker: function () {
+                    var _this = this
+                    $("#@{@DateTimePicker_FechaIni}").kendoDateTimePicker({
+                        dateInput: true,
+                        startTime: new Date(2023, 1, 3, 8, 30, 0),
+                        endTime: new Date(2023, 1, 3, 17,00, 0)
+                    });
+                    $("#@{@DateTimePicker_FechaFin}").kendoDateTimePicker({
+                        dateInput: true,
+                        startTime: new Date(2023, 1, 3, 8, 30, 0),
+                        endTime: new Date(2023, 1, 3, 17,00, 0)
+                    });
+
+                    var dataVariable = new kendo.data.DataSource({
+                        data: [
+                            { TopID: 1, TopName: "Cantidad de vales" },
+                            { TopID: 2, TopName: "Suma de Galones" },
+                            { TopID: 3, TopName: "Suma de Dolares" }
+                        ]
+                    });
+
+                    $("#@{@DropDownList_Variable}").kendoDropDownList({
+                        filter: "contains",
+                        dataTextField: "TopName",
+                        dataValueField: "TopID",
+                        dataSource: dataVariable
+                    });
+                
+
+                    $("#@{@DateTimePicker_FechaIni}").data("kendoDateTimePicker").value(kendo.parseDate(moment().subtract(30, 'days').format("YYYY/MM/DD HH:mm:ss:SSS")));
+                    $("#@{@DateTimePicker_FechaFin}").data("kendoDateTimePicker").value(kendo.parseDate(moment().format("YYYY/MM/DD HH:mm:ss.SSS")));
+                },
+                Grafica: function (_series) {
+                    var _this = this
+                    $("#@{@Contenedor_Chart}").html("");
+                    let variable = $("#@{@DropDownList_Variable}").data("kendoDropDownList").text()
+
+                            Highcharts.chart('@{@Contenedor_Chart}', {
+                                chart: {
+                                    type: 'column'
+                                },
+                                title: {
+                                    align: 'center',
+                                    text: 'Top 10 Sub Flotas por ' + variable,
+                                },
+                                accessibility: {
+                                    announceNewData: {
+                                        enabled: true
+                                    }
+                                },
+                                xAxis: {
+                                    type: 'category'
+                                },
+                                yAxis: {
+                                    title: {
+                                        text: variable 
+                                    }
+
+                                },
+                                credits: {
+                                    enabled: false
+                                },
+                                legend: {
+                                    enabled: false
+                                },
+                                exporting: {
+                                    enabled: false
+                                },
+                                plotOptions: {
+                                    series: {
+                                        borderWidth: 0,
+                                        dataLabels: {
+                                            enabled: true,
+                                            format: '{point.y:.1f}'
+                                        }
+                                    }
+                                },
+
+                                tooltip: {
+                                    headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: ' +
+                                        '<b>{point.y:.2f}</b> of total<br/>'
+                                },
+
+                                series: [
+                                    _series
+                                ]
+                            });
+                },
+                Grid: {
+                    LoadGrid: function () {
+                        var _this = this
+                        $("#@{@GRID_Vales}").html("");
+                        $("#@{@GRID_Vales}").kendoGrid({
+                            dataSource: {
+                                pageSize: 10
+                            },
+                            toolbar: ["excel", "search"],
+                            columns: [
+                                {
+                                    field: "nombreSubfleet",
+                                    title: "Sub FLota",
+                                    width: "100px"
+                                },
+                                {
+                                    field: "cantVales",
+                                    title: "Cantidad Vales",
+                                    width: "100px"
+                                },
+                                {
+                                    field: "totalDinero",
+                                    title: "Total$",
+                                    width: "100px"
+                                },
+                                {
+                                    field: "cantGal",
+                                    title: "Cantidad Galones",
+                                    width: "100px"
+                                }
+                            ],
+                            pageable: true,
+                            selectable: "single, row",
+                            mobile: "phone",
+                            excel: {
+                                fileName: "ReporteDeVales.xlsx"
+                            },
+                            //detailInit: _this.SubGrid.LoadGrid,
+                            dataBound: function (e) {
+                                $("#@{@GRID_Vales} > div span input").attr("placeholder", "Busqueda")
+                            }
+                        });
+                    },
+                    DataGrid: function (data) { 
+                        $("#@{@GRID_Vales}").data("kendoGrid").dataSource.data(data);
+                    }
+                },
+                BTN_GenerarData: function () {
+                    var _this = this;
+                    $("#@{@BTN_GenerarReporte}").on("click", function () {
+                        _this.Data.ObtenerData()
+                    });
+                },
+                init: function () {
+                    var _this = this
+                    _this.Datetimepicker()
+                    _this.Grid.LoadGrid()
+                    _this.Data.ObtenerData()
+                    _this.BTN_GenerarData()
+                }
+            }
+        })
+        $.ReporteValesPorSubFlota.init()
+    })();
+</script>

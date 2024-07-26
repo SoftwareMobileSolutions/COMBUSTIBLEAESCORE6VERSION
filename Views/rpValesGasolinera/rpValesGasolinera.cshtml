@@ -1,0 +1,246 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = null;
+    string guid = System.Guid.NewGuid().ToString().Replace("-", ""),
+    //YearPicker_FechaIni = "DateTimepicker_FechaIni_" + guid,
+    DropDownList_Year = "DropDownList_Year_" + guid,
+    BTN_Generar = "BTN_Generar_" + guid,
+    BarChart_Container = "BarChart_Container_" + guid,
+    GRID_Vales = "GRID_Vales_" + guid;
+}
+<section>
+    <div class="card">
+        <div class="container-fluid p-4 p-lg-3">
+            <div class="row">
+                <div class="col-lg-12 col-12">
+                    <h2 class="text-center">Reporte de uso de vales en gasolinera por año</h2>
+                </div>
+            </div>
+            <div class="row mt-lg-4 mt-4 mt-lg-0">
+                <div class="col-lg-3 offset-lg-6 col-12">
+                    <h5 class="text-lg-center text-start"> Seleccione un año</h5>
+                    <input id="@{@DropDownList_Year}" />
+                </div>
+                <div class="col-lg-3 d-flex align-items-end col-12 mt-2 mt-lg-0">
+                    <button id="@{@BTN_Generar}" class="btn btn-success w-100"><i class="bi bi-bar-chart-line-fill"></i> Generar </button>
+                </div>
+            </div>
+            <div class="row mt-lg-4 mt-4 mt-lg-0">
+                <div class="col-lg-4 offset-lg-4 col-12">
+                    <figure class="highcharts-figure">
+                        <div id="@{@BarChart_Container}"></div>
+                    </figure>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 mt-lg-4 col-12">
+                    <div id="@{@GRID_Vales}">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<style>
+    .col-data{
+        /*background: red;*/
+        width: 100px;
+    }
+    @@media screen and (max-width: 576px) {
+        .col-data {
+            width: 120px;
+        }
+    }
+</style>
+<script>
+    (function () {
+        $.extend({
+            ReporteValesPorGasolinera: {
+                Data: {
+                    ObtenerData: function (_Year) {
+                        var _this = this
+
+                        let _FechaIni = moment().year(_Year).startOf('year').format('YYYYMMDD')
+                        let _FechaFin = moment().year(_Year).endOf('year').format('YYYYMMDD')
+                        let arg = {
+                            FechaIni: _FechaIni,
+                            FechaFin: _FechaFin
+                        }
+
+                        $.get('@Url.Action("ObtenerValesXGasolinera", "rpValesGasolinera")', arg, function (vales) {
+                            $.ReporteValesPorGasolinera.GRID.DataGRID(vales)
+                            _this.FormatoData.FormatoGrafica(vales)
+                        });
+                    },
+                    FormatoData:{
+                        FormatoGrafica: function (vales) {
+                            var series = {
+                                name: "Gasolineras",
+                                data: []
+                            }
+                            var _data = [];
+                            vales.forEach((vale) => {
+                                _data.push({name: vale.username, y: vale.totalVales})
+                            });
+
+                            _data.sort((a, b) => b.y - a.y);
+                            series.data = _data.slice(0,10)
+                            $.ReporteValesPorGasolinera.Grafica.Load(series)
+                        }
+                    }
+                    
+                },
+                BarraOpciones: {
+                    YearPicker: function(){
+                        var _this = this 
+                        var dataSource = _this.CalculateYears(5)
+                        $("#@{@DropDownList_Year}").kendoDropDownList({
+                            dataTextField: "YearNumber",
+                            dataValueField: "YearID",
+                            dataSource: dataSource,
+                            value: new Date().getFullYear()
+                        });
+                    },
+                    CalculateYears: function (cantanios) {
+                        var anio = new Date().getFullYear();
+                        return Array.from({ length: cantanios },
+                            function (v, i) {
+                                valor = (anio - cantanios + i + 1);
+                                return { YearID: valor, YearNumber: String(valor) }
+                            });
+                    },
+                    BTN_Generar: function(){
+                        $("#@{@BTN_Generar}").on("click", function () {
+
+                            let _Year = $("#@{@DropDownList_Year}").data("kendoDropDownList").value()
+                            $.ReporteValesPorGasolinera.Data.ObtenerData(parseInt(_Year))
+                        })
+                    }
+                },
+                GRID: {
+                    Load: function () {
+                        var _this = this
+                        $("#@{@GRID_Vales}").html("");
+                        $("#@{@GRID_Vales}").kendoGrid({
+                            dataSource: {
+                                pageSize: 10
+                            },
+                            toolbar: ["search"],
+                            columns: [
+                                {
+                                    field: "gasolinera",
+                                    title: "Nombre Gasolinera",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data" }
+                                },
+                                {
+                                    field: "username",
+                                    title: "Username",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data" }
+                                },
+                                {
+                                    field: "totalVales",
+                                    title: "Total Vales",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data" }
+                                },
+                                {
+                                    field: "totalDolares",
+                                    title: "Total Dolares",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data" }
+                                },
+                                {
+                                    field: "totalGalones",
+                                    title: "Total Galones",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data" }
+                                }
+
+                            ],
+                            dataBound: function (e) {
+                                $("#@{@GRID_Vales} > div span input").attr("placeholder", "Busqueda")
+                            },
+                            pageable: true,
+                            mobile: "phone",
+                        });
+
+                        let year = moment().format("YYYY")
+                        $.ReporteValesPorGasolinera.Data.ObtenerData(parseInt(year))
+                    },
+                    DataGRID: function (Datos) {
+                        $("#@{@GRID_Vales}").data("kendoGrid").dataSource.data(Datos)
+                    }
+                },
+                Grafica: {
+                    Load: function (Series) {
+                        $("#@{@BarChart_Container}").html("")
+                        Highcharts.chart('@{@BarChart_Container}', {
+                            chart: {
+                                type: 'column'
+                            },
+                            title: {
+                                align: 'center',
+                                text: 'Top 10 Gasolineras por comsumo de vales'
+                            },
+                            accessibility: {
+                                announceNewData: {
+                                    enabled: true
+                                }
+                            },
+                            xAxis: {
+                                type: 'category'
+                            },
+                            yAxis: {
+                                title: {
+                                    text: 'Total de vales por gasolinera'
+                                }
+
+                            },
+                            credits: {
+                                enabled: false
+                            },
+                            legend: {
+                                enabled: false
+                            },
+                            exporting: {
+                                enabled: false
+                            },
+                            plotOptions: {
+                                series: {
+                                    borderWidth: 0,
+                                    dataLabels: {
+                                        enabled: true,
+                                        format: '{point.y:.1f}'
+                                    }
+                                }
+                            },
+
+                            tooltip: {
+                                headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                                pointFormat: '<span style="color:{point.color}">{point.name}</span>: ' +
+                                    '<b>{point.y:.2f}</b> vales<br/>'
+                            },
+
+                            series: [
+                                Series
+                            ]
+                        });
+
+                    }
+                },
+                init: function () {
+                    var _this = this 
+                    _this.BarraOpciones.YearPicker()
+                    _this.BarraOpciones.BTN_Generar()
+                    _this.GRID.Load()
+                }
+            }
+        })
+        $.ReporteValesPorGasolinera.init()
+    })();
+</script>
