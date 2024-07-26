@@ -41,7 +41,7 @@ namespace COMBUSTIBLEAESCORE.Services
             return data;
         }
 
-        public async Task<IEnumerable<MobileXCompanyModel>> ObtenerMobileXCompany(int CompanyID)
+        /*public async Task<IEnumerable<MobileXCompanyModel>> ObtenerMobileXCompany(int CompanyID)
         {
             IEnumerable<MobileXCompanyModel> data = null;
             string sp = "EXEC SP_ObtenerMobileXCompany @CompanyID";
@@ -52,6 +52,29 @@ namespace COMBUSTIBLEAESCORE.Services
                 {
                     con.Open();
                     data = await con.QueryAsync<MobileXCompanyModel>(sp, new { CompanyID }, commandType: CommandType.Text);
+                }
+            }
+            finally
+            {
+                if (con.State == ConnectionState.Open)
+                {
+                    con.Close();
+                }
+            }
+            return data;
+        }*/
+
+        public async Task<IEnumerable<MobileAsigandosXUserModel>> ObtenerMobileXUser(int UserID)
+        {
+            IEnumerable<MobileAsigandosXUserModel> data = null;
+            string sp = "EXEC SP_ObtenerMobileXUserGenerarVales @UserID";
+            var con = new SqlConnection(conexion.Value);
+            try
+            {
+                if (con.State == ConnectionState.Closed)
+                {
+                    con.Open();
+                    data = await con.QueryAsync<MobileAsigandosXUserModel>(sp, new { UserID }, commandType: CommandType.Text);
                 }
             }
             finally

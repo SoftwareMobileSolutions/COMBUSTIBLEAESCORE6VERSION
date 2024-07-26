@@ -117,11 +117,14 @@
                     },
                     DataDropDownList: function () {
                         $.get('@Url.Action("ObtenerMobileXUser", "adGenerarVales")', function (mobiles) {
+                            //console.log(mobiles)
                             var data = []
 
                             mobiles.forEach((mobile) => {
-                                data.push({ mobileID: mobile.mobileID, nombrePlaca: mobile.nombre + " - [" + mobile.placa + "]", capacidadTanque: mobile.capacidadTanque })
+                                data.push({ mobileID: mobile.mobileid, nombrePlaca: mobile.nombre + " - [" + mobile.placa + "]", capacidadTanque: mobile.capacidadTanque })
                             });
+                            /*console.log("________________________________________")
+                            console.log(data)*/
                             $("#DropDownListMobiles").data("kendoDropDownList").dataSource.data(data)
                         })
 

@@ -9,6 +9,7 @@
     DropDownList_TipoUsaurio = "DropDownList_TipoUsaurio_" + guid,
     GRID_ValesXUsuario = "GRID_ValesXUsuario_" + guid,
     BTN_Generar = "BTN_Generar_" + guid,
+    TXT_TipoUsuarioTituloGrid = "TXT_TipoUsuarioTituloGrid_" + guid,
     BarChart = "BarChart_" + guid;
 }
 <section>
@@ -16,7 +17,7 @@
         <div class="container-fluid p-3 p-lg-4">
             <div class="row" >
                 <div class="col-lg-12">
-                    <h2 class="text-center">Reporte de Actividad de Vales por Usuaio</h2>
+                    <h2 class="text-center">Reporte de Actividad por Usuario</h2>
                 </div>
             </div>
             <div class="row mt-3">
@@ -49,7 +50,7 @@
             </div>
             <div class="row mt-3">
                 <div class="col-lg-12">
-                    <h4 class="text-center">Vales por Usuario</h4>
+                    <h4 class="text-center">Vales por <span id="@{@TXT_TipoUsuarioTituloGrid}"></span></h4>
                 </div>
                 <div class="col-lg-12 mt-3">
                     <div id="@{@GRID_ValesXUsuario}">
@@ -64,11 +65,6 @@
     (function () {
         $.extend({
             ReporteActividadVales: {
-                /*InfoVales: {
-                    InfoGrid : [],
-                    InfoSubgrid : [],
-                    InfoGrafica : []
-                },*/
                 BarraOpciones:{
                     DateTimePicker: function () {
                         @*$("#@{@Datepicker}").kendoDatePicker({
@@ -132,17 +128,11 @@
 
                         let _FechaIni = moment(FechaInicio).add(6, 'hours').format("YYYYMMDD HH:mm:ss")
                         let _FechaFin = moment(FechaFin).add(6, 'hours').format("YYYYMMDD HH:mm:ss")
-                        /*_this.FechaInicio = 
-                        _this.FechaFin = moment(FechaFin).add(6, 'hours').format("YYYYMMDD HH:mm:ss")*/
-                        @*let Dia = moment($("#@{@Datepicker}").data("kendoDatePicker").value()).format("YYYY-MM-DD")
-                        var _FechaIni = Dia + " 00:00:01"
-                        var _FechaFin = Dia + " 23:23:59"
-
-
-                        _FechaIni = moment(_FechaIni).subtract(6, "hours").format("YYYYMMDD HH:mm:ss")
-                        _FechaFin = moment(_FechaFin).subtract(6, "hours").format("YYYYMMDD HH:mm:ss")*@
 
                         var _PerfilUsuarioID = $("#@{@DropDownList_TipoUsaurio}").data("kendoDropDownList").value()
+                        let TituloGrid = $("#@{@DropDownList_TipoUsaurio}").data("kendoDropDownList").text()
+                        //console.log()
+                        $("#@{@TXT_TipoUsuarioTituloGrid}").text(TituloGrid.toLowerCase())
                         _PerfilUsuarioID = parseInt(_PerfilUsuarioID)
                         let arg = {
                             FechaIni: _FechaIni,
@@ -153,7 +143,7 @@
                         
                                     
                         $.get('@Url.Action("ObtenerDataVales", "rpValesPorUsuario")' ,arg, function (vales) {
-
+                            console.log(vales)
                             $.ReporteActividadVales.GRID.DataGRID(_this.FormatoData.FormatoDataGrid(vales, _PerfilUsuarioID))
                             _this.DataSubGRID.Vales = _this.FormatoData.FormatoDataSubGrid(vales, _PerfilUsuarioID)
                             _this.DataSubGRID.PerfilUsuarioID = _PerfilUsuarioID
@@ -315,22 +305,22 @@
                             columns: [
                                 {
                                     field: "usuario",
-                                    title: "Usuario",
+                                    title: "<b>Usuario</b>",
                                     width: "100px"
                                 },
                                 {
                                     field: "CantidadVales",
-                                    title: "Cantidad Vales",
+                                    title: "<b>Cantidad Vales</b>",
                                     width: "100px"
                                 },
                                 {
                                     field: "Total",
-                                    title: "Total$",
+                                    title: "<b>Total ($)</b>",
                                     width: "100px"
                                 },
                                 {
                                     field: "CantidadGalones",
-                                    title: "Cantidad Galones",
+                                    title: "<b>Cantidad Galones</b>",
                                     width: "100px"
                                 }
                             ],
@@ -348,30 +338,9 @@
                     },
                     DataGRID: function (DataGrid) {
                         $("#@{@GRID_ValesXUsuario}").data("kendoGrid").dataSource.data(DataGrid);
-                                _this.SubGrid.arg.FechaIni = _FechaIni
-                                _this.SubGrid.arg.FechaFin = _FechaFin
-                                _this.SubGrid.arg.PerfilUsuarioID = _PerfilUsuarioID
-                            }
-
-                        });
                     },
                     SubGrid: {
-                        arg : {
-                            FechaIni: "",
-                            FechaFin: "",
-                            PerfilUsuarioID: 0
-                        },
                         load: function (e) {
-                            //var _this = this;
-                            //console.log($.ReporteActividadVales.GRID.SubGrid.arg)
-                            //e.data.placa, 
-                            let _PerfilUsuarioID = $.ReporteActividadVales.GRID.SubGrid.arg.PerfilUsuarioID
-                            let arg = {
-                                FechaIni: $.ReporteActividadVales.GRID.SubGrid.arg.FechaIni,
-                                FechaFin: $.ReporteActividadVales.GRID.SubGrid.arg.FechaFin,
-                                username: e.data.usuario,
-                                PerfilUsuarioID: _PerfilUsuarioID
-                            }
 
                             let usuario = e.data.usuario
                             let _PerfilUsuarioID = $.ReporteActividadVales.Data.DataSubGRID.PerfilUsuarioID
@@ -386,7 +355,7 @@
                                         { field: "userGenera", title: "Usuario Abre", width: "150px" },
                                         { field: "fechaGenerado", title: "Fecha de Generacion", width: "200px" },
                                         { field: "tipoCarga", title: "Tipo de Carga", width: "150px" },
-                                        { field: "totalPrecio", title: "Total $", width: "100px" },
+                                        { field: "totalPrecio", title: "Total ($)", width: "100px" },
                                         { field: "cantidadGalones", title: "Cant. Gal.", width: "100px" }
 
                                             /*{ field: "odometro", title: "Odometro", width: "100px" },
@@ -408,7 +377,7 @@
                                         { field: "userGenera", title: "Usuario Abre", width: "150px" },
                                         { field: "fechaGenerado", title: "Fecha de Generacion", width: "200px" },
                                         { field: "tipoCarga", title: "Tipo de Carga", width: "150px" },
-                                        { field: "totalPrecio", title: "Total $", width: "100px" },
+                                        { field: "totalPrecio", title: "Total ($)", width: "100px" },
                                         { field: "cantidadGalones", title: "Cant. Gal.", width: "100px" },
 
                                         { field: "usuarioAuto", title: "Usuario Autoriza", width: "150px" },
@@ -499,7 +468,7 @@
                     DataGrafica:function(series, _PerfilUsuarioID) {
                         Grafica = $.ReporteActividadVales.Grafica.Variable
                         Grafica.series[0].setData(series.slice(0, 9))
-                        Grafica.series[0].setName('Usuarios que ' + (_PerfilUsuarioID === 1 ? "Generaron vales" : " Autorizaon vales"))
+                        Grafica.series[0].setName('Usuarios que ' + (_PerfilUsuarioID === 1 ? "generaron vales" : " autorizaon vales"))
                         Grafica.redraw();
                          /*var _PerfilUsuarioID = $("#@{@DropDownList_TipoUsaurio}").data("kendoDropDownList").value()
                         _PerfilUsuarioID = parseInt(_PerfilUsuarioID)*/

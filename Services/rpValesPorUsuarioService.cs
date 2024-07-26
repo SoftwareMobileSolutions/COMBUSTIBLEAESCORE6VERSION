@@ -16,7 +16,30 @@ namespace COMBUSTIBLEAESCORE.Services
             conexion = _conexion;
         }
 
-        public async Task<IEnumerable<ValesModel>> ObtenerDataValesDetalle(string FechaIni, string FechaFin, int CompanyID, string Username, int PerfilUsuarioID)
+        public async Task<IEnumerable<ValesModel>> ObtenerDataVales(string FechaIni, string FechaFin, int CompanyID, int PerfilUsuarioID)
+        {
+            IEnumerable<ValesModel> data = null;
+            string sp = "EXEC SP_ValesXUsuario @FechaIni,@FechaFin,@CompanyID ,@PerfilUsuarioID";
+            var con = new SqlConnection(conexion.Value);
+            try
+            {
+                if (con.State == ConnectionState.Closed)
+                {
+                    con.Open();
+                    data = await con.QueryAsync<ValesModel>(sp, new { FechaIni, FechaFin, CompanyID,  PerfilUsuarioID }, commandType: CommandType.Text);
+                }
+            }
+            finally
+            {
+                if (con.State == ConnectionState.Open)
+                {
+                    con.Close();
+                }
+            }
+            return data;
+        }
+
+        /*public async Task<IEnumerable<ValesModel>> ObtenerDataValesDetalle(string FechaIni, string FechaFin, int CompanyID, string Username, int PerfilUsuarioID)
         {
             IEnumerable<ValesModel> data = null;
             string sp = "EXEC SP_ValesXUsuarioDetalle @FechaIni,@FechaFin,@CompanyID, @Username ,@PerfilUsuarioID";
@@ -37,7 +60,7 @@ namespace COMBUSTIBLEAESCORE.Services
                 }
             }
             return data;
-        }
+        }*/
 
         public async Task<IEnumerable<ValesModel>> ObtenerDataValesGeneral(string FechaIni, string FechaFin, int CompanyID, int PerfilUsuarioID)
         {
