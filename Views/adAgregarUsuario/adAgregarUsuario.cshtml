@@ -319,7 +319,7 @@
                         formato: function (username, clave, perfil, gasolinera,contacto, nombre, apellido, correo) {
 
                             var validEmail = /^\w+([.-_+]?\w+)*@@\w+([.-]?\w+)*(\.\w{2,10})+$/;
-                            var securePassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)\S{8,}$/;
+                            //var securePassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)\S{8,}$/;
 
                             //Username
                             if (username === "") {
@@ -335,13 +335,17 @@
                                 $._combustible.alert("error", "Campo de texto vacio", "Debe digitar una contraseña")
                                 return false
                             }
-                            if (!securePassword.test(clave)) {
-                                $._combustible.alert("error", "Contraseña insegura", "La contraseña debe contener una o mas mayusculas, una o mas minusculas, uno o mas digitos y mas de 8 caracteres")
+                            if (clave.length < 8) {
+                                $._combustible.alert("error", "Contraseña demasiado corta", "Debe digitar una contraseña de almenos 8 caracteres")
                                 return false
                             }
+                            /*if (!securePassword.test(clave)) {
+                                $._combustible.alert("error", "Contraseña insegura", "La contraseña debe contener una o mas mayusculas, una o mas minusculas, uno o mas digitos y mas de 8 caracteres")
+                                return false
+                            }*/
 
                             //Perfil
-                            console.log(perfil)
+                            //console.log(perfil)
                             if (perfil === "") {
                                 $._combustible.alert("error", "No hay seleccion", "Debe seleccionar un perfil para el nuevo usuario")
                                 return false
@@ -473,11 +477,12 @@
                                         $("#@{@Input_Password}").val("")
                                         $("#@{@DropDownList_PerfilUsuario}").data("kendoDropDownList").select(0)
                                         $("#@{@Input_Contacto}").val("")
+                                        $.ModuloAgregarUsuario.AgregarUsuario.DropDownList.load()
                                         $("#@{@DropDownList_Gasolinera}").data("kendoDropDownList").select(0)
                                         $("#@{@Input_Nombre}").val("")
                                         $("#@{@Input_Apellido}").val("")
                                         $("#@{@Input_Correo}").val("")
-                                        //$.AgregarUsuario.DropDownList.load()
+                                        
                                     } else {
                                         $._combustible.alert("error", "No se creó el usuario", mensaje.resultado)
                                     }
@@ -636,13 +641,18 @@
                         Validaciones: function (_contrasena, _nombre, _apellido, _correo, _telefono) {
                             var _this = this
                             var validEmail = /^\w+([.-_+]?\w+)*@@\w+([.-]?\w+)*(\.\w{2,10})+$/;
-                            var securePassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)\S{8,}$/;
+                            /*var securePassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)\S{8,}$/;
                             if (_contrasena !== "") {
                                 if (!securePassword.test(_contrasena)) {
                                     _this.alertModal("alerta", "Contraseña insegura, La contraseña debe contener una o mas mayusculas, una o mas minusculas, uno o mas digitos, 8 o mas caracteres")
                                     return false
                                 }
+                            }*/
+                            if (_contrasena.length < 8) {
+                                 _this.alertModal("alerta", "Contraseña demasiado corta, La contraseña debe tener al menos 8 caracteres")
+                                return false
                             }
+
                             if (_nombre.length < 3) {
                                 _this.alertModal("alerta", "Nombre demasiado corto, El nombre del usuario debe tener al menos tres caracteres")
                                 return false

@@ -46,10 +46,11 @@ namespace COMBUSTIBLEAESCORE
             services.AddScoped<IadAsignacionCentrosCosto,adAsignacionCentrosCostoService>();
             services.AddScoped<IadAutorizarVales,adAutorizarValesService>();
             services.AddScoped<IadGenerarVales ,adGenerarValesService>();
-            services.AddScoped<IrpTopValePorVehiculo,rpTopValePorVehiculoService>();
+            services.AddScoped<IrpValePorSubFlota,rpValePorSubFlotaService>();
             services.AddScoped<IrpLineaTimpoVale,rpLineaTimpoValeService>();
             services.AddScoped<IadTutorial,adTutorialService>();
             services.AddScoped<IrpValesPorUsuario,rpValesPorUsuarioService>();
+            services.AddScoped<IrpValesGasolinera ,rpValesGasolineraService>();
             services.AddSingleton(new conexion(Configuration.GetConnectionString("DefaultConnection")));
             
             services.AddControllersWithViews();

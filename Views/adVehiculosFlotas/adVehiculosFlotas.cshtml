@@ -922,6 +922,7 @@
                                         $("#@{@Input_Vin}").val("");
                                         $("#@{@DropDown_Gasolina}").data("kendoDropDownList").select(0)
                                         $("#@{@DropDown_Flota}").data("kendoDropDownList").select(0)
+                                        $("#@{@DropDown_CentroCosto}").data("kendoDropDownList").select(0)
 
                                         var FechaInicio = moment($("#@{@DateTime_FechaIni_Vehiculo}").data("kendoDateTimePicker").value()).add(6, 'hours').format("YYYYMMDD HH:mm:ss.SSS")
                                         $("#@{@DateTime_FechaFin_Vehiculo}").data("kendoDateTimePicker").value(kendo.parseDate(moment().format("YYYY/MM/DD HH:mm:ss")));

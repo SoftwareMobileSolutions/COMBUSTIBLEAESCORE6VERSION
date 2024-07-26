@@ -180,7 +180,7 @@
                         FechaIni: _FechaIni,
                         FechaFin: _FechaFin
                     }
-
+                    console.log(arg)
                     $.get('@Url.Action("ObtenerValesGenerados", "adAutorizarVales")', arg, function (vales) {
                         vales.forEach((vale) => {
                             vale.fechaGeneracion = moment(vale.fechaGeneracion).format("DD/MM/YYYY HH:mm:ss")
@@ -299,7 +299,7 @@
                                 var _Proyectos = []
 
                                 $.get('@Url.Action("ObtenerProyectos", "adAutorizarVales")', function (Proyectos) {
-                                    console.log(Proyectos)
+                                    //console.log(Proyectos)
                                 //$("#DropDownListCentroCosto").data("kendoDropDownList").dataSource.data(centrosCosto);
                                     Proyectos.forEach((proyecto) => {
                                     //console.log(proyecto)
@@ -369,10 +369,10 @@
                                 return false
                             }
 
-                            if (ProyectoID === "") {
+                            /*if (ProyectoID === "") {
                                 $._combustible.alert("error", "Sin selección", "Debe seleccionar un proyecto")
                                 return false
-                            }
+                            }*/
                             
                         } else if (TipoCargaID === 3) {
                             if (TotalGalones !== "") {
@@ -388,20 +388,20 @@
                                 return false
                             }
 
-                            if (ProyectoID === "") {
+                            /*if (ProyectoID === "") {
                                 $._combustible.alert("error", "Sin selección", "Debe seleccionar un proyecto")
                                 return false
-                            }
+                            }*/
                         } else if (TipoCargaID === 1) {
                             if (CentroCostoID === "") {
                                 $._combustible.alert("error", "Sin selección", "Debe seleccionar un centro de costo")
                                 return false
                             }
 
-                            if (ProyectoID === "") {
+                            /*if (ProyectoID === "") {
                                 $._combustible.alert("error", "Sin selección", "Debe seleccionar un proyecto")
                                 return false
-                            }
+                            }*/
                         }
 
                         return true
@@ -438,9 +438,15 @@
                                     if (mensaje.bandera === 1) {
                                         $._combustible.alert("success", "Autorización exitosa", mensaje.resultado)
                                         $("#ModalAutorizarVale").modal('hide');
-                                        var FechaIni = moment($("#FechaIni").data("kendoDateTimePicker").value()).format("YYYYMMDD HH:mm:ss:SSS")
-                                        $("#FechaFin").data("kendoDateTimePicker").value(kendo.parseDate(moment().format("YYYY/MM/DD HH:mm:ss")));
-                                        var FechaFin = moment($("#FechaFin").data("kendoDateTimePicker").value()).format("YYYYMMDD HH:mm:ss:SSS")
+
+                                        var FechaIni = moment($("#FechaIni").data("kendoDateTimePicker").value()).add(6, 'hours').format("YYYYMMDD HH:mm:ss");
+
+                                        $("#FechaFin").data("kendoDateTimePicker").value(kendo.parseDate(moment().add(6, 'hours').format("YYYY/MM/DD HH:mm:ss")));
+
+                                        var FechaFin = moment($("#FechaFin").data("kendoDateTimePicker").value()).format("YYYYMMDD HH:mm:ss");
+                                        console.log(FechaIni)
+                                        console.log(FechaFin)
+
                                         $.Grid.DataGrid(FechaIni, FechaFin)
                                     }
                                     //console.log(mensaje)

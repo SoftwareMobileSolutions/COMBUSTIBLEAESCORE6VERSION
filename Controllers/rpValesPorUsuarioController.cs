@@ -30,10 +30,10 @@ namespace COMBUSTIBLEAESCORE.Controllers
             return Json(vales);
         }
 
-        public async Task<JsonResult> ObtenerDataValesDetalle(string FechaIni, string FechaFin, string Username, int PerfilUsuarioID)
+        public async Task<JsonResult> ObtenerDataVales(string FechaIni, string FechaFin, /*string Username, */int PerfilUsuarioID)
         {
             var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
-            var valesDetalle = await irpValesPorUsuario.ObtenerDataValesDetalle(FechaIni, FechaFin, user.FirstOrDefault().CompanyID, Username, PerfilUsuarioID);
+            var valesDetalle = await irpValesPorUsuario.ObtenerDataVales(FechaIni, FechaFin, user.FirstOrDefault().CompanyID/*, Username*/, PerfilUsuarioID);
             return Json(valesDetalle);
         }
     }

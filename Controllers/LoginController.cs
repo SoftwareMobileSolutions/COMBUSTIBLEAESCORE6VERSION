@@ -38,7 +38,12 @@ namespace COMBUSTIBLEAESCORE.Controllers
                 var data = await iLogin.login(username, password);
                 if (data.Count() > 0)
                 {
-                    if (data.First().Estado.Equals(1))
+
+                    if (data.FirstOrDefault().FechaActivacion == null)
+                    {
+                        return Json(new { mensaje = "Su usuario aún no se ha activado, por favor ponerse en contacto al siguiente número: 7737 8432", estado = 0 });
+                    }
+                    else if (data.First().Estado.Equals(1))
                     {
                         _Sesion.Set(HttpContext.Session, "usuario", data);
 
@@ -48,9 +53,9 @@ namespace COMBUSTIBLEAESCORE.Controllers
                     }
                     else
                     {
-                        return Json(new { mensaje = "Su usuario aún no se ha activado, por favor ponerse en contacto al siguiente número: 7737 8432", estado = 0 });
-                        //return Json(new { mensaje = "Usuario o contraseña incorrecta", estado = 0 });
+                       return Json(new { mensaje = "Usuario o contraseña incorrecta", estado = 0 });
                     }
+
                 }
                 else
                 {

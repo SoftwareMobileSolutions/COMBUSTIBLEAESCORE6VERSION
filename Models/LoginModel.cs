@@ -27,6 +27,8 @@
 
         public string SitioWeb { get; set; }*/
 
+        public bool Tutorial { get; set; }
+        public string FechaActivacion { get; set; }
         public string TelMovil { get; set; }
         public bool Tutorial { get; set; }
 

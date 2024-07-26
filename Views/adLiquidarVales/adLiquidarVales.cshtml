@@ -108,12 +108,12 @@
 
 <style>
 
-    #Enviar{
+    #BTN_Liquidar {
         background: #717ff5;
         color: white;
     }
 
-    #Enviar:hover {
+    #BTN_Liquidar:hover {
         background: #5565EE;
         
     }
@@ -153,7 +153,7 @@
                             placa: _placa,
                         };
 
-                        $.get('@Url.Action("getInformation", "adCerrarVales")', arg, function (data) {
+                        $.get('@Url.Action("getInformation", "adLiquidarVales")', arg, function (data) {
                             data = data[0]
                             if (data.caso === 4) {
                                 $('#TXT_Vale').text('Numero de vale: ' + data.numVale)
@@ -167,7 +167,7 @@
 
                                 $('#Input_Odometro').prop("disabled", false)
                                 $('#Input_Odometro').val(data.odometro)
-                                $('#Enviar').prop("disabled", false)
+                                $('#BTN_Liquidar').prop("disabled", false)
                                 _this.validaPlaca();
                             } else {
                                 $.alert("Aviso", data.mensaje)
@@ -243,7 +243,7 @@
                                     $("#Input_Odometro").val("")
                                     $('#Input_Odometro').prop("disabled", true)
 
-                                    $('#Enviar').prop("disabled", true)
+                                    $('#BTN_Liquidar').prop("disabled", true)
                                     $('#TXT_Vale').text('Numero de vale: ')
 
                                     let arg = {
@@ -282,7 +282,7 @@
                                     $('#Input_Odometro').prop("disabled", true)
                                     $('#Input_Odometro').val(0)
                                     $('#TXT_Vale').text('Numero de vale: ')
-                                    $('#Enviar').prop("disabled", true)
+                                    $('#BTN_Liquidar').prop("disabled", true)
 
 
                                 }

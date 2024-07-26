@@ -162,10 +162,14 @@
                         _this.alert("Campo de texto vacio", "Debe digitar su contraseña");
                         return false
                     }
-                    if (!securePassword.test($("#password").val().trim())) {
-                        _this.alert("Contraseña insegura", "Su contraseña debe contener una o mas mayusculas, una o mas minusculas, uno o mas digitos y mas de 8 caracteres ")
+                    if ($("#password").val().trim() < 8) {
+                        _this.alert("Contraseña demasiado corta", "Debe digitar una contraseña de almenos 8 caracteres");
                         return false
                     }
+                    /*if (!securePassword.test($("#password").val().trim())) {
+                        _this.alert("Contraseña insegura", "Su contraseña debe contener una o mas mayusculas, una o mas minusculas, uno o mas digitos y mas de 8 caracteres ")
+                        return false
+                    }*/
 
                     if ($("#paswordRepite").val().trim() != $("#password").val().trim()) {
                         _this.alert("Contraseña incorrecta", "Deber repertir la contraseña que ya tiene escrita")
@@ -282,13 +286,13 @@
                         if (_this.validaciones() === true) {
 
                             let args = {
-                                Nombre: $("#name").val(),
-                                Apellido: $("#lastname").val(),
-                                Username: $("#username").val(),
-                                Clave: $("#password").val(),
-                                Correo: $("#email").val(),
-                                NombreCompany: $("#CompanyName").val(),
-                                DireccionCompany: $("#adrress").val()
+                                Nombre: $("#name").val().trim(),
+                                Apellido: $("#lastname").val().trim(),
+                                Username: $("#username").val().trim(),
+                                Clave: $("#password").val().trim(),
+                                Correo: $("#email").val().trim(),
+                                NombreCompany: $("#CompanyName").val().trim(),
+                                DireccionCompany: $("#adrress").val().trim()
                             }
                             $("#loader_screen").addClass("loader")
                             $.post("@Url.Action("registerCompany", "adRegistarCompany")", args, function (datos) {
@@ -357,6 +361,7 @@
         height: 100%;
         z-index: 9999;
         background: url(@Url.Content("~/images/loading_img.gif")) 50% 50% no-repeat rgb(249,249,249);
+        background-size: 75px 75px;
         opacity: .8;
     }
 

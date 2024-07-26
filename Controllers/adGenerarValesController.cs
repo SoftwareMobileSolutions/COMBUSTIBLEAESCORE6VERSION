@@ -23,10 +23,10 @@ namespace COMBUSTIBLEAESCORE.Controllers
             return View();
         }
 
-        public async Task<JsonResult> ObtenerMobileXCompany()
+        public async Task<JsonResult> ObtenerMobileXUser()
         {
             var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
-            var mobiles = await iadGenerarVales.ObtenerMobileXCompany(user.FirstOrDefault().CompanyID);
+            var mobiles = await iadGenerarVales.ObtenerMobileXUser(user.FirstOrDefault().UsuarioID);
             return Json(mobiles); 
         }
 

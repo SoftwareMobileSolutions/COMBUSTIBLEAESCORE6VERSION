@@ -23,6 +23,21 @@
         //TXT_Username_ModalAsignarCCXUsuario = "TXT_Username_ModalAsignarCCXUsuario_" + guid,
 }
 <section>
+    <div class="card">
+        <div class="container-fluid p-lg-4 p-3">
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="text-center">Centro de costo por vehículo</h2>
+                </div>
+                <div class="col-12 mt-3">
+                    <div id="@{@GRIDCCMobile}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@*<section>
     <div id="@{@Tabstrip}">
         <ul>
             <li class="k-state-active">
@@ -68,7 +83,7 @@
                     <h5 class="modal-title" id="@{@TXT_Username_ModalAsignarCCXUsuario}">Usuario</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" @*id="modal-Container"*@>
+                <div class="modal-body" >
                     @await Html.PartialAsync("~/Views/adAsignacionCentrosCosto/Partials/DualListboxUsuariosCC.cshtml", new ViewDataDictionary(this.ViewData) { { "guid", guid } })
                 </div>
                 <div class="modal-footer">
@@ -78,7 +93,7 @@
             </div>
         </div>
     </div>
-</section>
+</section>*@
 <style type="text/css">
 
     .col-data {
@@ -476,7 +491,7 @@
                 init: function () {
                     var _this = this
                     _this.Tabstrip();
-                    _this.CentroCostoUsuario.init()
+                    //_this.CentroCostoUsuario.init()
                     _this.CentroCostoMobile.init()
                 }
             }
