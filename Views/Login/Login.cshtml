@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>COMBUSTIBLEAESCORE</title>
+    <title>ValesCombustible - Login</title>
     <link rel="stylesheet" href="@Url.Content("~/lib/bootstrap/css/bootstrap.min.css")" />
     <link rel="stylesheet" href="@Url.Content("~/css/login.css")" />
 
@@ -37,7 +37,7 @@
                             <span class="Titulo fw-bold">¿Qué es vales combustible?</span>
                             <p class="mt-2 descripcion">Esta aplicación permite realizar un control del consumo y gasto de combustible para una flota de vehículos. A través de los gráficos pueden realizar un análisis de comportamientos de cada unidad, de consumo, recargas y eficiencia real. </p>
 
-                            <span>Powered By Software Mobile Solutions 2024</span>
+                            <span>© Powered By Software Mobile Solutions 2024</span>
                         </div>
                     </div>
                 </div>
@@ -146,15 +146,16 @@
                 click: function () { 
                     var _this = this;
                     $("#login").on('click', function () {                      
-                        //$.get("/Login/iniciarSesion", { username: $("#username").val(), password: $("#password").val() }, function (data) {
                         $.get('@Url.Action("iniciarSesion", "Login")', { username: $("#username").val(), password: $("#password").val() }, function (data) {
+                            /*Si el controller retorna como bandera 1 el usuario ingresa*/
                             if (data.estado == 1) {
-                                //window.location = '@Url.Action("Index", "Home")';
                                 window.location.reload()
+                            /*Si el controller retorna como bandera 0 el usuario se encuentra inactivo o el usuario o contraseña es incorrecta*/
                             } else if (data.estado == 0) {
                                 _this.alert("warning", "Usuario Inactivo", data.mensaje);
-
+                            /*Si el sp retorna como bandera 0 el usuario se encuentra inactivo*/
                             } else {
+                                /*Si el sp retorna como bandera 2 el usuario se encuentra inactivo*/
                                 _this.alert("error", "Error", data.mensaje);
                             }
 
@@ -162,10 +163,11 @@
                     });
                 },
                 alert: function (icono, title, text) {
+                    //Alerta emergenete de Sweet alert
                     Swal.fire({
-                        icon: icono,
-                        title: title,
-                        text: text,
+                        icon: icono, // Se configura el icono 
+                        title: title, // Se coloca el titulo
+                        text: text, // Se coloca el mensaje 
                     });
                 },
                 showPassword: function () {
@@ -186,10 +188,12 @@
 
             },
             DataCompany: function () {
+                //Se verfica si hay información en el local storage
                 if (localStorage.companydatos !== undefined) {
-
+                     
+                    // Si hay información de la compañia en el local storage se muestra la data en el login
                     var DataCompany = JSON.parse(localStorage.getItem("companydatos"))
-                    console.log('@Url.Content("~/")' + DataCompany.compamyLogo)
+                    //console.log('@Url.Content("~/")' + DataCompany.compamyLogo)
                     $("#Company_logo").attr("src", '@Url.Content("~/")'+ DataCompany.compamyLogo);
                     $("#Company_name").text(DataCompany.companyName);
                     $("#Company_contacto").html("")

@@ -31,7 +31,7 @@ namespace COMBUSTIBLEAESCORE
             Dapper.SqlMapper.Settings.CommandTimeout = 120;
             //services.AddSingleton<conexion>();
             services.AddScoped<ILogin,LoginService>();
-            services.AddScoped<IadCerrarVales, adCerrarValesService>();
+            services.AddScoped<IadLiquidarVales, adLiquidarValesService>();
             services.AddScoped<IadRegistarCompany, adRegistarCompanyService>();
             services.AddScoped<IadVehiculosFlotas, adVehiculosFlotasService>();
             services.AddScoped<IadUsuariosVehiculos, adUsuariosVehiculosService>();
@@ -43,15 +43,16 @@ namespace COMBUSTIBLEAESCORE
             services.AddScoped<IadConfiguracionCompany,adConfiguracionCompanyService>();
             services.AddScoped<IadAnulacionEliminacionVales,adAnulacionEliminacionValesService>();
             services.AddScoped<IadGasolinera,adGasolineraService>();
-            services.AddScoped<IadAutorizarVales, adAutorizarValesService>();
-            services.AddScoped<IadGenerarVales,adGenerarValesService>();   
             services.AddScoped<IadAsignacionCentrosCosto,adAsignacionCentrosCostoService>();
-            services.AddScoped<IrpTopValePorVehiculo, rpTopValePorVehiculoService>();      
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
-
+            services.AddScoped<IadAutorizarVales,adAutorizarValesService>();
+            services.AddScoped<IadGenerarVales ,adGenerarValesService>();
+            services.AddScoped<IrpValePorSubFlota,rpValePorSubFlotaService>();
+            services.AddScoped<IrpLineaTimpoVale,rpLineaTimpoValeService>();
+            services.AddScoped<IadTutorial,adTutorialService>();
+            services.AddScoped<IrpValesPorUsuario,rpValesPorUsuarioService>();
+            services.AddScoped<IrpValesGasolinera ,rpValesGasolineraService>();
+            services.AddScoped<IadCambioEstadoVale, adCambioEstadoValeService>();
+            services.AddScoped<IadAdministracionPerfiles,adAdministracionPerfilesService>();
             services.AddSingleton(new conexion(Configuration.GetConnectionString("DefaultConnection")));
             
             services.AddControllersWithViews();

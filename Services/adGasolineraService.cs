@@ -18,17 +18,17 @@ namespace COMBUSTIBLEAESCORE.Services
             conexion = _conexion;
         }
 
-        public async Task<IEnumerable<mensaje>> CrearGasolinera(int CompanyID, string DescriEstacionServicio, float Latitud, float Longitud)
+        public async Task<IEnumerable<mensaje>> CrearGasolinera(int CompanyID, string DescriEstacionServicio, float Latitud, float Longitud, string CodigoGasolinera, string CiudadGasolinera, string GerenteGasolinera, string TelefonoGasolinera, string NITGasolinera, string DireccionGasolinera, string EmailGasolinera)
         {
             IEnumerable<mensaje> data = null;
-            string sp = "EXEC SP_CrearGasolinera @CompanyID, @DescriEstacionServicio, @Latitud, @Longitud";
+            string sp = "EXEC SP_CrearGasolinera @CompanyID, @DescriEstacionServicio, @Latitud, @Longitud, @CodigoGasolinera, @CiudadGasolinera, @GerenteGasolinera, @TelefonoGasolinera, @NITGasolinera, @DireccionGasolinera, @EmailGasolinera";
             var con = new SqlConnection(conexion.Value);
             try
             {
                 if (con.State == ConnectionState.Closed)
                 {
                     con.Open();
-                    data = await con.QueryAsync<mensaje>(sp, new { CompanyID, DescriEstacionServicio, Latitud, Longitud }, commandType: CommandType.Text);
+                    data = await con.QueryAsync<mensaje>(sp, new { CompanyID, DescriEstacionServicio, Latitud, Longitud, CodigoGasolinera,  CiudadGasolinera,  GerenteGasolinera,  TelefonoGasolinera,  NITGasolinera,  DireccionGasolinera,  EmailGasolinera }, commandType: CommandType.Text);
                 }
             }
             finally

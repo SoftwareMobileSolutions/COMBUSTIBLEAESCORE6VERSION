@@ -3,6 +3,27 @@
 *@
 @{
     Layout = null;
+
+    string guid = System.Guid.NewGuid().ToString().Replace("-", ""),
+    Input_NombreGasolinera = "Input_NombreGasolinera_" + guid,
+    Input_CodigoGasolinera = "Input_CodigoGasolinera_" + guid,
+    Input_CiudadGasolinera = "Input_CiudadGasolinera_" + guid,
+    Input_GerenteGasolinera = "Input_GerenteGasolinera_" + guid,
+    Input_TelefonoGasolinera = "Input_TelefonoGasolinera_" + guid,
+    Input_NITGasolinera = "Input_NITGasolinera_" + guid,
+    Input_DireccionGasolinera = "Input_DireccionGasolinera_" + guid,
+    Input_EmailGasolinera = "Input_EmailGasolinera" + guid,
+    BTN_ShowHideMapa = "BTN_ShowHideMapa_" + guid,
+    TXT_ShowHideMapa = "TXT_ShowHideMapa_" + guid,
+    Flecha = "Flecha_" + guid,
+    BTN_GuardarGasolinera = "BTN_GuardarGasolinera_" + guid,
+    DIV_Mapa = "DIV_Mapa_" + guid,
+    Map = "Map_" + guid,
+    GRID_Gasolinera = "GRID_Gasolinera_" + guid,
+    ModalMapa = "ModalMapa_" + guid,
+    TXT_NombreGasolineraModal = "TXT_NombreGasolineraModal_" + guid,
+    Modal_body_mapa = "Modal_body_mapa_" + guid,
+    MapaModal = "MapaModal_" + guid;
 }
 <section>
     <div class="container-fluid card p-lg-4 p-3">
@@ -11,26 +32,62 @@
                 <h2 class="text-center">Agregar Gasolinera</h2>
             </div>
         </div>
-        <div class="row align-items-end">
-            <div class="col-lg-8">
-                <label>Ingrese el nombre de la Gasolinera</label>
-                <input type="text" class="form-control mt-lg-2" id="Input_NombreGasolinera" />
+        <div class="row mt-3">
+            <div class="col-lg-6">
+                <h6>Ingrese el nombre de la Gasolinera</h6>
+                <input type="text" class="form-control mt-lg-2" id="@{@Input_NombreGasolinera}" />
             </div>
-            <div class="col-lg-2">
-                <button type="button" class="btn btn-success w-100 my-2 my-lg-0" id="BTN_ShowHideMapa"> <i class="bi bi-pin-map"></i> <span id="TXT_ShowHideMapa" class="ms-2"> Agregar Ubicación</span> <i id="flecha" class="bi bi-chevron-down"></i></button>
+            <div class="col-lg-6">
+                <h6>Ingrese el código de la Gasolinera</h6>
+                <input type="text" class="form-control mt-lg-2" id="@{@Input_CodigoGasolinera}" />
             </div>
-            <div class="col-lg-2">
-                <button type="button" class="btn btn-success w-100" id="BTN_GuardarGasolinera"> <i class="bi bi-plus-circle"></i> <span> Guardar Gasolinera</span></button>
+        </div>
+        <div class="row mt-3">
+            <div class="col-lg-6">
+                <h6>Ingrese la ciudad de la Gasolinera</h6>
+                <input type="text" class="form-control mt-lg-2"  id="@{@Input_CiudadGasolinera}"/>
+            </div>
+            <div class="col-lg-6">
+                <h6>Ingrese el Gerente de la Gasolinera</h6>
+                <input type="text" class="form-control mt-lg-2"  id="@{@Input_GerenteGasolinera}"/>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-lg-6">
+                <h6>Ingrese el telefono de la Gasolinera</h6>
+                <input type="text" class="form-control mt-lg-2"  id="@{@Input_TelefonoGasolinera}"/>
+            </div>
+            <div class="col-lg-6">
+                <h6>Ingrese el NIT de la Gasolinera</h6>
+                <input type="text" class="form-control mt-lg-2"  id="@{@Input_NITGasolinera}"/>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-lg-6">
+                <h6>Ingrese la dirección de la Gasolinera</h6>
+                <input type="text" class="form-control mt-lg-2"  id="@{@Input_DireccionGasolinera}"/>
+            </div>
+            <div class="col-lg-6">
+                <h6>Ingrese el correo electronico de la Gasolinera</h6>
+                <input type="text" class="form-control mt-lg-2"  id="@{@Input_EmailGasolinera}"/>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-lg-6">
+                <button type="button" class="btn btn-success w-100 my-2 my-lg-0" id="@{@BTN_ShowHideMapa}"> <i class="bi bi-pin-map"></i> <span id="TXT_ShowHideMapa" class="ms-2"> Agregar Ubicación</span> <i id="@{@Flecha}" class="bi bi-chevron-down"></i></button>
+            </div>
+            <div class="col-lg-6">
+                <button type="button" class="btn btn-success w-100" id="@{@BTN_GuardarGasolinera}"> <i class="bi bi-plus-circle"></i> <span> Guardar Gasolinera</span></button>
             </div>
         </div>
     </div>
-    <div class="container-fluid " id="DIV_Mapa">
+    <div class="container-fluid " id="@{@DIV_Mapa}">
         <div class="card p-lg-4 p-3">
             <div class="col-lg-12">
                 <h2 class="text-center"> Agregar Ubicación</h2>
             </div>
             <div class="col-lg-12">
-                <div id="map">
+                <div id="@{@Map}">
                 </div>
             </div>
         </div>
@@ -43,20 +100,20 @@
         </div>
         <div class="row ">
             <div class="col-lg-12">
-                <div id="GRID_Gasolinera">
+                <div id="@{@GRID_Gasolinera}">
 
                 </div>
             </div>
         </div>
     </div>
-    <div class="modal fade rounded" id="ModalMapa" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade rounded" id="@{@ModalMapa}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"> <i class="bi bi-geo"></i> <span id="TXT_NombreGasolineraModal"></span></h5>
+                    <h5 class="modal-title"> <i class="bi bi-geo"></i> <span id="@{@TXT_NombreGasolineraModal}"></span></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" id="modal-body-mapa">
+                <div class="modal-body" id="@{@Modal_body_mapa}">
 
                 </div>
             </div>
@@ -64,269 +121,519 @@
     </div>
 </section>
 <style>
-    #map{
+    #@{@Map}{
         height:50vh;
 
     }
 
     .col-data {
-        width: 150px;
+        width: 150px !important;
     }
 
 
     .col-ubicacion {
         text-align: center !important;
-        width: 20px;
+        width: 100px !important;
     }
+
     @@media screen and (max-width: 576px) {
 
         .col-data {
-            width: 70px;
+            width: 120px !important;
         }
 
         .col-ubicacion {
             text-align: center !important;
-            width: 100px;
+            width: 120px !important;
         }
     }
 
-    @@media (min-width: 768px) and (max-width: 991.98px) {
+    /*@@media (min-width: 768px) and (max-width: 991.98px) {
         .col-data {
             width: 100px;
         }
 
         .col-ubicacion {
             text-align: center !important;
-            width: 40px;
+            width: 40px 100px !important;
         }
-    }
+    }*/
 </style>
 <script>
     (function () {
         $.extend({
-            AgregarGasolinera: {
-                AgregarUbicaion: {
-                    markers: [],
-                    circles: [],
-                    CargarMapa: function () {
-                        var _this = this
-                        const map = new google.maps.Map(document.getElementById("map"), {
-                            center: { lat: 13.703052612879729, lng: -89.20242358465791 },
-                            zoom: 13,
-                            mapTypeId: "hybrid",
-                            gestureHandling: 'greedy'
+            ModuloGasolinera:{
+                AgregarGasolinera: {
+                    AgregarUbicaion: {
+                        markers: [],
+                        circles: [],
+                        CargarMapa: function () {
+                            var _this = this
 
-                        });
+                            $.LoadAPI().then(() => {
+                                const map = new google.maps.Map(document.getElementById("@{@Map}"), {
+                                    center: { lat: 13.703052612879729, lng: -89.20242358465791 },
+                                    zoom: 13,
+                                    mapTypeId: "hybrid",
+                                    gestureHandling: 'greedy'
 
-                        map.addListener('click', function (event) {
-                            _this.EminarMarcador();
-                            _this.AgregarMarcador(event.latLng, map);
-                        });
+                                });
 
-                    },
-                    AgregarMarcador: function (location, map) {
-                        var _this = this
-                        var marker = new google.maps.Marker({
-                            position: location,
-                            Draggable: true,
-                            map: map
-                        });
+                                map.addListener('click', function (event) {
+                                    console.log("XD")
+                                    _this.EliminarMarcador();
+                                    _this.AgregarMarcador(event.latLng, map);
+                                });
+                            }).catch((error) => {
+                                console.error("Error loading Google Maps API script: ", error);
+                            });
 
-                        const circle = new google.maps.Circle({
-                            strokeColor: "#FF0000",
-                            strokeOpacity: 0.8,
-                            strokeWeight: 2,
-                            fillColor: "#FF0000",
-                            fillOpacity: 0.35,
-                            clickable: false,
-                            map,
-                            center: location,
-                            radius: 50
-                        });
+                            /*const map = new google.maps.Map(document.getElementById("map"), {
+                                center: { lat: 13.703052612879729, lng: -89.20242358465791 },
+                                zoom: 13,
+                                mapTypeId: "hybrid",
+                                gestureHandling: 'greedy'
 
-                        circle.bindTo('center', marker, 'position');
+                            });
 
-                        _this.markers.push(marker);
-                        _this.circles.push(circle)
-                    },
-                    EminarMarcador: function () {
-                        var _this = this
-                        var circles = _this.circles
-                        var markers = _this.markers
+                            map.addListener('click', function (event) {
+                                _this.EliminarMarcador();
+                                _this.AgregarMarcador(event.latLng, map);
+                            });*/
 
-                        for (var i = 0; i < markers.length; i++) {
-                            markers[i].setMap(null);
-                        }
+                        },
+                        AgregarMarcador: function (location, map) {
+                            var _this = this
+                            var marker = new google.maps.Marker({
+                                position: location,
+                                Draggable: true,
+                                map: map
+                            });
 
-                        for (var i = 0; i < circles.length; i++) {
-                            circles[i].setMap(null);
-                        }
+                            const circle = new google.maps.Circle({
+                                strokeColor: "#FF0000",
+                                strokeOpacity: 0.8,
+                                strokeWeight: 2,
+                                fillColor: "#FF0000",
+                                fillOpacity: 0.35,
+                                clickable: false,
+                                map,
+                                center: location,
+                                radius: 50
+                            });
 
-                        markers = [];
-                        circles = [];
-                        _this.circles = circles
-                        _this.markers = markers
-                    },
-                    Visibilidad: function () {
-                        $('#DIV_Mapa').hide()
-                        $('#BTN_ShowHideMapa').click(function () {
-                            if ($("#DIV_Mapa").css("display") === "none") {
-                                $("#flecha").removeClass("bi-chevron-down")
-                                $("#flecha").addClass("bi-chevron-up")
-                                $("#TXT_ShowHideMapa").text("Ocultar")
-                            } else {
-                                $("#flecha").removeClass("bi-chevron-up")
-                                $("#flecha").addClass("bi-chevron-down")
-                                $("#TXT_ShowHideMapa").text("Agregar Ubicación")
+                            circle.bindTo('center', marker, 'position');
+
+                            _this.markers.push(marker);
+                            _this.circles.push(circle)
+                        },
+                        EliminarMarcador: function () {
+                            var _this = this
+                            var circles = _this.circles
+                            var markers = _this.markers
+
+                            for (var i = 0; i < markers.length; i++) {
+                                markers[i].setMap(null);
                             }
-                            $('#DIV_Mapa').slideToggle();
-                        })
-                    }
 
-                },
-                Validaciones: function (NombreGasolinera) {
-                    if (NombreGasolinera === ""){
-                        $._combustible.alert("error", "Campo vacio", "Debe insertar el nombre de la gasolinera")
-                        return false
-                    }
-                    if (NombreGasolinera.length < 3) {
-                        $._combustible.alert("error", "Campo vacio", "El nombre debe tener al menos tres caracteres")
-                        return false
-                    }
-
-                    return true
-                },
-                BTN_GuardaGasolinera: function () {
-                    var _this = this
-                    $("#BTN_GuardarGasolinera").on("click", function () {
-                        var NombreGasolinera = $("#Input_NombreGasolinera").val().trim()
-                        if (_this.Validaciones(NombreGasolinera) === true) {
-                            var market = _this.AgregarUbicaion.markers[0]
-                            arg = {
-                                DescriEstacionServicio: NombreGasolinera,
-                                Latitud: (market === undefined ? null : market.getPosition().lat()),
-                                Longitud: (market === undefined ? null : market.getPosition().lng())
+                            for (var i = 0; i < circles.length; i++) {
+                                circles[i].setMap(null);
                             }
-                            
-                            $.post('@Url.Action("CrearGasolinera", "adGasolinera")',arg,function (mensaje) {
-                                mensaje = mensaje[0]
-                                if (mensaje.bandera === 1) {
-                                    $._combustible.alert("success", "Registro Exitoso", mensaje.resultado)
-                                    $("#map").html("")
-                                    $.AgregarGasolinera.AgregarUbicaion.CargarMapa()
-                                    $("#Input_NombreGasolinera").val("")
-                                    //$('#DIV_Mapa').slideToggle();
-                                    $('#DIV_Mapa').hide()
-                                    $("#flecha").removeClass("bi-chevron-up")
-                                    $("#flecha").addClass("bi-chevron-down")
-                                    $("#TXT_ShowHideMapa").text("Agregar Ubicación")
-                                    $.GRID.DataGrid()
+
+                            markers = [];
+                            circles = [];
+                            _this.circles = circles
+                            _this.markers = markers
+                        },
+                        Visibilidad: function () {
+                            $('#@{@DIV_Mapa}').hide()
+                            $('#@{@BTN_ShowHideMapa}').click(function () {
+                                if ($("#@{@DIV_Mapa}").css("display") === "none") {
+                                    $("#@{@Flecha}").removeClass("bi-chevron-down")
+                                    $("#@{@Flecha}").addClass("bi-chevron-up")
+                                    $("#@{@TXT_ShowHideMapa}").text("Ocultar")
                                 } else {
-                                    $._combustible.alert("error", "Error", mensaje.resultado)
+                                    $("#@{@Flecha}").removeClass("bi-chevron-up")
+                                    $("#@{@Flecha}").addClass("bi-chevron-down")
+                                    $("#@{@TXT_ShowHideMapa}").text("Agregar Ubicación")
                                 }
-                                
+                                $('#@{@DIV_Mapa}').slideToggle();
                             })
                         }
-                    });
-                }
-            },
-            GRID: {
-                CargarGrid: function () {
-                    $("#GRID_Gasolinera").html("");
-                    $("#GRID_Gasolinera").kendoGrid({
-                        dataSource: {
-                            pageSize: 15
-                        },
-                        toolbar: ["search"],
-                        themeColor: "Purple",
-                        columns: [
-                            {
-                                field: "nombre",
-                                title: "Nombre",
-                                attributes: { class: "col-data" },
-                                headerAttributes: { class: "col-data" },
-                            },
-                            {
-                                field: "latLng",
-                                type: "string",
-                                title: "Ubicación",
-                                filterable: false,
-                                attributes: { class: "col-ubicacion" },
-                                headerAttributes: { class: "col-ubicacion" },
-                                /*template: function (data) {
-                                    if (data.latitud !== 0 && data.longitud !== 0) {
-                                        return '<button type="button" class="btn btn-success " onclick = "$.GRID.Modal.Mostrar(' + data.latitud + ',' + data.longitud + ',' +'"' + data.nombre+'"' + ' )"> <i class="bi bi-geo"></i> Mostrar Ubicacion</button>'
-                                    }else{
-                                        return '<span></span>'
-                                    }
-                                    console.log(data)
-                                }*/
-                                template: function (data) {
-                                    if (data.latitud !== 0 && data.longitud !== 0) {
-                                        return '<button type="button" class="btn btn-success" onclick="$.GRID.Modal.Mostrar(' + data.latitud + ', ' + data.longitud + ', \'' + data.nombre + '\')"> <i class="bi bi-geo"></i> Mostrar Ubicación</button>';
-                                    } else {
-                                        return '<span></span>';
-                                    }
+                    },
+                    KeyPress: function () {
+                            $('#@{@Input_TelefonoGasolinera}').keypress(function (event) {
+                                var keyCode = event.which;
+                                var inputValue = $(this).val();
+
+                                if (keyCode < 48 || keyCode > 57) {
+                                    event.preventDefault();
+                                }
+                                if (inputValue.length > 7) {
+                                    event.preventDefault();
                                 }
 
+                            });
 
-                            }
+                            $('#@{@Input_TelefonoGasolinera}').on("paste", function (event) {
+                                event.preventDefault();
+                            });
 
-                        ],
-                        pageable: true,
-                        mobile: "phone",
-                        dataBound: function (e) {
-                            $("#GRID_Gasolinera > div span input").attr("placeholder", "Busqueda")
+                            $('#@{@Input_NITGasolinera}').keypress(function (event) {
+                                var keyCode = event.which;
+                                var inputValue = $(this).val();
+
+                                if (keyCode < 48 || keyCode > 57) {
+                                    event.preventDefault();
+                                }
+                                if (inputValue.length > 13) {
+                                    event.preventDefault();
+                                }
+
+                            });
+
+                            $('#@{@Input_NITGasolinera}').on("paste", function (event) {
+                                event.preventDefault();
+                            });
+
+                            
+                            $('#@{@Input_CodigoGasolinera}').keypress(function (event) {
+                                var keyCode = event.which;
+                                var inputValue = $(this).val();
+
+
+                                if (inputValue.length > 49) {
+                                    event.preventDefault();
+                                }
+
+                            });
+
+                            $('#@{@Input_CiudadGasolinera}').keypress(function (event) {
+                                var keyCode = event.which;
+                                var inputValue = $(this).val();
+
+
+                                if (inputValue.length > 49) {
+                                    event.preventDefault();
+                                }
+
+                            });
+
+                            $('#@{@Input_GerenteGasolinera}').keypress(function (event) {
+                                var keyCode = event.which;
+                                var inputValue = $(this).val();
+
+                                if (inputValue.length > 49) {
+                                    event.preventDefault();
+                                }
+
+                            });
+
+                            $('#@{@Input_DireccionGasolinera}').keypress(function (event) {
+                                var keyCode = event.which;
+                                var inputValue = $(this).val();
+
+                                if (inputValue.length > 254) {
+                                    event.preventDefault();
+                                }
+
+                            });
+
+                            $('#@{@Input_EmailGasolinera}').keypress(function (event) {
+                                var keyCode = event.which;
+                                var inputValue = $(this).val();
+
+                                if (inputValue.length > 254) {
+                                    event.preventDefault();
+                                }
+
+                            });
+                    },
+                    Validaciones: function (NombreGasolinera, CodigoGasolinera,CiudadGasolinera,GerenteGasolinera,TelefonoGasolinera,NITGasolinera,DireccionGasolinera,EmailGasolinera) {
+                        var validEmail = /^\w+([.-_+]?\w+)*@@\w+([.-]?\w+)*(\.\w{2,10})+$/;
+                        
+                        if (NombreGasolinera === ""){
+                            $._combustible.alert("error", "Campo vacio", "Debe insertar el nombre de la gasolinera")
+                            return false
                         }
-                    });
+                        if (NombreGasolinera.length < 3) {
+                            $._combustible.alert("error", "Campo vacio", "El nombre debe tener al menos tres caracteres")
+                            return false
+                        }
 
-                },
-                DataGrid: function () {
-                    $.get('@Url.Action("ObtenerGasolineras", "adGasolinera")', function (Gasolineras) {
-                        $("#GRID_Gasolinera").data("kendoGrid").dataSource.data(Gasolineras)
-                    })
-                },
-                Modal: {
-                    Mostrar: function (latitud, longitud,Nombre) {
-                        $("#modal-body-mapa").html("");
-                        var DIV = '<div id="mapaModal" style="height:50vh;"><div>'
-                        $("#modal-body-mapa").html(DIV);
-                        $("#TXT_NombreGasolineraModal").text(Nombre)
-                        const map = new google.maps.Map(document.getElementById("mapaModal"), {
-                            center: { lat: latitud, lng: longitud },
-                            zoom: 19,
-                            mapTypeId: "hybrid",
-                        });
+                        if(CodigoGasolinera.length > 0){
+                            if (CodigoGasolinera.length < 3) {
+                                $._combustible.alert("error", "Código demasiado corto", "El Código debe tener al menos tres caracteres")
+                                return false
+                            }
+                        }
 
-                        const cityCircle = new google.maps.Circle({
-                            strokeColor: "#FF0000",
-                            strokeOpacity: 0.8,
-                            strokeWeight: 2,
-                            fillColor: "#FF0000",
-                            fillOpacity: 0.35,
-                            map,
-                            center: { lat: latitud, lng: longitud },
-                            radius: 50
-                        });
+                        if(CiudadGasolinera.length > 0){
+                            if (CiudadGasolinera.length < 3) {
+                                $._combustible.alert("error", "Nombre demasiado corto", "El nombre de la ciudad debe tener al menos tres caracteres")
+                                return false
+                            }
+                        }
 
-                        var marker = new google.maps.Marker({
-                            position: { lat: latitud, lng: longitud },
-                            map: map
+                        if(GerenteGasolinera.length > 0){
+                            if (GerenteGasolinera.length < 3) {
+                                $._combustible.alert("error", "Nombre demasiado corto", "El nombre de el gerente debe tener al menos tres caracteres")
+                                return false
+                            }
+                        }
+
+                        if(TelefonoGasolinera.length > 0){
+                            if (TelefonoGasolinera.length < 3) {
+                                $._combustible.alert("error", "Nombre demasiado corto", "El nombre de el gerente debe tener al menos tres caracteres")
+                                return false
+                            }
+                        }
+
+                        if(TelefonoGasolinera.length > 0){
+                            if (TelefonoGasolinera.length < 8) {
+                                $._combustible.alert("error", "Número demasiado corto", "El Número telefónico debe tener 8 digitos")
+                                return false
+                            }
+                        }
+
+                        if(NITGasolinera.length > 0){
+                            if (NITGasolinera.length < 14) {
+                                $._combustible.alert("error", "NIT demasiado corto", "El NIT  debe tener 14 digitos")
+                                return false
+                            }
+                        }
+                        if(NITGasolinera.length > 0){
+                            if (NITGasolinera.length < 14) {
+                                $._combustible.alert("error", "NIT demasiado corto", "El NIT  debe tener 14 digitos")
+                                return false
+                            }
+                        }
+
+                        if (DireccionGasolinera.length > 0) {
+                            if (DireccionGasolinera.length < 8) {
+                                $._combustible.alert("error", "Dirección demasiado corta", "La dirección debe tener al menos 8 digitos")
+                                return false
+                            }
+                        }
+
+                        if (EmailGasolinera.length > 0) {
+                            if (!validEmail.test(EmailGasolinera)) {
+                                $._combustible.alert("error", "Formato de correo incorrecto", "Debe digitar  un correo valido, por ejemplo usuario@correo.com")
+                                return false
+                            }
+                        }
+                        //if() 
+
+                        /*if(CodigoGasolinera.length > 0){
+                            if (CodigoGasolinera.length < 3) {
+                                $._combustible.alert("error", "Código demasiado corto", "El Código debe tener al menos tres caracteres")
+                                return false
+                            }
+                        }*/
+                        return true
+                    },
+                    BTN_GuardaGasolinera: function () {
+                        var _this = this
+                        $("#@{@BTN_GuardarGasolinera}").on("click", function () {
+                            var NombreGasolinera = $("#@{@Input_NombreGasolinera}").val().trim()
+                            var CodigoGasolinera = $("#@{@Input_CodigoGasolinera}").val().trim()
+                            var CiudadGasolinera = $("#@{@Input_CiudadGasolinera}").val().trim()
+                            var GerenteGasolinera = $("#@{@Input_GerenteGasolinera}").val().trim()
+                            var TelefonoGasolinera = $("#@{@Input_TelefonoGasolinera}").val().trim()
+                            var NITGasolinera = $("#@{@Input_NITGasolinera}").val().trim()
+                            var DireccionGasolinera = $("#@{@Input_DireccionGasolinera}").val().trim()
+                            var EmailGasolinera = $("#@{@Input_EmailGasolinera}").val().trim()
+
+                            if (_this.Validaciones(NombreGasolinera,CodigoGasolinera,CiudadGasolinera,GerenteGasolinera,TelefonoGasolinera,NITGasolinera,DireccionGasolinera,EmailGasolinera) === true) {
+                                var market = _this.AgregarUbicaion.markers[0]
+                                arg = {
+                                    DescriEstacionServicio: NombreGasolinera,
+                                    Latitud: (market === undefined ? null : market.getPosition().lat()),
+                                    Longitud: (market === undefined ? null : market.getPosition().lng()), 
+                                    CodigoGasolinera :CodigoGasolinera ,  
+                                    CiudadGasolinera: CiudadGasolinera,  
+                                    GerenteGasolinera: GerenteGasolinera,  
+                                    TelefonoGasolinera: TelefonoGasolinera,  
+                                    NITGasolinera : NITGasolinera,  
+                                    DireccionGasolinera : DireccionGasolinera,  
+                                    EmailGasolinera: EmailGasolinera
+                                }
+                                
+                                //console.log(arg)
+                                $.post('@Url.Action("CrearGasolinera", "adGasolinera")',arg,function (mensaje) {
+                                    mensaje = mensaje[0]
+                                    if (mensaje.bandera === 1) {
+                                        $._combustible.alert("success", "Registro Exitoso", mensaje.resultado)
+                                        $("#@{@Map}").html("")
+                                        $.ModuloGasolinera.AgregarGasolinera.AgregarUbicaion.CargarMapa()
+                                        $("#@{@Input_NombreGasolinera}").val("")
+
+                                        $("#@{@Input_CodigoGasolinera}").val("")
+                                        $("#@{@Input_CiudadGasolinera}").val("")
+                                        $("#@{@Input_GerenteGasolinera}").val("")
+                                        $("#@{@Input_TelefonoGasolinera}").val("")
+                                        $("#@{@Input_NITGasolinera}").val("")
+                                        $("#@{@Input_DireccionGasolinera}").val("")
+                                        $("#@{@Input_EmailGasolinera}").val("")
+
+                                        //$('#DIV_Mapa').slideToggle();
+                                        $('#@{@DIV_Mapa}').hide()
+                                        $("#@{@Flecha}").removeClass("bi-chevron-up")
+                                        $("#@{@Flecha}").addClass("bi-chevron-down")
+                                        $("#@{@TXT_ShowHideMapa}").text("Agregar Ubicación")
+                                        $.ModuloGasolinera.GRID.DataGrid()
+                                    } else {
+                                        $._combustible.alert("error", "Error", mensaje.resultado)
+                                    }
+                                
+                                })
+                            }
                         });
-                        $("#ModalMapa").modal("show")
                     }
-                }
-            },
-            init: function () {
-                var _this = this;
-                _this.AgregarGasolinera.AgregarUbicaion.CargarMapa()
-                _this.AgregarGasolinera.AgregarUbicaion.Visibilidad()
-                _this.AgregarGasolinera.BTN_GuardaGasolinera()
-                _this.GRID.CargarGrid()
-                _this.GRID.DataGrid()
+                },
+                GRID: {
+                    CargarGrid: function () {
+                        $("#@{@GRID_Gasolinera}").html("");
+                        $("#@{@GRID_Gasolinera}").kendoGrid({
+                            dataSource: {
+                                pageSize: 15
+                            },
+                            scrollable: true,
+                            toolbar: ["search"],
+                            themeColor: "Purple",
+                            columns: [
+                                {
+                                    field: "nombre",
+                                    title: "Nombre",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data" },
+                                },
+                                {
+                                    field: "codigo",
+                                    title: "Codigo",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data" },
+                                },
+                                {
+                                    field: "ciudad",
+                                    title: "Ciudad",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data" },
+                                },
+                                {
+                                    field: "gerente",
+                                    title: "Gerente",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data" },
+                                },
+                                {
+                                    field: "telefono",
+                                    title: "Telefono",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data" },
+                                },
+                                {
+                                    field: "nIT",
+                                    title: "NIT",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data" },
+                                },
+                                {
+                                    field: "direccion",
+                                    title: "Direccion",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data" },
+                                },
+                                {
+                                    field: "email",
+                                    title: "Email",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data" },
+                                },
+                                {
+                                    field: "latLng",
+                                    type: "string",
+                                    title: "Ubicación",
+                                    filterable: false,
+                                    attributes: { class: "col-ubicacion" },
+                                    headerAttributes: { class: "col-ubicacion" },
+                                    /*template: function (data) {
+                                        if (data.latitud !== 0 && data.longitud !== 0) {
+                                            return '<button type="button" class="btn btn-success " onclick = "$.GRID.Modal.Mostrar(' + data.latitud + ',' + data.longitud + ',' +'"' + data.nombre+'"' + ' )"> <i class="bi bi-geo"></i> Mostrar Ubicacion</button>'
+                                        }else{
+                                            return '<span></span>'
+                                        }
+                                        console.log(data)
+                                    }*/
+                                    template: function (data) {
+                                        if (data.latitud !== 0 && data.longitud !== 0) {
+                                            return '<button type="button" class="btn btn-success" onclick="$.ModuloGasolinera.GRID.Modal.Mostrar(' + data.latitud + ', ' + data.longitud + ', \'' + data.nombre + '\')"> <i class="bi bi-geo"></i> Mostrar Ubicación</button>';
+                                        } else {
+                                            return '<span></span>';
+                                        }
+                                    }
 
+
+                                }
+
+                            ],
+                            pageable: true,
+                            mobile: "phone",
+                            dataBound: function (e) {
+                                $("#@{@GRID_Gasolinera} > div span input").attr("placeholder", "Busqueda")
+                            }
+                        });
+
+                    },
+                    DataGrid: function () {
+                        $.get('@Url.Action("ObtenerGasolineras", "adGasolinera")', function (Gasolineras) {
+                            //console.log(Gasolineras)
+                            $("#@{@GRID_Gasolinera}").data("kendoGrid").dataSource.data(Gasolineras)
+                        })
+                    },
+                    Modal: {
+                        Mostrar: function (latitud, longitud,Nombre) {
+                            $("#@{@Modal_body_mapa}").html("");
+                            var DIV = '<div id="@{@MapaModal}" style="height:50vh;"><div>'
+                            $("#@{@Modal_body_mapa}").html(DIV);
+                            $("#@{@TXT_NombreGasolineraModal}").text(Nombre)
+                            const map = new google.maps.Map(document.getElementById("@{@MapaModal}"), {
+                                center: { lat: latitud, lng: longitud },
+                                zoom: 19,
+                                mapTypeId: "hybrid",
+                            });
+
+                            const cityCircle = new google.maps.Circle({
+                                strokeColor: "#FF0000",
+                                strokeOpacity: 0.8,
+                                strokeWeight: 2,
+                                fillColor: "#FF0000",
+                                fillOpacity: 0.35,
+                                map,
+                                center: { lat: latitud, lng: longitud },
+                                radius: 50
+                            });
+
+                            var marker = new google.maps.Marker({
+                                position: { lat: latitud, lng: longitud },
+                                map: map
+                            });
+                            $("#@{@ModalMapa}").modal("show")
+                        }
+                    }
+                },
+                init: function () {
+                    var _this = this;
+                    _this.AgregarGasolinera.AgregarUbicaion.CargarMapa()
+                    _this.AgregarGasolinera.AgregarUbicaion.Visibilidad()
+                    _this.AgregarGasolinera.BTN_GuardaGasolinera()
+                    _this.GRID.CargarGrid()
+                    _this.GRID.DataGrid()
+                    _this.AgregarGasolinera.KeyPress()
+
+                }
             }
         })
-        $.init()  
+        $.ModuloGasolinera.init()  
     })();
 </script>

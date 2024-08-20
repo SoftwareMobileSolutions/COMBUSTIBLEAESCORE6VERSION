@@ -12,8 +12,8 @@ namespace COMBUSTIBLEAESCORE.Controllers
 {
     public class LoginController : Controller
     {
+        //
         private readonly ILogin iLogin;
-
 
         public LoginController(ILogin _iLogin) { 
             iLogin = _iLogin;
@@ -36,33 +36,43 @@ namespace COMBUSTIBLEAESCORE.Controllers
         {            
             return await Task.Run(async () => {
                 var data = await iLogin.login(username, password);
+                //Se verifica si el SP retorna data
                 if (data.Count() > 0)
                 {
-                    if (data.First().Estado.Equals(1))
+                    //Si regresa data el SP, se verifica si 
+                    if (data.FirstOrDefault().FechaActivacion == null)
                     {
+                        //Si no se encuentra activo el usuario se le notifica al intentar iniciar sesión 
+                        return Json(new { mensaje = "Su usuario aún no se ha activado, por favor ponerse en contacto al siguiente número: 7737 8432", estado = 0 });
+                    }
+                    else if (data.First().Estado.Equals(1))
+                    {
+                        //Si la bandera es igual a 1 el usuario entra y se inserta la Data en la sesion
                         _Sesion.Set(HttpContext.Session, "usuario", data);
 
-                        await setMenu(username);
-
+                        //Se obtienen los menus
+                        await setMenu(username, data.FirstOrDefault().CompanyID);
+                        //Se inserta los menos en la sesion 
                         return Json(new { mensaje = "Usuario ingresa", estado = 1 });
                     }
                     else
                     {
-                        return Json(new { mensaje = "Debe pagar su suscripción y esperar a que se le active el usario", estado = 0 });
-
+                       return Json(new { mensaje = "Usuario o contraseña incorrecta", estado = 0 });
                     }
+
                 }
                 else
                 {
+                    //Si no regresa data el SP no existe el usuario o contraseña 
                     return Json(new { mensaje = "Usuario o contraseña incorrecta", estado = 2 });
                 }
 
             });
         }
 
-        protected async Task setMenu(string username)
+        protected async Task setMenu(string username,  int CompanyID) //Modulo para obtener los modulos x perfil y la insersion de estos en la sesion
         {
-            var modulos = await iLogin.getModulos(username);
+            var modulos = await iLogin.getModulos(username, CompanyID);
             _Sesion.Set(HttpContext.Session, "menu", modulos);
         }
 

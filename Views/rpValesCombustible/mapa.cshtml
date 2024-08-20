@@ -111,14 +111,50 @@
                 let grid = $(obj).parents(".gridDetailnumvales").eq(0).data("kendoGrid").dataSource.data();
                 let datos = [];
                 for (let i = grid.length; i--;) {
-                    if (grid[i]["numvale"] === numvale) { 
+                    if (grid[i]["numvale"] === numvale) {
                         datos = grid[i];
                         break;
                     }
                 }
+                console.log(datos)
                 _this.modal();
 
-                $("#" + _this.idmapa).height($(window).height() - 70);
+                $.LoadAPI().then(() => {
+                    $("#" + _this.idmapa).height($(window).height() - 70);
+
+                    let latlng = new google.maps.LatLng(datos.lat, datos.lng);
+                    let mapOpts = {
+                        zoom: 19,
+                        center: latlng,
+                        panControl: true,
+                        scaleControl: false,
+
+                        mapTypeControl: false,
+                        streetViewControl: false,
+                        mapTypeId: google.maps.MapTypeId.ROADMAP,
+                        mapTypeControlOptions: {
+                            mapTypeIds: [google.maps.MapTypeId.ROADMAP,
+                            google.maps.MapTypeId.HYBRID,
+                            google.maps.MapTypeId.SATELLITE,
+                            google.maps.MapTypeId.TERRAIN],
+                            style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR
+                        },
+                        zoomControl: true,
+                        zoomControlOptions: { style: google.maps.ZoomControlStyle.SMALL },
+                        gestureHandling: 'greedy'
+                    };
+                    _this.map = new google.maps.Map($("#" + _this.idmapa).get(0), mapOpts);
+                    var styles = [{
+                        featureType: 'poi.business',
+                        stylers: [{ visibility: 'on' }]
+                    }];
+                    _this.map.setOptions({ styles: styles });
+                    _this.setPoint(latlng, datos)
+                }).catch((error) => {
+                    console.error("Error loading Google Maps API script: ", error);
+                });
+                /*---------*/
+                /*$("#" + _this.idmapa).height($(window).height() - 70);
 
                 let latlng = new google.maps.LatLng(datos.lat, datos.lng);
                 let mapOpts = {
@@ -147,7 +183,8 @@
                     stylers: [{ visibility: 'on' }]
                 }];
                 _this.map.setOptions({ styles: styles });
-                _this.setPoint(latlng, datos)
+                _this.setPoint(latlng, datos)*/
+                /*------*/
             },
             setPoint: function (latlng, d) {
                 console.log(d);

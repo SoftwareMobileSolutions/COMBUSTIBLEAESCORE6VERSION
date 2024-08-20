@@ -87,17 +87,17 @@ namespace COMBUSTIBLEAESCORE.Services
             return data;
         }
 
-        public async Task<IEnumerable<ObtenerVehiculosMobileCompany>> obtenerVehiculosMobileCompanie(string username, int CompanyID)
+        public async Task<IEnumerable<MobileAsigandosXUserModel>> obtenerObtenerMobileAsigandosXUser(string username, int CompanyID)
         {
-            IEnumerable<ObtenerVehiculosMobileCompany> data = null;
-            string sp = "EXEC SP_ObtenerVehiculosMobileCompany @username, @CompanyID";
+            IEnumerable<MobileAsigandosXUserModel> data = null;
+            string sp = "EXEC SP_ObtenerMobileAsigandosXUser @username, @CompanyID";
             var con = new SqlConnection(conexion.Value);
             try
             {
                 if (con.State == ConnectionState.Closed)
                 {
                     con.Open();
-                    data = await con.QueryAsync<ObtenerVehiculosMobileCompany>(sp, new { username, CompanyID }, commandType: CommandType.Text);
+                    data = await con.QueryAsync<MobileAsigandosXUserModel>(sp, new { username, CompanyID }, commandType: CommandType.Text);
                 }
             }
             finally

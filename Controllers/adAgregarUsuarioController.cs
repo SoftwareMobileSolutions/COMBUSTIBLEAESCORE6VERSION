@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
+using System.Numerics;
 using System.Threading.Tasks;
 
 namespace COMBUSTIBLEAESCORE.Controllers
@@ -33,7 +34,8 @@ namespace COMBUSTIBLEAESCORE.Controllers
 
         public async Task<JsonResult> ObtenerPerfilUsuarios()
         {
-            var perfiles = await iadAgregarUsuario.ObtenerPerfilUsuarios();
+            var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
+            var perfiles = await iadAgregarUsuario.ObtenerPerfilUsuarios(user.FirstOrDefault().CompanyID);
             return Json(perfiles);
         }
 
@@ -45,12 +47,12 @@ namespace COMBUSTIBLEAESCORE.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> CrearUsuarios(string Nombre, string Apellido, string Username, string Clave, string Correo, int PerfilID,int GasolineraID, string Telefono) {
+        public async Task<JsonResult> CrearUsuarios(string Nombre, string Apellido, string Username, string Clave, string Correo, int PerfilID, int GasolineraID, string Telefono) {
             var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
             var resultado = await iadAgregarUsuario.CrearUsuarios(Nombre, Apellido, Username, Clave, Correo, PerfilID, GasolineraID, user.FirstOrDefault().CompanyID, Telefono);
             return Json(resultado);
         }
-        [HttpPost] 
+        [HttpPost]
         public async Task<JsonResult> ActualizarUsuario(string username, string contrasena, string nombre, string apellido, string correo, string telefono)
         {
             var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
@@ -64,6 +66,28 @@ namespace COMBUSTIBLEAESCORE.Controllers
             var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
             var resultado = await iadAgregarUsuario.CambiarEstadoUsuario(user.FirstOrDefault().CompanyID, UsuarioID, Estado);
             return Json(resultado);
+        }
+
+        private void GuardarUsuario(string Username, string contrasena, int PerfilID)
+        {
+            var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
+
+            if (user.FirstOrDefault().Tutorial == false) { 
+                if(PerfilID == 2)
+                {
+                    _Sesion.Set(HttpContext.Session, "UserGenTuto", Username);
+                    _Sesion.Set(HttpContext.Session, "PassGenTuto", contrasena);
+                }
+                else if (PerfilID == 3){
+                    _Sesion.Set(HttpContext.Session, "UserAutTuto", Username);
+                    _Sesion.Set(HttpContext.Session, "PassAutTuto", contrasena);
+                }
+                else if (PerfilID == 4)
+                {
+                    _Sesion.Set(HttpContext.Session, "UserAutTuto", Username);
+                    _Sesion.Set(HttpContext.Session, "PassAutTuto", contrasena);
+                }
+            }
         }
     }
 }

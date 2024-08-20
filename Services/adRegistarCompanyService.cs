@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.Data;
 using Dapper;
 using System.Linq;
+using ImageMagick;
 namespace COMBUSTIBLEAESCORE.Services
 {
     public class adRegistarCompanyService : IadRegistarCompany
@@ -17,6 +18,33 @@ namespace COMBUSTIBLEAESCORE.Services
         {
             conexion = _conexion;
         }
+
+        public async Task<IEnumerable<mensaje>> ActivarUsuario(string Username)
+        {
+            IEnumerable<mensaje> data = null;
+            string sp = "EXEC SP_ActivarUsuario @Username";
+            var con = new SqlConnection(conexion.Value);
+
+            try
+            {
+                if (con.State == ConnectionState.Closed)
+                {
+                    con.Open();
+                    data = await con.QueryAsync<mensaje>(sp, new { Username }, commandType: System.Data.CommandType.Text);
+                }
+
+
+            }
+            finally
+            {
+                if (con.State == ConnectionState.Open)
+                {
+                    con.Close();
+                }
+            }
+            return data;
+        }
+
         public async Task<IEnumerable<mensaje>> RegisterCompany(string Nombre, string Apellido, string Username, string Clave, string Correo, string NombreCompany, string DireccionCompany)
         {
 

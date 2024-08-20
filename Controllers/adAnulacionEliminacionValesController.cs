@@ -33,7 +33,7 @@ namespace COMBUSTIBLEAESCORE.Controllers
         public async Task<JsonResult> EliminarVales(int ValeCombustubibleID)
         {
             var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
-            var resultado = await iadAnulacionEliminacionVales.EliminarVales(ValeCombustubibleID, user.FirstOrDefault().CompanyID);
+            var resultado = await iadAnulacionEliminacionVales.EliminarVales(ValeCombustubibleID, user.FirstOrDefault().UsuarioID, user.FirstOrDefault().CompanyID);
             return Json(resultado);
         }
 
@@ -47,7 +47,7 @@ namespace COMBUSTIBLEAESCORE.Controllers
         public async Task<JsonResult> AnularVale(int ValeCombustubibleID, int RazonID)
         {
             var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
-            var resultado = await iadAnulacionEliminacionVales.AnularVale(ValeCombustubibleID, RazonID, user.FirstOrDefault().CompanyID);
+            var resultado = await iadAnulacionEliminacionVales.AnularVale(ValeCombustubibleID, user.FirstOrDefault().UsuarioID ,RazonID, user.FirstOrDefault().CompanyID);
             return Json(resultado);
         }
 
@@ -55,7 +55,7 @@ namespace COMBUSTIBLEAESCORE.Controllers
         public async Task<JsonResult> ReestablecerVale(int ValeCombustubibleID)
         {
             var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
-            var resultado = await iadAnulacionEliminacionVales.ReestablecerVale(ValeCombustubibleID, user.FirstOrDefault().CompanyID);
+            var resultado = await iadAnulacionEliminacionVales.ReestablecerVale(ValeCombustubibleID, user.FirstOrDefault().UsuarioID, user.FirstOrDefault().CompanyID);
             return Json(resultado);
         }
     }

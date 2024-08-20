@@ -64,17 +64,17 @@ namespace COMBUSTIBLEAESCORE.Services
             return data;
         }
 
-        public async Task<IEnumerable<mensaje>> InsertarPEPS(string PEPS_NombreProyecto, string Responsable_Estado, int CompanyID, int UsuarioID)
+        public async Task<IEnumerable<mensaje>> InsertarProyectos(string CodigoProyecto_NombreProyecto, string Responsable_Estado, int CompanyID, int UsuarioID)
         {
             IEnumerable<mensaje> data = null;
-            string sp = "EXEC SP_adInsertarPeps @PEPS_NombreProyecto, @Responsable_Estado, @CompanyID, @UsuarioID";
+            string sp = "EXEC SP_adInsertarProyectos @CodigoProyecto_NombreProyecto, @Responsable_Estado, @CompanyID, @UsuarioID";
             var con = new SqlConnection(conexion.Value);
             try
             {
                 if (con.State == ConnectionState.Closed)
                 {
                     con.Open();
-                    data = await con.QueryAsync<mensaje>(sp, new { PEPS_NombreProyecto, Responsable_Estado, CompanyID, UsuarioID }, commandType: CommandType.Text);
+                    data = await con.QueryAsync<mensaje>(sp, new { CodigoProyecto_NombreProyecto, Responsable_Estado, CompanyID, UsuarioID }, commandType: CommandType.Text);
                 }
             }
             finally
@@ -87,17 +87,17 @@ namespace COMBUSTIBLEAESCORE.Services
             return data;
         }
 
-        public async Task<IEnumerable<PEPModel>> ObtenerPEPS(int CompanyID)
+        public async Task<IEnumerable<ProyectoModel>> ObtenerProyectos(int CompanyID)
         {
-            IEnumerable<PEPModel> data = null;
-            string sp = "EXEC SP_rpProyectos @CompanyID";
+            IEnumerable<ProyectoModel> data = null;
+            string sp = "EXEC SP_ObtenerProyectosWEB @CompanyID";
             var con = new SqlConnection(conexion.Value);
             try
             {
                 if (con.State == ConnectionState.Closed)
                 {
                     con.Open();
-                    data = await con.QueryAsync<PEPModel>(sp, new { CompanyID }, commandType: CommandType.Text);
+                    data = await con.QueryAsync<ProyectoModel>(sp, new { CompanyID }, commandType: CommandType.Text);
                 }
             }
             finally

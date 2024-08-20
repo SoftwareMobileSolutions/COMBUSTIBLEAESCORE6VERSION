@@ -30,10 +30,10 @@ namespace COMBUSTIBLEAESCORE.Controllers
 
         [HttpPost]
 
-        public async Task<JsonResult> CrearGasolinera(string DescriEstacionServicio, float Latitud, float Longitud)
+        public async Task<JsonResult> CrearGasolinera(string DescriEstacionServicio, float Latitud, float Longitud, string CodigoGasolinera, string CiudadGasolinera, string GerenteGasolinera, string TelefonoGasolinera, string NITGasolinera, string DireccionGasolinera, string EmailGasolinera)
         {
             var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
-            var mensaje = await iadGasolinera.CrearGasolinera(user.FirstOrDefault().CompanyID, DescriEstacionServicio, Latitud, Longitud);
+            var mensaje = await iadGasolinera.CrearGasolinera(user.FirstOrDefault().CompanyID, DescriEstacionServicio, Latitud, Longitud, CodigoGasolinera, CiudadGasolinera, GerenteGasolinera, TelefonoGasolinera, NITGasolinera, DireccionGasolinera, EmailGasolinera);
             return Json(mensaje);
         }
     }

@@ -1,8 +1,33 @@
 ﻿@{
     Layout = null;
+    string guid = System.Guid.NewGuid().ToString().Replace("-", ""),
+    TabstripProyectos = "TabstripProyectos_" + guid,
+    FileInput = "FileInput" + guid,
+    BTN_CargarDatos = "BTN_CargarDatos_" + guid,
+    BTN_DownloadFormato = "BTN_DownloadFormato_" + guid,
+    BTN_ShowHidePEP = "BTN_ShowHidePEP_" + guid,
+    TXT_ShowHidePEP = "TXT_ShowHidePEP_" + guid,
+    Flecha = "Flecha_" + guid,
+    FormularioProyecto = "FormularioProyecto_" + guid,
+    Input_CodigoProyecto = "Input_CodigoProyecto_" + guid,
+    Input_NombreProyecto = "Input_NombreProyecto_" + guid,
+    Input_ResponsableProyecto = "Input_ResponsableProyecto_" + guid,
+    DropDownListEstadoProyecto = "DropDownListEstadoProyecto_" + guid,
+    BTN_AgregarPEP = "BTN_AgregarPEP_" + guid,
+    GRIDProyectos = "GRIDProyectos_" + guid,
+    GRIDAdministrarProyectos = "GRIDAdministrarProyectos_" + guid,
+    EditarModal = "EditarModal_" + guid,
+    EditarModalLabel = "EditarModalLabel_" + guid,
+    Input_ResponsableProyectoModal = "Input_ResponsableProyectoModal_" + guid,
+    DropDownListEstadoProyectoModal = "DropDownListEstadoProyectoModal_" + guid,
+    ModalAlert = "ModalAlert_" + guid,
+    BTN_Guardar = "BTN_Guardar_" + guid,
+    GUI_CSS = guid; 
+    //BTN_DownloadFormato = "BTN_DownloadFormato_" + guid;
+
 }
 <section>
-    <div id="tabstrip">
+    <div id="@{@TabstripProyectos}">
         <ul>
             <li class="k-state-active">
                 Ingresar Proyectos
@@ -17,15 +42,15 @@
                 <div class="container-fluid mt-lg-2">
                     <div class="row mb-lg-2 col-12">
                         <div class="col-lg-3">
-                            <h4 class="text-center">Ingrese su archivo PEP</h4>
+                            <h4 class="text-center">Ingrese su archivo EXEL</h4>
                         </div>
 
                     </div>
                     <div class="row mb-lg-4">
                         <div class="col-lg-3 col-12 order-lg-1 order-1">
                             <div class="form-group w-100">
-                                <input type="file" name="file" id="fileInput" class="input-file" accept=".xlsx">
-                                <label for="fileInput" class="btn btn-tertiary js-labelFile w-100">
+                                <input type="file" name="file" id="@{@FileInput}" class="input-file" accept=".xlsx">
+                                <label for="@{@FileInput}" class="btn btn-tertiary js-labelFile w-100">
                                     <i class="icon fa fa-check"></i>
                                     <span class="js-fileName">Selecciona un archivo</span>
                                 </label>
@@ -34,52 +59,52 @@
 
 
                         <div class="col-lg-2 col-10 offset-1 offset-lg-0 d-flex align-items-center justify-content-center mt-2 mt-lg-0 order-lg-3 order-2">
-                            <button type="button" class="btn btn-success w-100" id="cargarDatos" disabled> <i class="bi bi-upload"></i> Guardar datos</button>
+                            <button type="button" class="btn btn-success w-100" id="@{@BTN_CargarDatos}" disabled> <i class="bi bi-upload"></i> Guardar datos</button>
                         </div>
                         <div class="col-lg-3 offset-lg-2 offset-1 col-10 d-flex align-items-center justify-content-center mt-2 mt-lg-0 order-lg-4 order-3">
-                            <button type="button" class="btn btn-primary w-100" id="BTN_downloadFormato"> <i class="bi bi-download"></i> Descargar formato archivo PEP</button>
+                            <button type="button" class="btn btn-primary w-100" id="@{@BTN_DownloadFormato}"> <i class="bi bi-download"></i> Descargar formato archivo EXEL</button>
                         </div>
                         <div class="col-lg-2 mt-3 col-10 offset-1 offset-lg-0 mt-lg-0 d-flex align-items-center justify-content-center order-lg-4 order-4">
-                            <button type="button" class="btn btn-success w-100 d-flex justify-content-between" id="BTN_ShowHidePEP">
-                                <span id="TXT_ShowHidePEP">Añadir manualmente</span>
-                                <i class="bi bi-chevron-down" id="flecha"></i>
+                            <button type="button" class="btn btn-success w-100 d-flex justify-content-between" id="@{@BTN_ShowHidePEP}">
+                                <span id="@{@TXT_ShowHidePEP}">Añadir manualmente</span>
+                                <i class="bi bi-chevron-down" id="@{@Flecha}"></i>
                             </button>
                         </div>
                     </div>
-                    <div id="content">
+                    <div id="@{@FormularioProyecto}">
                         <div class="container-fluid p-0 mb-lg-4">
                             <div class="row pt-lg-3 pt-3">
                                 <div class="col-lg-3">
-                                    <h4 class="text-center">Ingrese los datos del PEP</h4>
+                                    <h4 class="text-center">Ingrese los datos del Proyecto</h4>
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-lg-2">
-                                    <label class="mb-lg-1">Ingrese el codigo PEP</label>
-                                    <input type="text" class="form-control" id="codigoPEP" />
+                                    <label class="mb-lg-1">Ingrese el codigo del Proyecto</label>
+                                    <input type="text" class="form-control" id="@{@Input_CodigoProyecto}" />
                                 </div>
                                 <div class="col-lg-3">
                                     <label class="mb-lg-1">Nombre del proyecto</label>
-                                    <input type="text" class="form-control" id="nombreProyecto" />
+                                    <input type="text" class="form-control" id="@{@Input_NombreProyecto}" />
                                 </div>
                                 <div class="col-lg-3">
                                     <label class="mb-lg-1">Responsable</label>
-                                    <input type="text" class="form-control" id="responsable" />
+                                    <input type="text" class="form-control" id="@{@Input_ResponsableProyecto}" />
                                 </div>
                                 <div class="col-lg-2">
                                     <label class="mb-lg-1">Estado</label>
-                                    <input type="text" class="form-control" id="estado" />
+                                    <input type="text" class="form-control" id="@{@DropDownListEstadoProyecto}" />
                                 </div>
                                 <div class="col-lg-2 d-flex justify-content-center align-items-center mt-3 mt-lg-0">
-                                    <button type="button" class="btn btn-success w-100 mt-lg-4" id="BTN_AgregarPEP"><i class="bi bi-plus-circle"></i> Agregar PEP </button>
+                                    <button type="button" class="btn btn-success w-100 mt-lg-4" id="@{@BTN_AgregarPEP}"><i class="bi bi-plus-circle"></i> Agregar PEP </button>
                                 </div>
                             </div>
 
                         </div>
                     </div>
                     <div class="row mt-3 mt-lg-0">
-                        <div id="gridPeps">
+                        <div id="@{@GRIDProyectos}">
                         </div>
                     </div>
                 </div>
@@ -96,7 +121,7 @@
                     
                     <div class="row">
                         <div class="col-lg-12">
-                            <div id="GridAdministrarPeps">
+                            <div id="@{@GRIDAdministrarProyectos}">
 
                             </div>
                         </div>
@@ -105,12 +130,12 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="editarModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="@{@EditarModal}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <i class="bi bi-pencil-square"></i>
-                    <h5 class="modal-title" id="editarModalLabel">Modal title</h5>
+                    <h5 class="modal-title" id="@{@EditarModalLabel}">Modal title</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -120,22 +145,22 @@
                         </div>
                         <div class="row pt-lg-2">
                             <div class="col-lg-6 col-12 my-2 my-lg-0">
-                                <input type="text" id="InputNombreResponsable" class="form-control" />
+                                <input type="text" id="@{@Input_ResponsableProyectoModal}" class="form-control" />
                             </div>
                             <div class="col-lg-6 col-12">
-                                <input id="DropDownList" class="h-100"/>
+                                <input id="@{@DropDownListEstadoProyectoModal}" class="h-100"/>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-12  col-12 mt-lg-1">
-                                <span id="ModalAlert"></span>
+                                <span id="@{@ModalAlert}"></span>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn btn-success" id="BTN_Guardar"><i class="bi bi-floppy"></i> Guardar cambios</button>
+                    <button type="button" class="btn btn btn-success" id="@{@BTN_Guardar}"><i class="bi bi-floppy"></i> Guardar cambios</button>
                 </div>
             </div>
         </div>
@@ -145,688 +170,743 @@
 <script>
     (function () {
         $.extend({
-            Tabstrip: {
-                loadTabstrip: function () {
-                    $("#tabstrip").kendoTabStrip({
-                        animation: {
-                            open: {
-                                effects: "fadeIn"
-                            }
-                        },
-                    });
-                }
-            },
-            IngresoProyectos: {
-                PEP: {
-                    PEPS: [],
-                    PEPManual: {
-                        visibilidad: function () {
-                            $('#content').hide()
-                            $('#BTN_ShowHidePEP').click(function () {
-                                //console.log($("#content").css("display"));
-                                if ($("#content").css("display") === "block") {
-                                    //console.log("Se oculta")
-                                    $("#flecha").removeClass("bi-chevron-up")
-                                    $("#flecha").addClass("bi-chevron-down")
-                                    $("#TXT_ShowHidePEP").text("Añadir manualmente")
-                                    //$("#BTN_ShowHidePEP").children()[0].innerHTML = "Añadir manualmente"
-
-                                } else {
-                                    //console.log("Se Muestra")
-                                    $("#flecha").removeClass("bi-chevron-down")
-                                    $("#flecha").addClass("bi-chevron-up")
-                                    $("#TXT_ShowHidePEP").text("Ocultar")
-                                    //$("#BTN_ShowHidePEP").children()[0].innerHTML = "Contraer"
+            ModuloProyectos:{
+                Tabstrip: {
+                    loadTabstrip: function () {//Funcion para inicializar los tabstrip
+                        $("#@{@TabstripProyectos}").kendoTabStrip({//Se iniciliza el tabstrip
+                            animation: {
+                                open: {
+                                    effects: "fadeIn"
                                 }
-                                $('#content').slideToggle();
-                            })
+                            },
+                        });
+                    }
+                },
+                IngresoProyectos: {
+                    Proyecto: {
+                        Proyectos: [],//
+                        ProyectoManual: {
+                            visibilidad: function () {
+                                $('#@{@FormularioProyecto}').hide()
+                                $('#@{@BTN_ShowHidePEP}').click(function () {
+                                    if ($("#@{@FormularioProyecto}").css("display") === "block") {
+                                        //console.log("Se oculta")
+                                        $("#@{@Flecha}").removeClass("bi-chevron-up")
+                                        $("#@{@Flecha}").addClass("bi-chevron-down")
+                                        $("#@{@TXT_ShowHidePEP}").text("Añadir manualmente")
+
+                                    } else {
+                                        $("#@{@Flecha}").removeClass("bi-chevron-down")
+                                        $("#@{@Flecha}").addClass("bi-chevron-up")
+                                        $("#@{@TXT_ShowHidePEP}").text("Ocultar")
+                                    }
+                                    $('#@{@FormularioProyecto}').slideToggle();
+                                })
 
 
-                        },
-                        agregarPEP: function () {
-                            var _this = this;
-                            $("#BTN_AgregarPEP").on("click", function () {
-                                if (_this.validaciones()) {
-                                    var _PEP = $("#codigoPEP").val().trim()
-                                    var _Nombre = $("#nombreProyecto").val().trim()
-                                    var _Responsable = $("#responsable").val().trim()
-                                    var _Estado = $("#estado").val().trim()
+                            },
+                            BTN_agregarProyecto: function () {
+                                var _this = this;
+                                $("#@{@BTN_AgregarPEP}").on("click", function () {
+                                    if (_this.validaciones()) {
+                                        var _CodigoProyecto = $("#@{@Input_CodigoProyecto}").val().trim()
+                                        var _Nombre = $("#@{@Input_NombreProyecto}").val().trim()
+                                        var _Responsable = $("#@{@Input_ResponsableProyecto}").val().trim()
+                                        /*var _Estado = $("#estado").val().trim()*/
+                                        var _Estado = $("#@{@DropDownListEstadoProyecto}").data("kendoDropDownList").text()
 
-                                    var arg = [{
-                                        PEP: _PEP,
-                                        ["Nombre del Proyecto"]: _Nombre,
-                                        Responsable: _Responsable,
-                                        Estado: _Estado
-                                    }]
-                                    var JSON;
-                                    JSON = $.IngresoProyectos.GRID.formatoDataGrid(arg)
-                                    //JSON = $.GRID.formatoDataGrid(arg)
-                                    //$.GRID.dataGrid(JSON);
-                                    $.IngresoProyectos.GRID.dataGrid(JSON)
-                                    $('#cargarDatos').prop("disabled", false)
-                                    $("#codigoPEP").val("")
-                                    $("#nombreProyecto").val("")
-                                    $("#responsable").val("")
-                                    $("#estado").val("")
+                                        var arg = [{
+                                            ["Codigo Proyecto"]: _CodigoProyecto,
+                                            ["Nombre del Proyecto"]: _Nombre,
+                                            Responsable: _Responsable,
+                                            Estado: _Estado
+                                        }]
+                                        var JSON;
 
-                                }
-                            });
-                        },
-                        validaciones: function () {
-                            var PEP = $("#codigoPEP").val().trim()
-                            var Nombre = $("#nombreProyecto").val().trim()
-                            if (PEP === "") {
-                                $.alert("error", "Campo vacio", "Debe ingresar el codigo PEP")
-                                return false
-                            }
+                                        //Formatar la data para ingresar al Grid
+                                        JSON = $.ModuloProyectos.IngresoProyectos.GRID.formatoDataGrid(arg)
+                                        $.ModuloProyectos.IngresoProyectos.GRID.dataGrid(JSON)
+                                        $('#@{@BTN_CargarDatos}').prop("disabled", false)
+                                        $("#@{@Input_CodigoProyecto}").val("")
+                                        $("#@{@Input_NombreProyecto}").val("")
+                                        $("#@{@Input_ResponsableProyecto}").val("")
+                                        $("#@{@DropDownListEstadoProyecto}").val("")
 
-                            if (PEP.length < 2) {
-                                $.alert("error", "Codigo demasiado corto", "El codigo PEP debe tener una longitud de al menos un dos caracteres")
-                                return false
-                            }
-
-                            if (Nombre === "") {
-                                $.alert("error", "Campo vacio", "Debe ingresar el nombre del Proyecto")
-                                return false
-                            }
-
-                            if (Nombre.length < 3) {
-                                $.alert("error", "Nombre demasiado corto", "El nombre del Proyecto debe tener una longitud de al menos un tres caracteres")
-                                return false
-                            }
-
-                            return true
-                        }
-                    },
-                    archivoPEP: {
-                        convetidorJSON: function (file) {
-                            return new Promise((resolve, reject) => {
-                                var reader = new FileReader();
-                                var jsonData;
-                                var titles;
-
-                                reader.onload = function (event) {
-                                    var data = new Uint8Array(event.target.result);
-                                    var workbook = XLSX.read(data, { type: 'array' });
-                                    var sheetName = workbook.SheetNames[0];
-                                    var sheet = workbook.Sheets[sheetName];
-                                    //console.log(sheet)
-                                    var PrimeraFila = XLSX.utils.sheet_to_json(sheet, { header: ["Titulo-1", "Titulo-2", "Titulo-3", "Titulo-4"] });
-                                    titles = PrimeraFila[0]
-                                    jsonData = XLSX.utils.sheet_to_json(sheet);
-                                    /*console.log(jsonData)
-                                    console.log(titles)*/
-                                    console.log("Paso1")
-                                    resolve([titles, jsonData]);
-                                    
-                                };
-
-                                reader.onerror = function (error) {
-                                    reject(error);
-                                };
-
-                                reader.readAsArrayBuffer(file);
-                            });
-                        },
-                        validaciones: function (data) {
-                            var JSON = data[1]
-                            if (JSON.length < 1) {
-                                $.alert("error", "Archivo vacio", "El arcivo no contiene datos")
-                                return false
-                            }
-
-                            var titles = data[0];
-                            if (titles["Titulo-1"] != "PEP" || titles["Titulo-2"] != "Nombre del Proyecto" || titles["Titulo-3"] != "Responsable" || titles["Titulo-4"] != "Estado") {
-                                //console.log(titles)
-                                $.alert("error", "Archivo sin formato", "Debe seleccionar un archivo de exel con el formato correcto")
-                                return false
-                            }
-                            console.log("Validacion")
-                            for (let i = 0; i < JSON.length; i++) {
-                                if (!("PEP" in JSON[i])) {
-                                    $.alert("error", "Dato faltante", "No se pude omitir el codigo PEP, verificar la fila N° " + (JSON[i].__rowNum__ + 1))
-                                    return false
-                                    break
-                                }
-
-                                if (JSON[i].PEP.length < 2) {
-                                    $.alert("error", "Dato demasiado corto", "El codigo PEP debe tener como minimo 2 caracteres, verificar la fila N° " + (JSON[i].__rowNum__ + 1))
-                                    return false
-                                    break
-                                }
-
-                                /*if (!("Nombre del Proyecto" in JSON[i])) {
-                                    $.alert("error", "Dato faltante", "No se pude omitir el Nombre del Proyecto, verificar la fila N° " + (JSON[i].__rowNum__ + 1))
-                                    return false
-                                    break
-                                }*/
-                                console.log(JSON[i])
-                                if (!JSON[i].hasOwnProperty("Nombre del Proyecto")) {
-                                    $.alert("error", "Dato faltante", "No se pude omitir el Nombre del Proyecto, verificar la fila N° " + (JSON[i].__rowNum__ + 1))
-                                    return false
-                                    break
-                                }
-
-                                if (JSON[i]["Nombre del Proyecto"].length < 3) {
-                                    $.alert("error", "Dato demasiado corto", "El Nombre del Proyecto debe tener como minimo 3 caracteres, verificar la fila N° " + (JSON[i].__rowNum__ + 1))
-                                    return false
-                                    break
-                                }
-                            }
-                            return true
-                        },
-                        BTN_File: function () {
-                            var _this = this;
-                            $("#fileInput").on("focus", function () {
-                                $("#fileInput").val("")
-                            });
-
-                            $('.input-file').each(function () {
-                                var $input = $(this),
-                                    $label = $input.next('.js-labelFile'),
-                                    labelVal = $label.html();
-
-                                $input.on('change', async function (element) {
-                                    var fileName = '';
-                                    if (element.target.value) fileName = element.target.value.split('\\').pop();
-                                    fileName ? $label.addClass('has-file').find('.js-fileName').html(fileName) : $label.removeClass('has-file').html(labelVal);
-                                    if ($("#fileInput").val() != "") {
-                                        const fileInput = event.target;
-                                        const file = fileInput.files[0];
-                                        var data = await _this.convetidorJSON(file);
-                                        //var PEPS = $.GRID.formatoDataGrid(data[1])
-                                        console.log("Paso 2")
-                                        
-                                        console.log("Paso 2")
-                                        if (_this.validaciones(data) === true) {
-                                            var PEPS = $.IngresoProyectos.GRID.formatoDataGrid(data[1])
-                                            $.IngresoProyectos.GRID.dataGrid(PEPS);
-                                            $('#cargarDatos').prop("disabled", false)
-
-                                        } else {
-                                            var dataGrid = $("#gridPeps").data("kendoGrid").dataSource.data();
-                                            if (dataGrid.length > 0) {
-                                                $('#cargarDatos').prop("disabled", false)
-                                            } else {
-                                                $('#cargarDatos').prop("disabled", true)
-                                            }
-                                        }
                                     }
                                 });
-                            });
-
-                        },
-                        BTN_Download: function () {
-                            $("#BTN_downloadFormato").on("click", function () {
-                                window.open("@Url.Content("~/archivos/PEP_Formato.xlsx")")
-                            });
-                        },
-                    },
-                    BTN_Cargar: function () {
-                        $("#cargarDatos").on("click", function () {
-                            //var PEPS = $.PEPS;
-                            var PEPS = $("#gridPeps").data("kendoGrid").dataSource.data()
-                            var Tabla1 = "";
-                            var Tabla2 = "";
-
-                            for (let i = 0; i < PEPS.length; i++) {
-                                if (i === 0) {
-                                    Tabla1 = PEPS[i].PEP + "₩" + PEPS[i].NombreProyecto;
-                                    Tabla2 = PEPS[i].Responsable + "₩" + estado(PEPS[i].Estado);
-                                } else {
-                                    Tabla1 = Tabla1 + "¥" + PEPS[i].PEP + "₩" + PEPS[i].NombreProyecto;
-                                    Tabla2 = Tabla2 + "¥" + PEPS[i].Responsable + "₩" + estado(PEPS[i].Estado);
-                                }
-                            }
-
-                            var arg = {
-                                PEPS_NombreProyecto: Tabla1,
-                                Responsable_Estado: Tabla2
-                            }
-  
-                            $.post('@Url.Action("InsertarPEPS", "adProyectos")', arg, function (resultado) {
-                                if (resultado[0].bandera === 1) {
-                                    $.alert("success", "Actualización exitosa", resultado[0].resultado)
-                                    $("#gridPeps").data("kendoGrid").dataSource.data("");
-                                    $.AdministracionProyectos.GRID.DataGrid()
-                                    $('#cargarDatos').prop("disabled", true)
-                                    $('#content').hide()
-                                    //$("#fileInput").val("")
-                                } else {
-                                    $.alert("error", "Error", resultado[0].resultado)
-                                }
-                            });
-                            /*console.log("Tabla 1")
-                            console.log(Tabla1)
-
-                            console.log("Tabla 2")
-                            console.log(Tabla2)*/
-                        });
-
-                        function estado(estado) {
-                            if (estado === "Activo") {
-                                return "1"
-                            } else {
-                                return "0"
-                            }
-
-                        }
-                    }
-
-                },
-                GRID: {
-                    loadGrid: function () {
-                        $("#gridPeps").html("");
-                        $("#gridPeps").kendoGrid({
-                            dataSource: {
-                                pageSize: 15,
-                                schema: {
-                                    model: {
-                                        fields: {
-                                            PEP: { type: "string" },
-                                            NombreProyecto: { type: "string" },
-                                            Responsable: { type: "string" },
-                                            Estado: { type: "string" }
-                                        }
-                                    }
-                                }
                             },
-                            filterable: {
-                                mode: "single,row"
+                            validaciones: function () {
+                                var PEP = $("#@{@Input_CodigoProyecto}").val().trim()
+                                var Nombre = $("#@{@Input_NombreProyecto}").val().trim()
+                                if (PEP === "") {
+                                    $.ModuloProyectos.alert("error", "Campo vacio", "Debe ingresar el codigo PEP")
+                                    return false
+                                }
+
+                                if (PEP.length < 2) {
+                                    $.ModuloProyectos.alert("error", "Codigo demasiado corto", "El codigo PEP debe tener una longitud de al menos un dos caracteres")
+                                    return false
+                                }
+
+                                if (Nombre === "") {
+                                    $.ModuloProyectos.alert("error", "Campo vacio", "Debe ingresar el nombre del Proyecto")
+                                    return false
+                                }
+
+                                if (Nombre.length < 3) {
+                                    $.ModuloProyectos.alert("error", "Nombre demasiado corto", "El nombre del Proyecto debe tener una longitud de al menos un tres caracteres")
+                                    return false
+                                }
+
+                                return true
                             },
-                            themeColor: "Purple",
-                            columns: [                              
-                                {
-                                    field: "PEP",
-                                    title: "PEP",
-                                    attributes: { class: "col-data" },
-                                    headerAttributes: { class: "col-data" },
-                                    filterable: {
-                                        cell: {
-                                            operator: "contains",
-                                            suggestionOperator: "contains"
-                                        }
+                            DropDownList: function () {
+
+                                var dataSource = new kendo.data.DataSource({
+                                    data: [
+                                        { EstadoID: 1, NombreEstado: "Activo" },
+                                        { EstadoID: 2, NombreEstado: "Inactivo" }
+                                    ]
+                                });
+
+                                $("#@{@DropDownListEstadoProyecto}").kendoDropDownList({
+                                    filter: "contains",
+                                    dataTextField: "NombreEstado",
+                                    dataValueField: "EstadoID",
+                                    dataSource: dataSource
+                                });
+                            }
+                        },
+                        archivoPEP: {
+                            convetidorJSON: function (file) {//Fucnión para convertir los archivos exel en array de datos  
+                                return new Promise((resolve, reject) => {
+                                    /*Nota: No eliminar la promesa, ya que si no se usa una funcion asincronica devulve un array vácio*/
+
+                                    /**************************Paso 1*****************************/
+                                    var reader = new FileReader();
+                                    var jsonData;
+                                    var titles;
+
+                                    //Funcion para leer el archivo 
+                                    reader.onload = function (event) {
+                                        //Se obtiene el archivo
+                                        var data = new Uint8Array(event.target.result);
+                                        //Se obtienen los datos del libro como un array
+                                        var workbook = XLSX.read(data, { type: 'array' });
+
+                                        //Se obtine solamente la primera hoja
+                                        var sheetName = workbook.SheetNames[0];
+                                        var sheet = workbook.Sheets[sheetName];
+
+                                        //Se obtienen los titulos
+                                        var PrimeraFila = XLSX.utils.sheet_to_json(sheet, { header: ["Titulo-1", "Titulo-2", "Titulo-3", "Titulo-4"] });
+                                        titles = PrimeraFila[0]
+                                        jsonData = XLSX.utils.sheet_to_json(sheet);
+
+                                        //Se devuelen los datos 
+                                        resolve([titles, jsonData]);
+                                    
+                                    };
+
+                                    reader.onerror = function (error) {
+                                        reject(error);
+                                    };
+                                    //Se pasan los datos a la funcion 
+                                    reader.readAsArrayBuffer(file);
+                                });
+                            },
+                            validaciones: function (data) {
+                                var JSON = data[1]
+                                if (JSON.length < 1) {
+                                    $.ModuloProyectos.alert("error", "Archivo vacio", "El arcivo no contiene datos")
+                                    return false
+                                }
+
+                                var titles = data[0];
+                                if (titles["Titulo-1"] != "Codigo Proyecto" || titles["Titulo-2"] != "Nombre del Proyecto" || titles["Titulo-3"] != "Responsable" || titles["Titulo-4"] != "Estado") {
+                                    //console.log(titles)
+                                    $.ModuloProyectos.alert("error", "Archivo sin formato", "Debe seleccionar un archivo de exel con el formato correcto")
+                                    return false
+                                }
+                                console.log("Validacion")
+                                for (let i = 0; i < JSON.length; i++) {
+                                    if (!("Codigo Proyecto" in JSON[i])) {
+                                        $.ModuloProyectos.alert("error", "Dato faltante", "No se pude omitir el codigo del Proyecto, verificar la fila N° " + (JSON[i].__rowNum__ + 1))
+                                        return false
+                                        break
                                     }
-                                },
-                                {
-                                    field: "NombreProyecto",
-                                    title: "Nombre del proyecto",
-                                    attributes: { class: "col-data" },
-                                    headerAttributes: { class: "col-data" },
-                                    filterable: {
-                                        cell: {
-                                            operator: "contains",
-                                            suggestionOperator: "contains"
-                                        }
+
+                                    if (JSON[i]["Codigo Proyecto"].trim().length < 2) {
+                                        $.ModuloProyectos.alert("error", "Dato demasiado corto", "El codigo del Proyecto debe tener como minimo 2 caracteres, verificar la fila N° " + (JSON[i].__rowNum__ + 1))
+                                        return false
+                                        break
                                     }
-                                },
-                                {
-                                    field: "Responsable",
-                                    title: "Responsable",
-                                    attributes: { class: "col-data" },
-                                    headerAttributes: { class: "col-data" },
-                                    filterable: {
-                                        cell: {
-                                            operator: "contains",
-                                            suggestionOperator: "contains"
-                                        }
+
+                                    /*if (!("Nombre del Proyecto" in JSON[i])) {
+                                        $.alert("error", "Dato faltante", "No se pude omitir el Nombre del Proyecto, verificar la fila N° " + (JSON[i].__rowNum__ + 1))
+                                        return false
+                                        break
+                                    }*/
+
+                                    //console.log(JSON[i])
+                                    if (!JSON[i].hasOwnProperty("Nombre del Proyecto")) {
+                                        $.ModuloProyectos.alert("error", "Dato faltante", "No se pude omitir el Nombre del Proyecto, verificar la fila N° " + (JSON[i].__rowNum__ + 1))
+                                        return false
+                                        break
                                     }
-                                },
-                                {
-                                    field: "Estado",
-                                    title: "Estado",
-                                    attributes: { class: "col-data" },
-                                    headerAttributes: { class: "col-data" },
-                                    filterable: {
-                                        cell: {
-                                            operator: "contains",
-                                            suggestionOperator: "contains"
-                                        }
+
+                                    if (JSON[i]["Nombre del Proyecto"].trim().length < 3) {
+                                        $.ModuloProyectos.alert("error", "Dato demasiado corto", "El Nombre del Proyecto debe tener como minimo 3 caracteres, verificar la fila N° " + (JSON[i].__rowNum__ + 1))
+                                        return false
+                                        break
                                     }
-                                },
-                                {
-                                    command: [
-                                        {
-                                            name: "Eliminar",
-                                            text: '<span> <i class="bi bi-trash3"></i> Eliminar </span>',
-                                            click: function (e) {
-                                                e.preventDefault();
-                                                var tr = $(e.target).closest("tr");
-                                                var data = this.dataItem(tr);
-                                                $("#gridPeps").data("kendoGrid").dataSource.remove(data)
-                                                var filas = $("#gridPeps").data("kendoGrid").dataSource.data().length;
-                                                if (filas < 1) {
-                                                    $('#cargarDatos').prop("disabled", true)
+                                }
+                                return true
+                            },
+                            BTN_File: function () {
+                                var _this = this;
+                                $("#@{@FileInput}").on("focus", function () {
+                                    $("#@{@FileInput}").val("") // Se limpia el input file antes al dar click o ser seleccionado en el DOM
+                                });
+
+                                $('.input-file').each(function () {
+
+                                    //CODIGO DEL INPUT FILE CON DISEÑO
+                                    /**********************************************************************************************************************************/
+                                    var $input = $(this),
+                                        $label = $input.next('.js-labelFile'), //Se obtiene el label donde se muestra el nombre del archivo
+                                        labelVal = $label.html(); //Se obtiene el texto = "Seleccione el archivo"
+
+                                    $input.on('change', async function (element) { 
+                                        /*Nota: Esta función es asincroma paa porder recibir la promesa del convertidor de exel a array */
+                                        var fileName = '';
+                                        if (element.target.value) fileName = element.target.value.split('\\').pop(); //Se selecciona el elemento si hay uno
+                                        /* Se verifica si hay un archivo, en caso de haber se pone el nombre y si no el mensaje que esta en la varibale =  labelVal*/
+                                        fileName ? $label.addClass('has-file').find('.js-fileName').html(fileName) : $label.removeClass('has-file').html(labelVal);
+                                    /**********************************************************************************************************************************/
+
+
+                                        /*CODIGO PARA SELECCIONAR EL ARCHIVO EXEL*/
+                                        /**********************************************************************************************************************************/
+                                        if ($("#@{@FileInput}").val() != "") {
+                                            const fileInput = event.target;
+                                            const file = fileInput.files[0];
+
+                                            //Se llama a la función que convierte el exel en array
+                                            var data = await _this.convetidorJSON(file); 
+                                        
+                                            //Se llama la función que valida los datos y se verifica el resultado
+                                            if (_this.validaciones(data) === true) {
+                                                var Proyectos = $.ModuloProyectos.IngresoProyectos.GRID.formatoDataGrid(data[1])
+                                                $.ModuloProyectos.IngresoProyectos.GRID.dataGrid(Proyectos);
+                                                $('#@{@BTN_CargarDatos}').prop("disabled", false)
+
+                                            } else {
+                                                var dataGrid = $("#@{@GRIDProyectos}").data("kendoGrid").dataSource.data();
+                                                if (dataGrid.length > 0) {
+                                                    $('#@{@BTN_CargarDatos}').prop("disabled", false)
+                                                } else {
+                                                    $('#@{@BTN_CargarDatos}').prop("disabled", true)
                                                 }
                                             }
                                         }
+                                        /**********************************************************************************************************************************/
+                                    });
+                                });
 
-                                    ],
-                                    attributes: { class: "col-command" },
-                                    headerAttributes: { class: "col-command" }
-                                }
+                            },
+                            BTN_Download: function () {//Funcion para descargar el archivo exel con el formato para ingresar datos de manera masiva
+                                $("#@{@BTN_DownloadFormato}").on("click", function () {
+                                    window.open("@Url.Content("~/archivos/Proyectos_Formato.xlsx")")
+                                });
+                            },
+                        },
+                        BTN_Cargar: function () {
+                            $("#@{@BTN_CargarDatos}").on("click", function () {
+                                //var PEPS = $.PEPS;
+                                var Proyectos = $("#@{@GRIDProyectos}").data("kendoGrid").dataSource.data()
+                                var Tabla1 = "";
+                                var Tabla2 = "";
 
-                            ],
-                            pageable: true,
-                            mobile: "phone",
-                            dataBound: function (e) {
-                                $(".k-filter-row").children()[4].innerHTML = '<div class="d-flex align-items-center justify-content-center">' +
-                                    '<button type="button" class="btn btn-danger " id="BTN_downloadFormato" onclick=\'$.IngresoProyectos.GRID.BTN_BorarTodo()\'>' +
-                                    '<i class="bi bi-trash"></i>' +
-                                    'Borrar todo' +
-                                    '</button>' +
-                                    '</div>'
-                            }
-                        });
-
-                    },
-                    dataGrid: function (PEPS) {
-                        var dataGrid = $.IngresoProyectos.PEP.PEPS
-                        if (dataGrid.length < 1) {
-                            $.IngresoProyectos.PEP.PEPS = PEPS
-                            $("#gridPeps").data("kendoGrid").dataSource.data(PEPS);
-                        } else {
-                            let temporal = PEPS.concat(dataGrid)
-                            $.IngresoProyectos.PEP.PEPS = temporal
-                            $("#gridPeps").data("kendoGrid").dataSource.data(temporal);
-                        }
-
-                    },
-                    formatoDataGrid: function (JSON) {
-                        var PEPS = [];
-                        console.log(JSON)
-                        for (let i = 0; i < JSON.length; i++) {
-                            console.log(i)
-                            PEPS.push({ PEP: JSON[i].PEP.toString().trim(), NombreProyecto: JSON[i]["Nombre del Proyecto"].toString().trim(), Responsable: responsable(JSON[i].Responsable), Estado: estado(JSON[i].Estado) })
-                        }
-                        function estado(dato) {
-                            if (dato === undefined) {
-                                return "Activo"
-                            }
-                            if (dato.toString().toUpperCase().trim() === "INACTIVO") {
-                                return "Inactivo"
-                            }
-                            return "Activo"
-                        }
-                        function responsable(dato) {
-
-                            if (dato === undefined) {
-                                return ""
-                            }
-                            return dato.toString().trim();
-                        }
-                        return PEPS
-                    },
-                    BTN_BorarTodo: function () {
-                        $("#gridPeps").data("kendoGrid").dataSource.data([]);
-                        $('#cargarDatos').prop("disabled", true)
-                        $("#fileInput").val("")
-                        $(".js-fileName").text("Selecciona un archivo")
-                    }
-                }
-            },
-            AdministracionProyectos: {
-                GRID: {
-                    loadGrid: function () {
-                        var _this =  this
-                        $("#GridAdministrarPeps").html("");
-                        $("#GridAdministrarPeps").kendoGrid({
-                            dataSource: {
-                                pageSize: 15,
-                                schema: {
-                                    model: {
-                                        fields: {
-                                            pep: { type: "string" },
-                                            nombreProyecto: { type: "string" },
-                                            responsable: { type: "string" },
-                                            estado: { type: "string" }
-                                        }
+                                for (let i = 0; i < Proyectos.length; i++) {
+                                    if (i === 0) {
+                                        Tabla1 = Proyectos[i].codigoProyecto + "₩" + Proyectos[i].NombreProyecto;
+                                        Tabla2 = Proyectos[i].Responsable + "₩" + estado(Proyectos[i].Estado);
+                                    } else {
+                                        Tabla1 = Tabla1 + "¥" + Proyectos[i].codigoProyecto + "₩" + Proyectos[i].NombreProyecto;
+                                        Tabla2 = Tabla2 + "¥" + Proyectos[i].Responsable + "₩" + estado(Proyectos[i].Estado);
                                     }
                                 }
-                            },
-                            toolbar: ["search"],
-                            themeColor: "Purple",
-                            columns: [                              
-                                {
-                                    field: "pep",
-                                    title: "PEP",
-                                    //width: "100px",
-                                    attributes: { class: "col-data" },
-                                    headerAttributes: { class: "col-data" },
-                                    /*filterable: {
-                                        cell: {
-                                            operator: "contains",
-                                            suggestionOperator: "contains"
-                                        }
-                                    }*/
-                                },
-                                {
-                                    field: "nombreProyecto",
-                                    title: "Nombre del proyecto",
-                                    //width: "100px",
-                                    attributes: { class: "col-data" },
-                                    headerAttributes: { class: "col-data" },
-                                    /*filterable: {
-                                        cell: {
-                                            operator: "contains",
-                                            suggestionOperator: "contains"
-                                        }
-                                    }*/
-                                },
-                                {
-                                    field: "responsable",
-                                    title: "Responsable",
-                                    //width: "100px",
-                                    attributes: { class: "col-data" },
-                                    headerAttributes: { class: "col-data" },
-                                    /*filterable: {
-                                        cell: {
-                                            operator: "contains",
-                                            suggestionOperator: "contains"
-                                        }
-                                    }*/
-                                },
-                                {
-                                    field: "estado",
-                                    title: "Estado",
-                                    //width: "100px",
-                                    attributes: { class: "col-data" },
-                                    headerAttributes: { class: "col-data" },
-                                    /*filterable: {
-                                        cell: {
-                                            operator: "contains",
-                                            suggestionOperator: "contains"
-                                        }
-                                    }*/
-                                },
-                                {
-                                    command: [
-                                        {
-                                            name: "Editar",  
-                                            text: '<span> <i class="bi bi-pencil-square"></i></i> Editar </span>',
-                                            click: function (e) {
-                                                e.preventDefault();
-                                                var tr = $(e.target).closest("tr");
-                                                var data = this.dataItem(tr);
-                                                console.log(data)
-                                                $("#editarModalLabel").text("Modificar Proyecto: " + data.pep)
-                                                _this.modal.ProyectoID = data.idProyectosVales
-                                                $("#ModalAlert").text("")
-                                                //$("#InputNombreResponsable").val("")
-                                                $("#InputNombreResponsable").val(data.responsable)
-                                                $('#editarModal').modal('show');
-                                                let estado = data.estado === 'Inactivo'? "0" : "1"
-                                                $("#DropDownList").data("kendoDropDownList").value(estado)
-                                            }
-                                        },
-                                        {
-                                            name: "Eliminar",
-                                            text: '<span> <i class="bi bi-trash3"></i> Eliminar </span>',
-                                            click: function (e) {
-                                                e.preventDefault();
-                                                var tr = $(e.target).closest("tr");
-                                                var data = this.dataItem(tr);
-                                                _this.EliminarProyecto(data.idProyectosVales, data.pep)
-                                            }
-                                        }
 
-                                    ],
-                                    attributes: { class: "col-command-2" },
-                                    headerAttributes: { class: "col-command-2" },
+                                var arg = {
+                                    CodigoProyecto_NombreProyecto: Tabla1,
+                                    Responsable_Estado: Tabla2
                                 }
-                            ],
-                            pageable: true,
-                            mobile: "phone",
-                            dataBound: function (e) {
-                                $("#GridAdministrarPeps > div span input").attr("placeholder", "Busqueda")
+  
+                                $.post('@Url.Action("InsertarProyectos", "adProyectos")', arg, function (resultado) {
+                                    if (resultado[0].bandera === 1) {
+                                        $.ModuloProyectos.alert("success", "Actualización exitosa", resultado[0].resultado)
+                                        $("#@{@GRIDProyectos}").data("kendoGrid").dataSource.data("");
+                                        $.ModuloProyectos.AdministracionProyectos.GRID.DataGrid()
+                                        $('#@{@BTN_CargarDatos}').prop("disabled", true)
+                                        $('#@{@FormularioProyecto}').hide()
+                                        //$("#fileInput").val("")
+                                    } else {
+                                        $.ModuloProyectos.alert("error", "Error", resultado[0].resultado)
+                                    }
+                                });
+                                /*console.log("Tabla 1")
+                                console.log(Tabla1)
+
+                                console.log("Tabla 2")
+                                console.log(Tabla2)*/
+                            });
+
+                            function estado(estado) {
+                                if (estado === "Activo") {
+                                    return "1"
+                                } else {
+                                    return "0"
+                                }
+
                             }
-                        });
+                        }
 
                     },
-                    DataGrid: function () {
-                        $.get('@Url.Action("ObtenerPEPS", "adProyectos")', function (PEPS) { 
-                            
-                            for (let i = 0; i < PEPS.length; i++) {
-                                //console.log(PEPS[i])
-                                PEPS[i].estado = estado(PEPS[i].estado)
+                    GRID: {
+                        loadGrid: function () {
+                            $("#@{@GRIDProyectos}").html("");
+                            $("#@{@GRIDProyectos}").kendoGrid({
+                                dataSource: {
+                                    pageSize: 15,
+                                    schema: {
+                                        model: {
+                                            fields: {
+                                                CodigoProyecto: { type: "string" },
+                                                NombreProyecto: { type: "string" },
+                                                Responsable: { type: "string" },
+                                                Estado: { type: "string" }
+                                            }
+                                        }
+                                    }
+                                },
+                                filterable: {
+                                    mode: "single,row"
+                                },
+                                themeColor: "Purple",
+                                columns: [                              
+                                    {
+                                        field: "codigoProyecto",
+                                        title: "Codigo Proyecto",
+                                        attributes: { class: "col-data_@{@GUI_CSS}" },
+                                        headerAttributes: { class: "col-data_@{@GUI_CSS}" },
+                                        filterable: {
+                                            cell: {
+                                                operator: "contains",
+                                                suggestionOperator: "contains"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        field: "NombreProyecto",
+                                        title: "Nombre del proyecto",
+                                        attributes: { class: "col-data_@{@GUI_CSS}" },
+                                        headerAttributes: { class: "col-data_@{@GUI_CSS}" },
+                                        filterable: {
+                                            cell: {
+                                                operator: "contains",
+                                                suggestionOperator: "contains"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        field: "Responsable",
+                                        title: "Responsable",
+                                        attributes: { class: "col-data_@{@GUI_CSS}" },
+                                        headerAttributes: { class: "col-data_@{@GUI_CSS}" },
+                                        filterable: {
+                                            cell: {
+                                                operator: "contains",
+                                                suggestionOperator: "contains"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        field: "Estado",
+                                        title: "Estado",
+                                        attributes: { class: "col-data_@{@GUI_CSS}" },
+                                        headerAttributes: { class: "col-data_@{@GUI_CSS}" },
+                                        filterable: {
+                                            cell: {
+                                                operator: "contains",
+                                                suggestionOperator: "contains"
+                                            }
+                                        }
+                                    },
+                                    {
+                                        command: [
+                                            {
+                                                name: "Eliminar",
+                                                text: '<span> <i class="bi bi-trash3"></i> Eliminar </span>',
+                                                click: function (e) {
+                                                    e.preventDefault();
+                                                    var tr = $(e.target).closest("tr");
+                                                    var data = this.dataItem(tr);
+                                                    $("#@{@GRIDProyectos}").data("kendoGrid").dataSource.remove(data)
+                                                    //////////////////////////////////////////
+                                                    var DataNuevaGrid = $("#@{@GRIDProyectos}").data("kendoGrid").dataSource.data()
+
+                                                    $.ModuloProyectos.IngresoProyectos.Proyecto.Proyectos = DataNuevaGrid
+                                                    ////////////////////////////////////////
+                                                    var filas = $("#@{@GRIDProyectos}").data("kendoGrid").dataSource.data().length;
+                                                    if (filas < 1) {
+                                                        $('#@{@BTN_CargarDatos}').prop("disabled", true)
+                                                    }
+                                                }
+                                            }
+
+                                        ],
+                                        attributes: { class: "col-command_@{@GUI_CSS}" },
+                                        headerAttributes: { class: "col-command_@{@GUI_CSS}" }
+                                    }
+
+                                ],
+                                pageable: true,
+                                mobile: "phone",
+                                dataBound: function (e) {
+                                    $(".k-filter-row").children()[4].innerHTML = '<div class="d-flex align-items-center justify-content-center">' +
+                                        '<button type="button" class="btn btn-danger " onclick=\'$.ModuloProyectos.IngresoProyectos.GRID.BTN_BorarTodo()\'>' +
+                                        '<i class="bi bi-trash"></i>' +
+                                        'Borrar todo' +
+                                        '</button>' +
+                                        '</div>'
+                                }
+                            });
+
+                        },
+                        dataGrid: function (_Proyectos) {
+                            var dataGrid = $.ModuloProyectos.IngresoProyectos.Proyecto.Proyectos
+                            if (dataGrid.length < 1) {
+                                $.ModuloProyectos.IngresoProyectos.Proyecto.Proyectos = _Proyectos
+                                $("#@{@GRIDProyectos}").data("kendoGrid").dataSource.data(_Proyectos);
+                            } else {
+                                let temporal = _Proyectos.concat(dataGrid)
+                                $.ModuloProyectos.IngresoProyectos.Proyecto.Proyectos = temporal
+                                $("#@{@GRIDProyectos}").data("kendoGrid").dataSource.data(temporal);
                             }
 
+                        },
+                        formatoDataGrid: function (JSON) {
+                            var Proyectos = [];
+                            //console.log(JSON)
+                            for (let i = 0; i < JSON.length; i++) {
+                                console.log(i)
+                                Proyectos.push({ codigoProyecto: JSON[i]["Codigo Proyecto"].toString().trim(), NombreProyecto: JSON[i]["Nombre del Proyecto"].toString().trim(), Responsable: responsable(JSON[i].Responsable), Estado: estado(JSON[i].Estado) })
+                            }
                             function estado(dato) {
-                                if (dato === 0) {
-                                    return "Inactivo"
-                                } else {
+                                if (dato === undefined) {
                                     return "Activo"
                                 }
+                                if (dato.toString().toUpperCase().trim() === "INACTIVO") {
+                                    return "Inactivo"
+                                }
+                                return "Activo"
                             }
-                            $("#GridAdministrarPeps").data("kendoGrid").dataSource.data([]);
-                            //console.log(PEPS)
-                            $("#GridAdministrarPeps").data("kendoGrid").dataSource.data(PEPS);
-                        })
-                    },
-                    EliminarProyecto: function (_ProyectoID,_PEP) {
-                        var _this = this 
-                        Swal.fire({
-                            title: "¿Esta seguro?",
-                            text: 'La eliminacion de "' + _PEP + '" no es reversible',
-                            icon: "warning",
-                            showCancelButton: true,
-                            confirmButtonColor: "#3085d6",
-                            cancelButtonColor: "#d33",
-                            cancelButtonText: "Cancelar",
-                            confirmButtonText: "Si, eliminar!"
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                $.post('@Url.Action("EliminarProyecto", "adProyectos")', { ProyectoID: _ProyectoID }, function (mensaje) {
-                                    mensaje = mensaje[0]
-                                    if (mensaje.bandera === 1) {
-                                        $._combustible.alert("success", "Eliminación exitosa", mensaje.resultado)
-                                        //$.GRID.DataGrid()
-                                        _this.DataGrid()
-                                    } else {
-                                        $._combustible.alert("error", "Error", mensaje.resultado)
+                            function responsable(dato) {
+
+                                if (dato === undefined) {
+                                    return ""
+                                }
+                                return dato.toString().trim();
+                            }
+                            return Proyectos
+                        },
+                        BTN_BorarTodo: function () {
+                            $("#@{@GRIDProyectos}").data("kendoGrid").dataSource.data([]);
+                            $('#@{@BTN_CargarDatos}').prop("disabled", true)
+                            $("#@{@FileInput}").val("")
+                            $(".js-fileName").text("Selecciona un archivo")
+                            $.ModuloProyectos.IngresoProyectos.Proyecto.Proyectos = []
+                        }
+                    }
+                },
+                AdministracionProyectos: {
+                    GRID: {
+                        loadGrid: function () {
+                            var _this =  this
+                            $("#@{@GRIDAdministrarProyectos}").html("");
+                            $("#@{@GRIDAdministrarProyectos}").kendoGrid({
+                                dataSource: {
+                                    pageSize: 15,
+                                    schema: {
+                                        model: {
+                                            fields: {
+                                                codigoProyecto: { type: "string" },
+                                                nombreProyecto: { type: "string" },
+                                                responsable: { type: "string" },
+                                                estado: { type: "string" }
+                                            }
+                                        }
                                     }
-                                })
-                            }
-                        });
-                    },
-                    modal: {
-                        ProyectoID: "",
-                        loadDropDownList:function(){
-                            $("#DropDownList").kendoDropDownList({
-                                //filter: "contains ",
-                                optionLabel: 'Seleccione el estado',
-                                dataTextField: "Estado",
-                                dataValueField: "EstadoID",
-                                dataSource: [{ Estado: "Activo", EstadoID: 1 }, { Estado: "Inactivo", EstadoID: 0 }]
+                                },
+                                toolbar: ["search"],
+                                themeColor: "Purple",
+                                columns: [                              
+                                    {
+                                        field: "codigoProyecto",
+                                        title: "Codigo Proyecto",
+                                        //width: "100px",
+                                        attributes: { class: "col-data_@{@GUI_CSS}" },
+                                        headerAttributes: { class: "col-data_@{@GUI_CSS}" },
+                                        /*filterable: {
+                                            cell: {
+                                                operator: "contains",
+                                                suggestionOperator: "contains"
+                                            }
+                                        }*/
+                                    },
+                                    {
+                                        field: "nombreProyecto",
+                                        title: "Nombre del proyecto",
+                                        //width: "100px",
+                                        attributes: { class: "col-data_@{@GUI_CSS}" },
+                                        headerAttributes: { class: "col-data_@{@GUI_CSS}" },
+                                        /*filterable: {
+                                            cell: {
+                                                operator: "contains",
+                                                suggestionOperator: "contains"
+                                            }
+                                        }*/
+                                    },
+                                    {
+                                        field: "responsable",
+                                        title: "Responsable",
+                                        //width: "100px",
+                                        attributes: { class: "col-data_@{@GUI_CSS}" },
+                                        headerAttributes: { class: "col-data_@{@GUI_CSS}" },
+                                        /*filterable: {
+                                            cell: {
+                                                operator: "contains",
+                                                suggestionOperator: "contains"
+                                            }
+                                        }*/
+                                    },
+                                    {
+                                        field: "estado",
+                                        title: "Estado",
+                                        //width: "100px",
+                                        attributes: { class: "col-data_@{@GUI_CSS}" },
+                                        headerAttributes: { class: "col-data_@{@GUI_CSS}" },
+                                        /*filterable: {
+                                            cell: {
+                                                operator: "contains",
+                                                suggestionOperator: "contains"
+                                            }
+                                        }*/
+                                    },
+                                    {
+                                        command: [
+                                            {
+                                                name: "Editar",  
+                                                text: '<span> <i class="bi bi-pencil-square"></i></i> Editar </span>',
+                                                click: function (e) {
+                                                    e.preventDefault();
+                                                    var tr = $(e.target).closest("tr");
+                                                    var data = this.dataItem(tr);
+                                                    console.log(data)
+                                                    $("#@{@EditarModalLabel}").text("Modificar Proyecto: " + data.codigoProyecto)
+                                                    _this.modal.ProyectoID = data.idProyectosVales
+                                                    $("#@{@ModalAlert}").text("")
+                                                    //$("#InputNombreResponsable").val("")
+                                                    $("#@{@Input_ResponsableProyectoModal}").val(data.responsable)
+                                                    $('#@{@EditarModal}').modal('show');
+                                                    let estado = data.estado === 'Inactivo'? "0" : "1"
+                                                    $("#@{@DropDownListEstadoProyectoModal}").data("kendoDropDownList").value(estado)
+                                                }
+                                            },
+                                            {
+                                                name: "Eliminar",
+                                                text: '<span> <i class="bi bi-trash3"></i> Eliminar </span>',
+                                                click: function (e) {
+                                                    e.preventDefault();
+                                                    var tr = $(e.target).closest("tr");
+                                                    var data = this.dataItem(tr);
+                                                    _this.EliminarProyecto(data.idProyectosVales, data.codigoProyecto)
+                                                }
+                                            }
+
+                                        ],
+                                        attributes: { class: "col-command-2_@{@GUI_CSS}" },
+                                        headerAttributes: { class: "col-command-2_@{@GUI_CSS}" },
+                                    }
+                                ],
+                                pageable: true,
+                                mobile: "phone",
+                                dataBound: function (e) {
+                                    $("#@{@GRIDAdministrarProyectos} > div span input").attr("placeholder", "Busqueda")
+                                }
                             });
-                        },                       
-                        BTN_Guardar: function () {
-                            var _this = this
-                            $("#BTN_Guardar").on("click", function () {
-                                var responsable = $("#InputNombreResponsable").val().trim();
-                                var estado = $("#DropDownList").data("kendoDropDownList").value();
-                                if (_this.validaciones(responsable, estado) === true) {
-                                    var arg = dataActualizacion(responsable, estado)
-                                    //console.log(arg)
-                                    $.post('@Url.Action("ActualizarProyecto", "adProyectos")', arg, function (mensaje) {
-                                        //console.log(resultado)
+
+                        },
+                        DataGrid: function () {
+                            $.get('@Url.Action("ObtenerProyectos", "adProyectos")', function (PEPS) {
+
+                                for (let i = 0; i < PEPS.length; i++) {
+                                    //console.log(PEPS[i])
+                                    PEPS[i].estado = estado(PEPS[i].estado)
+                                }
+
+                                function estado(dato) {
+                                    if (dato === 0) {
+                                        return "Inactivo"
+                                    } else {
+                                        return "Activo"
+                                    }
+                                }
+                                //$("#@{@GRIDAdministrarProyectos}").data("kendoGrid").dataSource.data([]);
+                                //console.log(PEPS)
+                                $("#@{@GRIDAdministrarProyectos}").data("kendoGrid").dataSource.data(PEPS);
+                            })
+                        },
+                        EliminarProyecto: function (_ProyectoID,_PEP) {
+                            var _this = this 
+                            Swal.fire({
+                                title: "¿Esta seguro?",
+                                text: 'La eliminacion de "' + _PEP + '" no es reversible',
+                                icon: "warning",
+                                showCancelButton: true,
+                                confirmButtonColor: "#3085d6",
+                                cancelButtonColor: "#d33",
+                                cancelButtonText: "Cancelar",
+                                confirmButtonText: "Si, eliminar!"
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    $.post('@Url.Action("EliminarProyecto", "adProyectos")', { ProyectoID: _ProyectoID }, function (mensaje) {
                                         mensaje = mensaje[0]
                                         if (mensaje.bandera === 1) {
-                                            _this.alertModal("suceso", mensaje.resultado)
-                                            $.AdministracionProyectos.GRID.DataGrid();
+                                            $._combustible.alert("success", "Eliminación exitosa", mensaje.resultado)
+                                            //$.GRID.DataGrid()
+                                            _this.DataGrid()
                                         } else {
-                                            _this.alertModal("alerta", mensaje.resultado)
+                                            $._combustible.alert("error", "Error", mensaje.resultado)
                                         }
                                     })
                                 }
-                                function dataActualizacion(responsable, estado) {
-                                    if (responsable === "") {
-                                        return { ProyectoID: _this.ProyectoID, Responsable: "", Estado: estado, Bandera: 2 }
-                                    }
-                                    if (estado === "") {
-                                        return { ProyectoID: _this.ProyectoID, Responsable: responsable, Estado: 0, Bandera: 1 }
-                                    }
-                                    return { ProyectoID: _this.ProyectoID, Responsable: responsable, Estado: estado, Bandera: 3 }
-                                }
                             });
                         },
-                        validaciones: function (resposable, DropDownList) {
-                            var _this = this
+                        modal: {
+                            ProyectoID: "",
+                            loadDropDownList:function(){
+                                $("#@{@DropDownListEstadoProyectoModal}").kendoDropDownList({
+                                    //filter: "contains ",
+                                    optionLabel: 'Seleccione el estado',
+                                    dataTextField: "Estado",
+                                    dataValueField: "EstadoID",
+                                    dataSource: [{ Estado: "Activo", EstadoID: 1 }, { Estado: "Inactivo", EstadoID: 0 }]
+                                });
+                            },                       
+                            BTN_Guardar: function () {
+                                var _this = this
+                                $("#@{@BTN_Guardar}").on("click", function () {
+                                    var responsable = $("#@{@Input_ResponsableProyectoModal}").val().trim();
+                                    var estado = $("#@{@DropDownListEstadoProyectoModal}").data("kendoDropDownList").value();
+                                    if (_this.validaciones(responsable, estado) === true) {
+                                        var arg = dataActualizacion(responsable, estado)
+                                        //console.log(arg)
+                                        $.post('@Url.Action("ActualizarProyecto", "adProyectos")', arg, function (mensaje) {
+                                            //console.log(resultado)
+                                            mensaje = mensaje[0]
+                                            if (mensaje.bandera === 1) {
+                                                _this.alertModal("suceso", mensaje.resultado)
+                                                $.ModuloProyectos.AdministracionProyectos.GRID.DataGrid();
+                                            } else {
+                                                _this.alertModal("alerta", mensaje.resultado)
+                                            }
+                                        })
+                                    }
+                                    function dataActualizacion(responsable, estado) {
+                                        if (responsable === "") {
+                                            return { ProyectoID: _this.ProyectoID, Responsable: "", Estado: estado, Bandera: 2 }
+                                        }
+                                        if (estado === "") {
+                                            return { ProyectoID: _this.ProyectoID, Responsable: responsable, Estado: 0, Bandera: 1 }
+                                        }
+                                        return { ProyectoID: _this.ProyectoID, Responsable: responsable, Estado: estado, Bandera: 3 }
+                                    }
+                                });
+                            },
+                            validaciones: function (resposable, DropDownList) {
+                                var _this = this
 
-                            $("#ModalAlert").text("")
-                            /*if (resposable === "") {
-                                _this.alertModal("alerta", "Debe ingresar el nuevo nombre del responsable")
-                                return false
-                            }*/
-                            if (resposable === "" && DropDownList === "") {
-                                _this.alertModal("alerta", "No hay datos que guardar")
-                                return false
-                            }
+                                $("#@{@ModalAlert}").text("")
+                                /*if (resposable === "") {
+                                    _this.alertModal("alerta", "Debe ingresar el nuevo nombre del responsable")
+                                    return false
+                                }*/
+                                if (resposable === "" && DropDownList === "") {
+                                    _this.alertModal("alerta", "No hay datos que guardar")
+                                    return false
+                                }
 
-                            if (resposable.length > 0 && resposable.length < 3) {
-                                _this.alertModal("alerta", "El Nombre del resposable debe tener al menos tres carácteres")
-                                return false
-                            }
+                                if (resposable.length > 0 && resposable.length < 3) {
+                                    _this.alertModal("alerta", "El Nombre del resposable debe tener al menos tres carácteres")
+                                    return false
+                                }
 
-                            return true
-                        },
-                        alertModal: function (tipo, mensaje) {
-                            if (tipo === "alerta") {
-                                $("#ModalAlert").text("Alerta: " + mensaje)
-                                $("#ModalAlert").css("color", "red")
-                            }
-                            if (tipo === "suceso") {
-                                $("#ModalAlert").text("Nota: " + mensaje)
-                                $("#ModalAlert").css("color", "green")
+                                return true
+                            },
+                            alertModal: function (tipo, mensaje) {
+                                if (tipo === "alerta") {
+                                    $("#@{@ModalAlert}").text("Alerta: " + mensaje)
+                                    $("#@{@ModalAlert}").css("color", "red")
+                                }
+                                if (tipo === "suceso") {
+                                    $("#@{@ModalAlert}").text("Nota: " + mensaje)
+                                    $("#@{@ModalAlert}").css("color", "green")
+                                }
                             }
                         }
                     }
+
+                },                      
+                alert: function (icon, title, text) {
+                    Swal.fire({
+                        icon: icon,
+                        title: title,
+                        text: text,
+                    });
+                },
+                init: function () {
+                    var _this = this;
+                    _this.Tabstrip.loadTabstrip();
+
+                    //Documento EXEl
+                    _this.IngresoProyectos.Proyecto.archivoPEP.BTN_File();
+                    _this.IngresoProyectos.Proyecto.archivoPEP.BTN_Download();
+
+                    //Agregar manualmente 
+                    _this.IngresoProyectos.Proyecto.ProyectoManual.visibilidad();
+                    _this.IngresoProyectos.Proyecto.ProyectoManual.BTN_agregarProyecto()
+                    _this.IngresoProyectos.Proyecto.ProyectoManual.DropDownList()
+
+                    //Grid ingreso proyectos
+                    _this.IngresoProyectos.GRID.loadGrid();
+
+                    //Grid Administrar Proyectos
+                    _this.AdministracionProyectos.GRID.loadGrid();
+                    _this.AdministracionProyectos.GRID.DataGrid();
+
+                    //Modal
+                    _this.AdministracionProyectos.GRID.modal.loadDropDownList();
+                    _this.AdministracionProyectos.GRID.modal.BTN_Guardar();
+
+                    //GuardarProyectos
+                    _this.IngresoProyectos.Proyecto.BTN_Cargar();
                 }
 
-            },                      
-            alert: function (icon, title, text) {
-                Swal.fire({
-                    icon: icon,
-                    title: title,
-                    text: text,
-                });
-            },
-            init: function () {
-                var _this = this;
-                _this.Tabstrip.loadTabstrip();
-                _this.IngresoProyectos.GRID.loadGrid();
-                _this.IngresoProyectos.PEP.archivoPEP.BTN_File();
-                _this.IngresoProyectos.PEP.archivoPEP.BTN_Download();
-                _this.IngresoProyectos.PEP.PEPManual.visibilidad();
-                _this.IngresoProyectos.PEP.PEPManual.agregarPEP();
-                _this.IngresoProyectos.PEP.BTN_Cargar();
-                _this.AdministracionProyectos.GRID.loadGrid();
-                _this.AdministracionProyectos.GRID.DataGrid();
-                _this.AdministracionProyectos.GRID.modal.loadDropDownList();
-                _this.AdministracionProyectos.GRID.modal.BTN_Guardar();
             }
         })
-        $.init()
+        $.ModuloProyectos.init()
     })();
 </script>
 <style type="text/css">
@@ -850,23 +930,24 @@
         background: #bb2d3b;
         color: white;
     }
-    .col-command {
+    /*Estilos de columnas de grid*/
+    .col-command_@{@GUI_CSS} {
         text-align: center !important;
         width: 70px;
     }
-    .col-command-2 {
+    .col-command-2_@{@GUI_CSS} {
         text-align: center !important;
         width: 95px;
     }
-    .col-data{
+    .col-data_@{@GUI_CSS}{
         width: 150px;
     }
     @@media screen and (max-width: 576px) {
-        .col-command {
+        .col-command_@{@GUI_CSS} {
             width: 140px;
         }
 
-        .col-command-2 {
+        .col-command-2_@{@GUI_CSS} {
             text-align: center !important;
             width: 200px;
         }
@@ -884,10 +965,10 @@
     }*/
     @@media (min-width: 768px) and (max-width: 991.98px) {
         /* Tus estilos aquí */
-        .col-command {
+        .col-command_@{@GUI_CSS} {
             width: 130px;
         }
-        .col-command-2 {
+        .col-command-2_@{@GUI_CSS} {
             width: 180px;
         }
     }

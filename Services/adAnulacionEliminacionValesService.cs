@@ -17,17 +17,17 @@ namespace COMBUSTIBLEAESCORE.Services
             conexion = _conexion;
         }
 
-        public async Task<IEnumerable<mensaje>> AnularVale(int ValeCombustubibleID, int RazonID, int CompanyID)
+        public async Task<IEnumerable<mensaje>> AnularVale(int ValeCombustubibleID,int UsuarioID, int RazonID, int CompanyID)
         {
             IEnumerable<mensaje> data = null;
-            string sp = "EXEC SP_AnularVale @ValeCombustubibleID,@RazonID, @CompanyID";
+            string sp = "EXEC SP_AnularVale @ValeCombustubibleID, @UsuarioID, @RazonID, @CompanyID";
             var con = new SqlConnection(conexion.Value);
             try
             {
                 if (con.State == ConnectionState.Closed)
                 {
                     con.Open();
-                    data = await con.QueryAsync<mensaje>(sp, new { ValeCombustubibleID, RazonID, CompanyID }, commandType: CommandType.Text);
+                    data = await con.QueryAsync<mensaje>(sp, new { ValeCombustubibleID, UsuarioID, RazonID, CompanyID }, commandType: CommandType.Text);
                 }
             }
             finally
@@ -40,17 +40,17 @@ namespace COMBUSTIBLEAESCORE.Services
             return data;
         }
 
-        public async Task<IEnumerable<mensaje>> EliminarVales(int ValeCombustubibleID, int CompanyID)
+        public async Task<IEnumerable<mensaje>> EliminarVales(int ValeCombustubibleID, int UsuarioID, int CompanyID)
         {
             IEnumerable<mensaje> data = null;
-            string sp = "EXEC SP_EliminarVales @ValeCombustubibleID, @CompanyID";
+            string sp = "EXEC SP_EliminarVales @ValeCombustubibleID, @UsuarioID, @CompanyID";
             var con = new SqlConnection(conexion.Value);
             try
             {
                 if (con.State == ConnectionState.Closed)
                 {
                     con.Open();
-                    data = await con.QueryAsync<mensaje>(sp, new { ValeCombustubibleID, CompanyID }, commandType: CommandType.Text);
+                    data = await con.QueryAsync<mensaje>(sp, new { ValeCombustubibleID, UsuarioID, CompanyID }, commandType: CommandType.Text);
                 }
             }
             finally
@@ -109,17 +109,17 @@ namespace COMBUSTIBLEAESCORE.Services
             return data;
         }
 
-        public async Task<IEnumerable<mensaje>> ReestablecerVale(int ValeCombustubibleID, int CompanyID)
+        public async Task<IEnumerable<mensaje>> ReestablecerVale(int ValeCombustubibleID, int UsuarioID, int CompanyID)
         {
             IEnumerable<mensaje> data = null;
-            string sp = "EXEC SP_ReestablecerVale @ValeCombustubibleID, @CompanyID";
+            string sp = "EXEC SP_ReestablecerVale @ValeCombustubibleID , @UsuarioID, @CompanyID";
             var con = new SqlConnection(conexion.Value);
             try
             {
                 if (con.State == ConnectionState.Closed)
                 {
                     con.Open();
-                    data = await con.QueryAsync<mensaje>(sp, new { ValeCombustubibleID, CompanyID }, commandType: CommandType.Text);
+                    data = await con.QueryAsync<mensaje>(sp, new { ValeCombustubibleID, UsuarioID, CompanyID }, commandType: CommandType.Text);
                 }
             }
             finally

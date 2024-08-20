@@ -1,0 +1,116 @@
+﻿@{
+    Layout = null;
+    string guid = (string)ViewData["guid"],
+    Input_BuscarDisponibles_ModalAsignarCCXUsuario = "Input_BuscarDisponibles_ModalAsignarCCXUsuario_" + guid,
+    Contenedor_Disponibles_ModalAsignarCCXUsuario = "Contenedor_Disponibles_ModalAsignarCCXUsuario_" + guid,
+    TXT_ContadorDisponibles_ModalAsignarCCXUsuario = "TXT_ContadorDisponibles_ModalAsignarCCXUsuario_" + guid,
+    BTN_HaciaDerecha_ModalAsignarCCXUsuario = "BTN_HaciaDerecha_ModalAsignarCCXUsuario_" + guid,
+    BTN_TodoHaciaDerecha_ModalAsignarCCXUsuario = "BTN_TodoHaciaDerecha_ModalAsignarCCXUsuario_" + guid,
+    BTN_HaciaIzquierda_ModalAsignarCCXUsuario = "BTN_HaciaIzquierda_ModalAsignarCCXUsuario_" + guid,
+    BTN_TodoHaciaIzquierda_ModalAsignarCCXUsuario = "BTN_TodoHaciaIzquierda_ModalAsignarCCXUsuario_" + guid,
+    Input_BuscarAsignados_ModalAsignarCCXUsuario = "Input_BuscarAsignados_ModalAsignarCCXUsuario_" + guid,
+    Contenedor_Asignados_ModalAsignarCCXUsuario = "Contenedor_Asignados_ModalAsignarCCXUsuario_" + guid,
+    TXT_ContadorAsignados_ModalAsignarCCXUsuario = "TXT_ContadorAsignados_ModalAsignarCCXUsuario_" + guid;
+}
+<div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 col-lg-5">
+                <h5 class="text-center mt-2">Disponibles</h5>
+                <input type="text" class="form-control my-2" placeholder="Buscar" id="@{@Input_BuscarDisponibles_ModalAsignarCCXUsuario}" onkeyup="$.ModuloAsignacionCentroCosto.CentroCostoUsuario.Modal.cartas.buscar('@{@Input_BuscarDisponibles_ModalAsignarCCXUsuario}','@{@Contenedor_Disponibles_ModalAsignarCCXUsuario}')">
+                <div id="@{@Contenedor_Disponibles_ModalAsignarCCXUsuario}" class="border border-black contenedor-cartas"></div>
+                <p class="fst-italic">Mostrando <span id="@{@TXT_ContadorDisponibles_ModalAsignarCCXUsuario}">50</span>  de  <span class="totalCartas">100</span></p>
+            </div>
+            <div class="col-12 col-lg-2 d-flex align-items-center justify-content-center">
+                <div class="cotainer-fluid">
+                    <div class="row ">
+                        <div class="col-lg-12 d-flex align-items-center justify-content-center">
+                            <button class="btn btn-outline-secondary BTN_Mover d-flex align-items-center justify-content-center" id="@{@BTN_HaciaDerecha_ModalAsignarCCXUsuario}">
+                                <span class="d-none d-md-block text-center"><i class="bi bi-chevron-right"></i></span>
+                                <span class="d-sm-block d-md-none "><i class="bi bi-chevron-down"></i></span>
+                            </button>
+                            <button class="btn btn-outline-secondary BTN_Mover d-flex align-items-center justify-content-center" id="@{@BTN_TodoHaciaDerecha_ModalAsignarCCXUsuario}">
+                                <span class="d-none d-md-block text-center"><i class="bi bi-chevron-double-right"></i></span>
+                                <span class="d-sm-block d-md-none"><i class="bi bi-chevron-double-down"></i></span>
+                            </button>
+                        </div>
+                        <div class="col-lg-12 d-flex align-items-center justify-content-center">
+                            <button class="btn btn-outline-secondary BTN_Mover d-flex align-items-center justify-content-center" id="@{@BTN_HaciaIzquierda_ModalAsignarCCXUsuario}">
+                                <span class="d-none d-md-block text-center"><i class="bi bi-chevron-left"></i></span>
+                                <span class="d-sm-block d-md-none"><i class="bi bi-chevron-up"></i></span>
+                            </button>
+                            <button class="btn btn-outline-secondary BTN_Mover d-flex align-items-center justify-content-center" id="@{@BTN_TodoHaciaIzquierda_ModalAsignarCCXUsuario}">
+                                <span class="d-none d-md-block text-center"><i class="bi bi-chevron-double-left"></i></span>
+                                <span class="d-sm-block d-md-none"><i class="bi bi-chevron-double-up"></i></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-5">
+                <h5 class="text-center mt-2">Asignados</h5>
+                <input type="text" class="form-control my-2" placeholder="Buscar" id="@{@Input_BuscarAsignados_ModalAsignarCCXUsuario}" onkeyup="$.ModuloAsignacionCentroCosto.CentroCostoUsuario.Modal.cartas.buscar('@{@Input_BuscarAsignados_ModalAsignarCCXUsuario}','@{@Contenedor_Asignados_ModalAsignarCCXUsuario}')">
+                <div id="@{@Contenedor_Asignados_ModalAsignarCCXUsuario}" class="border border-black contenedor-cartas"></div>
+                <!--<span id="contadorAsignados" class="fst-italic" style="color: #6c6c6c;">Mostrando 50 de 100</span>-->
+                <p class="fst-italic">Mostrando <span id="@{@TXT_ContadorAsignados_ModalAsignarCCXUsuario}">50</span>  de  <span class="totalCartas">100</span></p>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .modal-body{
+        padding: 0px;
+    }
+    .contenedor-cartas {
+        height: 20vh;
+        width: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 0px 10px 0px 10px;
+    }
+
+    .form-control:focus {
+        border-color: #dee2e6;
+        box-shadow: none;
+    }
+
+    .BTN_Mover{
+        height: 25px;
+        width:35px;
+        margin:2px;
+    }
+    .carta{
+        cursor:pointer
+    }
+    .seleccionado {
+        background: #1967d2;
+        color: #FFFF;
+    }
+
+
+    .TXT_Mobile {
+        font-size: 15px;
+    }
+
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        -webkit-box-shadow: none;
+        border-radius: 8px;
+        background-color: #aaa;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        -webkit-box-shadow: inset 1px 1px 6px #333;
+        background-color: #666;
+        border-radius: 10px;
+    }
+
+        ::-webkit-scrollbar-thumb:hover {
+            border-radius: 10px;
+            background: rgba(0,0,0,.3);
+        }
+</style>

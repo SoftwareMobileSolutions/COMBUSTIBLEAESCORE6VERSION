@@ -40,17 +40,17 @@ namespace COMBUSTIBLEAESCORE.Services
             return data;
         }
 
-        public async Task<IEnumerable<PerfilModel>> ObtenerPerfilUsuarios()
+        public async Task<IEnumerable<PerfilModel>> ObtenerPerfilUsuarios(int CompanyID)
         {
             IEnumerable<PerfilModel> data = null;
-            string sp = "EXEC SP_ObtenerPerfiles";
+            string sp = "EXEC SP_ObtenerPerfiles @CompanyID";
             var con = new SqlConnection(conexion.Value);
             try
             {
                 if (con.State == ConnectionState.Closed)
                 {
                     con.Open();
-                    data = await con.QueryAsync<PerfilModel>(sp, new { }, commandType: CommandType.Text);
+                    data = await con.QueryAsync<PerfilModel>(sp, new { CompanyID }, commandType: CommandType.Text);
                 }
             }
             finally
