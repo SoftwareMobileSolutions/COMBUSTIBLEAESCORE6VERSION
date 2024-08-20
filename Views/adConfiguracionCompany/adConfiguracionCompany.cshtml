@@ -129,9 +129,7 @@
                     <div class="row mt-lg-2 mt-2">
                         <div class="col-lg-12">
                             <label class="form-label">Número de teléfono 2</label>
-                            <input type="text" class="w-100 form-control" id="@{
-                                    @Input_Number2
-}">
+                            <input type="text" class="w-100 form-control" id="@{@Input_Number2}">
                         </div>
                     </div>
                     <div class="row mt-lg-2 mt-2">
@@ -196,15 +194,15 @@
         $.extend({
             ModuloConfiguracionCompany: {
                 DropDownList: {
-                    loadDropDownList: function () {
+                    loadDropDownList: function () { //Funcion para obtener inicializar los DropDownsList
                         $("#@{@DepartamentoDropDownList}").kendoDropDownList({
                             filter: "contains",
                             optionLabel: 'departamentos...',
                             dataTextField: "nombreDepartamento",
                             dataValueField: "departamentoID",
-                            select: function (e) {
+                            select: function (e) {// Función que ejecuta un get para obtener los municipios en base al departamenton seleccionado
                                 $.get('@Url.Action("ObtenerMunicipios", "adConfiguracionCompany")', { DepartamentoID: e.dataItem.departamentoID }, function (data) {
-                                    $("#@{@MunicipioDropDownList}").data("kendoDropDownList").dataSource.data(data.municipios)
+                                    $("#@{@MunicipioDropDownList}").data("kendoDropDownList").dataSource.data(data.municipios) //Se pasa la data la dropdownlist de  los municipios
                                 })
                             }
                         });
@@ -214,8 +212,8 @@
                             dataTextField: "nombreMunicipio",
                             dataValueField: "municipioID",
                         });
-                    },
-                    dataDropDownList: function () {  
+                    }, 
+                    dataDropDownList: function () {  //Funcion para obtener la data los departamentos y municpios con el departamento y municipio guardado 
                         $.get('@Url.Action("ObtenerDataDrops", "adConfiguracionCompany")', function (data) {
                             $("#@{@MunicipioDropDownList}").data("kendoDropDownList").dataSource.data(data.municipios)
                             $("#@{@DepartamentoDropDownList}").data("kendoDropDownList").dataSource.data(data.departamentos)
@@ -227,7 +225,7 @@
                     }
                 },
                 Company: {
-                    DataCompany: function () {
+                    DataCompany: function () {//Funcion para obtener la data de la compañia
                         var _this = this
                         $.get('@Url.Action("ObtenerDataCompany", "adConfiguracionCompany")', function (data) {
                             company = data.dataCompany[0]
@@ -238,31 +236,41 @@
                             $("#@{@Input_RazonSocial}").val(company.razonSocial)
                             $("#@{@Input_Direccion}").val(company.direccion)
 
+                            /*Nota: Se divede la cadena ya que en la tabla Company los numeros se guardan así : +503 6454-5645*/
                             var telefono1 = company.telMovil === null ? "" : company.telMovil.substring(5, 9) + company.telMovil.substring(10)
                             $("#@{@Input_Number1}").val(telefono1)
 
                             var telefono2 = company.telfijo === null ? "" : company.telfijo.substring(5, 9) + company.telfijo.substring(10)
                             $("#@{@Input_Number2}").val(telefono2)
 
-                            _this.logoCompany('@Url.Content("~/")'+data.logo)
+                            _this.logoCompany('@Url.Content("~/")'+data.logo)//Se llama a la función para pintar el logo 
                         })
                     },
-                    Input_File: function () {
+                    Input_File: function () {//Funcion para cambiar valdia
                         var _this = this;
                         $("#@{@FileInput}").on("focus", function () {
-                            $("#@{@FileInput}").val("")
+                            $("#@{@FileInput}").val("")// Se limpia el contenido del input cuando se active el evento focus 
                         });
 
-                        $('.input-file').each(function () {
-                            var input = $(this),
-                                label = input.next('.js-labelFile'),
+                        $('.input-file').each(function () { 
+                            //CODIGO DEL INPUT FILE CON DISEÑO
+                            /**********************************************************************************************************************************/
+                            var input = $(this), //Se obtiene la data del input
+                                label = input.next('.js-labelFile'), //Se obtiene el label
                                 labelVal = label.html();
 
-                            input.on('change', function (element) {
+                            input.on('change', function (element) { 
                                 var fileName = '';
-                                if (element.target.value) fileName = element.target.value.split('\\').pop();
-                                fileName ? label.addClass('has-file').find('.js-fileName').html(fileName) : $label.removeClass('has-file').html(labelVal);
-                                if ($("#@{@FileInput}").val() != "") {
+                                if (element.target.value) fileName = element.target.value.split('\\').pop(); //Si hay un elemento selecionado, se parte la ruta y se seleciona  el nombre del archivo
+
+                                fileName ? label.addClass('has-file').find('.js-fileName').html(fileName) : $label.removeClass('has-file').html(labelVal); // Se añade o elimina la clase has file y se muesta el nombre de arhivo o el texto: Seleccione el archivo
+
+                            /**********************************************************************************************************************************/
+
+
+                                /*CODIGO PARA SELECCIONAR EL LOGO DE LA EMPRESA*/
+                                /**********************************************************************************************************************************/
+                                if ($("#@{@FileInput}").val() != "") { // Se selecciona la imagen del input para guardarla 
                                     const fileInput = event.target;
                                     const file = fileInput.files[0];
                                     var reader = new FileReader();
@@ -271,20 +279,21 @@
                                     };
                                     reader.readAsDataURL(file);
                                 }
+                                /**********************************************************************************************************************************/
                             });
                         });
 
                     },
-                    logoCompany: function (logo) {
+                    logoCompany: function (logo) { //Funcion pata pintar el logo 
                         $("#@{@DIV_logo}").css('background', 'url(' + logo + ')');
                         $("#@{@DIV_logo}").css('background-size', 'contain');
                         $("#@{@DIV_logo}").css('background-repeat', 'no-repeat');
                         $("#@{@DIV_logo}").css('background-position', 'center');
                     },
-                    GuardarDataLocalStorage: function () {
+                    GuardarDataLocalStorage: function () {//Funcion que manda a llamar al action que retorna la data de la Company para gurdar la data en localstorage
                         $.get('@Url.Action("GuardarDataCompany", "adConfiguracionCompany")', function (data) {
-                            localStorage.clear()
-                            localStorage.setItem("companydatos", JSON.stringify(data))
+                            localStorage.clear() // Se limpia la data del local storage 
+                            localStorage.setItem("companydatos", JSON.stringify(data)) // Se guarda la nueva data 
                         })
                         /*var companyData = {
                             companyName: $("#Input_CompanyName").val().trim(),
@@ -294,17 +303,17 @@
                         }*/
                     },
                     validaciones: {
-                        formato: function (_CompanyName, _PaginaWeb, _Email, _Number1, _Number2) {
-                            var URL_Regex = /^(?:(?:https?|ftp):\/\/)?(?:www\.)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(?:\/\S*)?$/;
-                            var Email_Regex = /^\w+([.-_+]?\w+)*@@\w+([.-]?\w+)*(\.\w{2,10})+$/;
+                        formato: function (_CompanyName, _PaginaWeb, _Email, _Number1, _Number2) { //Funcion para validar los datos 
+                            var URL_Regex = /^(?:(?:https?|ftp):\/\/)?(?:www\.)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(?:\/\S*)?$/; //Expresion regular para validar URL
+                            var Email_Regex = /^\w+([.-_+]?\w+)*@@\w+([.-]?\w+)*(\.\w{2,10})+$/;//Expresion regular para validar correos 
 
-                            if (_CompanyName.length < 3) {
+                            if (_CompanyName.length < 3) { //Se verifica el largo del nombre del nombre de la compañia 
                                 $._combustible.alert("error", "Nombre demasiado corto", "El nombre debe tener al menos 3 caracteres")
                                 return false
                             }
 
-                            if (_PaginaWeb !== "") {
-                                if (!URL_Regex.test(_PaginaWeb)) {
+                            if (_PaginaWeb !== "") {//Se verifica si el usuario digito un sitio web
+                                if (!URL_Regex.test(_PaginaWeb)) { //en caos de si, se verifica si es valido con el regex
                                     Swal.fire({
                                         title: "Sitio web invalido",
                                         icon: "error",
@@ -321,76 +330,76 @@
                                     return false
                                 }
                             }
-                            if (_Email !== "") {
-                                if (!Email_Regex.test(_Email)) {
+                            if (_Email !== "") {//Se verifica si el usuario digito un correo electronico 
+                                if (!Email_Regex.test(_Email)) {//Si el usario digito, se verifica si es valido con le regex 
                                     $._combustible.alert("error", "Formato de correo incorrecto", "Debe digitar  un correo valido, por ejemplo usuario@correo.com")
                                     return false
                                 }
                             }
 
-                            if (_Number1 !== "") {
-                                if (_Number1.length < 8) {
+                            if (_Number1 !== "") {//Se verifica si el usuario digito un numero de telefono
+                                if (_Number1.length < 8) { // Se verifica que el numero contenga 8 digitos 
                                     $._combustible.alert("error", "Número de telefono 1 demasido corto ", "El numero de telefono debe tener al menos 8 números")
                                     return false
                                 }
                             }
 
-                            if (_Number2 !== "") {
-                                if (_Number2.length < 8) {
+                            if (_Number2 !== "") {//Se verifica si el usuario digito un numero de telefono
+                                if (_Number2.length < 8) { // Se verifica que el numero contenga 8 digitos 
                                     $._combustible.alert("error", "Número de telefono 2 demasido corto ", "El numero de telefono debe tener al menos 8 números")
                                     return false
                                 }
                             }                      
                             return true
                         },
-                        keypress: function () {
-                            $('#@{@Input_Number1}').keypress(function (event) {
+                        keypress: function () {//Funcion para validar lo que se puede digitar en los input 
+                            $('#@{@Input_Number1}').keypress(function (event) { //Se verfica el input numero de telefono 1
                                 var keyCode = event.which;
                                 var inputValue = $(this).val();
 
-                                if (keyCode < 48 || keyCode > 57) {
+                                if (keyCode < 48 || keyCode > 57) { //Se evita las letras y caracteres 
                                     event.preventDefault();
                                 }
-                                if (inputValue.length > 7) {
+                                if (inputValue.length > 7) { //Se evita que digite mas de 8 numeros 
                                     event.preventDefault();
                                 }
 
                             });
 
-                            $('#@{@Input_Number1}').on("paste", function (event) {
+                            $('#@{@Input_Number1}').on("paste", function (event) { //Se evita el pergar en numero de telefono 1
                                 event.preventDefault();
                             });
-                            $('#@{@Input_Number2}').keypress(function (event) {
+                            $('#@{@Input_Number2}').keypress(function (event) { //Se verfica el input numero de telefono 2
                                 var keyCode = event.which;
                                 var inputValue = $(this).val();
 
-                                if (keyCode < 48 || keyCode > 57) {
+                                if (keyCode < 48 || keyCode > 57) {//Se evita las letras y caracteres 
                                     event.preventDefault();
                                 }
-                                if (inputValue.length > 7) {
+                                if (inputValue.length > 7) {//Se evita que digite mas de 8 numeros 
                                     event.preventDefault();
                                 }
 
                             });
 
-                            $('#@{@Input_Number2}').on("paste", function (event) {
+                            $('#@{@Input_Number2}').on("paste", function (event) {//Se evita el pergar en numero de telefono 2
                                 event.preventDefault();
                             });
                         }
                     },
-                    BTN_Guardar: function(){
+                    BTN_Guardar: function(){//Funcion para guardar los datos 
                         var _this = this
                         $("#@{@BTN_Guardar}").on("click", function(){
 
-                            var fileInput = document.getElementById('@{@FileInput}');                     
-                            var file = fileInput.files[0];
+                            var fileInput = document.getElementById('@{@FileInput}'); 
+                            var file = fileInput.files[0]; // Se inteta obtener el archivo del input
 
-                            if (file != undefined) {
+                            if (file != undefined) { //Se verifica si hay logo, si no se setea null a al variable 
                                 if (file.type !== "image/png" && file.type !== "image/jpeg") {
                                     file = null
                                 }
                             }
-
+                            //Se obtiene los datos de todo el formulario
                             var _CompanyName = $("#@{@Input_CompanyName}").val()
                             var _Direccion = $("#@{@Input_Direccion}").val()
                             var _Website = $("#@{@Input_Website}").val()
@@ -404,7 +413,8 @@
                             var _Number1 = $("#@{@Input_Number1}").val()                       
                             var _Number2 = $("#@{@Input_Number2}").val()
                             if (_this.validaciones.formato(_CompanyName, _Website, _Email, _Number1, _Number2) === true) {
-
+                                
+                                // Se da el formato +503 6454-5645  a los numeros de telefono
                                 if (_Number1 !== "") {
                                     _Number1 = "+503 " + _Number1.substring(0, 4) + "-" + _Number1.substring(4)
                                 }
@@ -412,7 +422,7 @@
                                 if (_Number2 !== "") {
                                     _Number2 = "+503 " + _Number2.substring(0, 4) + "-" + _Number2.substring(4)
                                 }
-
+                                //Se genera un format data y se envia en el posrt
                                 var formData = new FormData();
 
                                 formData.append('NombreCompany', _CompanyName);
@@ -448,7 +458,7 @@
                         })
                     }
                 },
-                init: function () {
+                init: function () {//Funcion para inicializar los metodos que se ejucatan al entrar a la vista
                     var _this = this
                     _this.Company.Input_File()
                     _this.Company.validaciones.keypress()

@@ -172,8 +172,8 @@
         $.extend({
             ModuloProyectos:{
                 Tabstrip: {
-                    loadTabstrip: function () {
-                        $("#@{@TabstripProyectos}").kendoTabStrip({
+                    loadTabstrip: function () {//Funcion para inicializar los tabstrip
+                        $("#@{@TabstripProyectos}").kendoTabStrip({//Se iniciliza el tabstrip
                             animation: {
                                 open: {
                                     effects: "fadeIn"
@@ -184,7 +184,7 @@
                 },
                 IngresoProyectos: {
                     Proyecto: {
-                        Proyectos: [],
+                        Proyectos: [],//
                         ProyectoManual: {
                             visibilidad: function () {
                                 $('#@{@FormularioProyecto}').hide()
@@ -278,8 +278,11 @@
                             }
                         },
                         archivoPEP: {
-                            convetidorJSON: function (file) {
+                            convetidorJSON: function (file) {//Fucnión para convertir los archivos exel en array de datos  
                                 return new Promise((resolve, reject) => {
+                                    /*Nota: No eliminar la promesa, ya que si no se usa una funcion asincronica devulve un array vácio*/
+
+                                    /**************************Paso 1*****************************/
                                     var reader = new FileReader();
                                     var jsonData;
                                     var titles;
@@ -300,7 +303,6 @@
                                         titles = PrimeraFila[0]
                                         jsonData = XLSX.utils.sheet_to_json(sheet);
 
-                                        console.log("Paso1")
                                         //Se devuelen los datos 
                                         resolve([titles, jsonData]);
                                     
@@ -364,25 +366,36 @@
                             BTN_File: function () {
                                 var _this = this;
                                 $("#@{@FileInput}").on("focus", function () {
-                                    $("#@{@FileInput}").val("")
+                                    $("#@{@FileInput}").val("") // Se limpia el input file antes al dar click o ser seleccionado en el DOM
                                 });
 
                                 $('.input-file').each(function () {
-                                    var $input = $(this),
-                                        $label = $input.next('.js-labelFile'),
-                                        labelVal = $label.html();
 
-                                    $input.on('change', async function (element) {
+                                    //CODIGO DEL INPUT FILE CON DISEÑO
+                                    /**********************************************************************************************************************************/
+                                    var $input = $(this),
+                                        $label = $input.next('.js-labelFile'), //Se obtiene el label donde se muestra el nombre del archivo
+                                        labelVal = $label.html(); //Se obtiene el texto = "Seleccione el archivo"
+
+                                    $input.on('change', async function (element) { 
+                                        /*Nota: Esta función es asincroma paa porder recibir la promesa del convertidor de exel a array */
                                         var fileName = '';
-                                        if (element.target.value) fileName = element.target.value.split('\\').pop();
+                                        if (element.target.value) fileName = element.target.value.split('\\').pop(); //Se selecciona el elemento si hay uno
+                                        /* Se verifica si hay un archivo, en caso de haber se pone el nombre y si no el mensaje que esta en la varibale =  labelVal*/
                                         fileName ? $label.addClass('has-file').find('.js-fileName').html(fileName) : $label.removeClass('has-file').html(labelVal);
+                                    /**********************************************************************************************************************************/
+
+
+                                        /*CODIGO PARA SELECCIONAR EL ARCHIVO EXEL*/
+                                        /**********************************************************************************************************************************/
                                         if ($("#@{@FileInput}").val() != "") {
                                             const fileInput = event.target;
                                             const file = fileInput.files[0];
-                                            var data = await _this.convetidorJSON(file);
-                                            //var PEPS = $.GRID.formatoDataGrid(data[1])
-                                            console.log("Paso 2")
+
+                                            //Se llama a la función que convierte el exel en array
+                                            var data = await _this.convetidorJSON(file); 
                                         
+                                            //Se llama la función que valida los datos y se verifica el resultado
                                             if (_this.validaciones(data) === true) {
                                                 var Proyectos = $.ModuloProyectos.IngresoProyectos.GRID.formatoDataGrid(data[1])
                                                 $.ModuloProyectos.IngresoProyectos.GRID.dataGrid(Proyectos);
@@ -397,11 +410,12 @@
                                                 }
                                             }
                                         }
+                                        /**********************************************************************************************************************************/
                                     });
                                 });
 
                             },
-                            BTN_Download: function () {
+                            BTN_Download: function () {//Funcion para descargar el archivo exel con el formato para ingresar datos de manera masiva
                                 $("#@{@BTN_DownloadFormato}").on("click", function () {
                                     window.open("@Url.Content("~/archivos/Proyectos_Formato.xlsx")")
                                 });
@@ -916,6 +930,7 @@
         background: #bb2d3b;
         color: white;
     }
+    /*Estilos de columnas de grid*/
     .col-command_@{@GUI_CSS} {
         text-align: center !important;
         width: 70px;

@@ -34,7 +34,8 @@ namespace COMBUSTIBLEAESCORE.Controllers
 
         public async Task<JsonResult> ObtenerPerfilUsuarios()
         {
-            var perfiles = await iadAgregarUsuario.ObtenerPerfilUsuarios();
+            var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
+            var perfiles = await iadAgregarUsuario.ObtenerPerfilUsuarios(user.FirstOrDefault().CompanyID);
             return Json(perfiles);
         }
 

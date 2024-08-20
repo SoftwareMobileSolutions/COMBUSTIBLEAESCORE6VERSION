@@ -97,5 +97,11 @@ namespace COMBUSTIBLEAESCORE.Controllers
             var mensaje = await iadVehiculosFlotas.ActualizarSubfleet(SubfleetID, usuario.FirstOrDefault().CompanyID, NombreSubfleetNuevo);
             return Json(mensaje);
         }
+
+        public async Task<JsonResult> ObtenerMobileXSubfleet(int SubfleetID)
+        {
+            var mobiles = await iadVehiculosFlotas.ObtenerMobileXSubfleet(SubfleetID);
+            return Json(mobiles);
+        }
     }
 }

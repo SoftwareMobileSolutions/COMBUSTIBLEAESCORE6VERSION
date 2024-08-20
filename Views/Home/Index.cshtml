@@ -1,12 +1,11 @@
-﻿0<!-- ======= Header ======= -->
+﻿<!-- ======= Header ======= -->
 <header id="header" class="header fixed-top d-flex align-items-center">
 
-    <div class="d-flex align-items-center justify-content-between w-50">
+    <div class="d-flex align-items-center">
         <i class="bi bi-list toggle-sidebar-btn "></i>
-        <a @*href="@Url.Action("Introduccion", "Introduccion")"-*@ url="Introduccion/Introduccion" class="renderView logo d-flex justify-content-between w-100">
-
+        <a url="Introduccion/Introduccion" class="renderView logo d-flex align-items-center w-100">
+            <img id="logo"  alt="">
             <span class="d-none d-lg-block">@ViewData["CompanyName"]</span>
-            <img id="logo" @*src="@ViewData["CompamyLogo"]"*@ alt="">
         </a>
 
     </div><!-- End Logo -->
@@ -45,10 +44,12 @@
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
-        <li class="nav-item renderView" url="Introduccion/Introduccion">
+        <li class="nav-item renderView" url="Introduccion/Introduccion" data-tippy-content="Estas usando Vales Combustible">
             <a class="nav-link " >
                 <i class="bi bi-grid"></i>
-                <span>Dashboard</span>
+                <span>Inicio</span>
+                @*<button data-tippy-content="Tooltip">Text</button>*@
+                @*<i class="bi bi-info-circle" data-tippy-content="Tooltip"></i>*@
             </a>
         </li><!-- End Dashboard Nav -->
 
@@ -59,7 +60,7 @@
 </aside><!-- End Sidebar-->
 
 
-<main id="main" class="main">   
+<main id="main" class="main">   <!--Aquí se renderizan los modulos-->
     @*@await Html.PartialAsync("~/Views/MainPanel/MainPanel.cshtml")*@
 </main>
 
@@ -89,7 +90,7 @@
     (function () {
         $.extend({
             home_menu: {
-                username: "@ViewData["CompamyLogo"]",
+                username: "@ViewData["CompamyLogo"]", //Se obtiene el username 
                 navbar: function () {
                     const select = (el, all = false) => {
                         el = el.trim()
@@ -117,46 +118,73 @@
 
 
                 },                
-                dataMenu: @Json.Serialize(ViewData["modulos"]),
+                dataMenu: @Json.Serialize(ViewData["modulos"]),//Se obtienen los modulos que se compartieron desde el Controller en un JSON
                 loadModulos: function () {
                     var _this = this;
-                    var modulosData = _this.dataMenu.value;
-                    //console.log(_this.dataMenu.value)
+                    var modulosData = _this.dataMenu.value; //Se obtiene el JSOn de los modulos
+                    //console.log(modulosData)
                     var modulosHTML = "";
                     for (let gp = 0; gp < modulosData.length; gp++) {
-                        if (modulosData[gp].hasChildren == true) {
-                            var parents = modulosData[gp].children;
+                        if (modulosData[gp].hasChildren === true) {//Se verifica si el abuelo tiene hijos, es decir si existe padre
+                            var parents = modulosData[gp].children; //Se existen padres se obtienen y se guardan en una varibale
 
+                            //En caso no tener padres se generan los li con dropdowns para mostrar los padres
                             /*Nota: No borrar los replace, o no fucnionara los dropDowns del NavBar*/
-                            var li = '<li class="nav-item">' +
-                                '<a class="nav-link collapsed" data-bs-target="#' + modulosData[gp].name.replace(/ /g, "") + '-nav" data-bs-toggle="collapse" href="#">' + '<i class="' + modulosData[gp].icono + '"></i>' +
+                            let li = '<li class="nav-item">' + //Se empiezan a generar los modulos abuelos 
+                                '<a class="nav-link collapsed" data-bs-target="#' + modulosData[gp].name.replace(/ /g, "") + '-nav" data-bs-toggle="collapse" href="#"  data-tippy-content="' + modulosData[gp].descriptcion
+                                + '">' + '<i class="' + modulosData[gp].icono + '"></i>' +
                                 modulosData[gp].name +
                                 '<i class="bi bi-chevron-down ms-auto"></i>' +
                                 '</a>' +
                                 '<ul id="' + modulosData[gp].name.replace(/ /g, "") + '-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">';
 
 
-                            for (let p = 0; p < parents.length; p++) {
-                                li += '<li url= "' + parents[p].url + '" class="renderView">' +
+                            for (let p = 0; p < parents.length; p++) {//Se generan los modulos padres
+                                if (parents[p].hasChildren === true) {//Se verifica si los modulos padre tiene hijos 
+                                    //En caso no tener hijos se generan los li con dropdowns para mostrar los hijos 
+                                    li += '<li class="nav-item">' + // Se empieza a generar los modulos padres 
+                                        '<a class="nav-link collapsed" data-bs-target="#' + parents[p].name.replace(/ /g, "") + '-nav" data-bs-toggle="collapse" href="#">' + '<i class="' + parents[p].icono + '"></i>' +
+                                        parents[p].name +
+                                        '<i class="bi bi-chevron-down ms-auto"></i>' +
+                                        '</a>' +
+                                        '<ul id="' + parents[p].name.replace(/ /g, "") + '-nav" class="nav-content collapse" data-bs-parent="#' + modulosData[gp].name.replace(/ /g, "") + '-nav">';
+                                    
+
+                                    let hijos = parents[p].children; // Se otienen los modulos hijos 
+
+                                    hijos.forEach(hijo => { //Se generan los modulos hijos
+                                        li += '<li url= "' + hijo.url + '" class="renderView">' +
+                                            '<a style="padding:10px 0 10px 65px">' + hijo.name + '</a>' +
+                                            '</li>';
+                                    });
+
+                                    li += '</ul></li>';
+                                    
+                                    //console.log(hijos)
+                                } else {//En caso no haber hjos se generan li sin dropdowns
+                                    li += '<li url= "' + parents[p].url + '" class="renderView" data-tippy-content="' + parents[p].descriptcion + '">' +
                                     '<a>' + parents[p].name + '</a>' +
                                     '</li>';
+                                }
                             }
+
                             li += '</ul></li>';
-
-                            /*for (let p = 0; p < parents.length; p++) {
-                                li += '<li>' +
-                                    '<a href="' + parents[p].url + '">' +
-                                    parents[p].name +
-                                    '</a>' +
-                                    '</li>';
-                            }
-                            li += '</ul></li>';*/
-
                             modulosHTML += li;
                         } else {
-                            var li = '<li class="nav-item" >' +
+                            // Si los abuelos no tienen hijos se generan li sin dropdows para mostrar los abuelos 
+                            /*var li = '<li class="nav-item" >' +
                                         '<a class="nav-link " href = "index.html" >' + 
                                             '<i class="bi bi-grid" > </i>' + 
+                                            '<span>' + modulosData[gp].name + '</span>' + 
+                                        '</a>' + 
+                                      '</li>';*/
+                            /*let li = '<li url= "' + modulosData[gp].url + '" class="renderView">' +
+                                '<a>' + modulosData[gp].name + '</a>' +
+                                '</li>';*/
+
+                            var li = '<li class="nav-item renderView" url="' + modulosData[gp].url + '" data-tippy-content=" ' + modulosData[gp].descriptcion + '" >' +
+                                        '<a class="nav-link "  >' + 
+                                            
                                             '<span>' + modulosData[gp].name + '</span>' + 
                                         '</a>' + 
                                       '</li>';
@@ -165,52 +193,46 @@
                         }
 
                     }
-                    //console.log(modulosHTML);
-                    $('#sidebar-nav').append(modulosHTML);
+                    $('#sidebar-nav').append(modulosHTML);//Se añade el menú al login
                 },                
-                renderView: function (url) {
+                renderView: function (url) { //Función para renderizar vistas
                     var _this = this;
 
-                    /*if (url != "") { 
-                        let data = url.split('/');
-
-                        console.log(data)
-                    }*/
                     let divs = $("body div")
                     divs.each(function (index) {
                         if ($(this).attr("data-tippy-root") !== undefined) {
                             $(this).remove()
                         }
-                    })
+                    }) // se eliminans los Tooltip residuales de Tippy JS, esto sirve cuando se generan de manera dinamica
                     if (url != "") {
                         //$.get("/" + url, function (p) {
-                        $.get("@Url.Content("~/")" + url, function (p) {
-                            $('#main').empty();
-                            $("#main").html(p);                  
+                        $.get("@Url.Content("~/")" + url, function (p) {//Se renderiza el modulo al cual se le dio click
+                            $('#main').empty();//Se limpia el contendor de los modulos
+                            $("#main").html(p);// Se renderiza el modulo al que se le dio click             
                         });
                     }
                 },
-                clickModulos: function () {
+                clickModulos: function () {//Función click de los modulos
                     var _this = this;
                     $(".renderView").on("click", function (e) {
-                        var url = $(this).attr('url')
-                        _this.guardarVista(url)
-                        _this.renderView(url)
+                        var url = $(this).attr('url') //Se obtiene la URL del modulo del atributo url
+                        _this.guardarVista(url) //Se llama a al función que guarda vistas
+                        _this.renderView(url)// Se llama a la función que rederiza vistas
 
                     });
                 },
-                guardarVista: function (_modulo) {
-                    $.get('@Url.Action("GuardarModulo", "Home")', { modulo: _modulo }, function (mensaje) {
+                guardarVista: function (_modulo) { //Funcion para guardar el ultimo modulo al que se le dio click
+                    $.get('@Url.Action("GuardarModulo", "Home")', { modulo: _modulo }, function (mensaje) {//Get para guardar el modulo
                         //console.log(mensaje)
                     });
 
                 },
-                moduloActual: function () {
+                moduloActual: function () {//Función para obtener la ultima vista guardada en la sesión
                     var _this = this;
-                    $.get('@Url.Action("ObtenerModulo", "Home")', function (modulo) {
+                    $.get('@Url.Action("ObtenerModulo", "Home")', function (modulo) { 
                         
 
-                        if (modulo === undefined) {
+                        if (modulo === undefined) { // Si no hay modulo guardado se renderiza la introducción
                             //console.log('@Url.Action("MainPanel", "MainPanel")')
                             _this.renderView("Introduccion/Introduccion")
                         } else {
@@ -218,37 +240,52 @@
                         }
                     });
                 },
-                logOutBTN: function () {
+                logOutBTN: function () {//Función para cerrar sesión 
                     $('#BTN_LogOut').on('click', function () {
                         //$.get("/Home/LogOut", function () {
-                        $.get('@Url.Action("LogOut", "Home")', function () {
-                            window.location.reload()
+                        $.get('@Url.Action("LogOut", "Home")', function () { // Se llama a la action del controler para cerrar sesión 
+                            window.location.reload() // Se recarga para volver al login
                         });
                     });
 
                 },
-                CompanyData: function () {
+                CompanyData: function () { //Función para guardar la data de la company
                     $.get('@Url.Action("GuardarDataCompany", "Home")', function (data) {
                         //console.log(data)
-                        localStorage.clear()
-                        localStorage.setItem("companydatos", JSON.stringify(data))
+                        localStorage.clear() // Se limpia la data del local storage
+                        localStorage.setItem("companydatos", JSON.stringify(data)) // Se guarda la data de la company a la cual se acaba de ingresar
                     })
 
 
                 },
-                CargarLogo: function () {
-                    var src = '@ViewData["CompamyLogo"]';
+                CargarLogo: function () {//Función para cargar el logo de la empresa
+                    var src = '@ViewData["CompamyLogo"]'; //Se obtiene el nombnre del logo
                     //console.log('@Url.Content("~/")' + src)
-                    $("#logo").attr("src", '@Url.Content("~/")' + src)
+                    $("#logo").attr("src", '@Url.Content("~/")' + src) // Se pinta el logo
+                },
+                Tooltips: function () {//Función para mostrar una breve descripcion  de cada modulo 
+                    tippy('[data-tippy-content]');//Se inicialian los tooltips
+                },
+                init : function(){
+                    var _this = this
+                    _this.moduloActual();
+                    _this.loadModulos();
+                    _this.clickModulos();
+                    _this.logOutBTN();
+                    _this.navbar();
+                    _this.CompanyData();
+                    _this.CargarLogo();
+                    _this.Tooltips();
                 }
             }
         })
-        $.home_menu.moduloActual();
-        $.home_menu.loadModulos();
-        $.home_menu.clickModulos();
-        $.home_menu.logOutBTN();
-        $.home_menu.navbar();
-        $.home_menu.CompanyData();
-        $.home_menu.CargarLogo();
+        //$.home_menu.moduloActual();
+        //$.home_menu.loadModulos();
+        //$.home_menu.clickModulos();
+        //$.home_menu.logOutBTN();
+        //$.home_menu.navbar();
+        //$.home_menu.CompanyData();
+        //$.home_menu.CargarLogo();
+        $.home_menu.init()
     })();
 </script>

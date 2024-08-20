@@ -13,4 +13,17 @@
         public string TipoCarga { get; set; }
         public int TipoCargaValeCombustibleID { get; set; }
     }
+
+    public class ValeAnteriorXMobile
+    {
+        public string NumVale { get; set; }
+        /*public string FechaGeneracion { get; set; }
+        public string FechaAutorizado { get;set; }*/
+        public string FechaCierre { get; set; }
+        public double CantidadGalones { get; set; }
+        public double TotalPrecio { get; set; }
+        public double EficienciaOdometro { get; set; }
+        //public string EstatoVale { get;set; }
+
+    }
 }

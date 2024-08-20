@@ -19,5 +19,6 @@ namespace COMBUSTIBLEAESCORE.Interfaces
         public Task<IEnumerable<mensaje>> CrearCentroCosto(string Nombre, int CompanyID);
         public Task<IEnumerable<mensaje>> EliminarSubfleet(int SubfleetID, int CompanyID);
         public Task<IEnumerable<mensaje>> ActualizarSubfleet(int SubfleetID, int CompanyID, string NombreSubfleetNuevo);
+        public Task<IEnumerable<MobileXSubfleet>> ObtenerMobileXSubfleet(int SubfleetID);
     }
 }

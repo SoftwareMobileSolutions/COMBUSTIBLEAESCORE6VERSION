@@ -8,6 +8,7 @@ using System.Data;
 using Dapper;
 using System.ComponentModel.Design;
 using System.Numerics;
+using System.Linq;
 namespace COMBUSTIBLEAESCORE.Services
 {
     public class adAutorizarValesService : IadAutorizarVales
@@ -17,6 +18,29 @@ namespace COMBUSTIBLEAESCORE.Services
         public adAutorizarValesService(conexion _conexion)
         {
             conexion = _conexion;
+        }
+
+        public async Task<IEnumerable<mensaje>> AnularVale(int ValeCombustubibleID, int UsuarioID, int RazonID, int CompanyID)
+        {
+            IEnumerable<mensaje> data = null;
+            string sp = "EXEC SP_AnularVale @ValeCombustubibleID, @UsuarioID, @RazonID, @CompanyID";
+            var con = new SqlConnection(conexion.Value);
+            try
+            {
+                if (con.State == ConnectionState.Closed)
+                {
+                    con.Open();
+                    data = await con.QueryAsync<mensaje>(sp, new { ValeCombustubibleID, UsuarioID, RazonID, CompanyID }, commandType: CommandType.Text);
+                }
+            }
+            finally
+            {
+                if (con.State == ConnectionState.Open)
+                {
+                    con.Close();
+                }
+            }
+            return data;
         }
 
         public async Task<IEnumerable<mensaje>> AutorizarVale(int ValeCombustibleID, int TipoCargaID, int CentroCostoID, float? CantidadGalones, float? TotalPrecio, int ProyectoID, int UsuarioAutorizadorID)
@@ -65,28 +89,6 @@ namespace COMBUSTIBLEAESCORE.Services
             return data;
         }
 
-        /*public async Task<IEnumerable<CentroCostoModel>> ObtenerCentrosCosto(int CompanyID)
-        {
-            IEnumerable<CentroCostoModel> data = null;
-            string sp = "EXEC SP_ObtenerCentrosCostoWEB @CompanyID";
-            var con = new SqlConnection(conexion.Value);
-            try
-            {
-                if (con.State == ConnectionState.Closed)
-                {
-                    con.Open();
-                    data = await con.QueryAsync<CentroCostoModel>(sp, new { CompanyID }, commandType: CommandType.Text);
-                }
-            }
-            finally
-            {
-                if (con.State == ConnectionState.Open)
-                {
-                    con.Close();
-                }
-            }
-            return data;*/
-
         public async Task<IEnumerable<ProyectoModel>> ObtenerProyectos(int CompanyID)
         {
             IEnumerable<ProyectoModel> data = null;
@@ -110,9 +112,11 @@ namespace COMBUSTIBLEAESCORE.Services
             return data;
         }
 
-        public async Task<IEnumerable<ValesGeneradosModel>> ObtenerValeAutorizar(int ValeID, int CompanyID)
+        public async Task<(IEnumerable<ValesGeneradosModel>, IEnumerable<ValeAnteriorXMobile>, IEnumerable<mensaje>)> ObtenerValeAutorizar(int ValeID, int CompanyID)
         {
-            IEnumerable<ValesGeneradosModel> data = null;
+            IEnumerable<ValesGeneradosModel> valeAutorizar = null;
+            IEnumerable<ValeAnteriorXMobile> valeAnterior = null;
+            IEnumerable<mensaje> mensaje = null;
             string sp = "EXEC SP_ObtenerValeAutorizarWEB @ValeID, @CompanyID";
             var con = new SqlConnection(conexion.Value);
             try
@@ -120,7 +124,11 @@ namespace COMBUSTIBLEAESCORE.Services
                 if (con.State == ConnectionState.Closed)
                 {
                     con.Open();
-                    data = await con.QueryAsync<ValesGeneradosModel>(sp, new { ValeID, CompanyID }, commandType: CommandType.Text);
+                    var reader = await con.QueryMultipleAsync(sp, new { ValeID , CompanyID }, commandType: CommandType.Text);
+                    valeAutorizar = reader.Read<ValesGeneradosModel>().ToList();
+                    valeAnterior = reader.Read<ValeAnteriorXMobile>().ToList();
+                    mensaje = reader.Read<mensaje>().ToList();
+                    //data = await con.QueryAsync<ValesGeneradosModel>(sp, new { ValeID, CompanyID }, commandType: CommandType.Text);
                 }
             }
             finally
@@ -130,7 +138,7 @@ namespace COMBUSTIBLEAESCORE.Services
                     con.Close();
                 }
             }
-            return data;
+            return (valeAutorizar,valeAnterior,mensaje);
         }
 
         public async Task<IEnumerable<ValesGeneradosModel>> ObtenerValesGenerados(string FechaIni, string FechaFin , int CompanyID)
@@ -145,6 +153,52 @@ namespace COMBUSTIBLEAESCORE.Services
                 {
                     con.Open();
                     data = await con.QueryAsync<ValesGeneradosModel>(sp, new { FechaIni,  FechaFin,  CompanyID }, commandType: CommandType.Text);
+                }
+            }
+            finally
+            {
+                if (con.State == ConnectionState.Open)
+                {
+                    con.Close();
+                }
+            }
+            return data;
+        }
+
+        public async Task<IEnumerable<RazonCancelacionModel>> ObtenerRazonCancelacion(int CompanyID)
+        {
+            IEnumerable<RazonCancelacionModel> data = null;
+            string sp = "EXEC SP_rpRazonCancelacion @CompanyID";
+            var con = new SqlConnection(conexion.Value);
+            try
+            {
+                if (con.State == ConnectionState.Closed)
+                {
+                    con.Open();
+                    data = await con.QueryAsync<RazonCancelacionModel>(sp, new { CompanyID }, commandType: CommandType.Text);
+                }
+            }
+            finally
+            {
+                if (con.State == ConnectionState.Open)
+                {
+                    con.Close();
+                }
+            }
+            return data;
+        }
+
+        public async Task<IEnumerable<ValesModel>> ObtenerValesXEstado(int UsuarioID, int EstadoValeID, string FechaIni, string FechaFin, int CompanyID)
+        {
+            IEnumerable<ValesModel> data = null;
+            string sp = "EXEC SP_ObtenerValesXEstado @UsuarioID, @EstadoValeID, @FechaIni, @FechaFin, @CompanyID";
+            var con = new SqlConnection(conexion.Value);
+            try
+            {
+                if (con.State == ConnectionState.Closed)
+                {
+                    con.Open();
+                    data = await con.QueryAsync<ValesModel>(sp, new { UsuarioID, EstadoValeID, FechaIni, FechaFin, CompanyID }, commandType: CommandType.Text);
                 }
             }
             finally

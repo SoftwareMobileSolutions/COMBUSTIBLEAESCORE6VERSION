@@ -1,0 +1,574 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = null;
+
+    string guid = System.Guid.NewGuid().ToString().Replace("-", ""),
+    DropDownList_Filtros = "DropDownList_Filtros_" + guid,
+    Input_NumeroVale = "Input_NumeroVale_" + guid,
+    DropDownList_Placas = "DropDownList_Placas_" + guid,
+    DropDownList_Usuarios = "DropDownList_Usuarios_" + guid,
+    DateTimePicker_FechaIni = "DateTimePicker_FechaIni_" + guid,
+    DateTimePicker_FechaFin = "DateTimePicker_FechaFin_" + guid,
+    BTN_Generar = "BTN_Generar_" + guid,
+    Contenedor_NunVale = "Contenedor_NunVale_" + guid,
+    Contenedor_Placa = "Contenedor_Placa_" + guid,
+    Contenedor_Usuario = "Contenedor_Usuario_" + guid,
+    Contenedor_Fecha = "Contenedor_Fecha_" + guid,
+    Contenedor_BTN_Genrerar = "Contenedor_BTN_Genrerar_" + guid,
+    GRID_Vales = "GRID_Vales_" + guid,
+    DropDownList_EstadosVale = "DropDownList_EstadosVale_" + guid,
+    DateTimePicker_FechaCreditoFiscal = "DateTimePicker_FechaCreditoFiscal_" + guid,
+    Input_CreditoFiscal = "Input_CreditoFiscal_" + guid,
+    BTN_ActualizarEstado = "BTN_ActualizarEstado_" + guid,
+    Contenedor_BTN_ActualizarEstado = "Contenedor_BTN_ActualizarEstado_" + guid;
+}
+<section>
+    <div class="container-fluid card p-3"> 
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="text-center">Cambio de estado de vales</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3">
+                <h5 class="text-center">Filtrar datos por</h5>
+                <input id="@{@DropDownList_Filtros}"/>
+            </div>  
+            <div class="col-lg-3" id="@{@Contenedor_NunVale}" style="display:none">
+                <h5 class="text-center">Ingrese el numero de vale </h5>
+                <input class="form-control" id="@{@Input_NumeroVale}" type="number"/>
+            </div>
+            <div class="col-lg-3" id="@{@Contenedor_Placa}" style="display:none">
+                <h5 class="text-center" >Seleccione la placa</h5>
+                <input  id="@{@DropDownList_Placas}"/>
+            </div>
+            <div class="col-lg-6 d-flex" id="@{@Contenedor_Fecha}" style="display:none !important;">
+                <div class="w-50 px-2">
+                    <h5 class="text-center">Fecha Inicio</h5>
+                    <input class="form-control" id="@{@DateTimePicker_FechaIni}"/>
+                </div>
+                <div class="w-50 px-2">
+                    <h5 class="text-center">Fecha Fin</h5>
+                    <input class="form-control" id="@{@DateTimePicker_FechaFin}"/>
+                </div>
+            </div>
+            <div class="col-lg-3" id="@{@Contenedor_Usuario}" style="display:none">
+                <h5 class="text-center">Seleccione el usuario</h5>
+                <input  id="@{@DropDownList_Usuarios}"/>
+            </div>
+            <div class="col-lg-3 d-flex align-items-end offset-lg-6" id="@{@Contenedor_BTN_Genrerar}">
+                <button type="button" class="btn btn-success w-100" id="@{@BTN_Generar}"> Generar</button>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="container-fluid card p-3 " style="background: #e3e6e8;">
+        <div class="row">
+            <div class="col-lg-3">
+                <h6 >Seleccione el nuevo estado del vale</h6>
+                <input id="@{@DropDownList_EstadosVale}"/>
+            </div>
+            <div class="col-lg-3 container_credito_fiscal">
+                <h6>Ingrese el código de credito fiscal</h6>
+                <input type="text" class="form-control" id="@{@Input_CreditoFiscal}"/>
+            </div>
+            <div class="col-lg-3 container_credito_fiscal">
+                <h6>Ingrese la fecha de credito fiscal</h6>
+                <input id="@{@DateTimePicker_FechaCreditoFiscal}"/>
+            </div>
+            <div class="col-lg-3 d-flex align-items-end offset-lg-6" id="@{@Contenedor_BTN_ActualizarEstado}">
+                <button type="button" class="btn btn-primary w-100 " id="@{@BTN_ActualizarEstado}"> Actualizar estado(s)</button>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-lg-12">
+                <div id="@{@GRID_Vales}">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<style>
+    .k-dropdownlist{
+        height :38px;
+    }
+
+    .k-grid-content {
+        overflow-x: auto;
+    }
+
+    .select-all{
+        width: 50px !important;
+        text-align: center !important;
+    }
+
+    .col-data {
+        width:150px !important;
+    }
+
+    .col-data-title {
+        font-weight: bold !important;
+        text-align:center !important;
+    }
+
+    .col-num-vale {
+        width: 100px !important;
+    }
+
+    .col-date {
+        width: 170px !important;
+        text-align: center !important;
+    }
+
+    .container_credito_fiscal{
+        display:none;
+    }
+</style>
+<script>
+    (function () {
+        $.extend({
+            ModuloCambioEstadoVale: {
+                BarraOpciones: {
+                    DropDownLists: {
+                        Cargar: function () {
+                            var _this = this
+
+                            $("#@{@DropDownList_Filtros}").kendoDropDownList({
+                                dataTextField: "Nombre",
+                                dataValueField: "IdFiltro",
+                                optionLabel: 'Seleccione un filtro...',
+                                index: 0,
+                                change: $.ModuloCambioEstadoVale.BarraOpciones.mostrarOpcionesFiltro
+                            });
+
+                            $("#@{@DropDownList_Placas}").kendoDropDownList({
+                                dataTextField: "nombrePlaca",
+                                dataValueField: "mobileID", 
+                                index: 0
+                            });
+
+                            $("#@{@DropDownList_Usuarios}").kendoDropDownList({
+                                dataTextField: "username",
+                                dataValueField: "usuarioID",
+                                index: 0
+                            });
+
+                            $("#@{@DropDownList_EstadosVale}").kendoDropDownList({
+                                dataTextField: "estadoVale",
+                                dataValueField: "estadoValeID",
+                                index: 0,
+                                change: $.ModuloCambioEstadoVale.GRID.DatosCreditoFiscal
+                            });
+                        },
+                        Data: function () {
+                            var data = [
+                                {
+                                    Nombre: "Número de vale",
+                                    IdFiltro: 1
+                                },
+                                {
+                                    Nombre: "Placa",
+                                    IdFiltro: 2
+                                },
+                                {
+                                    Nombre: "Fecha de generación",
+                                    IdFiltro: 3
+                                },
+                                {
+                                    Nombre: "Fecha de actualización",
+                                    IdFiltro: 4
+                                },
+                                {
+                                    Nombre: "Fecha de crédito fiscal",
+                                    IdFiltro: 5
+                                },
+                                {
+                                    Nombre: "Usuario",
+                                    IdFiltro: 6
+                                }
+                            ]
+                            $("#@{@DropDownList_Filtros}").data("kendoDropDownList").dataSource.data(data)
+
+                            $.get('@Url.Action("ObtenerMobilesXCompany", "adCambioEstadoVale")', function (mobiles) {
+                                var Data = []
+                                mobiles.forEach(mobile => {
+                                    Data.push({
+                                        mobileID: mobile.mobileID, nombrePlaca: mobile.placa + " - [" + mobile.nombre + "]"
+                                    })
+                                })
+                                $("#@{@DropDownList_Placas}").data("kendoDropDownList").dataSource.data(Data)                            
+                            });
+
+                            $.get('@Url.Action("ObtenerUsuarioXCompany", "adCambioEstadoVale")', function (usuarios) {
+                                //console.log(usuarios)
+                                $("#@{@DropDownList_Usuarios}").data("kendoDropDownList").dataSource.data(usuarios)
+                            })
+                          
+                            $.get('@Url.Action("ObtenerEstados", "adCambioEstadoVale")', function (estados) {
+                                //console.log(estados)
+                                $("#@{@DropDownList_EstadosVale}").data("kendoDropDownList").dataSource.data(estados)
+                            })
+                        }
+                    },
+                    DateTimePicker:{
+                        Cargar: function () {
+                            $("#@{@DateTimePicker_FechaIni}").kendoDateTimePicker({
+                                dateInput: true,
+                                startTime: new Date(2023,1,3,8,30,0),
+                                endTime: new Date(2023,1,3,17,00,0)
+                            });
+                            $("#@{@DateTimePicker_FechaFin}").kendoDateTimePicker({
+                                dateInput: true,
+                                startTime: new Date(2023,1,3,8,30,0),
+                                endTime: new Date(2023,1,3,17,00,0)
+                            });
+                            $("#@{@DateTimePicker_FechaCreditoFiscal}").kendoDateTimePicker({
+                                dateInput: true,
+                                startTime: new Date(2023,1,3,8,30,0),
+                                endTime: new Date(2023,1,3,17,00,0)
+                            });
+                        },
+                        Data: function () {
+                            $("#@{@DateTimePicker_FechaIni}").data("kendoDateTimePicker").value(kendo.parseDate(moment().subtract(30, 'days').format("YYYY/MM/DD HH:mm:ss:SSS")));
+                            $("#@{@DateTimePicker_FechaFin}").data("kendoDateTimePicker").value(kendo.parseDate(moment().format("YYYY/MM/DD HH:mm:ss.SSS")));
+                            $("#@{@DateTimePicker_FechaCreditoFiscal}").data("kendoDateTimePicker").value(kendo.parseDate(moment().format("YYYY/MM/DD HH:mm:ss.SSS")));
+                        }
+                    },
+                    mostrarOpcionesFiltro: function (e) {
+                        let seleccion = $("#@{@DropDownList_Filtros}").data("kendoDropDownList").value()
+
+                        switch (seleccion) {
+                            case '1':
+                                ocultarFiltros()
+                                eliminarOffset("@{@Contenedor_BTN_Genrerar}")
+                                $("#@{@Contenedor_BTN_Genrerar}").addClass("offset-lg-3")
+                                $("#@{@Contenedor_NunVale}").show(1000)
+                                break;
+                            case '2':
+                                ocultarFiltros()
+                                eliminarOffset("@{@Contenedor_BTN_Genrerar}")
+                                $("#@{@Contenedor_BTN_Genrerar}").addClass("offset-lg-3")
+                                $("#@{@Contenedor_Placa}").show(1000)
+                                break;
+                            case '3':
+                                ocultarFiltros()
+                                eliminarOffset("@{@Contenedor_BTN_Genrerar}")
+                                $("#@{@Contenedor_Fecha}").show(1000)
+                                break;
+                            case '4':
+                                ocultarFiltros()
+                                eliminarOffset("@{@Contenedor_BTN_Genrerar}")
+                                $("#@{@Contenedor_Fecha}").show(1000)
+                                break;
+                            case '5':
+                                ocultarFiltros()
+                                eliminarOffset("@{@Contenedor_BTN_Genrerar}")
+                                $("#@{@Contenedor_Fecha}").show(1000)
+                                break;
+                            case '6':
+                                ocultarFiltros()
+                                eliminarOffset("@{@Contenedor_BTN_Genrerar}")
+                                $("#@{@Contenedor_BTN_Genrerar}").addClass("offset-lg-3")
+                                $("#@{@Contenedor_Usuario}").show(1000)
+                                break;
+                            default:
+                                ocultarFiltros()
+                                $("#@{@Contenedor_BTN_Genrerar}").addClass("offset-lg-6")
+                        }
+
+                        function ocultarFiltros() {
+                            $("#@{@Contenedor_NunVale}").css("display", "none")
+                            $("#@{@Contenedor_Placa}").css("display", "none")
+                            @*$("#@{@Contenedor_Equipo}").css("display", "none")
+                            $("#@{@Contenedor_Fecha}").css("display","none !important")*@
+                            $('#@{@Contenedor_Fecha}').attr('style', 'display:none !important');
+                            $("#@{@Contenedor_Usuario}").css("display", "none")
+                        }
+
+                        function eliminarOffset(_ID){
+                            $("#" + _ID).removeClass(function (index, className) {
+                                return (className.match(/(^|\s)offset-\S+/g) || []).join(' ');
+                            });
+                        }
+                    },
+                    BTN_Generar: function () {
+                        var _this = this 
+                        $("#@{@BTN_Generar}").on("click", function () {
+                            let seleccion = $("#@{@DropDownList_Filtros}").data("kendoDropDownList").value()
+                            if (seleccion === "") {
+                                $._combustible.alert("error", "Sin selección", "Debe seleccionar un filtro")
+                            } else {
+
+                                let _FiltroID = parseInt(seleccion)
+                                let _NumVale = $("#@{@Input_NumeroVale}").val()
+                                let _MobileID = $("#@{@DropDownList_Placas}").data("kendoDropDownList").value()
+                                let _FechaIni = moment($("#@{@DateTimePicker_FechaIni}").data("kendoDateTimePicker").value()).subtract(6, "hours").format("YYYYMMDD HH:mm:ss")
+                                let _FechaFin = moment($("#@{@DateTimePicker_FechaFin}").data("kendoDateTimePicker").value()).subtract(6, "hours").format("YYYYMMDD HH:mm:ss")
+                                let _UsuarioID = $("#@{@DropDownList_Usuarios}").data("kendoDropDownList").value()
+                                
+                                if (_this.Validaciones(_FiltroID, _NumVale) === true) {
+                                    //console.log("XD")
+                                    /*let arg = {
+                                        FiltroID: _FiltroID,
+                                        NumVale: _NumVale === "" ? null : _NumVale,
+                                        MobileID: _MobileID,
+                                        FechaIni: _FechaIni,
+                                        FechaFin: _FechaFin,
+                                        UsuarioID: _UsuarioID
+                                    }
+                                    console.log(arg)*/
+
+                                    @*$.get('@Url.Action("ObtenerVales", "adCambioEstadoVale")',arg,function(vales){
+                                        //console.log(vales)
+                                    })*@
+                                    $.ModuloCambioEstadoVale.GRID.Data(_FiltroID, _NumVale, _MobileID, _FechaIni, _FechaFin, _UsuarioID)
+                                    
+                                }                              
+                            }
+                        });
+                    },
+                    Validaciones: function (_FiltroID, _NumVale) {
+                        if (_FiltroID === 1) {
+                            if (_NumVale === "") {
+                                $._combustible.alert("error", "Sin numero de vale", "Debe ingresar un numero de vale")
+                                return false
+                            } else {
+                                return true
+                            }
+                        }
+                        return true
+                    }
+                },
+                GRID: {
+                    Cargar: function () {
+                        var _this = this
+                        $("#@{@GRID_Vales}").html("");
+                        $("#@{@GRID_Vales}").kendoGrid({
+                            dataSource: {
+                                pageSize: 20,
+                                schema: {
+                                    model: {
+                                        id: "valeCombustubibleID"
+                                    }
+                                }
+                            },
+                            columnMenu: true,
+                            scrollable: true,
+                            persistSelection: true,
+                            columns: [
+                                { 
+                                    selectable: true, 
+                                    attributes: { class: "select-all" },
+                                    headerAttributes: { class: "select-all" }
+                                },
+                                {
+                                    field: "numVale",
+                                    title: "N° Vale",
+                                    attributes: { class: "col-num-vale" },
+                                    headerAttributes: { class: "col-data-title col-num-vale" }
+                                },
+                                {
+                                    field: "estado",
+                                    title: "Estado",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data col-data-title" }
+                                },
+                                {
+                                    field: "sufbflota",
+                                    title: "SubFlota",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data col-data-title" }
+                                },
+                                {
+                                    field: "nombreMobile",
+                                    title: "Nombre",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data col-data-title" }
+                                },
+                                {
+                                    field: "placa",
+                                    title: "Placa",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data col-data-title" }
+                                },
+                                {
+                                    field: "tipoCarga",
+                                    title: "TipoCarga",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data col-data-title" }
+                                },
+                                {
+                                    field: "fechaGenerado",
+                                    title: "Fecha Generación",
+                                    attributes: { class: "col-date" },
+                                    headerAttributes: { class: "col-date col-data-title " }
+                                },
+                                {
+                                    field: "userGenera",
+                                    title: "Usuario Genera",
+                                    attributes: { class: "col-data " },
+                                    headerAttributes: { class: "col-data col-data-title" }
+                                },
+                                {
+                                    field: "fechaAutorizado",
+                                    title: "Fecha Autorización",
+                                    attributes: { class: "col-date" },
+                                    headerAttributes: { class: "col-date col-data-title" }
+                                },
+                                {
+                                    field: "usuarioAuto",
+                                    title: "Usuario Auto",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data col-data-title" }
+                                },
+                                {
+                                    field: "fechaCierra",
+                                    title: "Fecha Cierre",
+                                    attributes: { class: "col-date" },
+                                    headerAttributes: { class: "col-date col-data-title" }
+                                },
+                                {
+                                    field: "userCierra",
+                                    title: "Usurio Cerrador",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data col-data-title" }
+                                },
+                                {
+                                    field: "cantidadGalones",
+                                    title: "Cantidad Galones",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data col-data-title" }
+                                },
+                                {
+                                    field: "totalPrecio",
+                                    title: "Total ($)",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data col-data-title" }
+                                },
+                                {
+                                    field: "odometro",
+                                    title: "Odometro",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data col-data-title" }
+                                },
+                                {
+                                    field: "gasolinera",
+                                    title: "Gasolinera",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data col-data-title" }
+                                }
+                            ],
+                            pageable: true,
+                            excel: {
+                                fileName: "ReporteDeVales.xlsx"
+                            },
+                            dataBound: function (e) {
+                                $("#@{@GRID_Vales} > div span input").attr("placeholder", "Busqueda")
+                            }
+                        });
+                    },
+                    Temporal: {},
+                    Data: function (_FiltroID, _NumVale, _MobileID, _FechaIni, _FechaFin, _UsuarioID) {
+                        let arg = {
+                            FiltroID: _FiltroID,
+                            NumVale: _NumVale === "" ? null : _NumVale,
+                            MobileID: _MobileID,
+                            FechaIni: _FechaIni,
+                            FechaFin: _FechaFin,
+                            UsuarioID: _UsuarioID
+                        }
+
+                        $.ModuloCambioEstadoVale.GRID.Temporal = arg
+                        $.get('@Url.Action("ObtenerVales", "adCambioEstadoVale")', arg, function (vales) {
+                            vales.forEach(vale => {
+                                vale.fechaGenerado = moment(vale.fechaGenerado).format("DD/MM/YYYY HH:mm:ss")
+                                vale.fechaAutorizado =  vale.fechaAutorizado === null ? null : moment(vale.fechaAutorizado).format("DD/MM/YYYY HH:mm:ss")
+                                vale.fechaCierra = vale.fechaCierra === null ? null : moment(vale.fechaCierra).format("DD/MM/YYYY HH:mm:ss")
+                            })
+
+                            $("#@{@GRID_Vales}").data("kendoGrid").dataSource.data(vales)
+                        })
+                    },
+                    DatosCreditoFiscal: function () {
+                        let seleccion = $("#@{@DropDownList_EstadosVale}").data("kendoDropDownList").value()
+                        //console.log(seleccion)
+                        if (seleccion === "5") {
+                            $("#@{@Contenedor_BTN_ActualizarEstado}").removeClass("offset-lg-6")
+                            $(".container_credito_fiscal").show(500)
+                        }else {
+                            let display = $('.container_credito_fiscal').css('display');
+                            if (display === "block") {
+                                @*$("#@{@Contenedor_BTN_ActualizarEstado}").addClass("offset-lg-6")*@
+                                    $(".container_credito_fiscal").hide(500, function () {
+                                        $("#@{@Contenedor_BTN_ActualizarEstado}").addClass("offset-lg-6")
+                                    })
+                                
+                            }
+                        }
+                    },
+                    BTN_ActulizarEstado: function() {
+                        var _this = this 
+                        $("#@{@BTN_ActualizarEstado}").on("click", function () {
+                            let _ValesID = $("#@{@GRID_Vales}").data("kendoGrid").selectedKeyNames().join(", ")
+                            let _EstadoID = $("#@{@DropDownList_EstadosVale}").data("kendoDropDownList").value()
+                            let _CreditoFiscal = $("#@{@Input_CreditoFiscal}").val()
+                            let _FechaCreditoFiscal = moment($("#@{@DateTimePicker_FechaCreditoFiscal}").data("kendoDateTimePicker").value()).add(6, "hours").format("YYYYMMDD HH:mm:ss:SSS")
+                            //console.log(seleccionados)
+                            if (_ValesID === "") {
+                                $._combustible.alert("error", "Sin selección", "Debe seleccionar al menos un vale")
+                            }else {
+                                if (_this.Validaciones(_EstadoID, _CreditoFiscal) === true) {
+                                    let arg = {
+                                        ValesID: _ValesID,
+                                        EstadoID: _EstadoID,
+                                        CreditoFiscal: _CreditoFiscal,
+                                        FechaCreditoFiscal: _FechaCreditoFiscal
+                                    }
+                                    //console.log(arg)
+
+                                    $.post('@Url.Action("CambioEstadoVales", "adCambioEstadoVale")', arg, function (mensaje) {
+                                        mensaje = mensaje[0]
+                                        //console.log(mensaje)
+                                        if (mensaje.bandera === 1) {
+                                            $._combustible.alert("success", "Cambio de estado exitoso ", mensaje.resultado)
+                                            let arg = $.ModuloCambioEstadoVale.GRID.Temporal
+                                            $.ModuloCambioEstadoVale.GRID.Data(arg.FiltroID, arg.NumVale, arg.MobileID, arg.FechaIni, arg.FechaFin, arg.UsuarioID)
+                                        }else {
+                                            $._combustible.alert("error", "Error", mensaje.resultado)
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    },
+                    Validaciones: function (EstadoID, CreditoFiscal) {
+                        if (EstadoID === "5") {
+                            if (CreditoFiscal === "") {
+                                $._combustible.alert("error", "Campo vacío", "Debe ingresar el credito fiscal")
+                                return false
+                            }else {
+                                return true 
+                            }
+                        }
+                        return true 
+                    }
+                },
+                init: function () {
+                    var _this = this 
+                    _this.BarraOpciones.DropDownLists.Cargar()
+                    _this.BarraOpciones.DropDownLists.Data()
+                    _this.BarraOpciones.DateTimePicker.Cargar()
+                    _this.BarraOpciones.DateTimePicker.Data()
+                    _this.GRID.Cargar()
+                    _this.BarraOpciones.BTN_Generar()
+                    _this.GRID.BTN_ActulizarEstado()
+                }
+            }
+        })
+        $.ModuloCambioEstadoVale.init()
+    })();
+</script>

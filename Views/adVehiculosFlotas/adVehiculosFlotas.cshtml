@@ -51,7 +51,7 @@
     <div id="@{@TabstripVehiculosFlotas}">
         <ul>
             <li class="k-state-active">
-                Registro de Autos
+                Registro de Vehiculos
             </li>
             <li >
                 Registro de SubFlotas
@@ -157,7 +157,7 @@
             <div class="container-fluid card mt-lg-5 p-lg-5">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h2 class="text-center">Autos de la Compañia</h2>
+                        <h2 class="text-center">Vehiculos de la Compañia</h2>
                     </div>
                 </div>
                 <div class="row ">
@@ -183,12 +183,12 @@
             <div class="container-fluid card p-lg-3 p-2">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h2 class="text-center"> Registro de Sub Flotas</h2>
+                        <h2 class="text-center"> Registro de Subflotas</h2>
                     </div>
                 </div>
                 <div class="row mt-lg-2">
                     <div class="form-outline col-12 col-lg-8">
-                        <label class="form-label" for="">Ingrese el nomnbre de la flota<span class="text-danger">*</span></label>
+                        <label class="form-label" for="">Ingrese el nomnbre de la subflota<span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="@{@Input_Flota}" />
                     </div>
                     <div class="form-outline col-12 col-lg-4 mt-3 mt-lg-0 d-flex align-items-end">
@@ -200,7 +200,7 @@
             <div class="container-fluid card p-lg-3 p-2">
                 <div class="row">
                     <div class="col-12">
-                        <h2 class="text-center">Sub Flotas de la compañia</h2>
+                        <h2 class="text-center">Subflotas de la compañia</h2>
                     </div>
                 </div>
                 <div class="row mt-lg-2 mt-3">
@@ -396,17 +396,10 @@
     #btn_nuevaFlota, #btn_nuevoCentroCosto {
         height: 35px;
     }
-    /*#btn_registrar{
-        margin-top: 30px;
-    }*/
 
     .k-tabstrip > .k-content {
         background: #f6f9ff;
     }
-
-    /*#btn_nuevaFlota{
-        height: 35px;
-    }*/
 
     .k-grid-Editar {
         background: #198754;
@@ -439,7 +432,9 @@
         text-align: center !important;
         width: 200px;
     }
-
+    .subgrid-titles {
+        font-weight: bold !important;
+    }
     @@media screen and (max-width: 576px) {
         .col-command {
             width: 195px;
@@ -558,72 +553,73 @@
                                 },
                                 toolbar: ["excel", "search"],
                                 columns: [
+                                    
                                     {
-                                        field: "placa",
-                                        title: "Placa",
+                                        field: "nombreSubfleet",
+                                        title: "<b>Subflota</b>",
                                         width: "100px",
                                         attributes: { class: "col-data" },
                                         headerAttributes: { class: "col-data" }
                                     },
                                     {
                                         field: "nombre",
-                                        title: "Nombre",
+                                        title: "<b>Nombre</b>",
                                         width: "100px",
                                         attributes: { class: "col-data" },
                                         headerAttributes: { class: "col-data" }
                                     },
                                     {
-                                        field: "nombreSubfleet",
-                                        title: "Flota",
+                                        field: "placa",
+                                        title: "<b>Placa</b>",
                                         width: "100px",
                                         attributes: { class: "col-data" },
                                         headerAttributes: { class: "col-data" }
                                     },
                                     {
                                         field: "marca",
-                                        title: "Marca",
+                                        title: "<b>Marca</b>",
                                         width: "100px",
                                         attributes: { class: "col-data" },
                                         headerAttributes: { class: "col-data" }
                                     },
                                     {
                                         field: "modelo",
-                                        title: "Modelo",
+                                        title: "<b>Modelo</b>",
                                         width: "100px",
                                         attributes: { class: "col-data" },
                                         headerAttributes: { class: "col-data" }
                                     },
                                     {
                                         field: "fechaCreacion",
-                                        title: "Fecha de Creacion",
+                                        title: "<b>Fecha de Creacion</b>",
                                         width: "150px",
                                         attributes: { class: "col-data" },
                                         headerAttributes: { class: "col-data" }
                                     },
                                     {
                                         field: "kmXGalon",
-                                        title: "Km. por Gal.",
+                                        title: "<b>Km. por Gal.</b>",
                                         width: "100px",
                                         attributes: { class: "col-data" },
                                         headerAttributes: { class: "col-data" }
                                     },
                                     {
                                         field: "capacidadTanque",
-                                        title: "Cap. Tanque",
+                                        title: "<b>Cap. Tanque</b>",
                                         width: "100px",
                                         attributes: { class: "col-data" },
                                         headerAttributes: { class: "col-data" }
                                     },
                                     {
                                         field: "tipoCombustible",
-                                        title: "Tipo Combustible",
+                                        title: "<b>Tipo Combustible</b>",
                                         width: "100px",
                                         attributes: { class: "col-data" },
                                         headerAttributes: { class: "col-data" }
                                     },
                                     {
                                         field: "vin",
-                                        title: "VIN",
+                                        title: "<b>VIN</b>",
                                         width: "100px",
                                         attributes: { class: "col-data" },
                                         headerAttributes: { class: "col-data" }
@@ -689,7 +685,7 @@
                                                     var data = this.dataItem(tr);
                                                     //_this.EliminarProyecto(data.idProyectosVales, data.pep)
                                                     //console.log(data.mobileID)
-                                                    $.ModuloVehiculosFlotas.vehiculo.ActualizarVehiculo.EliminarMobile(data.mobileID)
+                                                    $.ModuloVehiculosFlotas.vehiculo.ActualizarVehiculo.EliminarMobile(data.mobileID,data.placa,data.nombre)
                                                 }
                                             }
 
@@ -706,8 +702,6 @@
                                 }
 
                             });
-
-
                             /*var FechaInicio = moment($("#FechaIni").data("kendoDateTimePicker").value()).add(6, 'hours').format("YYYYMMDD HH:mm:ss.SSS")
                             var FechaFin = moment($("#FechaFin").data("kendoDateTimePicker").value()).add(6, 'hours').format("YYYYMMDD HH:mm:ss.SSS")*/
                             /*var FechaInicio = _this.Fecha.FechaInicio
@@ -1091,11 +1085,37 @@
                                 }
                             });
                         },
-                        EliminarMobile: function (_MobileID) {
+                        EliminarMobile: function (_MobileID,_Placa,_Nombre) {
                             var arg = {
                                 MobileID: _MobileID
                             }
-                            $.post('@Url.Action("EliminarMobile", "adVehiculosFlotas")', arg, function (mensaje) {
+
+                            console.log(_Placa + " " + _Nombre )
+                            Swal.fire({
+                            title: "¿Esta seguro?",
+                            text: 'La eliminacion de "' + _Nombre  + ' - ['+_Placa +']" no es reversible',
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#3085d6",
+                            cancelButtonColor: "#d33",
+                            cancelButtonText: "Cancelar",
+                            confirmButtonText: "Si, eliminar!"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                $.post('@Url.Action("EliminarMobile", "adVehiculosFlotas")', arg, function (mensaje) {
+                                mensaje = mensaje[0]
+                                if (mensaje.bandera === 1) {
+                                    var FechaInicio = moment($("#@{@DateTime_FechaIni_Vehiculo}").data("kendoDateTimePicker").value()).add(6, 'hours').format("YYYYMMDD HH:mm:ss.SSS")
+                                    var FechaFin = moment($("#@{@DateTime_FechaFin_Vehiculo}").data("kendoDateTimePicker").value()).add(6, 'hours').format("YYYYMMDD HH:mm:ss.SSS")
+                                    $.ModuloVehiculosFlotas.vehiculo.GRID.DataGrid(FechaInicio, FechaFin)
+                                    $._combustible.alert("success", "Eliminación exitosa", mensaje.resultado)
+                                } else {
+                                    $._combustible.alert("error", "Error", mensaje.resultado)
+                                }
+                            })
+                            }
+                        });
+                            @*$.post('@Url.Action("EliminarMobile", "adVehiculosFlotas")', arg, function (mensaje) {
                                 mensaje = mensaje[0]
                                 if (mensaje.bandera === 1) {
                                     var FechaInicio = moment($("#@{@DateTime_FechaIni_Vehiculo}").data("kendoDateTimePicker").value()).add(6, 'hours').format("YYYYMMDD HH:mm:ss.SSS")
@@ -1106,7 +1126,7 @@
                                     $._combustible.alert("error", "Error", mensaje.resultado)
                                     //$._combustible.alert("success", "Eliminación exitosa", mensaje.resultado)
                                 }
-                            })
+                            })*@
                         },
                         alert: function (tipo, mensaje) {
                             if (tipo === "alerta") {
@@ -1167,7 +1187,7 @@
                                 columns: [
                                     {
                                         field: "nombreSubfleet",
-                                        title: "Sub FLota"
+                                        title: "<b>SubfLota</b>"
                                     },
                                     {
                                         command: [
@@ -1209,20 +1229,41 @@
                                 dataBound: function (e) {
                                     $("#@{@GRID_Flotas} > div span input").attr("placeholder", "Busqueda")
                                 },
+                                detailInit: _this.SubGrid.load,
                                 pageable: true,
                                 mobile: "phone",
                             });
                             _this.dataGrid();
                         },
                         dataGrid: function () {
-                            //$("#GridCentroCosto").data("kendoGrid").dataSource.data([])
-                            /*$.get('@Url.Action("ObtenerCentrosCosto", "adCentroCosto")', function (CentrosCosto) {
-                                
-                            })*/
                             $.get('@Url.Action("obtenerFlotas", "adVehiculosFlotas")', function (flotas) {
                                 $("#@{@GRID_Flotas}").data("kendoGrid").dataSource.data(flotas)
                             });
                         },
+                        SubGrid: {
+                            load: function (e) {
+                                //e.data.usuario
+                                //console.log(e.data.subfleetID)
+                                $.get('@Url.Action("ObtenerMobileXSubfleet", "adVehiculosFlotas")', { SubfleetID: e.data.subfleetID }, function (mobiles) {
+                                    //console.log(e.detailCell)
+                                    kendo.ui.Grid.prototype.options.messages.commands.search = "Busqueda";
+                                    $("<div/>").appendTo(e.detailCell).kendoGrid({
+                                        dataSource: mobiles,
+                                        toolbar: ["excel", "search"],
+                                        columns: [
+                                            { field: "nombre", title: "Nombre", width: "100px",headerAttributes: { class: "subgrid-titles" } },
+                                            { field: "placa", title: "Placa", width: "100px",headerAttributes: { class: "subgrid-titles" }  },
+                                            {field: "marca", title: "Marca", width: "150px",headerAttributes: { class: "subgrid-titles" }  },
+                                            { field: "modelo", title: "Modelo", width: "200px",headerAttributes: { class: "subgrid-titles" }  }
+
+                                        ], selectable: "single, row",
+                                        resizable: true
+                                    });
+                                    //console.log(subGrid.data("kendoGrid").dataSource.data())
+                                    
+                                })
+                            }
+                        }
                     },
                     EliminarSubfleet: function (_SubfleetID, _NombreSubfleet) {
                         let arg = {

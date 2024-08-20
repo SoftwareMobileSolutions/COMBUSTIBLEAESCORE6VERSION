@@ -6,6 +6,13 @@
 
     string guid = System.Guid.NewGuid().ToString().Replace("-", ""),
     Input_NombreGasolinera = "Input_NombreGasolinera_" + guid,
+    Input_CodigoGasolinera = "Input_CodigoGasolinera_" + guid,
+    Input_CiudadGasolinera = "Input_CiudadGasolinera_" + guid,
+    Input_GerenteGasolinera = "Input_GerenteGasolinera_" + guid,
+    Input_TelefonoGasolinera = "Input_TelefonoGasolinera_" + guid,
+    Input_NITGasolinera = "Input_NITGasolinera_" + guid,
+    Input_DireccionGasolinera = "Input_DireccionGasolinera_" + guid,
+    Input_EmailGasolinera = "Input_EmailGasolinera" + guid,
     BTN_ShowHideMapa = "BTN_ShowHideMapa_" + guid,
     TXT_ShowHideMapa = "TXT_ShowHideMapa_" + guid,
     Flecha = "Flecha_" + guid,
@@ -25,15 +32,51 @@
                 <h2 class="text-center">Agregar Gasolinera</h2>
             </div>
         </div>
-        <div class="row align-items-end">
-            <div class="col-lg-8">
-                <label>Ingrese el nombre de la Gasolinera</label>
+        <div class="row mt-3">
+            <div class="col-lg-6">
+                <h6>Ingrese el nombre de la Gasolinera</h6>
                 <input type="text" class="form-control mt-lg-2" id="@{@Input_NombreGasolinera}" />
             </div>
-            <div class="col-lg-2">
+            <div class="col-lg-6">
+                <h6>Ingrese el código de la Gasolinera</h6>
+                <input type="text" class="form-control mt-lg-2" id="@{@Input_CodigoGasolinera}" />
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-lg-6">
+                <h6>Ingrese la ciudad de la Gasolinera</h6>
+                <input type="text" class="form-control mt-lg-2"  id="@{@Input_CiudadGasolinera}"/>
+            </div>
+            <div class="col-lg-6">
+                <h6>Ingrese el Gerente de la Gasolinera</h6>
+                <input type="text" class="form-control mt-lg-2"  id="@{@Input_GerenteGasolinera}"/>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-lg-6">
+                <h6>Ingrese el telefono de la Gasolinera</h6>
+                <input type="text" class="form-control mt-lg-2"  id="@{@Input_TelefonoGasolinera}"/>
+            </div>
+            <div class="col-lg-6">
+                <h6>Ingrese el NIT de la Gasolinera</h6>
+                <input type="text" class="form-control mt-lg-2"  id="@{@Input_NITGasolinera}"/>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-lg-6">
+                <h6>Ingrese la dirección de la Gasolinera</h6>
+                <input type="text" class="form-control mt-lg-2"  id="@{@Input_DireccionGasolinera}"/>
+            </div>
+            <div class="col-lg-6">
+                <h6>Ingrese el correo electronico de la Gasolinera</h6>
+                <input type="text" class="form-control mt-lg-2"  id="@{@Input_EmailGasolinera}"/>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-lg-6">
                 <button type="button" class="btn btn-success w-100 my-2 my-lg-0" id="@{@BTN_ShowHideMapa}"> <i class="bi bi-pin-map"></i> <span id="TXT_ShowHideMapa" class="ms-2"> Agregar Ubicación</span> <i id="@{@Flecha}" class="bi bi-chevron-down"></i></button>
             </div>
-            <div class="col-lg-2">
+            <div class="col-lg-6">
                 <button type="button" class="btn btn-success w-100" id="@{@BTN_GuardarGasolinera}"> <i class="bi bi-plus-circle"></i> <span> Guardar Gasolinera</span></button>
             </div>
         </div>
@@ -84,36 +127,37 @@
     }
 
     .col-data {
-        width: 150px;
+        width: 150px !important;
     }
 
 
     .col-ubicacion {
         text-align: center !important;
-        width: 20px;
+        width: 100px !important;
     }
+
     @@media screen and (max-width: 576px) {
 
         .col-data {
-            width: 70px;
+            width: 120px !important;
         }
 
         .col-ubicacion {
             text-align: center !important;
-            width: 100px;
+            width: 120px !important;
         }
     }
 
-    @@media (min-width: 768px) and (max-width: 991.98px) {
+    /*@@media (min-width: 768px) and (max-width: 991.98px) {
         .col-data {
             width: 100px;
         }
 
         .col-ubicacion {
             text-align: center !important;
-            width: 40px;
+            width: 40px 100px !important;
         }
-    }
+    }*/
 </style>
 <script>
     (function () {
@@ -126,7 +170,6 @@
                         CargarMapa: function () {
                             var _this = this
 
-                            //console.log(google.maps)
                             $.LoadAPI().then(() => {
                                 const map = new google.maps.Map(document.getElementById("@{@Map}"), {
                                     center: { lat: 13.703052612879729, lng: -89.20242358465791 },
@@ -217,9 +260,98 @@
                                 $('#@{@DIV_Mapa}').slideToggle();
                             })
                         }
-
                     },
-                    Validaciones: function (NombreGasolinera) {
+                    KeyPress: function () {
+                            $('#@{@Input_TelefonoGasolinera}').keypress(function (event) {
+                                var keyCode = event.which;
+                                var inputValue = $(this).val();
+
+                                if (keyCode < 48 || keyCode > 57) {
+                                    event.preventDefault();
+                                }
+                                if (inputValue.length > 7) {
+                                    event.preventDefault();
+                                }
+
+                            });
+
+                            $('#@{@Input_TelefonoGasolinera}').on("paste", function (event) {
+                                event.preventDefault();
+                            });
+
+                            $('#@{@Input_NITGasolinera}').keypress(function (event) {
+                                var keyCode = event.which;
+                                var inputValue = $(this).val();
+
+                                if (keyCode < 48 || keyCode > 57) {
+                                    event.preventDefault();
+                                }
+                                if (inputValue.length > 13) {
+                                    event.preventDefault();
+                                }
+
+                            });
+
+                            $('#@{@Input_NITGasolinera}').on("paste", function (event) {
+                                event.preventDefault();
+                            });
+
+                            
+                            $('#@{@Input_CodigoGasolinera}').keypress(function (event) {
+                                var keyCode = event.which;
+                                var inputValue = $(this).val();
+
+
+                                if (inputValue.length > 49) {
+                                    event.preventDefault();
+                                }
+
+                            });
+
+                            $('#@{@Input_CiudadGasolinera}').keypress(function (event) {
+                                var keyCode = event.which;
+                                var inputValue = $(this).val();
+
+
+                                if (inputValue.length > 49) {
+                                    event.preventDefault();
+                                }
+
+                            });
+
+                            $('#@{@Input_GerenteGasolinera}').keypress(function (event) {
+                                var keyCode = event.which;
+                                var inputValue = $(this).val();
+
+                                if (inputValue.length > 49) {
+                                    event.preventDefault();
+                                }
+
+                            });
+
+                            $('#@{@Input_DireccionGasolinera}').keypress(function (event) {
+                                var keyCode = event.which;
+                                var inputValue = $(this).val();
+
+                                if (inputValue.length > 254) {
+                                    event.preventDefault();
+                                }
+
+                            });
+
+                            $('#@{@Input_EmailGasolinera}').keypress(function (event) {
+                                var keyCode = event.which;
+                                var inputValue = $(this).val();
+
+                                if (inputValue.length > 254) {
+                                    event.preventDefault();
+                                }
+
+                            });
+                    },
+                    Validaciones: function (NombreGasolinera, CodigoGasolinera,CiudadGasolinera,GerenteGasolinera,TelefonoGasolinera,NITGasolinera,DireccionGasolinera,EmailGasolinera) {
+                        var validEmail = /^\w+([.-_+]?\w+)*@@\w+([.-]?\w+)*(\.\w{2,10})+$/;
+                        
                         if (NombreGasolinera === ""){
                             $._combustible.alert("error", "Campo vacio", "Debe insertar el nombre de la gasolinera")
                             return false
@@ -229,20 +361,105 @@
                             return false
                         }
 
+                        if(CodigoGasolinera.length > 0){
+                            if (CodigoGasolinera.length < 3) {
+                                $._combustible.alert("error", "Código demasiado corto", "El Código debe tener al menos tres caracteres")
+                                return false
+                            }
+                        }
+
+                        if(CiudadGasolinera.length > 0){
+                            if (CiudadGasolinera.length < 3) {
+                                $._combustible.alert("error", "Nombre demasiado corto", "El nombre de la ciudad debe tener al menos tres caracteres")
+                                return false
+                            }
+                        }
+
+                        if(GerenteGasolinera.length > 0){
+                            if (GerenteGasolinera.length < 3) {
+                                $._combustible.alert("error", "Nombre demasiado corto", "El nombre de el gerente debe tener al menos tres caracteres")
+                                return false
+                            }
+                        }
+
+                        if(TelefonoGasolinera.length > 0){
+                            if (TelefonoGasolinera.length < 3) {
+                                $._combustible.alert("error", "Nombre demasiado corto", "El nombre de el gerente debe tener al menos tres caracteres")
+                                return false
+                            }
+                        }
+
+                        if(TelefonoGasolinera.length > 0){
+                            if (TelefonoGasolinera.length < 8) {
+                                $._combustible.alert("error", "Número demasiado corto", "El Número telefónico debe tener 8 digitos")
+                                return false
+                            }
+                        }
+
+                        if(NITGasolinera.length > 0){
+                            if (NITGasolinera.length < 14) {
+                                $._combustible.alert("error", "NIT demasiado corto", "El NIT  debe tener 14 digitos")
+                                return false
+                            }
+                        }
+                        if(NITGasolinera.length > 0){
+                            if (NITGasolinera.length < 14) {
+                                $._combustible.alert("error", "NIT demasiado corto", "El NIT  debe tener 14 digitos")
+                                return false
+                            }
+                        }
+
+                        if (DireccionGasolinera.length > 0) {
+                            if (DireccionGasolinera.length < 8) {
+                                $._combustible.alert("error", "Dirección demasiado corta", "La dirección debe tener al menos 8 digitos")
+                                return false
+                            }
+                        }
+
+                        if (EmailGasolinera.length > 0) {
+                            if (!validEmail.test(EmailGasolinera)) {
+                                $._combustible.alert("error", "Formato de correo incorrecto", "Debe digitar  un correo valido, por ejemplo usuario@correo.com")
+                                return false
+                            }
+                        }
+                        //if() 
+
+                        /*if(CodigoGasolinera.length > 0){
+                            if (CodigoGasolinera.length < 3) {
+                                $._combustible.alert("error", "Código demasiado corto", "El Código debe tener al menos tres caracteres")
+                                return false
+                            }
+                        }*/
                         return true
                     },
                     BTN_GuardaGasolinera: function () {
                         var _this = this
                         $("#@{@BTN_GuardarGasolinera}").on("click", function () {
                             var NombreGasolinera = $("#@{@Input_NombreGasolinera}").val().trim()
-                            if (_this.Validaciones(NombreGasolinera) === true) {
+                            var CodigoGasolinera = $("#@{@Input_CodigoGasolinera}").val().trim()
+                            var CiudadGasolinera = $("#@{@Input_CiudadGasolinera}").val().trim()
+                            var GerenteGasolinera = $("#@{@Input_GerenteGasolinera}").val().trim()
+                            var TelefonoGasolinera = $("#@{@Input_TelefonoGasolinera}").val().trim()
+                            var NITGasolinera = $("#@{@Input_NITGasolinera}").val().trim()
+                            var DireccionGasolinera = $("#@{@Input_DireccionGasolinera}").val().trim()
+                            var EmailGasolinera = $("#@{@Input_EmailGasolinera}").val().trim()
+
+                            if (_this.Validaciones(NombreGasolinera,CodigoGasolinera,CiudadGasolinera,GerenteGasolinera,TelefonoGasolinera,NITGasolinera,DireccionGasolinera,EmailGasolinera) === true) {
                                 var market = _this.AgregarUbicaion.markers[0]
                                 arg = {
                                     DescriEstacionServicio: NombreGasolinera,
                                     Latitud: (market === undefined ? null : market.getPosition().lat()),
-                                    Longitud: (market === undefined ? null : market.getPosition().lng())
+                                    Longitud: (market === undefined ? null : market.getPosition().lng()), 
+                                    CodigoGasolinera :CodigoGasolinera ,  
+                                    CiudadGasolinera: CiudadGasolinera,  
+                                    GerenteGasolinera: GerenteGasolinera,  
+                                    TelefonoGasolinera: TelefonoGasolinera,  
+                                    NITGasolinera : NITGasolinera,  
+                                    DireccionGasolinera : DireccionGasolinera,  
+                                    EmailGasolinera: EmailGasolinera
                                 }
-                            
+                                
+                                //console.log(arg)
                                 $.post('@Url.Action("CrearGasolinera", "adGasolinera")',arg,function (mensaje) {
                                     mensaje = mensaje[0]
                                     if (mensaje.bandera === 1) {
@@ -250,6 +467,15 @@
                                         $("#@{@Map}").html("")
                                         $.ModuloGasolinera.AgregarGasolinera.AgregarUbicaion.CargarMapa()
                                         $("#@{@Input_NombreGasolinera}").val("")
+
+                                        $("#@{@Input_CodigoGasolinera}").val("")
+                                        $("#@{@Input_CiudadGasolinera}").val("")
+                                        $("#@{@Input_GerenteGasolinera}").val("")
+                                        $("#@{@Input_TelefonoGasolinera}").val("")
+                                        $("#@{@Input_NITGasolinera}").val("")
+                                        $("#@{@Input_DireccionGasolinera}").val("")
+                                        $("#@{@Input_EmailGasolinera}").val("")
+
                                         //$('#DIV_Mapa').slideToggle();
                                         $('#@{@DIV_Mapa}').hide()
                                         $("#@{@Flecha}").removeClass("bi-chevron-up")
@@ -272,12 +498,55 @@
                             dataSource: {
                                 pageSize: 15
                             },
+                            scrollable: true,
                             toolbar: ["search"],
                             themeColor: "Purple",
                             columns: [
                                 {
                                     field: "nombre",
                                     title: "Nombre",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data" },
+                                },
+                                {
+                                    field: "codigo",
+                                    title: "Codigo",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data" },
+                                },
+                                {
+                                    field: "ciudad",
+                                    title: "Ciudad",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data" },
+                                },
+                                {
+                                    field: "gerente",
+                                    title: "Gerente",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data" },
+                                },
+                                {
+                                    field: "telefono",
+                                    title: "Telefono",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data" },
+                                },
+                                {
+                                    field: "nIT",
+                                    title: "NIT",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data" },
+                                },
+                                {
+                                    field: "direccion",
+                                    title: "Direccion",
+                                    attributes: { class: "col-data" },
+                                    headerAttributes: { class: "col-data" },
+                                },
+                                {
+                                    field: "email",
+                                    title: "Email",
                                     attributes: { class: "col-data" },
                                     headerAttributes: { class: "col-data" },
                                 },
@@ -318,6 +587,7 @@
                     },
                     DataGrid: function () {
                         $.get('@Url.Action("ObtenerGasolineras", "adGasolinera")', function (Gasolineras) {
+                            //console.log(Gasolineras)
                             $("#@{@GRID_Gasolinera}").data("kendoGrid").dataSource.data(Gasolineras)
                         })
                     },
@@ -359,6 +629,7 @@
                     _this.AgregarGasolinera.BTN_GuardaGasolinera()
                     _this.GRID.CargarGrid()
                     _this.GRID.DataGrid()
+                    _this.AgregarGasolinera.KeyPress()
 
                 }
             }

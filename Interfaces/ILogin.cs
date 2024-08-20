@@ -8,7 +8,7 @@ namespace COMBUSTIBLEAESCORE.Interfaces
     {
         public Task<IEnumerable<LoginModel>> login(string username, string password);
 
-        public Task<IEnumerable<ModulosModel>> getModulos(string username);
+        public Task<IEnumerable<ModulosModel>> getModulos(string username, int CompanyID);
 
         //public Task<IEnumerable<string>> userExists(string username);
     }

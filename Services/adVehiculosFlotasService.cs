@@ -272,5 +272,29 @@ namespace COMBUSTIBLEAESCORE.Services
             }
             return data;
         }
+
+        public async Task<IEnumerable<MobileXSubfleet>> ObtenerMobileXSubfleet(int SubfleetID)
+        {
+            //throw new System.NotImplementedException();
+            IEnumerable<MobileXSubfleet> data = null;
+            string sp = "EXEC SP_ObtenerMobileXSubFlota @SubfleetID";
+            var con = new SqlConnection(conexion.Value);
+            try
+            {
+                if (con.State == ConnectionState.Closed)
+                {
+                    con.Open();
+                    data = await con.QueryAsync<MobileXSubfleet>(sp, new { SubfleetID }, commandType: CommandType.Text);
+                }
+            }
+            finally
+            {
+                if (con.State == ConnectionState.Open)
+                {
+                    con.Close();
+                }
+            }
+            return data;
+        }
     }
 }

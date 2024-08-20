@@ -3,470 +3,1104 @@
 *@
 @{
     Layout = null;
+    /*string guid = System.Guid.NewGuid().ToString().Replace("-", ""),
+    DateTime_FechaIni_Vales = "DateTime_FechaIni_Vales_" + guid,
+    DateTime_FechaFin_Vales = "DateTime_FechaFin_Vales_" + guid,
+    BTN_GenerarVales = "BTN_GenerarVales_" + guid,
+    GRID_Vales = "GRID_Vales_" + guid,
+    Modal_Autorizar_Vale = "Modal_Autorizar_Vale_" + guid,
+    ValeA_TXT_NunVale = "ValeA_TXT_NunVale_" + guid,
+    ValeA_Fecha = "ValeA_Fecha_" + guid,
+    ValeA_Estado = "ValeA_Estado_" + guid,
+    NumValeTXT = "NumValeTXT_" + guid,
+    PlacaTXT = "PlacaTXT_" + guid,
+    FechaTXT = "FechaTXT_" + guid,
+    TXTTotal = "TXTTotal_" + guid;*/
 }
 <section>
-    <div class="card">
-        <div class="container-fluid p-lg-4 p-3">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h2 class="text-center">Autorizar Vales</h2>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-3 mb-2 mb-lg-0">
-                    <h4 class="text-start text-lg-center">Fecha inicio:</h4>
-                    <input id="FechaIni" class="w-100" />
-                </div>
-                <div class="col-lg-3 offset-0 offset-lg-4 mb-3 mb-lg-0">
-                    <h4 class="text-start text-lg-center">Fecha fin:</h4>
-                    <input id="FechaFin" class="w-100" />
-                </div>
-                <div class="col-lg-2 d-flex align-items-end">
-                    <button type="button" class="btn btn-success w-100" id="BTN_GenerarValesGRID"> Generar </button>
-                </div>
-            </div>
-            <div class="row mt-lg-3">
-                <div class="col-lg-12">
-                    <div id="GridVales">
+    <div id="tabstrip">
+        <ul>
+            <li class="k-state-active">
+                Autorizar Vales
+            </li>
+            <li>
+                Vales Autorizados 
+            </li>
+            <li>
+                Vales Anulados
+            </li>
+        </ul>
+        <div>
+            <div class="card">
+                <div class="container-fluid p-lg-4 p-3">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h2 class="text-center">Autorizar Vales</h2>
+                        </div>
                     </div>
-                    <span class="d-block d-lg-none mt-2 text-center">Presione doble click para autorizar un vale</span>
+                    <div class="row">
+                        <div class="col-lg-3 mb-2 mb-lg-0">
+                            <h4 class="text-start text-lg-center">Fecha inicio:</h4>
+                            <input id="FechaIni" class="w-100" />
+                        </div>
+                        <div class="col-lg-3 offset-0 offset-lg-4 mb-3 mb-lg-0">
+                            <h4 class="text-start text-lg-center">Fecha fin:</h4>
+                            <input id="FechaFin" class="w-100" />
+                        </div>
+                        <div class="col-lg-2 d-flex align-items-end">
+                            <button type="button" class="btn btn-success w-100" id="BTN_GenerarValesGRID"> Generar </button>
+                        </div>
+                    </div>
+                    <div class="row mt-lg-3">
+                        <div class="col-lg-12">
+                            <div id="GridVales">
+                            </div>
+                            <span class="d-block d-lg-none mt-2 text-center">Presione doble click para autorizar un vale</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="card">
+                <div class="container-fluid p-lg-4 p-3">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h2 class="text-center">Vales Autorizados</h2>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 mb-2 mb-lg-0">
+                            <h4 class="text-start text-lg-center">Fecha inicio:</h4>
+                            <input id="FechaIni_ValesGen" class="w-100" />
+                        </div>
+                        <div class="col-lg-3 offset-0 offset-lg-4 mb-3 mb-lg-0">
+                            <h4 class="text-start text-lg-center">Fecha fin:</h4>
+                            <input id="FechaFin_ValesGen" class="w-100" />
+                        </div>
+                        <div class="col-lg-2 d-flex align-items-end">
+                            <button type="button" class="btn btn-success w-100" id="BTN_ValesAutorizados"> Generar </button>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                       <div class="col-lg-12">
+                           <div id="GRID_ValesAutorizados"> 
+
+                           </div>        
+                       </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="card">
+                <div class="container-fluid p-lg-4 p-3">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h2 class="text-center">Vales Anulados</h2>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 mb-2 mb-lg-0">
+                            <h4 class="text-start text-lg-center">Fecha inicio:</h4>
+                            <input id="FechaIni_ValesAnu" class="w-100" />
+                        </div>
+                        <div class="col-lg-3 offset-0 offset-lg-4 mb-3 mb-lg-0">
+                            <h4 class="text-start text-lg-center">Fecha fin:</h4>
+                            <input id="FechaFin_ValesAnu" class="w-100" />
+                        </div>
+                        <div class="col-lg-2 d-flex align-items-end">
+                            <button type="button" class="btn btn-success w-100" id="BTN_ValesAnulados"> Generar </button>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-lg-12">
+                            <div id="GRID_ValesAnulados">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    
     <div class="modal fade" id="ModalAutorizarVale">
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="ModalAutorizarValeLabel">Autorizar vales</h5>
+                    <h4 class="modal-title" id="ModalAutorizarValeLabel">Autorizar vales - <span id="PlacaTXT"> Placa </span></h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" >
-                    <div class="container-fluid">
+                    <div class="container-fluid mt-2 mb-5 p-4" style="background: #ededed;border-radius: 5px;border: 2px solid #d9d9d9;">
                         <div class="row">
+                            <div class="col-lg-12">
+                                <h5 class="text-center"> Información vale anterior</h5>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-lg-2 d-flex justify-content-start">
+                                <span id="ValA_TXT_NumVale">N° Vale: 40</span>
+                            </div>
                             <div class="col-lg-4 d-flex justify-content-center">
+                                <span id="Vale_TXT_Fecha">Fecha: 30/07/2024 16:54:35</span>
+                            </div>
+                            <div class="col-lg-3 d-flex justify-content-center">
+                                <span id="ValeA_Eficiencia">Eficiencia combustible: Cerrado</span>
+                            </div>
+                            <div class="col-lg-3 d-flex justify-content-center">
+                                <span id="ValeA_EficienciaAVL">Eficiencia AVL: 29050</span>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <h6 class="text-danger" id="TXT_AlertaValeAuto">kk</h6>
+                        </div>
+                    </div>
+                    <div class="container-fluid mb-1 p-4 autorizar" id="ContainerValeAutorizar">
+                        <div class="row mb-2">
+                            <div class="col-lg-12 ">
+                                <h5 class="text-center" id="TXT_AccionVale"> Vale por autorizar</h5>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-lg-2 d-flex justify-content-center">
                                 <span id="NumValeTXT"> Número Vale </span>
                             </div>
-                            <div class="col-lg-4 d-flex justify-content-center">
-                                <span id="PlacaTXT"> Placa </span>                             
+                            <div class="col-lg-4 d-flex justify-content-center offset-lg-2">
+                                <span id="TXTTotal" ></span>
                             </div>
-                            <div class="col-lg-4 d-flex justify-content-center">
+                            @*<div class="col-lg-4 d-flex justify-content-center">
+                                <span id="PlacaTXT"> Placa </span>                             
+                            </div>*@
+                            <div class="col-lg-3 offset-lg-1 d-flex justify-content-center">
                                 <span id="FechaTXT"> Número Vale </span>
                             </div>
                         </div>
-                        <div >
+                        @*<div class="row">
                             <span id="TXTTotal" class="mt-3"></span>
-                        </div>
-                        <div class="row mt-3" id="ContenedorTotalDinero">
+                        </div>*@
+                        @*<div class="row mt-3" id="ContenedorTotalDinero">
                             <label id="TXTTotalDinero">Ingrese la cantidad de dinero</label>
                             <input type="text" class="form-control" id="InputTotalDinero" />
                         </div>
                         <div class="row mt-3" id="ContenedorGalones">
                             <label id="TXTGalones">Ingrese la cantidad de Galones</label>
                             <input type="text" class="form-control" id="InputGalones" />
+                        </div>*@
+                        <div class="row">
+                            <div class="col-lg-6" id="ContenedorTotalDinero">
+                                <label id="TXTTotalDinero">Ingrese la cantidad de dinero</label>
+                                <input type="text" class="form-control" id="InputTotalDinero" />
+                            </div>
+                            <div class="col-lg-6" id="ContenedorGalones">
+                                <label id="TXTGalones">Ingrese la cantidad de Galones</label>
+                                <input type="text" class="form-control" id="InputGalones" />
+                            </div>
+                            <div class="col-lg-6" >
+                                <label>Seleccione el centro de costo</label>
+                                <input id="DropDownListCentroCosto" />
+                            </div>
                         </div>
-                        <div class="row mt-3">
+                        @*<div class="row mt-3">
                             <label>Seleccione el centro de costo</label>
                             <input id="DropDownListCentroCosto" />
-                        </div>
+                        </div>*@
                         <div class="row mt-3">
-                            <label>Seleccione el Proyecto</label>
-                            <input id="DropDownListProyecto" />
+                            <div class="col-lg-12">
+                                <label>Seleccione el Proyecto</label>
+                                <input id="DropDownListProyecto" />
+                            </div>
                         </div>
+                    </div>
+                    <div class="container-fluid mb-3 p-4">
+                        @*<div class="row mt-3">
+                            <label>Desea anular el vale</label>
+                        </div>*@
+                        <div class="row mt-3 d-flex align-items-center">
+                            <div class="col-lg-3">
+                                <label>Desea anular el vale?</label>
+                                <div>
+                                    <div class="form-check form-check-inline" style="width:50px;">
+                                        <input class="form-check-input RC" type="radio" name="RadioOptions_AnularVale" id="Radio_No" value="No" checked>
+                                        <label class="form-check-label" for="Radio_No">No</label>
+                                    </div>
+                                    <div class="form-check form-check-inline " style="width:50px;">
+                                        <input class="form-check-input RC" type="radio" name="RadioOptions_AnularVale" id="Radio_Si" value="Si">
+                                        <label class="form-check-label" for="Radio_Si">Sí</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-9" style="display:none;" id="DIV_Razones">
+                                <span>Seleccione la razón de anulación</span>
+                                <input id="DropDownList_RazonesAnulacion" />
+                            </div>
+                        </div>
+                        @*<div class="row" style="display:none;" id="DIV_Razones">
+                            <div class="col-lg-12">
+                                <span>Seleccione la razón de anulación</span>
+                                <input id="DropDownList_RazonesAnulacion" />
+                            </div>
+                        </div>*@
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-success" id="BTN_AutorizarVale">Autorizar Vale</button>
+                    <button type="button" class="btn btn-success" id="BTN_Autorizar_Anular_Vale">Autorizar Vale</button>
                 </div>
             </div>
         </div>
     </div>
 </section>
+<style>
+    .subgrid-titles {
+        font-weight: bold !important;
+        /*background:red;*/
+    }
+
+    .k-dropdownlist {
+        height: 38px;
+    }
+
+    .autorizar {
+        background: #deffe7;
+        border-radius: 5px;
+        border: 2px solid #52ff81;
+    }
+
+    .anular {
+        background: #e6878b;
+        border-radius: 5px;
+        border: 2px solid #b8282e;
+    }
+</style>
 <script>
     (function () {
         $.extend({
-            Grid: {
-                CargarGrid: function () {
-                    var _this = this
-                    $("#FechaIni").kendoDateTimePicker({
-                        dateInput: true,
-                        startTime: new Date(2023, 1, 3, 8, 30, 0),
-                        endTime: new Date(2023, 1, 3, 17,00, 0)
-                    });
-                    $("#FechaFin").kendoDateTimePicker({
-                        dateInput: true,
-                        startTime: new Date(2023, 1, 3, 8, 30, 0),
-                        endTime: new Date(2023, 1, 3, 17,00, 0)
-                    });
-
-                    $("#FechaIni").data("kendoDateTimePicker").value(kendo.parseDate(moment().subtract(30, 'days').format("YYYY/MM/DD HH:mm:ss")));
-                    $("#FechaFin").data("kendoDateTimePicker").value(kendo.parseDate(moment().format("YYYY/MM/DD HH:mm:ss")));
-
-                    $("#GridVales").html("");
-                    $("#GridVales").kendoGrid({
-                        dataSource: {
-                            pageSize: 10
-                        },
-                        toolbar: ["search"],
-                        columns: [
-                            {
-                                field: "numVale",
-                                title: "N° Vale",
-                                width: 100
-                            },
-                            {
-                                field: "placa",
-                                title: "Placa",
-                                width: 150
-                            },
-                            {
-                                field: "totalPrecio",
-                                title: "Total $",
-                                width: 150
-                            },
-                            {
-                                field: "cantidadGalones",
-                                title: "Cant. Gal.",
-                                width: 150
-                            },
-                            {
-                                field: "fechaGeneracion",
-                                title: "Fecha de Generación",
-                                width: 150
-                            },
-                            {
-                                field: "tipoCarga",
-                                title: "Tipo de Carga",
-                                width: 150
-                            },
-                            {
-                                field: "estadoVale",
-                                title: "Estado de Vale",
-                                width: 150
-                            },
-                            {
-                                field: "usuarioGenerador",
-                                title: "Usuario Genera",
-                                width: 150
+            ModuloAutorizarVales: {
+                Tabstrip: function(){
+                    $(document).ready(function () {
+                        $("#tabstrip").kendoTabStrip({
+                            animation: {
+                                open: {
+                                    effects: "fadeIn"
+                                }
                             }
-                        ],
-                        selectable: "single, row",
-                        dataBound: function () {
-                            var touchtime = 0;
-                            $("#GridVales > div span input").attr("placeholder", "Busqueda")
-                            $("#GridVales .k-grid-content tbody tr:not(.k-grouping-row)").on("click", function () {
-
-                                var grid = $("#GridVales").data("kendoGrid");
-                                var row = $(this);
-                                
-                                if (((new Date().getTime()) - touchtime) < 500) {
-                                    var dataItem = grid.dataItem(row);
-                                    _this.Modal.MostrarModal(dataItem.valeCombustubibleID, dataItem.tipoCargaValeCombustibleID, dataItem.totalPrecio, dataItem.cantidadGalones, dataItem.placa)
-                                } touchtime = new Date().getTime();
-                            });
-                        },
-                        pageable: true,
-                        mobile: "phone",
-                    });
-                    $(".k-pager-wrap").append("<span class='w-100 text-center d-none d-lg-block'>Presione doble click para autorizar un vale</span>")
-                    var FechaIni = moment().utc().subtract(30, 'days').format("YYYYMMDD HH:mm:ss")
-                    var FechaFin = moment().utc().format("YYYYMMDD HH:mm:ss")
-                    _this.DataGrid(FechaIni, FechaFin)
-                },
-                DataGrid: function (_FechaIni, _FechaFin) {
-
-                    let arg = {
-                        FechaIni: _FechaIni,
-                        FechaFin: _FechaFin
-                    }
-                    console.log(arg)
-                    $.get('@Url.Action("ObtenerValesGenerados", "adAutorizarVales")', arg, function (vales) {
-                        vales.forEach((vale) => {
-                            vale.fechaGeneracion = moment(vale.fechaGeneracion).format("DD/MM/YYYY HH:mm:ss")
-                        })
-                        $("#GridVales").data("kendoGrid").dataSource.data(vales);
-                        //console.log(vales)
-                    })
-                },
-                BTN_GenerarVales: function () {
-                    var _this = this
-                    $("#BTN_GenerarValesGRID").on("click", function () {
-                        var FechaIni = moment($("#FechaIni").data("kendoDateTimePicker").value()).format("YYYYMMDD HH:mm:ss:SSS")
-                        var FechaFin = moment($("#FechaFin").data("kendoDateTimePicker").value()).format("YYYYMMDD HH:mm:ss:SSS")
-                        _this.DataGrid(FechaIni, FechaFin)
+                        });
                     });
                 },
-                Modal: {
-                    ValeID : 0,
-                    TipoCargaValeCombustibleID: 0,
-                    TotalDinero: 0,
-                    TotalGalones: 0,
-                    MostrarModal: function (valeCombustubibleID, tipoCargaValeCombustibleID, totalPrecio, cantidadGalones, placa) {
-                        var _this = this
-                        _this.ValeID = valeCombustubibleID
-                        _this.TipoCargaValeCombustibleID = tipoCargaValeCombustibleID
-                        _this.TotalDinero = totalPrecio
-                        _this.TotalGalones = cantidadGalones
-                        _this.DropDownList.DataDropDownList.DropDownListCentroCosto(placa)
-                        _this.DataModal()
-                        $("#ModalAutorizarVale").modal('show');
-                    },
-                    DataModal: function(){
-                        var _this = this
-                        
-                        $.get('@Url.Action("ObtenerValeAutorizar", "adAutorizarVales")', { 
-                            ValeID: _this.ValeID                       
-                        }).then(function (vale) {
-                            //console.log(vale)
-                            /*console.log("Entras")*/
-                            vale = vale[0]
-                            //console.log(vale)
-                            $("#ModalAutorizarVale").modal('show');
-                            $("#PlacaTXT").text("Placa: " + vale.placa)
-                            $("#NumValeTXT").text("N° Vale: " + vale.numVale)
-                            $("#FechaTXT").text("Fecha : " + vale.fechaGeneracion)
-                            $("#DropDownListProyecto").data("kendoDropDownList").value(0)
-                            $("#InputGalones").val("")
-                                /*$("#InputGalones").css("display", "block")
-
-                                $("#ContenedorTotalDinero").css("display", "block")
-                                $("#TXTTotalDinero").text("Ingrese la cantidad de dinero")*/
-                            $("#InputTotalDinero").val("")
-                                /*$("#InputTotalDinero").css("display", "block")
-                            }*/
-
-                            if (vale.tipoCargaValeCombustibleID === 2) {
-                                $("#TXTTotal").css("display", "block")
-                                $("#TXTTotal").text("Total Dolares = $" + vale.totalPrecio)
-
-                                $("#ContenedorGalones").css("display", "none")
-                                $("#InputGalones").css("display", "none")
-
-                                $("#ContenedorTotalDinero").css("display", "block")
-                                $("#TXTTotalDinero").text("Cambiar cantidad en dolares")
-                                $("#InputTotalDinero").val("")
-                                $("#InputTotalDinero").css("display", "block")
-                            } else if (vale.tipoCargaValeCombustibleID === 3) {
-                                $("#TXTTotal").css("display", "block")
-                                $("#TXTTotal").text("Total de Galones = " + vale.cantidadGalones)
-
-                                $("#ContenedorTotalDinero").css("display", "none")
-                                $("#InputTotalDinero").css("display", "none")
-
-                                $("#ContenedorGalones").css("display", "block")
-                                $("#TXTGalones").text("Cambiar cantidad en Galones")
-                                $("#InputGalones").val("")
-                                $("#InputGalones").css("display", "block")
-                            } else if (vale.tipoCargaValeCombustibleID === 1) {
-                                $("#TXTTotal").css("display", "none")
-                                $("#ContenedorGalones").css("display", "none")
-
-                                $("#ContenedorGalones").css("display", "none")
-                                $("#ContenedorTotalDinero").css("display", "none")
-                            }
-                        })
-                    },
-                    DropDownList: {
-                        CargarDropDownList: function () {
-                            $("#DropDownListCentroCosto").kendoDropDownList({
-                                filter: "contains",
-                                optionLabel: 'Seleccione el centro de costo...',
-                                dataTextField: "nombreCentroCosto",
-                                dataValueField: "centroCostoID"
+                AutorizarVales: {
+                    Grid: {
+                        CargarGrid: function () {
+                            var _this = this
+                            $("#FechaIni").kendoDateTimePicker({
+                                dateInput: true,
+                                startTime: new Date(2023, 1, 3, 8, 30, 0),
+                                endTime: new Date(2023, 1, 3, 17,00, 0)
+                            });
+                            $("#FechaFin").kendoDateTimePicker({
+                                dateInput: true,
+                                startTime: new Date(2023, 1, 3, 8, 30, 0),
+                                endTime: new Date(2023, 1, 3, 17,00, 0)
                             });
 
-                            $("#DropDownListProyecto").kendoDropDownList({
-                                filter: "contains",
-                                optionLabel: 'Seleccione el proyecto...',
-                                dataTextField: "nombreProyecto",
-                                dataValueField: "idProyectosVales"
-                            });
-                        },
-                        DataDropDownList: {
-                            DropDownListCentroCosto: function (_Placa) {
-                                $("#DropDownListCentroCosto").data("kendoDropDownList").dataSource.data([]);
-                                $.get('@Url.Action("ObtenerCentrosCostoAutorizalVale", "adAutorizarVales")', { Placa: _Placa }, function (centrosCosto) {
-                                    $("#DropDownListCentroCosto").data("kendoDropDownList").dataSource.data(centrosCosto);
-                                    var seleccionado = centrosCosto.filter(centroCosto => centroCosto.seleccionado === true);
+                            $("#FechaIni").data("kendoDateTimePicker").value(kendo.parseDate(moment().subtract(30, 'days').format("YYYY/MM/DD HH:mm:ss")));
+                            $("#FechaFin").data("kendoDateTimePicker").value(kendo.parseDate(moment().format("YYYY/MM/DD HH:mm:ss")));
 
-                                    if (seleccionado.length > 0) {
-                                        $("#DropDownListCentroCosto").data("kendoDropDownList").value(seleccionado[0].centroCostoID)
+                            $("#GridVales").html("");
+                            $("#GridVales").kendoGrid({
+                                dataSource: {
+                                    pageSize: 10
+                                },
+                                toolbar: ["search"],
+                                columns: [
+                                    {
+                                        field: "numVale",
+                                        title: "N° Vale",
+                                        width: 100,
+                                        headerAttributes: { class: "subgrid-titles" }
+                                    },
+                                    {
+                                        field: "placa",
+                                        title: "Placa",
+                                        width: 150,
+                                        headerAttributes: { class: "subgrid-titles" }
+                                    },
+                                    {
+                                        field: "totalPrecio",
+                                        title: "Total ($)",
+                                        width: 150,
+                                        headerAttributes: { class: "subgrid-titles" }
+                                    },
+                                    {
+                                        field: "cantidadGalones",
+                                        title: "Cant. Gal.",
+                                        width: 150,
+                                        headerAttributes: { class: "subgrid-titles" }
+                                    },
+                                    {
+                                        field: "fechaGeneracion",
+                                        title: "Fecha de Generación",
+                                        width: 150,
+                                        headerAttributes: { class: "subgrid-titles" }
+                                    },
+                                    {
+                                        field: "tipoCarga",
+                                        title: "Tipo de Carga",
+                                        width: 150,
+                                        headerAttributes: { class: "subgrid-titles" }
+                                    },
+                                    {
+                                        field: "estadoVale",
+                                        title: "Estado de Vale",
+                                        width: 150,
+                                        headerAttributes: { class: "subgrid-titles" }
+                                    },
+                                    {
+                                        field: "usuarioGenerador",
+                                        title: "Usuario Genera",
+                                        width: 150,
+                                        headerAttributes: { class: "subgrid-titles" }
                                     }
+                                ],
+                                selectable: "single, row",
+                                dataBound: function () {
+                                    var touchtime = 0;
+                                    $("#GridVales > div span input").attr("placeholder", "Busqueda")
+                                    $("#GridVales .k-grid-content tbody tr:not(.k-grouping-row)").on("click", function () {
+
+                                        var grid = $("#GridVales").data("kendoGrid");
+                                        var row = $(this);
+
+                                        if (((new Date().getTime()) - touchtime) < 500) {
+                                            var dataItem = grid.dataItem(row);
+                                            _this.Modal.MostrarModal(dataItem.valeCombustubibleID, dataItem.tipoCargaValeCombustibleID, dataItem.totalPrecio, dataItem.cantidadGalones, dataItem.placa)
+                                        } touchtime = new Date().getTime();
+                                    });
+                                },
+                                pageable: true,
+                                mobile: "phone",
+                            });
+                            $(".k-pager-wrap").append("<span class='w-100 text-center d-none d-lg-block'>Presione doble click para autorizar un vale</span>")
+                            var FechaIni = moment().utc().subtract(30, 'days').format("YYYYMMDD HH:mm:ss")
+                            var FechaFin = moment().utc().format("YYYYMMDD HH:mm:ss")
+                            _this.DataGrid(FechaIni, FechaFin)
+                        },
+                        DataGrid: function (_FechaIni, _FechaFin) {
+
+                            let arg = {
+                                FechaIni: _FechaIni,
+                                FechaFin: _FechaFin
+                            }
+                            //console.log(arg)
+                            $.get('@Url.Action("ObtenerValesGenerados", "adAutorizarVales")', arg, function (vales) {
+                                vales.forEach((vale) => {
+                                    vale.fechaGeneracion = moment(vale.fechaGeneracion).format("DD/MM/YYYY HH:mm:ss")
+                                })
+                                $("#GridVales").data("kendoGrid").dataSource.data(vales);
+                                //console.log(vales)
+                            })
+                        },
+                        BTN_GenerarVales: function () {
+                            var _this = this
+                            $("#BTN_GenerarValesGRID").on("click", function () {
+                                var FechaIni = moment(
+                                        $("#FechaIni").data("kendoDateTimePicker").value()
+                                    ).add(6,'hours').format("YYYYMMDD HH:mm:ss:SSS")
+                                var FechaFin = moment(
+                                        $("#FechaFin").data("kendoDateTimePicker").value()
+                                    ).add(6, 'hours').format("YYYYMMDD HH:mm:ss:SSS")
+                                _this.DataGrid(FechaIni, FechaFin)
+                            });
+                        },
+                        Modal: {
+                            ValeID: 0,
+                            TipoCargaValeCombustibleID: 0,
+                            TotalDinero: 0,
+                            TotalGalones: 0,
+                            MostrarModal: function (valeCombustubibleID, tipoCargaValeCombustibleID, totalPrecio, cantidadGalones, placa) {
+                                var _this = this
+                                _this.ValeID = valeCombustubibleID
+                                _this.TipoCargaValeCombustibleID = tipoCargaValeCombustibleID
+                                _this.TotalDinero = totalPrecio
+                                _this.TotalGalones = cantidadGalones
+                                _this.DropDownList.DataDropDownList.DropDownListCentroCosto(placa)
+                                _this.DataModal()
+
+                                $("#ContainerValeAutorizar").removeClass("anular")
+                                $("#ContainerValeAutorizar").addClass("autorizar")
+
+                                $("#DropDownListCentroCosto").data("kendoDropDownList").enable(true);
+                                $("#DropDownListProyecto").data("kendoDropDownList").enable(true);
+                                $("#InputTotalDinero").prop("disabled", false);
+                                $("#InputGalones").prop("disabled", false);
+                                $("#Radio_No").prop("checked", true);
+                                $("#DIV_Razones").hide(400);
+                                $("#TXT_AccionVale").text("Vale por autorizar");
+                                $("#DropDownList_RazonesAnulacion").data("kendoDropDownList").value(0)
+                                $("#ModalAutorizarVale").modal('show');
+                            },
+                            DataModal: function () {
+                                var _this = this
+
+                                $.get('@Url.Action("ObtenerValeAutorizar", "adAutorizarVales")', {
+                                    ValeID: _this.ValeID
+                                }).then(function (vale) {
+                                    //console.log(vale)
+
+                                    /******************Vale por autorizar********************/
+                                    let valeAutorizar = vale["valeAutorizar"][0]
+
+                                    $("#PlacaTXT").text(valeAutorizar.placa)
+                                    $("#NumValeTXT").text("N° Vale: " + valeAutorizar.numVale)
+                                    $("#FechaTXT").text("Fecha : " + moment(valeAutorizar.fechaGeneracion).format("DD/MM/YYYY HH:mm:ss"))
+                                    $("#DropDownListProyecto").data("kendoDropDownList").value(0)
+                                    $("#InputGalones").val("")
+                                    $("#InputTotalDinero").val("")
+                                    $("#TXT_AlertaValeAuto").text("")
+
+                                    if (valeAutorizar.tipoCargaValeCombustibleID === 2) {
+                                        $("#TXTTotal").css("display", "block")
+                                        $("#TXTTotal").text("Total Dolares = $" + valeAutorizar.totalPrecio)
+
+                                        $("#ContenedorGalones").css("display", "none")
+                                        $("#InputGalones").css("display", "none")
+
+                                        $("#ContenedorTotalDinero").css("display", "block")
+                                        $("#TXTTotalDinero").text("Cambiar cantidad en dolares")
+                                        $("#InputTotalDinero").val("")
+                                        $("#InputTotalDinero").css("display", "block")
+                                    } else if (valeAutorizar.tipoCargaValeCombustibleID === 3) {
+                                        $("#TXTTotal").css("display", "block")
+                                        $("#TXTTotal").text("Total de Galones = " + valeAutorizar.cantidadGalones)
+
+                                        $("#ContenedorTotalDinero").css("display", "none")
+                                        $("#InputTotalDinero").css("display", "none")
+
+                                        $("#ContenedorGalones").css("display", "block")
+                                        $("#TXTGalones").text("Cambiar cantidad en Galones")
+                                        $("#InputGalones").val("")
+                                        $("#InputGalones").css("display", "block")
+                                    } else if (valeAutorizar.tipoCargaValeCombustibleID === 1) {
+                                        $("#TXTTotal").css("display", "none")
+                                        $("#ContenedorGalones").css("display", "none")
+
+                                        $("#ContenedorGalones").css("display", "none")
+                                        $("#ContenedorTotalDinero").css("display", "none")
+                                    }
+
+                                    /*********** Vale Anterior **************************/
+                                    let ValeAnterior = vale["valeAnterior"][0]
+                                    //console.log(ValeAnterior)
+                                    if (ValeAnterior === undefined) {
+                                        $("#ValA_TXT_NumVale").text("N° Vale: ")
+                                        $("#Vale_TXT_Fecha").text("Fecha cierre: ")
+                                        $("#ValeA_Eficiencia").text("Eficiencia combustible: ")
+                                        $("#ValeA_EficienciaAVL").text("Eficiencia AVL: ")
+                                    }else {
+                                        $("#ValA_TXT_NumVale").text("N° Vale: " + ValeAnterior.numVale)
+                                        $("#Vale_TXT_Fecha").text("Fecha cierre: " + moment(ValeAnterior.fechaCierre).format("DD/MM/YYYY HH:mm:ss"))
+                                        $("#ValeA_Eficiencia").text("Eficiencia combustible: " + Math.trunc(ValeAnterior.eficienciaOdometro * 100) / 100)
+                                        $("#ValeA_EficienciaAVL").text("Eficiencia AVL: ")
+                                    }
+
+                                    /*********** Alerta vale autorizado *****************/
+                                    let mensaje = vale["mensaje"][0]
+
+                                    if (mensaje.bandera === 0) {
+                                        $("#TXT_AlertaValeAuto").text("Alerta: " + mensaje.resultado)
+                                    } else {
+                                        $("#TXT_AlertaValeAuto").text("")
+                                    }
+
+                                    $("#ModalAutorizarVale").modal('show');
                                 })
                             },
-                            DropDownListProyecto: function(){
-                                var _Proyectos = []
+                            AnularVale: function () {
+                                $(".RC").on("change", function (e) {
 
-                                $.get('@Url.Action("ObtenerProyectos", "adAutorizarVales")', function (Proyectos) {
-                                    //console.log(Proyectos)
-                                //$("#DropDownListCentroCosto").data("kendoDropDownList").dataSource.data(centrosCosto);
-                                    Proyectos.forEach((proyecto) => {
-                                    //console.log(proyecto)
-                                        _Proyectos.push({ idProyectosVales: proyecto.idProyectosVales, nombreProyecto: proyecto.nombreProyecto + "- [" + proyecto.codigoProyecto + "]" })
-                                    })
-                                //console.log(_Proyectos)
-                                    $("#DropDownListProyecto").data("kendoDropDownList").dataSource.data(_Proyectos);
+                                    let seleccion = $(this).val()
+                                    if (seleccion === "Si") {
+                                        $("#DIV_Razones").show(400)
+                                        $("#ContainerValeAutorizar").removeClass("autorizar")
+                                        $("#ContainerValeAutorizar").addClass("anular")
+
+                                        $("#DropDownListCentroCosto").data("kendoDropDownList").enable(false);
+                                        $("#DropDownListProyecto").data("kendoDropDownList").enable(false);
+                                        $("#InputTotalDinero").prop("disabled", true);
+                                        $("#InputGalones").prop("disabled", true);
+                                        $("#TXT_AccionVale").text("Vale por anular");
+                                        $("#BTN_Autorizar_Anular_Vale").text("Anular Vale")
+
+                                    } else {
+                                        $("#DIV_Razones").hide(400)
+                                        $("#ContainerValeAutorizar").removeClass("anular")
+                                        $("#ContainerValeAutorizar").addClass("autorizar")
+
+                                        $("#DropDownListCentroCosto").data("kendoDropDownList").enable(true);
+                                        $("#DropDownListProyecto").data("kendoDropDownList").enable(true);
+                                        $("#InputTotalDinero").prop("disabled", false);
+                                        $("#InputGalones").prop("disabled", false);
+                                        $("#TXT_AccionVale").text("Vale por autorizar");
+                                        $("#BTN_Autorizar_Anular_Vale").text("Autorizar Vale")
+                                    }
+                                    //console.log()
                                 })
+                            },
+                            DropDownList: {
+                                CargarDropDownList: function () {
+                                    $("#DropDownListCentroCosto").kendoDropDownList({
+                                        filter: "contains",
+                                        optionLabel: 'Seleccione el centro de costo...',
+                                        dataTextField: "nombreCentroCosto",
+                                        dataValueField: "centroCostoID"
+                                    });
+
+                                    $("#DropDownListProyecto").kendoDropDownList({
+                                        filter: "contains",
+                                        optionLabel: 'Seleccione el proyecto...',
+                                        dataTextField: "nombreProyecto",
+                                        dataValueField: "idProyectosVales"
+                                    });
+
+                                    $("#DropDownList_RazonesAnulacion").kendoDropDownList({
+                                        filter: "contains",
+                                        optionLabel: 'Seleccione una razón de anulacion...',
+                                        dataTextField: "razon",
+                                        dataValueField: "idRazonValeCancelado"
+                                    });
+                                },
+                                DataDropDownList: {
+                                    DropDownListCentroCosto: function (_Placa) {
+                                        $("#DropDownListCentroCosto").data("kendoDropDownList").dataSource.data([]);
+                                        $.get('@Url.Action("ObtenerCentrosCostoAutorizalVale", "adAutorizarVales")', { Placa: _Placa }, function (centrosCosto) {
+                                            //console.log(centrosCosto)
+                                            $("#DropDownListCentroCosto").data("kendoDropDownList").dataSource.data(centrosCosto);
+                                            var seleccionado = centrosCosto.filter(centroCosto => centroCosto.seleccionado === true);
+
+                                            if (seleccionado.length > 0) {
+                                                $("#DropDownListCentroCosto").data("kendoDropDownList").value(seleccionado[0].centroCostoID)
+                                            }
+                                        })
+                                    },
+                                    DropDownListProyecto: function () {
+                                        var _Proyectos = []
+
+                                        $.get('@Url.Action("ObtenerProyectos", "adAutorizarVales")', function (Proyectos) {
+                                            //console.log(Proyectos)
+                                            //$("#DropDownListCentroCosto").data("kendoDropDownList").dataSource.data(centrosCosto);
+                                            Proyectos.forEach((proyecto) => {
+                                                //console.log(proyecto)
+                                                _Proyectos.push({ idProyectosVales: proyecto.idProyectosVales, nombreProyecto: proyecto.nombreProyecto + "- [" + proyecto.codigoProyecto + "]" })
+                                            })
+                                            //console.log(_Proyectos)
+                                            $("#DropDownListProyecto").data("kendoDropDownList").dataSource.data(_Proyectos);
+                                        })
+                                    },
+                                    DropDownListRazonesCancel: function () {
+                                        $.get('@Url.Action("ObtenerRazonCancelacion", "adAutorizarVales")', function (razones) {
+                                            $("#DropDownList_RazonesAnulacion").data("kendoDropDownList").dataSource.data(razones);
+                                            //console.log(razones)
+                                        })
+                                    }
+                                }
+                            },
+                            keypress: function () {
+                                var _this = this;
+                                $('#InputTotalDinero').keypress(function (event) {
+                                    //console.log("XD")
+                                    var keyCode = event.which;
+                                    var inputValue = $(this).val();
+
+                                    if ((keyCode < 48 || keyCode > 57) && keyCode !== 46) {
+                                        event.preventDefault();
+                                    }
+
+                                    if (keyCode === 46 && inputValue.indexOf('.') !== -1) {
+                                        event.preventDefault();
+                                    }
+
+                                    if (inputValue.indexOf('.') !== -1 && inputValue.split('.')[1].length >= 2 && keyCode !== 46) {
+                                        event.preventDefault();
+                                    }
+
+                                });
+
+                                $('#InputGalones').keypress(function (event) {
+
+                                    var keyCode = event.which;
+                                    var inputValue = $(this).val();
+
+                                    if ((keyCode < 48 || keyCode > 57) && keyCode !== 46) {
+                                        event.preventDefault();
+                                    }
+
+                                    if (keyCode === 46 && inputValue.indexOf('.') !== -1) {
+                                        event.preventDefault();
+                                    }
+
+                                    if (inputValue.indexOf('.') !== -1 && inputValue.split('.')[1].length >= 4 && keyCode !== 46) {
+                                        event.preventDefault();
+                                    }
+
+                                });
+
+                            },
+                            Validaciones: {
+                                AurotizarVale: function (TotalDinero, TotalGalones, CentroCostoID, ProyectoID, TipoCargaID) {
+                                    if (TipoCargaID === 2) {
+
+                                        if (TotalDinero !== "") {
+                                            TotalDinero = parseFloat(TotalDinero)
+                                            if (TotalDinero === 0) {
+                                                $._combustible.alert("error", "Total en dolares incorrpeto", "La cantidad  de dolares debe ser mayor a cero")
+                                                return false
+                                            }
+                                        }
+
+                                        if (CentroCostoID === "") {
+                                            $._combustible.alert("error", "Sin selección", "Debe seleccionar un centro de costo")
+                                            return false
+                                        }
+
+                                        /*if (ProyectoID === "") {
+                                            $._combustible.alert("error", "Sin selección", "Debe seleccionar un proyecto")
+                                            return false
+                                        }*/
+
+                                    } else if (TipoCargaID === 3) {
+                                        if (TotalGalones !== "") {
+                                            TotalGalones = parseFloat(TotalGalones)
+                                            if (TotalGalones === 0) {
+                                                $._combustible.alert("error", "Total en galones incorrpeto", "La cantidad  de galones debe ser mayor a cero")
+                                                return false
+                                            }
+                                        }
+
+                                        if (CentroCostoID === "") {
+                                            $._combustible.alert("error", "Sin selección", "Debe seleccionar un centro de costo")
+                                            return false
+                                        }
+
+                                        /*if (ProyectoID === "") {
+                                            $._combustible.alert("error", "Sin selección", "Debe seleccionar un proyecto")
+                                            return false
+                                        }*/
+                                    } else if (TipoCargaID === 1) {
+                                        if (CentroCostoID === "") {
+                                            $._combustible.alert("error", "Sin selección", "Debe seleccionar un centro de costo")
+                                            return false
+                                        }
+
+                                        /*if (ProyectoID === "") {
+                                            $._combustible.alert("error", "Sin selección", "Debe seleccionar un proyecto")
+                                            return false
+                                        }*/
+                                    }
+
+                                    return true
+                                },
+                                AnularVale: function (_RazonAnulacion) {
+                                    if (_RazonAnulacion === "") {
+                                        $._combustible.alert("error", "Sin selección", "Debe seleccionar una razón de anulación")
+                                        return false
+                                    }
+                                    return true
+                                }
+                            },
+                            BTN_Autorizar_Anular_Vale: function () {
+                                var _this = this
+                                $("#BTN_Autorizar_Anular_Vale").on("click", function () {
+                                    var Anular = $("#Radio_Si").is(":checked")
+                                    //console.log(Anular)
+                                    if (Anular === true) {
+                                        let razonID = $("#DropDownList_RazonesAnulacion").data("kendoDropDownList").value()
+                                        if (_this.Validaciones.AnularVale(razonID)) {
+                                            //console.log("Anula vale")
+                                            let arg = {
+                                                ValeCombustubibleID: _this.ValeID,
+                                                RazonID: parseInt(razonID)
+                                            }
+                                            //console.log(arg)
+                                            $.post('@Url.Action("AnularVale", "adAutorizarVales")', arg, function (mensaje) {
+                                                mensaje = mensaje[0]
+                                                if (mensaje.bandera === 1) {
+                                                    /*_this.alertModal("suceso", 'Vale Anulado: ' + mensaje.resultado)
+                                                    $("#InputRazonesCancelacion").data("kendoDropDownList").select(0)
+                                                    $("#BTN_Anular").attr("disabled", true)
+                                                    $.GRID.dataGrid();*/
+                                                    $._combustible.alert("success", "Vale anulado", mensaje.resultado)
+                                                    $("#ModalAutorizarVale").modal('hide');
+
+                                                    var FechaIni = moment($("#FechaIni").data("kendoDateTimePicker").value()).add(6, 'hours').format("YYYYMMDD HH:mm:ss");
+
+                                                    $("#FechaFin").data("kendoDateTimePicker").value(kendo.parseDate(moment().add(6, 'hours').format("YYYY/MM/DD HH:mm:ss")));
+
+                                                    var FechaFin = moment($("#FechaFin").data("kendoDateTimePicker").value()).format("YYYYMMDD HH:mm:ss");
+                                                    /*console.log(FechaIni)
+                                                    console.log(FechaFin)*/
+
+                                                    $.ModuloAutorizarVales.Grid.DataGrid(FechaIni, FechaFin)
+                                                } else {
+                                                    /*_this.alertModal("alerta", mensaje.resultado)
+                                                    $.GRID.dataGrid();*/
+                                                }
+                                            })
+
+    @*$.post('@Url.Action("AnularVale", "adAnulacionEliminacionVales")', arg, function (mensaje) {
+                                                mensaje = mensaje[0]
+                                                if (mensaje.bandera === 1) {
+                                                _this.alertModal("suceso", 'Vale Anulado: ' + mensaje.resultado)
+                                                $("#InputRazonesCancelacion").data("kendoDropDownList").select(0)
+                                                $("#BTN_Anular").attr("disabled", true)
+                                                $.GRID.dataGrid();
+                                                } else {
+                                                _this.alertModal("alerta", mensaje.resultado)
+                                                $.GRID.dataGrid();
+                                                }
+
+                                                })*@
+                                        }
+                                        //console.log("Anula")
+                                    } else {
+                                        var TotalDineroNuevo = $("#InputTotalDinero").val();
+                                        var TotalGalonesNuevo = $("#InputGalones").val();
+                                        var CentroCostoID = $("#DropDownListCentroCosto").data("kendoDropDownList").value();
+                                        var ProyectoID = $("#DropDownListProyecto").data("kendoDropDownList").value()
+                                        var TipoCargaID = _this.TipoCargaValeCombustibleID
+                                        var ValeID = _this.ValeID
+
+                                        var TotalDinero = _this.TotalDinero
+                                        var TotalGalones = _this.TotalGalones
+
+                                        let _CantidadGalones = TotalGalonesNuevo === '' ? null : parseFloat(TotalGalonesNuevo)
+                                        let _TotalPrecio = TotalDineroNuevo === '' ? null : parseFloat(TotalDineroNuevo)
+
+                                        if ((_this.Validaciones.AurotizarVale(TotalDinero, TotalGalones, CentroCostoID, ProyectoID, TipoCargaID)) === true) {
+                                            let arg = {
+                                                ValeCombustibleID: ValeID,
+                                                TipoCargaID: TipoCargaID,
+                                                CentroCostoID: parseInt(CentroCostoID),
+                                                CantidadGalones: _CantidadGalones,
+                                                TotalPrecio: _TotalPrecio,
+                                                ProyectoID: ProyectoID
+                                            }
+
+                                            $.post('@Url.Action("AutorizarVale", "adAutorizarVales")', arg, function (mensaje) {
+                                                mensaje = mensaje[0]
+
+                                                if (mensaje.bandera === 1) {
+                                                    $._combustible.alert("success", "Autorización exitosa", mensaje.resultado)
+                                                    $("#ModalAutorizarVale").modal('hide');
+
+                                                    var FechaIni = moment($("#FechaIni").data("kendoDateTimePicker").value()).add(6, 'hours').format("YYYYMMDD HH:mm:ss");
+
+                                                    $("#FechaFin").data("kendoDateTimePicker").value(kendo.parseDate(moment().add(6, 'hours').format("YYYY/MM/DD HH:mm:ss")));
+
+                                                    var FechaFin = moment($("#FechaFin").data("kendoDateTimePicker").value()).format("YYYYMMDD HH:mm:ss");
+                                                    /*console.log(FechaIni)
+                                                    console.log(FechaFin)*/
+
+                                                    $.ModuloAutorizarVales.Grid.DataGrid(FechaIni, FechaFin)
+                                                }
+                                            })
+                                        }
+                                    }
+    @**@
+                                });
                             }
-                            
                         }
                     },
-                    keypress: function () {
-                        var _this = this;
-                        $('#InputTotalDinero').keypress(function (event) {
-                            //console.log("XD")
-                            var keyCode = event.which;
-                            var inputValue = $(this).val();
-
-                            if ((keyCode < 48 || keyCode > 57) && keyCode !== 46) {
-                                event.preventDefault();
-                            }
-
-                            if (keyCode === 46 && inputValue.indexOf('.') !== -1) {
-                                event.preventDefault();
-                            }
-
-                            if (inputValue.indexOf('.') !== -1 && inputValue.split('.')[1].length >= 2 && keyCode !== 46) {
-                                event.preventDefault();
-                            }
-
-                        });
-
-                        $('#InputGalones').keypress(function (event) {
-
-                            var keyCode = event.which;
-                            var inputValue = $(this).val();
-
-                            if ((keyCode < 48 || keyCode > 57) && keyCode !== 46) {
-                                event.preventDefault();
-                            }
-
-                            if (keyCode === 46 && inputValue.indexOf('.') !== -1) {
-                                event.preventDefault();
-                            }
-
-                            if (inputValue.indexOf('.') !== -1 && inputValue.split('.')[1].length >= 4 && keyCode !== 46) {
-                                event.preventDefault();
-                            }
-
-                        });
-
-                    },
-                    Validaciones: function (TotalDinero, TotalGalones, CentroCostoID, ProyectoID, TipoCargaID) {
-                        if (TipoCargaID === 2) {
-
-                            if (TotalDinero !== "") {
-                                TotalDinero = parseFloat(TotalDinero)
-                                if (TotalDinero === 0) {
-                                    $._combustible.alert("error", "Total en dolares incorrpeto", "La cantidad  de dolares debe ser mayor a cero")
-                                    return false 
-                                }
-                            } 
-
-                            if (CentroCostoID === "") {
-                                $._combustible.alert("error", "Sin selección", "Debe seleccionar un centro de costo")
-                                return false
-                            }
-
-                            /*if (ProyectoID === "") {
-                                $._combustible.alert("error", "Sin selección", "Debe seleccionar un proyecto")
-                                return false
-                            }*/
-                            
-                        } else if (TipoCargaID === 3) {
-                            if (TotalGalones !== "") {
-                                TotalGalones = parseFloat(TotalGalones)
-                                if (TotalGalones === 0) {
-                                    $._combustible.alert("error", "Total en galones incorrpeto", "La cantidad  de galones debe ser mayor a cero")
-                                    return false
-                                }
-                            }
-
-                            if (CentroCostoID === "") {
-                                $._combustible.alert("error", "Sin selección", "Debe seleccionar un centro de costo")
-                                return false
-                            }
-
-                            /*if (ProyectoID === "") {
-                                $._combustible.alert("error", "Sin selección", "Debe seleccionar un proyecto")
-                                return false
-                            }*/
-                        } else if (TipoCargaID === 1) {
-                            if (CentroCostoID === "") {
-                                $._combustible.alert("error", "Sin selección", "Debe seleccionar un centro de costo")
-                                return false
-                            }
-
-                            /*if (ProyectoID === "") {
-                                $._combustible.alert("error", "Sin selección", "Debe seleccionar un proyecto")
-                                return false
-                            }*/
-                        }
-
-                        return true
-                    },
-                    BTN_AutorizarVale: function(){
+                    init: function(){
                         var _this = this
-                        $("#BTN_AutorizarVale").on("click", function () {
-                            var TotalDineroNuevo = $("#InputTotalDinero").val();
-                            var TotalGalonesNuevo = $("#InputGalones").val();
-                            var CentroCostoID = $("#DropDownListCentroCosto").data("kendoDropDownList").value();
-                            var ProyectoID = $("#DropDownListProyecto").data("kendoDropDownList").value()
-                            var TipoCargaID = _this.TipoCargaValeCombustibleID
-                            var ValeID = _this.ValeID
-
-                            var TotalDinero = _this.TotalDinero
-                            var TotalGalones = _this.TotalGalones
-
-                            let _CantidadGalones = TotalGalonesNuevo === '' ? null : parseFloat(TotalGalonesNuevo)
-                            let _TotalPrecio = TotalDineroNuevo === '' ? null : parseFloat(TotalDineroNuevo)
-                             
-                            if ( (_this.Validaciones(TotalDinero, TotalGalones, CentroCostoID, ProyectoID, TipoCargaID) )=== true){
-                                let arg = {
-                                    ValeCombustibleID: ValeID,
-                                    TipoCargaID: TipoCargaID,
-                                    CentroCostoID: parseInt(CentroCostoID),
-                                    CantidadGalones: _CantidadGalones,
-                                    TotalPrecio: _TotalPrecio,
-                                    ProyectoID: ProyectoID
-                                }
-
-                                $.post('@Url.Action("AutorizarVale", "adAutorizarVales")', arg, function (mensaje) {
-                                    mensaje = mensaje[0]
-
-                                    if (mensaje.bandera === 1) {
-                                        $._combustible.alert("success", "Autorización exitosa", mensaje.resultado)
-                                        $("#ModalAutorizarVale").modal('hide');
-
-                                        var FechaIni = moment($("#FechaIni").data("kendoDateTimePicker").value()).add(6, 'hours').format("YYYYMMDD HH:mm:ss");
-
-                                        $("#FechaFin").data("kendoDateTimePicker").value(kendo.parseDate(moment().add(6, 'hours').format("YYYY/MM/DD HH:mm:ss")));
-
-                                        var FechaFin = moment($("#FechaFin").data("kendoDateTimePicker").value()).format("YYYYMMDD HH:mm:ss");
-                                        console.log(FechaIni)
-                                        console.log(FechaFin)
-
-                                        $.Grid.DataGrid(FechaIni, FechaFin)
-                                    }
-                                    //console.log(mensaje)
-                                })
-                            }
-                        });
+                        _this.Grid.CargarGrid()
+                        _this.Grid.BTN_GenerarVales()
+                        _this.Grid.Modal.DropDownList.CargarDropDownList()
+                        _this.Grid.Modal.DropDownList.DataDropDownList.DropDownListProyecto()
+                        _this.Grid.Modal.DropDownList.DataDropDownList.DropDownListRazonesCancel()
+                        _this.Grid.Modal.keypress()
+                        _this.Grid.Modal.AnularVale()
+                        _this.Grid.Modal.BTN_Autorizar_Anular_Vale()
                     }
+                },
+                ValesAutorizados: {
+                    BarraOpciones: function(){
+                        $("#FechaIni_ValesGen").kendoDateTimePicker({
+                            dateInput: true,
+                            startTime: new Date(2023, 1, 3, 8, 30, 0),
+                            endTime: new Date(2023, 1, 3, 17,00, 0)
+                        });
+                        $("#FechaFin_ValesGen").kendoDateTimePicker({
+                            dateInput: true,
+                            startTime: new Date(2023, 1, 3, 8, 30, 0),
+                            endTime: new Date(2023, 1, 3, 17,00, 0)
+                        });
+
+                        $("#FechaIni_ValesGen").data("kendoDateTimePicker").value(kendo.parseDate(moment().subtract(30, 'days').format("YYYY/MM/DD HH:mm:ss")));
+                        $("#FechaFin_ValesGen").data("kendoDateTimePicker").value(kendo.parseDate(moment().format("YYYY/MM/DD HH:mm:ss")));
+                    },
+                    GRID: {
+                        CargarGrid: function () {
+                            var _this = this
+                            $("#GRID_ValesAutorizados").html("");
+                            $("#GRID_ValesAutorizados").kendoGrid({
+                                dataSource: {
+                                    pageSize: 10
+                                },
+                                toolbar: ["search"],
+                                columns: [
+                                    {
+                                        field: "numVale",
+                                        title: "N° Vale",
+                                        width: 100,
+                                        headerAttributes: { class: "subgrid-titles" }
+                                    },
+                                    {
+                                        field: "placa",
+                                        title: "Placa",
+                                        width: 150,
+                                        headerAttributes: { class: "subgrid-titles" }
+                                    },
+                                    {
+                                        field: "totalPrecio",
+                                        title: "Total ($)",
+                                        width: 150,
+                                        headerAttributes: { class: "subgrid-titles" }
+                                    },
+                                    {
+                                        field: "cantidadGalones",
+                                        title: "Cant. Gal.",
+                                        width: 150,
+                                        headerAttributes: { class: "subgrid-titles" }
+                                    },
+                                    {
+                                        field: "tipoCarga",
+                                        title: "Tipo de Carga",
+                                        width: 150,
+                                        headerAttributes: { class: "subgrid-titles" }
+                                    },
+                                    {
+                                        field: "estado",
+                                        title: "Estado de Vale",
+                                        width: 150,
+                                        headerAttributes: { class: "subgrid-titles" }
+                                    },
+                                    {
+                                        field: "userGenera",
+                                        title: "Generador",
+                                        width: 150,
+                                        headerAttributes: { class: "subgrid-titles" }
+                                    },
+                                    {
+                                        field: "fechaGenerado",
+                                        title: "Fecha de Generación",
+                                        width: 150,
+                                        headerAttributes: { class: "subgrid-titles" }
+                                    },
+                                    {
+                                        field: "usuarioAuto",
+                                        title: "Autorizador",
+                                        width: 150,
+                                        headerAttributes: { class: "subgrid-titles" }
+                                    },
+                                    {
+                                        field: "fechaAutorizado",
+                                        title: "Fecha de Autorización",
+                                        width: 150,
+                                        headerAttributes: { class: "subgrid-titles" }
+                                    }
+                                ],
+                                selectable: "single, row",
+                                dataBound: function () {
+                                    $("#GRID_ValesAutorizados > div span input").attr("placeholder", "Busqueda")
+                                },
+                                pageable: true,
+                                mobile: "phone",
+                            });
+
+                            var FechaIni = moment($("#FechaIni_ValesGen").data("kendoDateTimePicker").value()).add(6, "hours").format("YYYYMMDD HH:mm:ss:SSS")
+                            var FechaFin = moment($("#FechaFin_ValesGen").data("kendoDateTimePicker").value()).add(6, "hours").format("YYYYMMDD HH:mm:ss:SSS")
+                            _this.DataGrid(2, FechaIni, FechaFin);
+                        },
+                        DataGrid: function (_EstadoValeID, _FechaIni,  _FechaFin) {
+                            let arg = {
+                                EstadoValeID: _EstadoValeID,
+                                FechaIni: _FechaIni,
+                                FechaFin: _FechaFin
+                            }
+                            //console.log(arg)
+                            $.get('@Url.Action("ObtenerValesXEstado", "adAutorizarVales")', arg, function (vales) {
+                                vales.forEach( vale => {
+                                    vale.fechaGenerado = moment(vale.fechaGenerado).subtract(6, "hours").format("DD/MM/YYYY HH:mm:ss")
+                                    vale.fechaAutorizado = moment(vale.fechaAutorizado).subtract(6, "hours").format("DD/MM/YYYY HH:mm:ss")
+                                })
+                                $("#GRID_ValesAutorizados").data("kendoGrid").dataSource.data(vales);
+                            });
+                        },
+                        BTN_GenerarVales:function (){
+                            var _this = this
+                            $("#BTN_ValesAutorizados").on("click", function () {
+                                var FechaIni = moment($("#FechaIni_ValesGen").data("kendoDateTimePicker").value()).add(6, "hours").format("YYYYMMDD HH:mm:ss:SSS")
+                                var FechaFin = moment($("#FechaFin_ValesGen").data("kendoDateTimePicker").value()).add(6, "hours").format("YYYYMMDD HH:mm:ss:SSS")
+                                _this.DataGrid(2, FechaIni, FechaFin);
+                            })
+                        }
+                    },
+                    init:function(){
+                        var _this = this 
+                        _this.BarraOpciones()
+                        _this.GRID.CargarGrid()
+                        _this.GRID.BTN_GenerarVales()
+                    }
+                }, 
+                ValesAnulados: {
+                    BarraOpciones: function () {
+                        $("#FechaIni_ValesAnu").kendoDateTimePicker({
+                            dateInput: true,
+                            startTime: new Date(2023, 1, 3, 8, 30, 0),
+                            endTime: new Date(2023, 1, 3, 17,00, 0)
+                        });
+                        $("#FechaFin_ValesAnu").kendoDateTimePicker({
+                            dateInput: true,
+                            startTime: new Date(2023, 1, 3, 8, 30, 0),
+                            endTime: new Date(2023, 1, 3, 17,00, 0)
+                        });
+
+                        $("#FechaIni_ValesAnu").data("kendoDateTimePicker").value(kendo.parseDate(moment().subtract(30, 'days').format("YYYY/MM/DD HH:mm:ss")));
+                        $("#FechaFin_ValesAnu").data("kendoDateTimePicker").value(kendo.parseDate(moment().format("YYYY/MM/DD HH:mm:ss")));
+                    },
+                    GRID: {
+                        CargarGrid: function () {
+                            var _this = this
+                            $("#GRID_ValesAnulados").html("");
+                            $("#GRID_ValesAnulados").kendoGrid({
+                                dataSource: {
+                                    pageSize: 10
+                                },
+                                toolbar: ["search"],
+                                columns: [
+                                    {
+                                        field: "numVale",
+                                        title: "N° Vale",
+                                        width: 100,
+                                        headerAttributes: { class: "subgrid-titles" }
+                                    },
+                                    {
+                                        field: "placa",
+                                        title: "Placa",
+                                        width: 150,
+                                        headerAttributes: { class: "subgrid-titles" }
+                                    },
+                                    {
+                                        field: "totalPrecio",
+                                        title: "Total ($)",
+                                        width: 150,
+                                        headerAttributes: { class: "subgrid-titles" }
+                                    },
+                                    {
+                                        field: "cantidadGalones",
+                                        title: "Cant. Gal.",
+                                        width: 150,
+                                        headerAttributes: { class: "subgrid-titles" }
+                                    },
+                                    {
+                                        field: "tipoCarga",
+                                        title: "Tipo de Carga",
+                                        width: 150,
+                                        headerAttributes: { class: "subgrid-titles" }
+                                    },
+                                    {
+                                        field: "estado",
+                                        title: "Estado de Vale",
+                                        width: 150,
+                                        headerAttributes: { class: "subgrid-titles" }
+                                    },
+                                    {
+                                        field: "userGenera",
+                                        title: "Generador",
+                                        width: 150,
+                                        headerAttributes: { class: "subgrid-titles" }
+                                    },
+                                    {
+                                        field: "fechaGenerado",
+                                        title: "Fecha de Generación",
+                                        width: 150,
+                                        headerAttributes: { class: "subgrid-titles" }
+                                    },
+                                    {
+                                        field: "usuarioAnula",
+                                        title: "Anulador",
+                                        width: 150,
+                                        headerAttributes: { class: "subgrid-titles" }
+                                    },
+                                    {
+                                        field: "fechaAnula",
+                                        title: "Fecha de Anulación",
+                                        width: 150,
+                                        headerAttributes: { class: "subgrid-titles" }
+                                    }
+                                ],
+                                selectable: "single, row",
+                                dataBound: function () {
+                                    $("#GRID_ValesAnulados > div span input").attr("placeholder", "Busqueda")
+                                },
+                                pageable: true,
+                                mobile: "phone",
+                            });
+
+                            var FechaIni = moment($("#FechaIni_ValesAnu").data("kendoDateTimePicker").value()).subtract(6, "hours").format("YYYYMMDD HH:mm:ss:SSS")
+                            var FechaFin = moment($("#FechaFin_ValesAnu").data("kendoDateTimePicker").value()).subtract(6, "hours").format("YYYYMMDD HH:mm:ss:SSS")
+                            _this.DataGrid(5, FechaIni, FechaFin);
+                        },
+                        DataGrid: function (_EstadoValeID, _FechaIni, _FechaFin) {
+                            let arg = {
+                                EstadoValeID: _EstadoValeID,
+                                FechaIni: _FechaIni,
+                                FechaFin: _FechaFin
+                            }
+                            $.get('@Url.Action("ObtenerValesXEstado", "adAutorizarVales")', arg, function (vales) {
+                                vales.forEach(vale => {
+                                    vale.fechaGenerado = moment(vale.fechaGenerado).add(6, "hours").format("DD/MM/YYYY HH:mm:ss")
+                                    vale.fechaAnula = moment(vale.fechaAnula).add(6, "hours").format("DD/MM/YYYY HH:mm:ss")
+                                })
+                                //console.log(vales)
+                                $("#GRID_ValesAnulados").data("kendoGrid").dataSource.data(vales);
+                            });
+                        },
+                        BTN_GenerarVales: function () {
+                            var _this = this
+                            $("#BTN_ValesAnulados").on("click", function () {
+                                var FechaIni = moment($("#FechaIni_ValesAnu").data("kendoDateTimePicker").value()).subtract(6, "hours").format("YYYYMMDD HH:mm:ss:SSS")
+                                var FechaFin = moment($("#FechaFin_ValesAnu").data("kendoDateTimePicker").value()).subtract(6, "hours").format("YYYYMMDD HH:mm:ss:SSS")
+                                _this.DataGrid(5, FechaIni, FechaFin);
+                            })
+                        }
+                    },
+                    init: function () {
+                        var _this = this
+                        _this.BarraOpciones()
+                        _this.GRID.CargarGrid()
+                        _this.GRID.BTN_GenerarVales()
+                    }
+                },
+                init: function () {
+                    var _this = this
+                    _this.Tabstrip()
+                    _this.AutorizarVales.init()
+                    _this.ValesAutorizados.init()
+                    _this.ValesAnulados.init()
+                    /*_this.AutorizarVales.Grid.CargarGrid()
+                    _this.AutorizarVales.Grid.BTN_GenerarVales()
+                    _this.AutorizarVales.Grid.Modal.DropDownList.CargarDropDownList()
+                    _this.AutorizarVales.Grid.Modal.DropDownList.DataDropDownList.DropDownListProyecto()
+                    _this.AutorizarVales.Grid.Modal.DropDownList.DataDropDownList.DropDownListRazonesCancel()
+                    _this.AutorizarVales.Grid.Modal.keypress()
+                    _this.AutorizarVales.Grid.Modal.AnularVale()
+                    _this.AutorizarVales.Grid.Modal.BTN_Autorizar_Anular_Vale()*/
                 }
-            },
-            init: function () {
-                var _this = this
-                _this.Grid.CargarGrid()
-                _this.Grid.BTN_GenerarVales()
-                _this.Grid.Modal.DropDownList.CargarDropDownList()
-                _this.Grid.Modal.DropDownList.DataDropDownList.DropDownListProyecto()
-                _this.Grid.Modal.keypress()
-                _this.Grid.Modal.BTN_AutorizarVale()
             }
+            
         })
-        $.init()
+        $.ModuloAutorizarVales.init()
     })();
 </script>
 

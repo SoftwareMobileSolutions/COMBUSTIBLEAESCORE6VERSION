@@ -303,7 +303,8 @@
                                     Swal.fire({
                                         title: "Usuario credo con exito",
                                         text: datos.resultado,
-                                        icon: "success"
+                                        icon: "success",
+                                        allowOutsideClick: false
                                     }).then((result) => {
                                         if (result.isConfirmed) {
                                             console.log("El usuario ha hecho clic en el botón OK");

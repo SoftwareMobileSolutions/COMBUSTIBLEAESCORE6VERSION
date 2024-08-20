@@ -51,6 +51,8 @@ namespace COMBUSTIBLEAESCORE
             services.AddScoped<IadTutorial,adTutorialService>();
             services.AddScoped<IrpValesPorUsuario,rpValesPorUsuarioService>();
             services.AddScoped<IrpValesGasolinera ,rpValesGasolineraService>();
+            services.AddScoped<IadCambioEstadoVale, adCambioEstadoValeService>();
+            services.AddScoped<IadAdministracionPerfiles,adAdministracionPerfilesService>();
             services.AddSingleton(new conexion(Configuration.GetConnectionString("DefaultConnection")));
             
             services.AddControllersWithViews();

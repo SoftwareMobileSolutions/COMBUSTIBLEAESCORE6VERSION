@@ -85,13 +85,13 @@
         $.extend({
             ModuloCentroCosto: {
                 AgregarCentroCosto: {
-                    BTN_AgregarCentroCosto: function () {
+                    BTN_AgregarCentroCosto: function () {//Function para agregar centros de costo
                         var _this = this
                         $("#@{@BTN_AgregarCentroCosto}").on("click", function () {
-                            var nombre = $("#@{@Input_NombreCentroCosto}").val().trim()
-                            if (_this.validaciones(nombre)) {
-                                $.post('@Url.Action("crearCentroCosto", "adCentroCosto")', { Nombre: nombre }, function (mensaje) {
-                                    console.log(mensaje)
+                            var nombre = $("#@{@Input_NombreCentroCosto}").val().trim() // Se obtiene el nombre del nuevo centro de costo sin espacios
+                            if (_this.validaciones(nombre)) { //Se llama a la función que valida el nombre del centro de costo y se verifica el resultado 
+                                $.post('@Url.Action("crearCentroCosto", "adCentroCosto")', { Nombre: nombre }, function (mensaje) { 
+                                    //console.log(mensaje)
                                     mensaje = mensaje[0]
                                     if (mensaje.bandera === 0) {
                                         $._combustible.alert("error", "Error", mensaje.resultado)
@@ -105,12 +105,12 @@
 
                         })
                     },
-                    validaciones: function (nombre) {
-                        if (nombre === "") {
+                    validaciones: function (nombre) {//Funcón para validar el nombre del centro de costo 
+                        if (nombre === "") {//Se valida que el nombre no este vacio
                             $._combustible.alert("error", "Campo vacio", "Debe insertar un nombre para el centro de costo")
                             return false
                         }
-                        if (nombre.length < 3) {
+                        if (nombre.length < 3) {//Se valida el largo nombre
                             $._combustible.alert("error", "Nombre demasiado corto", "El nombre debe tener al menos tres caractares")
                             return false
                         }
@@ -118,10 +118,10 @@
                     }
                 },
                 Grid: {
-                    loadGrid: function () {
+                    loadGrid: function () { //Función para cargar el GRID de los centros de costo
                         var _this = this
-                        $("#@{@GRIDCentroCosto}").html("");
-                        $("#@{@GRIDCentroCosto}").kendoGrid({
+                        $("#@{@GRIDCentroCosto}").html(""); //Se limpia el contenedor del GRID
+                        $("#@{@GRIDCentroCosto}").kendoGrid({//Se genera el GRID
                             dataSource: {
                                 pageSize: 10
                             },
@@ -172,17 +172,17 @@
                             pageable: true,
                             mobile: "phone",
                         });
-                        _this.dataGrid();
+                        _this.dataGrid(); //Se llama a la función del GRID
                     },
-                    dataGrid: function () {
+                    dataGrid: function () {// Fución para traer y mostrar la data de los centros de costo en el grid
                         //$("#GridCentroCosto").data("kendoGrid").dataSource.data([])
                         $.get('@Url.Action("ObtenerCentrosCosto", "adCentroCosto")', function (CentrosCosto) {
-                            $("#@{@GRIDCentroCosto}").data("kendoGrid").dataSource.data(CentrosCosto)
+                            $("#@{@GRIDCentroCosto}").data("kendoGrid").dataSource.data(CentrosCosto)// Se muestra la data en el GRID
                         })
                     },
-                    EliminarCentroCosto: function (_CentroCostoID, _Razon) {
+                    EliminarCentroCosto: function (_CentroCostoID, _Razon) {//Funcion para eliminar un centro de costo
 
-                        Swal.fire({
+                        Swal.fire({ //Se consulta sobre la eliminación de un centro de costo
                             title: "¿Esta seguro?",
                             text: 'La eliminacion de "' + _Razon + '" no es reversible',
                             icon: "warning",
@@ -191,8 +191,8 @@
                             cancelButtonColor: "#d33",
                             cancelButtonText: "Cancelar",
                             confirmButtonText: "Si, eliminar!"
-                        }).then((result) => {
-                            if (result.isConfirmed) {
+                        }).then((result) => { //En caso de confirmar se hace la petición post para elminar el centro de costo de manera logica
+                            if (result.isConfirmed) { 
                                 $.post('@Url.Action("EliminarCentroCosto", "adCentroCosto")', { CentroCostoID: _CentroCostoID }, function (mensaje) {
                                     mensaje = mensaje[0]
                                     if (mensaje.bandera === 1) {
@@ -206,12 +206,12 @@
                         });
                     },
                     modal: {
-                        CentroCostoID: "",
-                        BTN_GuardarCambios: function () {
+                        CentroCostoID: "", //Varible para almacenar el centroCostoID para modificar el modificar el centro de costo en el modal
+                        BTN_GuardarCambios: function () { //Funcion para guardar los datos 
                             var _this = this
                             $("#@{@BTN_GuardarCentroCosto}").on("click", function () {
-                                var NombreCentroCostoNuevo = $("#@{@Input_NombreCentroCosto_Modal}").val().trim()
-                                if (_this.validaciones(NombreCentroCostoNuevo) === true) {
+                                var NombreCentroCostoNuevo = $("#@{@Input_NombreCentroCosto_Modal}").val().trim()//Se obtiene el nombre del nuevo centro de costo 
+                                if (_this.validaciones(NombreCentroCostoNuevo) === true) { //Se valida el nombre del centro de costo y se verifica el resultado 
                                     var arg = {
                                         CentroCostoID: _this.CentroCostoID,
                                         NombreNuevo: NombreCentroCostoNuevo
@@ -234,7 +234,7 @@
 
                         },
 
-                        validaciones: function (nombre) {
+                        validaciones: function (nombre) {//Funcion para validar los centros de costo 
                             var _this = this
 
                             $("#@{@ModalAlert}").text("")
@@ -250,8 +250,8 @@
 
                             return true
                         },
-                        alertModal: function (tipo, mensaje) {
-                            if (tipo === "alerta") {
+                        alertModal: function (tipo, mensaje) {//Función para mostrar alertas en el modal
+                            if (tipo === "alerta") { 
                                 $("#@{@ModalAlert}").text("Alerta: " + mensaje)
                                 $("#@{@ModalAlert}").css("color", "red")
                             }
@@ -259,6 +259,10 @@
                                 $("#@{@ModalAlert}").text("Nota: " + mensaje)
                                 $("#@{@ModalAlert}").css("color", "green")
                             }
+
+                            /*Nota: esta alerta recibe dos parametros donde 
+                             - tipo =  el tipo e alerta, puede ser alerta o suceso
+                             - mensaje = el mensaje que se le mostrara al usuario*/
                         }
                     }
                 },

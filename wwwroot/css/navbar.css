@@ -365,7 +365,7 @@ h6 {
 }
 
 .logo img {
-  max-height: 26px;
+  max-height: 50px;
   margin-right: 6px;
 }
 
@@ -691,11 +691,25 @@ h6 {
   border-radius: 4px;
 }
 
+
 .sidebar-nav .nav-link i {
+  font-size: 16px !important;
+  margin-right: 10px;
+  color: #4154f1;
+}
+
+/*.sidebar-nav .primary i {
   font-size: 16px;
   margin-right: 10px;
   color: #4154f1;
 }
+
+.second i {
+    font-size: 16px !important;
+    margin-right: 10px;
+    color: #4154f1;
+    background: red;
+}*/
 
 .sidebar-nav .nav-link.collapsed {
   color: #012970;
