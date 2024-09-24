@@ -31,7 +31,7 @@ namespace COMBUSTIBLEAESCORE
             Dapper.SqlMapper.Settings.CommandTimeout = 120;
             //services.AddSingleton<conexion>();
             services.AddScoped<ILogin,LoginService>();
-            services.AddScoped<IadLiquidarVales, adLiquidarValesService>();
+            services.AddScoped<IadCerrarVale, adCerrarValeService>();
             services.AddScoped<IadRegistarCompany, adRegistarCompanyService>();
             services.AddScoped<IadVehiculosFlotas, adVehiculosFlotasService>();
             services.AddScoped<IadUsuariosVehiculos, adUsuariosVehiculosService>();

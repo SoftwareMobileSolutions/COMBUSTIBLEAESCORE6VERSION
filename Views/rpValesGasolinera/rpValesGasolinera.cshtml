@@ -60,11 +60,13 @@
         $.extend({
             ReporteValesPorGasolinera: {
                 Data: {
-                    ObtenerData: function (_Year) {
+                    ObtenerData: function (_Year) {//Funcion para obtener data general
                         var _this = this
 
+                        
                         let _FechaIni = moment().year(_Year).startOf('year').format('YYYYMMDD')
                         let _FechaFin = moment().year(_Year).endOf('year').format('YYYYMMDD')
+
                         let arg = {
                             FechaIni: _FechaIni,
                             FechaFin: _FechaFin
@@ -76,25 +78,32 @@
                         });
                     },
                     FormatoData:{
-                        FormatoGrafica: function (vales) {
+                        FormatoGrafica: function (vales) {//Fomato data para grafica
+                            //Se crea el Json para las series
                             var series = {
                                 name: "Gasolineras",
                                 data: []
                             }
+                            //Array para la data 
                             var _data = [];
+                            //Se recorre el array de vales
                             vales.forEach((vale) => {
+                                //Se setea la data de los vales en array _data
                                 _data.push({name: vale.username, y: vale.totalVales})
                             });
 
+                            //Se ordena la data del array de mayor a menor
                             _data.sort((a, b) => b.y - a.y);
+                            //Se obtienen los primeros 10 pocisiones del array
                             series.data = _data.slice(0,10)
+                            //Se setea la data a la grafica
                             $.ReporteValesPorGasolinera.Grafica.Load(series)
                         }
                     }
                     
                 },
                 BarraOpciones: {
-                    YearPicker: function(){
+                    YearPicker: function(){//Función para inicializar el YearPicker
                         var _this = this 
                         var dataSource = _this.CalculateYears(5)
                         $("#@{@DropDownList_Year}").kendoDropDownList({
@@ -104,7 +113,7 @@
                             value: new Date().getFullYear()
                         });
                     },
-                    CalculateYears: function (cantanios) {
+                    CalculateYears: function (cantanios/*Variable para calcular la cantidad de años hacia atras*/) {//Función para calcular años atras
                         var anio = new Date().getFullYear();
                         return Array.from({ length: cantanios },
                             function (v, i) {
@@ -112,7 +121,7 @@
                                 return { YearID: valor, YearNumber: String(valor) }
                             });
                     },
-                    BTN_Generar: function(){
+                    BTN_Generar: function(){//Funcion para generar la data 
                         $("#@{@BTN_Generar}").on("click", function () {
 
                             let _Year = $("#@{@DropDownList_Year}").data("kendoDropDownList").value()
@@ -121,10 +130,10 @@
                     }
                 },
                 GRID: {
-                    Load: function () {
+                    Load: function () {//Función para inicializar el grid
                         var _this = this
-                        $("#@{@GRID_Vales}").html("");
-                        $("#@{@GRID_Vales}").kendoGrid({
+                        $("#@{@GRID_Vales}").html("");//Se limpia el contenedor del GRID
+                        $("#@{@GRID_Vales}").kendoGrid({//Se Inicializa el grid
                             dataSource: {
                                 pageSize: 10
                             },
@@ -150,7 +159,7 @@
                                 },
                                 {
                                     field: "totalDolares",
-                                    title: "Total Dolares",
+                                    title: "Total Dólares",
                                     attributes: { class: "col-data" },
                                     headerAttributes: { class: "col-data" }
                                 },
@@ -172,20 +181,20 @@
                         let year = moment().format("YYYY")
                         $.ReporteValesPorGasolinera.Data.ObtenerData(parseInt(year))
                     },
-                    DataGRID: function (Datos) {
+                    DataGRID: function (Datos) {//Funcion para setear la data al GRID
                         $("#@{@GRID_Vales}").data("kendoGrid").dataSource.data(Datos)
                     }
                 },
                 Grafica: {
-                    Load: function (Series) {
-                        $("#@{@BarChart_Container}").html("")
+                    Load: function (Series) {//Funcion para cargar la grafica
+                        $("#@{@BarChart_Container}").html("")//Se limpia el contenedor del Grafico
                         Highcharts.chart('@{@BarChart_Container}', {
                             chart: {
                                 type: 'column'
                             },
                             title: {
                                 align: 'center',
-                                text: 'Top 10 Gasolineras por comsumo de vales'
+                                text: 'Top 10 Gasolineras por consumo de vales'
                             },
                             accessibility: {
                                 announceNewData: {

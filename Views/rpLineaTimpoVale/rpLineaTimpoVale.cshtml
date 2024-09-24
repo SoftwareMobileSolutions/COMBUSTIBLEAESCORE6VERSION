@@ -107,7 +107,7 @@
                     FechaFin: '20240709 23:59:59'
                 }*/
                 $.get('@Url.Action("ObtenerVales","rpLineaTimpoVale")', arg, function (vales) {
-                    console.log(vales.length)
+                    @*console.log(vales.length)*@
 
                     if (vales.length === 0) {
                         $._combustible.alert("info", "Sin datos", "No hay vales de su seleccions")
@@ -121,17 +121,20 @@
                 });
             },
             Grafica: {
-                GenerarGrafica: function (vales) {
+                GenerarGrafica: function (vales) {//Función para inicializar los graficos 
                     var _this = this
                     var ContenedorGraficas = $("#ContenedorGrficas")
-                    ContenedorGraficas.empty()
-                    _this.Tooltip.EliminarResiduales()
+                    ContenedorGraficas.empty()//Se limpia el contenedor 
+                    _this.Tooltip.EliminarResiduales()//Se eliminan los tooltip residuales
 
                     //console.log(vales)
                     
+                    //Se obtiene el estadoID del vale
                     let estadoID = parseInt($("#DropDownListEstadoVales").data("kendoDropDownList").value())
 
+                    //Se filtran los datos por el estado del vale                  
                     if (estadoID === 2) {
+                        /*Se usa el meotodo filter para filtrar los vales*/
                         vales = vales.filter((vale) => vale.estado === "Generado")
                     }
                     if (estadoID === 3) {
@@ -140,7 +143,10 @@
                     if (estadoID === 4) {
                         vales = vales.filter((vale) => vale.estado === "Liquidado")
                     }
+
+                    //Se recorreo el array de los vales
                     vales.forEach((vale) => {
+                        //Se inicializa una nueva row
                         let row =
                             '<div class="row mt-5 pt-5" id="Vale_' + vale.numVale + '">' +
                             '   <div class="col-lg-1 d-flex align-items-center justify-content-end">' +
@@ -148,25 +154,34 @@
                             '   </div>' +
                             '    <div class="col-lg-11 d-flex"">';
                         
-                        let contenedor;
-                        if (vale.anulado === true) {
+                        let contenedor;//Variable para contenr la grafica
+
+                        if (vale.anulado === true) {//Se genera la grafica de un vale anulado 
+
+                            //Se genera el segmento Generado
                             contenedor = _this.GraficaXVale("anulado", vale.fechaGenerado, vale.usuarioGenera, 'Generador', vale.usuarioAutoriza === null ? true : false, vale.fechaAnulacion, vale.usuarioAnula)
                             row = row + contenedor
 
+                            //Se conusulta si existe un usuario autorizador del vale, si existe se genera al segmento 
                             if (vale.usuarioAutoriza !== null) {
+                                
                                 contenedor = _this.GraficaXVale("anulado", vale.fechaAutorizado, vale.usuarioAutoriza, 'Autorizador', true, vale.fechaAnulacion, vale.usuarioAnula)
                                 row = row + contenedor
                             }
 
-                        }else {
+                        } else {//Se genera la grafica para los estados Generados, Aurtorizado y Liquidado
+
+                            //Se genera el segmento Generado
                             contenedor = _this.GraficaXVale("generado", vale.fechaGenerado, vale.usuarioGenera, 'Generador',false,"","")
                             row = row + contenedor
 
+                            //Se conusulta si existe un usuario autorizador del vale, si existe se genera al segmento
                             if (vale.usuarioAutoriza !== null) {
                                 contenedor = _this.GraficaXVale("autorizado", vale.fechaAutorizado, vale.usuarioAutoriza, 'Autorizador', false, "", "")
                                 row = row + contenedor
                             }
 
+                            //Se conusulta si existe un usuario cerrador del vale, si existe se genera al segmento
                             if (vale.usuarioCancela !== null) {
                                 contenedor = _this.GraficaXVale("cerrado", vale.fechaCancelacion, vale.usuarioCancela, 'Liquidador', false, "", "")
                                 row = row + contenedor
@@ -175,21 +190,28 @@
                         }
                         row = row + '</div>'
                         
-                        ContenedorGraficas.append(row)
+                        ContenedorGraficas.append(row)//Se agrrga la grafica 
                     });
-                    _this.Tooltip.GenerarTooltip()
+                    _this.Tooltip.GenerarTooltip()//Se generan los tooltip
                     
                 },
                 GraficaXVale: function (clase, Fecha, usuario, TipoUsuario, TooltipAnulado, FechaAnulacion, UsuarioAnulador) {
 
+                    /*
+                        Nota: La función del GraficaXVale genera el trozo por el estado del vale, cada estado es una parte, generado es uno, autorizado es otro y cerrado es otro, para conpletar una linea de tres segmentos
+                    */
+
+                    //Se genera el div contenedor 
                     let contenedor =
                         '        <div class="contenedor" >';
+                    //Se genera la barra
                     let Barra =
                         '            <div class="barra ' + clase + '">' +
                         '            </div>';
-
+                    //Se verifica si debe generar un toltip con la fecha de anulacion 
                     let TooltipAnuladoData = TooltipAnulado === true ? (' TooltipAnulado  FechaAnulacion="' + moment(FechaAnulacion).subtract(6, 'hours').format("DD/MM/YYYY hh:mm A") + '" UsuarioAnulador="' + UsuarioAnulador + '"') : ''
 
+                    //Se genera el circulo
                     let circulo =
                         '           <div class="circulo ' + clase + ' Tooltip" Fecha="' + moment(Fecha).subtract(6, 'hours').format("DD/MM/YYYY hh:mm A") + '" Usuario="' + usuario + '" TipoUsuario="' + TipoUsuario + '"' + TooltipAnuladoData + '>' +
                         '			</div>';
@@ -201,7 +223,10 @@
                     return contenedor
                 },
                 Tooltip: {
-                    GenerarTooltip: function () {
+                    GenerarTooltip: function () {//Funcion para inicialzar los Tooltip
+                        /*
+                            Nota: Para generar los Tooltip se una la libreria tippy
+                        */
                         var _this = this
                         var Circulos = $(".Tooltip");
                         Circulos.each(function (index) {
@@ -263,7 +288,7 @@
                         }
                         setInterval(verificarPosicion, 10);
                     },*/
-                    EliminarResiduales: function () {
+                    EliminarResiduales: function () {//Función para eliminar los tooltip residuales
                         let divs = $("body div")
                         divs.each(function (index) {
                             if ($(this).attr("data-tippy-root") !== undefined) {
@@ -274,7 +299,7 @@
                 }
             },
             BarrraOpciones: {
-                Load: function () {
+                Load: function () {//Función para cargar la barra de opciones
                     var _this = this
 
                     $("#datepicker").kendoDatePicker({
@@ -316,20 +341,20 @@
 
                     _this.Data()
                 },
-                Data: function () {
+                Data: function () {//Función para generar la data de la barra de opciones
                     $.get('@Url.Action("ObtenerPlacas", "rpLineaTimpoVale")').then(function (placas) {
                         $("#DropDownListPlacas").data("kendoDropDownList").dataSource.data(placas);
                         $("#datepicker").data("kendoDatePicker").value(moment().format("DD/MM/YYYY"))
                     })
                 },
-                BTN_Generar: function () {
+                BTN_Generar: function () {//Función para generar la data
                     $("#BTN_GenerarReporte").on("click", function () {
                         //console.log("XD")
                         $.ObtenerData()
                     })
                 }
             },
-            init: function () {
+            init: function () {//Funciones que se llaman al entrar al modulo
                 var _this = this
                _this.BarrraOpciones.Load()
                _this.BarrraOpciones.BTN_Generar()

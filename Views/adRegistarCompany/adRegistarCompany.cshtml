@@ -125,44 +125,44 @@
         $.extend({
             form: {
                 //form_valid: true,
-                validaciones: function () {                   
+                validaciones: function () {//Función para validar los datos de la creación de la compañia              
                     var _this = this;
-                    var validEmail = /^\w+([.-_+]?\w+)*@@\w+([.-]?\w+)*(\.\w{2,10})+$/;
+                    var validEmail = /^\w+([.-_+]?\w+)*@@\w+([.-]?\w+)*(\.\w{2,10})+$/;//Regex para validar el correo electronico
                     var securePassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)\S{8,}$/;
 
-                    if ($("#name").val().trim() === "") {
+                    if ($("#name").val().trim() === "") {//Se valida que se digito un nombre
                         _this.alert("Campo de texto vacio", "Debe digitar su primer nombre");
                         return false
                     }
-                    if ($("#lastname").val().trim() === "") {
+                    if ($("#lastname").val().trim() === "") {//Se valida que se digito un apellido
                         _this.alert("Campo de texto vacio", "Debe digitar su primer apellido");
                         return false
                     }
-                    if ($("#username").val().trim() === "") {
+                    if ($("#username").val().trim() === "") {//Se valdia que se digito el username
                         _this.alert("Campo de texto vacio", "Debe digitar su nombre de usuario");
                         return false
                     }
-                    if ($("#email").val().trim() === "") {
+                    if ($("#email").val().trim() === "") {//Se valida si se digitó el correo electronico
                         _this.alert("Campo de texto vacio", "Debe digitar su correo eléctronico");
                         return false
                     }
-                    if (!validEmail.test($("#email").val().trim())) {
+                    if (!validEmail.test($("#email").val().trim())) {//Se valida si se digito un correo valido 
                         _this.alert("Formato de correo incorrecto", "Debe digitar  un correo valido")
                         return false
                     }
-                    if ($("#CompanyName").val().trim() === "") {
+                    if ($("#CompanyName").val().trim() === "") {//Se valida si se digitó el nombre de la compañia 
                         _this.alert("Campo de texto vacio", "Debe digitar el nombre de la compañia");
                         return false
                     }
-                    if ($("#adrress").val().trim() === "") {
+                    if ($("#adrress").val().trim() === "") {//Se valida si se digitó la dirección de la empresa
                         _this.alert("Campo de texto vacio", "Debe digitar la direcciíon de la compañia");
                         return false
                     }
-                    if ($("#password").val().trim() === "") {
+                    if ($("#password").val().trim() === "") {//Se valida si se digito la contraseña 
                         _this.alert("Campo de texto vacio", "Debe digitar su contraseña");
                         return false
                     }
-                    if ($("#password").val().trim() < 8) {
+                    if ($("#password").val().trim() < 8) {//Se valida el largo de la contraseña
                         _this.alert("Contraseña demasiado corta", "Debe digitar una contraseña de almenos 8 caracteres");
                         return false
                     }
@@ -171,7 +171,7 @@
                         return false
                     }*/
 
-                    if ($("#paswordRepite").val().trim() != $("#password").val().trim()) {
+                    if ($("#paswordRepite").val().trim() != $("#password").val().trim()) {//Se valida si se repitió la contraseña
                         _this.alert("Contraseña incorrecta", "Deber repertir la contraseña que ya tiene escrita")
                         return false
                     }
@@ -233,14 +233,14 @@
                         _this.form_valid = true;
                     }
                 },*/
-                alert: function (title, text) {
+                alert: function (title, text) {//Función para mostrar alertas
                     Swal.fire({
                         icon: "warning",
                         title: title,
                         text: text,
                     });
                 },
-                showPassword: function () {
+                showPassword: function () {//Función para mostrar la contraseña
                     $(".show_hide_password a").on('click', function (event) {
                         event.preventDefault();
                         if ($('.show_hide_password input').attr("type") == "text") {
@@ -255,7 +255,7 @@
                         }
                     });
                 },
-                create_btn: function () { 
+                create_btn: function () {//Función que crea la company
                     var _this = this;
                     $("#btn_create").on('click', function () {
                         /*let args = {
@@ -307,7 +307,7 @@
                                         allowOutsideClick: false
                                     }).then((result) => {
                                         if (result.isConfirmed) {
-                                            console.log("El usuario ha hecho clic en el botón OK");
+                                            @*console.log("El usuario ha hecho clic en el botón OK");*@
                                             window.location = "@Url.Action("Login", "Login")";
                                         }
                                     });
@@ -319,14 +319,12 @@
                 
                 }
             },
-            home_init: function () {
+            home_init: function () {//Funciones que se ejecutan al entrar al modulo
                 var _this = this;
                 _this.form.showPassword();
                 _this.form.create_btn();
                 
             }
-
-
         })
         $.home_init();
     })();

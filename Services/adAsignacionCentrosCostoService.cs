@@ -17,7 +17,7 @@ namespace COMBUSTIBLEAESCORE.Services
         {
             conexion = _conexion;
         }
-
+        
         public async Task<IEnumerable<mensaje>> ActualizarCentroCostoXMobile(int MobileID, int CentroCostoID, int UserAsignaID)
         {
             IEnumerable<mensaje> data = null;
@@ -40,7 +40,7 @@ namespace COMBUSTIBLEAESCORE.Services
             }
             return data;
         }
-
+        //Sin uso
         public async Task<IEnumerable<mensaje>> ActualizarCentroCostoXUser(int UsuarioID, string CentrosCostoID, int UserAsignaID)
         {
             IEnumerable<mensaje> data = null;
@@ -63,7 +63,7 @@ namespace COMBUSTIBLEAESCORE.Services
             }
             return data;
         }
-
+        
         public async Task<IEnumerable<CentroCostoXMobileModel>> ObtenerCentroCostoXMobile(int CompanyID)
         {
             IEnumerable<CentroCostoXMobileModel> data = null;
@@ -86,7 +86,7 @@ namespace COMBUSTIBLEAESCORE.Services
             }
             return data;
         }
-
+        //Sin uso
         public async Task<IEnumerable<CentroCostoXUserModel>> ObtenerCentroCostoXUser(int CompanyID, int UsuarioID)
         {
             IEnumerable<CentroCostoXUserModel> data = null;
@@ -109,7 +109,7 @@ namespace COMBUSTIBLEAESCORE.Services
             }
             return data;
         }
-
+        //Sin uso
         public async Task<IEnumerable<CentroCostoModel>> ObtenerCentrosCosto(int CompanyID)
         {
             IEnumerable<CentroCostoModel> data = null;
@@ -133,6 +133,7 @@ namespace COMBUSTIBLEAESCORE.Services
             return data;
         }
 
+        //Sin uso
         public async Task<IEnumerable<UsuarioModel>> ObtenerUsuarios(int CompanyID)
         {
             IEnumerable<UsuarioModel> data = null;

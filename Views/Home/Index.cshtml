@@ -44,7 +44,7 @@
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
-        <li class="nav-item renderView" url="Introduccion/Introduccion" data-tippy-content="Estas usando Vales Combustible">
+        <li class="nav-item renderView" url="Introduccion/Introduccion" data-tippy-content="Estas usando Vales de Combustible">
             <a class="nav-link " >
                 <i class="bi bi-grid"></i>
                 <span>Inicio</span>
@@ -122,7 +122,7 @@
                 loadModulos: function () {
                     var _this = this;
                     var modulosData = _this.dataMenu.value; //Se obtiene el JSOn de los modulos
-                    //console.log(modulosData)
+                    @*console.log(modulosData)*@
                     var modulosHTML = "";
                     for (let gp = 0; gp < modulosData.length; gp++) {
                         if (modulosData[gp].hasChildren === true) {//Se verifica si el abuelo tiene hijos, es decir si existe padre

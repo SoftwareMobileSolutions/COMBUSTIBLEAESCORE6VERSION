@@ -54,7 +54,7 @@
         $.extend({
             ModuloAdministracionPerfiles:{
                 Arbol: {
-                    Cargar: function () {
+                    Cargar: function () {//Función para inicializar el Arbol
                         var _this = this
                         $("#@{@Treeview_Perfiles}").kendoTreeView({
                             checkboxes: {
@@ -62,78 +62,20 @@
                             },
                             selectable: true
                         });
-                        _this.Data(2)
-
+                        _this.Data(2)//Se llama a la función de la data
                     },
-                    Data: function (_PefilID) {
+                    Data: function (_PefilID) {//Función para obtener los modulos y generar el arbol
                         $.get('@Url.Action("ObtenerModulos", "adAdministracionPerfiles")', { PefilID: _PefilID }, function (modulos) {
 
-                            //console.log(modulos)
-                            /*let NodosAbuelos =
-                                modulos.filter(
-                                    modulo => modulo.nivel === 0
-                                ).map(
-                                    modulo => ({
-                                        id: modulo.moduloID,
-                                        text: modulo.nombre,
-                                        COD: modulo.codigo,
-                                        expanded: true,
-                                        items: []
-                                    })
-                                );
+                            /*Nota: Se usa filter para selecionar los modulos por nivel donde 
+                            nivel 0 = GrandParents
+                            nivel 1 = Parents
+                            nivel 2 = Childrens
+                            
+                            y map para obener los datos de cada modulo*/
 
-                            let NodosPadres =
-                                modulos.filter(
-                                    modulo => modulo.nivel === 1
-                                ).map(
-                                    modulo => ({
-                                        id: modulo.moduloID,
-                                        text: modulo.nombre,
-                                        COD: modulo.codigo,
-                                        PARENT: modulo.parent,
-                                        expanded: true,
-                                        checked: modulo.asiganado,
-                                        items: []
-                                    })
-                                );
 
-                            let NodosHijos =
-                                modulos.filter(
-                                    modulo => modulo.nivel === 2
-                                ).map(
-                                    modulo => ({
-                                        id: modulo.moduloID,
-                                        text: modulo.nombre,
-                                        checked: modulo.asiganado,
-                                        COD: modulo.codigo,
-                                        PARENT: modulo.parent,
-                                        GrandParent: modulo.grandParent
-                                    })
-                                );
-
-                            NodosAbuelos.forEach(NodoAbuelo => {
-                                NodosPadres.forEach(NodoPadre => {
-                                    if (NodoAbuelo.COD === NodoPadre.PARENT) {
-                                        NodoAbuelo.items.push(NodoPadre)
-                                    }
-                                    var items = []
-                                    NodosHijos.forEach(NodoHijo => {
-                                        if (NodoPadre.COD === NodoHijo.PARENT) {
-                                            items.push(NodoHijo)
-
-                                        }
-
-                                    })
-                                    if (items.length > 0) {
-                                        NodoPadre.items = items
-                                    } else {
-                                        delete NodoPadre.items;
-                                        delete NodoPadre.expanded;
-                                    }
-                                })
-                            })
-
-                            console.log(NodosAbuelos)*/
+                            //Se obtienen los grandparents 
                             let NodosAbuelos = modulos.filter(modulo => modulo.nivel === 0).map(modulo => ({
                                 id: modulo.moduloID,
                                 text: modulo.nombre,
@@ -142,6 +84,7 @@
                                 items: []
                             }));
 
+                            //Se obtienen los parents
                             let NodosPadres = modulos.filter(modulo => modulo.nivel === 1).map(modulo => ({
                                 id: modulo.moduloID,
                                 text: modulo.nombre,
@@ -152,6 +95,7 @@
                                 items: []
                             }));
 
+                            //Se obtienen los children
                             let NodosHijos = modulos.filter(modulo => modulo.nivel === 2).map(modulo => ({
                                 id: modulo.moduloID,
                                 text: modulo.nombre,
@@ -161,37 +105,49 @@
                                 GrandParent: modulo.grandParent
                             }));
 
+                            //Se asignan los hijos a los padres 
                             NodosPadres.forEach(NodoPadre => {
+                                //Se usa filter para comparar el cod del Parent con el Parent de los Childs
                                 NodoPadre.items = NodosHijos.filter(NodoHijo => NodoPadre.COD === NodoHijo.PARENT);
+
+                                //Se elimina la propiedes imnecesarias
                                 if (NodoPadre.items.length === 0) {
-                                    delete NodoPadre.items;
-                                    delete NodoPadre.expanded;
+                                    delete NodoPadre.items;//Se elimina la propiedad para asignar hijos
+                                    delete NodoPadre.expanded;//Se elimina la propiedad que expande por defecto el nodo del arbol
                                 }
                             });
 
+                            //Se asignan los nodos padre a los abuelos
                             NodosAbuelos.forEach(NodoAbuelo => {
+                                //Se usa filter para comparar el cod del GrandParent con el Parent de los Parent
                                 NodoAbuelo.items = NodosPadres.filter(NodoPadre => NodoAbuelo.COD === NodoPadre.PARENT);
                             });
 
+                            //Se asigna la data del parent 
                             $("#@{@Treeview_Perfiles}").data("kendoTreeView").dataSource.data(NodosAbuelos);
                         })
                     },
-                    obtnerIDS: function (nodes, checkedNodes) {
+                    obtnerIDS: function (nodes, checkedNodes) {//Funcinón para obtener los id de los modulos seleccionados
+                        /*Nota 
+                          Solo se obtiene el ultimo nivel del la rama, sin importa si es de nivel 1 o 2
+                        */
+
+                        /*Se recorreon los nodos*/ 
                         for (var i = 0; i < nodes.length; i++) {
-                            if (nodes[i].hasChildren) {
+                            if (nodes[i].hasChildren) {//Se pregunta si tienen hijos y se vuelve a llamar la función para obtener los id de los hijos
                                 $.ModuloAdministracionPerfiles.Arbol.obtnerIDS(nodes[i].children.view(), checkedNodes)
                             } else if (nodes[i].checked) {
-                                checkedNodes.push(nodes[i].id);
+                                checkedNodes.push(nodes[i].id);//Si no hay hijos se obtine los id si esta seleccionado
                             }
                         }
                     },
-                    BTN_Guardar: function () {
+                    BTN_Guardar: function () {//Función para gurdar los modulos asignados
                         var _this = this
                         $("#@{@BTN_GuardarPerfiles}").on("click", function () {
                             let ID = $("#@{@DropDownList_Perfiles}").data("kendoDropDownList").value()
                             let Input_NombrePerfil =  $("#@{@Input_NombrePerfil}").val()
                             //console.log(ID)
-                            if (ID === "0"){
+                            if (ID === "0"){//Se crea el nuevo perfil
                                 if (_this.validaciones(Input_NombrePerfil) === true) {
                                     //$._combustible.alert("success", "Registra", "XD")
                                     $.post('@Url.Action("CrearPerfil", "adAdministracionPerfiles")', { NombrePefil: Input_NombrePerfil }, function (resultado) {
@@ -206,7 +162,7 @@
                                         }
                                     })
                                 }
-                            }else {
+                            } else {//Se guardan los modulos por perfil
                                 if (_this.validaciones(Input_NombrePerfil) === true) { 
                                     var checkedNodes = [];
                                     _this.obtnerIDS($("#@{@Treeview_Perfiles}").data("kendoTreeView").dataSource.view(), checkedNodes)
@@ -237,7 +193,7 @@
                             
                         });
                     },
-                    validaciones: function(_NombrePerfil){
+                    Validaciones: function(_NombrePerfil){//Función para validar el nombre de perfil
                         //console.log("XD")
                         if(_NombrePerfil === ""){
                             $._combustible.alert("error", "Campo vacio", "Debe ingresar un nombre de perfil")
@@ -249,10 +205,9 @@
                         }
                         return true 
                     }
-
                 },
                 DropDownList: {
-                    Cargar: function(){                  
+                    Cargar: function(){//Función para inicializar el dropdownlist de perfiles   
                         $("#@{@DropDownList_Perfiles}").kendoDropDownList({
                             dataTextField: "nombreProfile",
                             dataValueField: "perfilID",
@@ -261,27 +216,12 @@
                                 let ID = $("#@{@DropDownList_Perfiles}").data("kendoDropDownList").value()
                                 let Perfil =  $("#@{@DropDownList_Perfiles}").data("kendoDropDownList").text()
                                 switch (ID) {
-                                    case '0':
+                                    case '0'://En caso de crear nuevo perfil
                                         $("#@{@TXT_Perfil}").text("Ingrese el nombre del nuevo perfil")
                                         $("#@{@Input_NombrePerfil}").val("")
                                         $.ModuloAdministracionPerfiles.Arbol.Data(parseInt(ID))
                                         break;
-                                    @*case '2':
-                                        $("#@{@TXT_Perfil}").text("Cambiar nombre de perfil")
-                                        $("#@{@Input_NombrePerfil}").val(Perfil)
-                                        $.ModuloAdministracionPerfiles.Arbol.Data(parseInt(ID))
-                                        break;
-                                    case '3':
-                                        $("#@{@TXT_Perfil}").text("Cambiar nombre de perfil")
-                                        $("#@{@Input_NombrePerfil}").val(Perfil)
-                                        $.ModuloAdministracionPerfiles.Arbol.Data(parseInt(ID))
-                                        break;
-                                    case '4':
-                                        $("#@{@TXT_Perfil}").text("Cambiar nombre de perfil")
-                                        $("#@{@Input_NombrePerfil}").val(Perfil)
-                                        $.ModuloAdministracionPerfiles.Arbol.Data(parseInt(ID))
-                                        break;*@
-                                    default:
+                                    default://Los perfiles
                                         $("#@{@TXT_Perfil}").text("Cambiar nombre de perfil")
                                         $("#@{@Input_NombrePerfil}").val(Perfil)
                                         $.ModuloAdministracionPerfiles.Arbol.Data(parseInt(ID))
@@ -289,13 +229,17 @@
                             }
                         });
                     },
-                    Data: function(){
+                    Data: function(){//Función para obtneer la data del dropdownlist
                         $.get('@Url.Action("ObtenerPerfiles", "adAdministracionPerfiles")', function (perfiles) { 
+                            //Se añade la opción de agregar usuarios
                             perfiles.push({ nombreProfile: "Agregar nuevo perfil", perfilID: 0 })
-                            //let perfil = perfiles[0].Nomb
+                            //Se añade la data al dropdownlist
                             $("#@{@DropDownList_Perfiles}").data("kendoDropDownList").dataSource.data(perfiles);
+                            //Se obtine el textp del perfil
                             let Perfil =  $("#@{@DropDownList_Perfiles}").data("kendoDropDownList").text()
+                            //Se setea el texto del label del input
                             $("#@{@TXT_Perfil}").text("Cambiar nombre de perfil")
+                            //Se setea el nombre del perfil 
                             $("#@{@Input_NombrePerfil}").val(Perfil)
                         })
                     }

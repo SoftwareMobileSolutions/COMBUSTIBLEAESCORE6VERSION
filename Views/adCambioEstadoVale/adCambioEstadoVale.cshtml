@@ -37,7 +37,7 @@
                 <input id="@{@DropDownList_Filtros}"/>
             </div>  
             <div class="col-lg-3" id="@{@Contenedor_NunVale}" style="display:none">
-                <h5 class="text-center">Ingrese el numero de vale </h5>
+                <h5 class="text-center">Ingrese el número de vale </h5>
                 <input class="form-control" id="@{@Input_NumeroVale}" type="number"/>
             </div>
             <div class="col-lg-3" id="@{@Contenedor_Placa}" style="display:none">
@@ -134,7 +134,7 @@
             ModuloCambioEstadoVale: {
                 BarraOpciones: {
                     DropDownLists: {
-                        Cargar: function () {
+                        Cargar: function () {//Función para inicializar los dropdownlist
                             var _this = this
 
                             $("#@{@DropDownList_Filtros}").kendoDropDownList({
@@ -164,7 +164,7 @@
                                 change: $.ModuloCambioEstadoVale.GRID.DatosCreditoFiscal
                             });
                         },
-                        Data: function () {
+                        Data: function () {//Función para obtener la data de los dropdownlist
                             var data = [
                                 {
                                     Nombre: "Número de vale",
@@ -215,7 +215,7 @@
                         }
                     },
                     DateTimePicker:{
-                        Cargar: function () {
+                        Cargar: function () {//Función para inicializar los DateTimePicker
                             $("#@{@DateTimePicker_FechaIni}").kendoDateTimePicker({
                                 dateInput: true,
                                 startTime: new Date(2023,1,3,8,30,0),
@@ -232,13 +232,13 @@
                                 endTime: new Date(2023,1,3,17,00,0)
                             });
                         },
-                        Data: function () {
+                        Data: function () {//Función para mostrar las fechas y horas de los DateTimePicker
                             $("#@{@DateTimePicker_FechaIni}").data("kendoDateTimePicker").value(kendo.parseDate(moment().subtract(30, 'days').format("YYYY/MM/DD HH:mm:ss:SSS")));
                             $("#@{@DateTimePicker_FechaFin}").data("kendoDateTimePicker").value(kendo.parseDate(moment().format("YYYY/MM/DD HH:mm:ss.SSS")));
                             $("#@{@DateTimePicker_FechaCreditoFiscal}").data("kendoDateTimePicker").value(kendo.parseDate(moment().format("YYYY/MM/DD HH:mm:ss.SSS")));
                         }
                     },
-                    mostrarOpcionesFiltro: function (e) {
+                    mostrarOpcionesFiltro: function (e) {//Función para ocultar o mostrar los opciones de filtrado
                         let seleccion = $("#@{@DropDownList_Filtros}").data("kendoDropDownList").value()
 
                         switch (seleccion) {
@@ -280,7 +280,7 @@
                                 $("#@{@Contenedor_BTN_Genrerar}").addClass("offset-lg-6")
                         }
 
-                        function ocultarFiltros() {
+                        function ocultarFiltros() {// función para ocultar los contenedores de los filtros
                             $("#@{@Contenedor_NunVale}").css("display", "none")
                             $("#@{@Contenedor_Placa}").css("display", "none")
                             @*$("#@{@Contenedor_Equipo}").css("display", "none")
@@ -289,13 +289,13 @@
                             $("#@{@Contenedor_Usuario}").css("display", "none")
                         }
 
-                        function eliminarOffset(_ID){
+                        function eliminarOffset(_ID){//Función para elminar los offset de un elemento
                             $("#" + _ID).removeClass(function (index, className) {
                                 return (className.match(/(^|\s)offset-\S+/g) || []).join(' ');
                             });
                         }
                     },
-                    BTN_Generar: function () {
+                    BTN_Generar: function () {//Function para mostrar los vales en base al filtro seleccionado
                         var _this = this 
                         $("#@{@BTN_Generar}").on("click", function () {
                             let seleccion = $("#@{@DropDownList_Filtros}").data("kendoDropDownList").value()
@@ -306,8 +306,8 @@
                                 let _FiltroID = parseInt(seleccion)
                                 let _NumVale = $("#@{@Input_NumeroVale}").val()
                                 let _MobileID = $("#@{@DropDownList_Placas}").data("kendoDropDownList").value()
-                                let _FechaIni = moment($("#@{@DateTimePicker_FechaIni}").data("kendoDateTimePicker").value()).subtract(6, "hours").format("YYYYMMDD HH:mm:ss")
-                                let _FechaFin = moment($("#@{@DateTimePicker_FechaFin}").data("kendoDateTimePicker").value()).subtract(6, "hours").format("YYYYMMDD HH:mm:ss")
+                                let _FechaIni = moment($("#@{@DateTimePicker_FechaIni}").data("kendoDateTimePicker").value()).add(6, "hours").format("YYYYMMDD HH:mm:ss")
+                                let _FechaFin = moment($("#@{@DateTimePicker_FechaFin}").data("kendoDateTimePicker").value()).add(6, "hours").format("YYYYMMDD HH:mm:ss")
                                 let _UsuarioID = $("#@{@DropDownList_Usuarios}").data("kendoDropDownList").value()
                                 
                                 if (_this.Validaciones(_FiltroID, _NumVale) === true) {
@@ -331,7 +331,7 @@
                             }
                         });
                     },
-                    Validaciones: function (_FiltroID, _NumVale) {
+                    Validaciones: function (_FiltroID, _NumVale) {//Se valida que se ingreso un numero de vale
                         if (_FiltroID === 1) {
                             if (_NumVale === "") {
                                 $._combustible.alert("error", "Sin numero de vale", "Debe ingresar un numero de vale")
@@ -344,10 +344,10 @@
                     }
                 },
                 GRID: {
-                    Cargar: function () {
+                    Cargar: function () {//Función para inicializae el GRID 
                         var _this = this
-                        $("#@{@GRID_Vales}").html("");
-                        $("#@{@GRID_Vales}").kendoGrid({
+                        $("#@{@GRID_Vales}").html("");//Se limpia el contenedor del GRID
+                        $("#@{@GRID_Vales}").kendoGrid({//Se inicializa el GRID
                             dataSource: {
                                 pageSize: 20,
                                 schema: {
@@ -356,11 +356,12 @@
                                     }
                                 }
                             },
-                            columnMenu: true,
-                            scrollable: true,
-                            persistSelection: true,
+                            columnMenu: true,//Se activa la función de ocultar o mostrar columnas
+                            scrollable: true,//Se activa el Scroll
+                            persistSelection: true,//Se activa que si selecciono un vale siga estando activo aunque se cambie de pagina
                             columns: [
                                 { 
+                                    /*Se habilita la columna para activar los checkbox*/ 
                                     selectable: true, 
                                     attributes: { class: "select-all" },
                                     headerAttributes: { class: "select-all" }
@@ -467,12 +468,12 @@
                                 fileName: "ReporteDeVales.xlsx"
                             },
                             dataBound: function (e) {
-                                $("#@{@GRID_Vales} > div span input").attr("placeholder", "Busqueda")
+                                $("#@{@GRID_Vales} > div span input").attr("placeholder", "Busqueda")//Se cambia el texto de seach por buscar
                             }
                         });
                     },
                     Temporal: {},
-                    Data: function (_FiltroID, _NumVale, _MobileID, _FechaIni, _FechaFin, _UsuarioID) {
+                    Data: function (_FiltroID, _NumVale, _MobileID, _FechaIni, _FechaFin, _UsuarioID) {//Función para traer la data del server y formatarla
                         let arg = {
                             FiltroID: _FiltroID,
                             NumVale: _NumVale === "" ? null : _NumVale,
@@ -484,6 +485,7 @@
 
                         $.ModuloCambioEstadoVale.GRID.Temporal = arg
                         $.get('@Url.Action("ObtenerVales", "adCambioEstadoVale")', arg, function (vales) {
+                            /*Nota con moment se pasa de fomaro YYYYMMDD HH:mm:ss a DD/MM/YYYY HH:mm:ss*/
                             vales.forEach(vale => {
                                 vale.fechaGenerado = moment(vale.fechaGenerado).format("DD/MM/YYYY HH:mm:ss")
                                 vale.fechaAutorizado =  vale.fechaAutorizado === null ? null : moment(vale.fechaAutorizado).format("DD/MM/YYYY HH:mm:ss")
@@ -493,7 +495,7 @@
                             $("#@{@GRID_Vales}").data("kendoGrid").dataSource.data(vales)
                         })
                     },
-                    DatosCreditoFiscal: function () {
+                    DatosCreditoFiscal: function () {//Función para ingresaer el credito fiscal
                         let seleccion = $("#@{@DropDownList_EstadosVale}").data("kendoDropDownList").value()
                         //console.log(seleccion)
                         if (seleccion === "5") {
@@ -510,7 +512,7 @@
                             }
                         }
                     },
-                    BTN_ActulizarEstado: function() {
+                    BTN_ActulizarEstado: function() {//Función para actualizar el estado
                         var _this = this 
                         $("#@{@BTN_ActualizarEstado}").on("click", function () {
                             let _ValesID = $("#@{@GRID_Vales}").data("kendoGrid").selectedKeyNames().join(", ")
@@ -545,7 +547,7 @@
                             }
                         });
                     },
-                    Validaciones: function (EstadoID, CreditoFiscal) {
+                    Validaciones: function (EstadoID, CreditoFiscal) {//Función para validar los datos al actualizar el estado de vales
                         if (EstadoID === "5") {
                             if (CreditoFiscal === "") {
                                 $._combustible.alert("error", "Campo vacío", "Debe ingresar el credito fiscal")
@@ -557,7 +559,7 @@
                         return true 
                     }
                 },
-                init: function () {
+                init: function () {//Funciones que se llaman al entrar al modulo
                     var _this = this 
                     _this.BarraOpciones.DropDownLists.Cargar()
                     _this.BarraOpciones.DropDownLists.Data()

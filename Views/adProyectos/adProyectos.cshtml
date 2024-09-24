@@ -81,7 +81,7 @@
 
                             <div class="row">
                                 <div class="col-lg-2">
-                                    <label class="mb-lg-1">Ingrese el codigo del Proyecto</label>
+                                    <label class="mb-lg-1">Ingrese el código del Proyecto</label>
                                     <input type="text" class="form-control" id="@{@Input_CodigoProyecto}" />
                                 </div>
                                 <div class="col-lg-3">
@@ -184,28 +184,28 @@
                 },
                 IngresoProyectos: {
                     Proyecto: {
-                        Proyectos: [],//
+                        Proyectos: [],//Arreglo usado para almacenar los proyectos de manera temporal 
                         ProyectoManual: {
-                            visibilidad: function () {
-                                $('#@{@FormularioProyecto}').hide()
-                                $('#@{@BTN_ShowHidePEP}').click(function () {
-                                    if ($("#@{@FormularioProyecto}").css("display") === "block") {
+                            visibilidad: function () { //Function para guardar mostrar o ocultar el div para agregar un proyecto de manera manual
+                                $('#@{@FormularioProyecto}').hide()//Se oculta al comenzar la función
+                                $('#@{@BTN_ShowHidePEP}').click(function () {//evento click
+                                    if ($("#@{@FormularioProyecto}").css("display") === "block") { //si  el formulario de agregar proyecto esta visisble, se cambia el icono y texto 
                                         //console.log("Se oculta")
                                         $("#@{@Flecha}").removeClass("bi-chevron-up")
                                         $("#@{@Flecha}").addClass("bi-chevron-down")
                                         $("#@{@TXT_ShowHidePEP}").text("Añadir manualmente")
 
-                                    } else {
+                                    } else { // Si esta oculto, lo muestra,, se cambia el icono y texto 
                                         $("#@{@Flecha}").removeClass("bi-chevron-down")
                                         $("#@{@Flecha}").addClass("bi-chevron-up")
                                         $("#@{@TXT_ShowHidePEP}").text("Ocultar")
                                     }
-                                    $('#@{@FormularioProyecto}').slideToggle();
+                                    $('#@{@FormularioProyecto}').slideToggle();//Se cambia la visiviulidad 
                                 })
 
 
                             },
-                            BTN_agregarProyecto: function () {
+                            BTN_agregarProyecto: function () {// Boton para agregar proyectos de manera manual
                                 var _this = this;
                                 $("#@{@BTN_AgregarPEP}").on("click", function () {
                                     if (_this.validaciones()) {
@@ -235,32 +235,32 @@
                                     }
                                 });
                             },
-                            validaciones: function () {
-                                var PEP = $("#@{@Input_CodigoProyecto}").val().trim()
+                            validaciones: function () {//Validaciones de formato correcto
+                                var PEP = $("#@{@Input_CodigoProyecto}").val().trim() 
                                 var Nombre = $("#@{@Input_NombreProyecto}").val().trim()
-                                if (PEP === "") {
-                                    $.ModuloProyectos.alert("error", "Campo vacio", "Debe ingresar el codigo PEP")
+                                if (PEP === "") {//Se validad que el Codido de proyecto no este vacio 
+                                    $.ModuloProyectos.alert("error", "Campo vacío", "Debe ingresar el código PEP")
                                     return false
                                 }
 
-                                if (PEP.length < 2) {
-                                    $.ModuloProyectos.alert("error", "Codigo demasiado corto", "El codigo PEP debe tener una longitud de al menos un dos caracteres")
+                                if (PEP.length < 2) {// Se valida que el codigo del proyecto no tenga menos de 3 caracteres 
+                                    $.ModuloProyectos.alert("error", "Código demasiado corto", "El código PEP debe tener una longitud de al menos un dos caracteres")
                                     return false
                                 }
 
-                                if (Nombre === "") {
-                                    $.ModuloProyectos.alert("error", "Campo vacio", "Debe ingresar el nombre del Proyecto")
+                                if (Nombre === "") {//Se validad que el nombre de proyecto no este vacio 
+                                    $.ModuloProyectos.alert("error", "Campo vacío", "Debe ingresar el nombre del Proyecto")
                                     return false
                                 }
 
-                                if (Nombre.length < 3) {
+                                if (Nombre.length < 3) {// Se valida que el codigo del proyecto no tenga menos de 4 caracteres 
                                     $.ModuloProyectos.alert("error", "Nombre demasiado corto", "El nombre del Proyecto debe tener una longitud de al menos un tres caracteres")
                                     return false
                                 }
 
                                 return true
                             },
-                            DropDownList: function () {
+                            DropDownList: function () {//Funcion para inicializar el dropdown de los estados del proyecto
 
                                 var dataSource = new kendo.data.DataSource({
                                     data: [
@@ -301,9 +301,11 @@
                                         //Se obtienen los titulos
                                         var PrimeraFila = XLSX.utils.sheet_to_json(sheet, { header: ["Titulo-1", "Titulo-2", "Titulo-3", "Titulo-4"] });
                                         titles = PrimeraFila[0]
+
+                                        //Se obtienen los datos como un array
                                         jsonData = XLSX.utils.sheet_to_json(sheet);
 
-                                        //Se devuelen los datos 
+                                        //Se devuelen los datos,
                                         resolve([titles, jsonData]);
                                     
                                     };
@@ -315,27 +317,36 @@
                                     reader.readAsArrayBuffer(file);
                                 });
                             },
-                            validaciones: function (data) {
-                                var JSON = data[1]
-                                if (JSON.length < 1) {
+                            validaciones: function (data) {//Funcion para validar los datos del archivo exel
+                                /**************************Paso 2*****************************/
+
+
+                                var JSON = data[1]//Se obtienen los datos 
+                                if (JSON.length < 1) { //Se valida que no sea un exel vacio
                                     $.ModuloProyectos.alert("error", "Archivo vacio", "El arcivo no contiene datos")
                                     return false
                                 }
 
-                                var titles = data[0];
+                                var titles = data[0];//Se obtienen los titulos
+
+                                /*Se verifica que el arhivo tenga los titulos correctos, es decir el formato */
                                 if (titles["Titulo-1"] != "Codigo Proyecto" || titles["Titulo-2"] != "Nombre del Proyecto" || titles["Titulo-3"] != "Responsable" || titles["Titulo-4"] != "Estado") {
                                     //console.log(titles)
                                     $.ModuloProyectos.alert("error", "Archivo sin formato", "Debe seleccionar un archivo de exel con el formato correcto")
                                     return false
                                 }
-                                console.log("Validacion")
+                                //console.log("Validacion")
+
+
+                                /*Se recorre el array de datos para verificar que tengan el formarto correcto */
                                 for (let i = 0; i < JSON.length; i++) {
+                                    //Se verifica no falte el dato Codigo Proyecto en ninguna fila
                                     if (!("Codigo Proyecto" in JSON[i])) {
                                         $.ModuloProyectos.alert("error", "Dato faltante", "No se pude omitir el codigo del Proyecto, verificar la fila N° " + (JSON[i].__rowNum__ + 1))
                                         return false
                                         break
                                     }
-
+                                    //Se verifica que el codigo del proyecto tenga al menos 3 caracteres
                                     if (JSON[i]["Codigo Proyecto"].trim().length < 2) {
                                         $.ModuloProyectos.alert("error", "Dato demasiado corto", "El codigo del Proyecto debe tener como minimo 2 caracteres, verificar la fila N° " + (JSON[i].__rowNum__ + 1))
                                         return false
@@ -349,12 +360,13 @@
                                     }*/
 
                                     //console.log(JSON[i])
+                                    //Se verifica no falte el dato Nombre del Proyecto
                                     if (!JSON[i].hasOwnProperty("Nombre del Proyecto")) {
                                         $.ModuloProyectos.alert("error", "Dato faltante", "No se pude omitir el Nombre del Proyecto, verificar la fila N° " + (JSON[i].__rowNum__ + 1))
                                         return false
                                         break
                                     }
-
+                                     //Se verifica que el Nombre del Proyecto tenga al menos 3 caracteres
                                     if (JSON[i]["Nombre del Proyecto"].trim().length < 3) {
                                         $.ModuloProyectos.alert("error", "Dato demasiado corto", "El Nombre del Proyecto debe tener como minimo 3 caracteres, verificar la fila N° " + (JSON[i].__rowNum__ + 1))
                                         return false
@@ -363,7 +375,7 @@
                                 }
                                 return true
                             },
-                            BTN_File: function () {
+                            BTN_File: function () {//Función para el funcionamiento del input file
                                 var _this = this;
                                 $("#@{@FileInput}").on("focus", function () {
                                     $("#@{@FileInput}").val("") // Se limpia el input file antes al dar click o ser seleccionado en el DOM
@@ -396,12 +408,12 @@
                                             var data = await _this.convetidorJSON(file); 
                                         
                                             //Se llama la función que valida los datos y se verifica el resultado
-                                            if (_this.validaciones(data) === true) {
+                                            if (_this.validaciones(data) === true) {//Se inserta la data en el GRID
                                                 var Proyectos = $.ModuloProyectos.IngresoProyectos.GRID.formatoDataGrid(data[1])
                                                 $.ModuloProyectos.IngresoProyectos.GRID.dataGrid(Proyectos);
                                                 $('#@{@BTN_CargarDatos}').prop("disabled", false)
 
-                                            } else {
+                                            } else {//Se verifica si hay datos, caso contrario se desactiva el boton cargar datos 
                                                 var dataGrid = $("#@{@GRIDProyectos}").data("kendoGrid").dataSource.data();
                                                 if (dataGrid.length > 0) {
                                                     $('#@{@BTN_CargarDatos}').prop("disabled", false)
@@ -421,15 +433,16 @@
                                 });
                             },
                         },
-                        BTN_Cargar: function () {
+                        BTN_Cargar: function () {//Función para guardar los datos del grid de ingreso de proyetos
                             $("#@{@BTN_CargarDatos}").on("click", function () {
                                 //var PEPS = $.PEPS;
                                 var Proyectos = $("#@{@GRIDProyectos}").data("kendoGrid").dataSource.data()
                                 var Tabla1 = "";
                                 var Tabla2 = "";
 
+                                //Se da formato a los proyectos para poder insertarlos en la tabla
                                 for (let i = 0; i < Proyectos.length; i++) {
-                                    if (i === 0) {
+                                    if (i === 0) { //Se insertan los primeros proyectos sin el separador 
                                         Tabla1 = Proyectos[i].codigoProyecto + "₩" + Proyectos[i].NombreProyecto;
                                         Tabla2 = Proyectos[i].Responsable + "₩" + estado(Proyectos[i].Estado);
                                     } else {
@@ -437,13 +450,17 @@
                                         Tabla2 = Tabla2 + "¥" + Proyectos[i].Responsable + "₩" + estado(Proyectos[i].Estado);
                                     }
                                 }
+                                
+                                /*Nota : 
+                                Separador de proyectos = ¥
+                                Separador de datos por proyecto = ₩*/
 
                                 var arg = {
                                     CodigoProyecto_NombreProyecto: Tabla1,
                                     Responsable_Estado: Tabla2
                                 }
   
-                                $.post('@Url.Action("InsertarProyectos", "adProyectos")', arg, function (resultado) {
+                                $.post('@Url.Action("InsertarProyectos", "adProyectos")', arg, function (resultado) { //post para insertar los datos
                                     if (resultado[0].bandera === 1) {
                                         $.ModuloProyectos.alert("success", "Actualización exitosa", resultado[0].resultado)
                                         $("#@{@GRIDProyectos}").data("kendoGrid").dataSource.data("");
@@ -461,7 +478,7 @@
                                 console.log("Tabla 2")
                                 console.log(Tabla2)*/
                             });
-
+                            //Funcion para darl el formato del activo o inactivo de la base de datos
                             function estado(estado) {
                                 if (estado === "Activo") {
                                     return "1"
@@ -474,7 +491,7 @@
 
                     },
                     GRID: {
-                        loadGrid: function () {
+                        loadGrid: function () {//Función para cargar el GRID
                             $("#@{@GRIDProyectos}").html("");
                             $("#@{@GRIDProyectos}").kendoGrid({
                                 dataSource: {
@@ -573,7 +590,7 @@
                                 ],
                                 pageable: true,
                                 mobile: "phone",
-                                dataBound: function (e) {
+                                dataBound: function (e) {//Metodo para agregar el boton eliminar todo
                                     $(".k-filter-row").children()[4].innerHTML = '<div class="d-flex align-items-center justify-content-center">' +
                                         '<button type="button" class="btn btn-danger " onclick=\'$.ModuloProyectos.IngresoProyectos.GRID.BTN_BorarTodo()\'>' +
                                         '<i class="bi bi-trash"></i>' +
@@ -584,25 +601,27 @@
                             });
 
                         },
-                        dataGrid: function (_Proyectos) {
+                        dataGrid: function (_Proyectos) {//Funcion para pasar la data al GRID
                             var dataGrid = $.ModuloProyectos.IngresoProyectos.Proyecto.Proyectos
-                            if (dataGrid.length < 1) {
+                            if (dataGrid.length < 1) {//Si no hay proyectos se anade el nuevo proyectos o los proyectos
                                 $.ModuloProyectos.IngresoProyectos.Proyecto.Proyectos = _Proyectos
                                 $("#@{@GRIDProyectos}").data("kendoGrid").dataSource.data(_Proyectos);
                             } else {
-                                let temporal = _Proyectos.concat(dataGrid)
-                                $.ModuloProyectos.IngresoProyectos.Proyecto.Proyectos = temporal
-                                $("#@{@GRIDProyectos}").data("kendoGrid").dataSource.data(temporal);
+                                let temporal = _Proyectos.concat(dataGrid) // Si hay proyectos se concatena los proyectos nuevos  a los existentes
+                                $.ModuloProyectos.IngresoProyectos.Proyecto.Proyectos = temporal //se Guarda los nuevos proyectos en el arreglo 
+                                $("#@{@GRIDProyectos}").data("kendoGrid").dataSource.data(temporal); // Se inserta la nueva data en el GRID
                             }
 
                         },
-                        formatoDataGrid: function (JSON) {
+                        formatoDataGrid: function (JSON) {//Formato de Data para GRID
                             var Proyectos = [];
-                            //console.log(JSON)
+
+                            //Bucle para recorrer los datos 
                             for (let i = 0; i < JSON.length; i++) {
-                                console.log(i)
+                                //console.log(i)
                                 Proyectos.push({ codigoProyecto: JSON[i]["Codigo Proyecto"].toString().trim(), NombreProyecto: JSON[i]["Nombre del Proyecto"].toString().trim(), Responsable: responsable(JSON[i].Responsable), Estado: estado(JSON[i].Estado) })
                             }
+                            //Function para pasar de formato de Base de datos a grid el estado
                             function estado(dato) {
                                 if (dato === undefined) {
                                     return "Activo"
@@ -611,7 +630,12 @@
                                     return "Inactivo"
                                 }
                                 return "Activo"
+
+                                /*Nota : 
+                                0 = inactivo
+                                1 = activo*/
                             }
+                            //Function para pasar de formato de Base de datos a grid el responsable
                             function responsable(dato) {
 
                                 if (dato === undefined) {
@@ -621,7 +645,7 @@
                             }
                             return Proyectos
                         },
-                        BTN_BorarTodo: function () {
+                        BTN_BorarTodo: function () {//Function para borrar todos los proyectos del GRID 
                             $("#@{@GRIDProyectos}").data("kendoGrid").dataSource.data([]);
                             $('#@{@BTN_CargarDatos}').prop("disabled", true)
                             $("#@{@FileInput}").val("")
@@ -632,7 +656,7 @@
                 },
                 AdministracionProyectos: {
                     GRID: {
-                        loadGrid: function () {
+                        loadGrid: function () {//Cargar Grid 
                             var _this =  this
                             $("#@{@GRIDAdministrarProyectos}").html("");
                             $("#@{@GRIDAdministrarProyectos}").kendoGrid({
@@ -713,7 +737,7 @@
                                                     e.preventDefault();
                                                     var tr = $(e.target).closest("tr");
                                                     var data = this.dataItem(tr);
-                                                    console.log(data)
+                                                    @*console.log(data)*@
                                                     $("#@{@EditarModalLabel}").text("Modificar Proyecto: " + data.codigoProyecto)
                                                     _this.modal.ProyectoID = data.idProyectosVales
                                                     $("#@{@ModalAlert}").text("")
@@ -748,7 +772,7 @@
                             });
 
                         },
-                        DataGrid: function () {
+                        DataGrid: function () {//se  obtiene la data del grid 
                             $.get('@Url.Action("ObtenerProyectos", "adProyectos")', function (PEPS) {
 
                                 for (let i = 0; i < PEPS.length; i++) {
@@ -768,7 +792,7 @@
                                 $("#@{@GRIDAdministrarProyectos}").data("kendoGrid").dataSource.data(PEPS);
                             })
                         },
-                        EliminarProyecto: function (_ProyectoID,_PEP) {
+                        EliminarProyecto: function (_ProyectoID,_PEP) {//Funcion para guardar eliminar de manera logica los proyectos
                             var _this = this 
                             Swal.fire({
                                 title: "¿Esta seguro?",
@@ -779,8 +803,8 @@
                                 cancelButtonColor: "#d33",
                                 cancelButtonText: "Cancelar",
                                 confirmButtonText: "Si, eliminar!"
-                            }).then((result) => {
-                                if (result.isConfirmed) {
+                            }).then((result) => {//Se consulta si esta seguro 
+                                if (result.isConfirmed) {//Si confirma se elimina le proyecto
                                     $.post('@Url.Action("EliminarProyecto", "adProyectos")', { ProyectoID: _ProyectoID }, function (mensaje) {
                                         mensaje = mensaje[0]
                                         if (mensaje.bandera === 1) {
@@ -796,7 +820,7 @@
                         },
                         modal: {
                             ProyectoID: "",
-                            loadDropDownList:function(){
+                            loadDropDownList:function(){//Funcion para cargar el DropDown
                                 $("#@{@DropDownListEstadoProyectoModal}").kendoDropDownList({
                                     //filter: "contains ",
                                     optionLabel: 'Seleccione el estado',
@@ -805,7 +829,7 @@
                                     dataSource: [{ Estado: "Activo", EstadoID: 1 }, { Estado: "Inactivo", EstadoID: 0 }]
                                 });
                             },                       
-                            BTN_Guardar: function () {
+                            BTN_Guardar: function () {// Function para guardar los cambios
                                 var _this = this
                                 $("#@{@BTN_Guardar}").on("click", function () {
                                     var responsable = $("#@{@Input_ResponsableProyectoModal}").val().trim();
@@ -835,7 +859,7 @@
                                     }
                                 });
                             },
-                            validaciones: function (resposable, DropDownList) {
+                            validaciones: function (resposable, DropDownList) {// Funcion para validar los cambios de un proyecto
                                 var _this = this
 
                                 $("#@{@ModalAlert}").text("")
@@ -855,7 +879,7 @@
 
                                 return true
                             },
-                            alertModal: function (tipo, mensaje) {
+                            alertModal: function (tipo, mensaje) {//Funcion para mostrar alertas en el modal
                                 if (tipo === "alerta") {
                                     $("#@{@ModalAlert}").text("Alerta: " + mensaje)
                                     $("#@{@ModalAlert}").css("color", "red")

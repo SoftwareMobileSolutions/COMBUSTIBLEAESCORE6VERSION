@@ -96,7 +96,7 @@
                                     if (mensaje.bandera === 0) {
                                         $._combustible.alert("error", "Error", mensaje.resultado)
                                     } else {
-                                        $._combustible.alert("success", "Creacion exitosa", mensaje.resultado)
+                                        $._combustible.alert("success", "Creación exitosa", mensaje.resultado)
                                         $.ModuloCentroCosto.Grid.dataGrid();
                                         $("#@{@Input_NombreCentroCosto}").val("")
                                     }
@@ -107,7 +107,7 @@
                     },
                     validaciones: function (nombre) {//Funcón para validar el nombre del centro de costo 
                         if (nombre === "") {//Se valida que el nombre no este vacio
-                            $._combustible.alert("error", "Campo vacio", "Debe insertar un nombre para el centro de costo")
+                            $._combustible.alert("error", "Campo vacío", "Debe insertar un nombre para el centro de costo")
                             return false
                         }
                         if (nombre.length < 3) {//Se valida el largo nombre
@@ -184,7 +184,7 @@
 
                         Swal.fire({ //Se consulta sobre la eliminación de un centro de costo
                             title: "¿Esta seguro?",
-                            text: 'La eliminacion de "' + _Razon + '" no es reversible',
+                            text: 'La eliminación de "' + _Razon + '" no es reversible',
                             icon: "warning",
                             showCancelButton: true,
                             confirmButtonColor: "#3085d6",
@@ -220,7 +220,7 @@
                                     $.post('@Url.Action("ActualizarCentrosCosto", "adCentroCosto")', arg, function (mensaje) {
 
                                         mensaje = mensaje[0]
-                                        console.log(mensaje)
+                                        @*console.log(mensaje)*@
                                         if (mensaje.bandera === 1) {
                                             _this.alertModal("suceso", mensaje.resultado)
                                             $.ModuloCentroCosto.Grid.dataGrid()

@@ -78,7 +78,7 @@
         $.extend({
             Vale: {
                 DropDownList: {
-                    CargarDropDownList: function () {
+                    CargarDropDownList: function () {//Función para inicializar los DropdownList 
 
                         $("#DropDownListMobiles").kendoDropDownList({
                             filter: "contains",
@@ -95,13 +95,14 @@
                             dataTextField: "descripcionTipoCarga",
                             dataValueField: "tipoCargaid",
                             optionLabel: 'Seleccione el tipo de vale...',
-                            select: function (e) {
+                            select: function (e) {//Función para mostrar y ocultar el input total 
+
                                 let tipoCardaID = e.dataItem.tipoCargaid;
-                                if (tipoCardaID === 2) {
+                                if (tipoCardaID === 2) {//Total en dolares
                                     $("#DIV_DataExtraVale").show(400)
                                     $("#TXT_Total").text("Ingrese el total en Dolares");
                                     $("#Input_Total").val("")
-                                } else if (tipoCardaID === 3) {
+                                } else if (tipoCardaID === 3) {//Total en galones
                                     $("#DIV_DataExtraVale").show(400)
                                     $("#TXT_Total").text("Ingrese el total en Galones");
                                     $("#Input_Total").val("")
@@ -111,11 +112,10 @@
                                     $("#Input_Total").val("")
                                 }
 
-
                             }
                         });
                     },
-                    DataDropDownList: function () {
+                    DataDropDownList: function () {//Función para obtener la data de los DropdownList
                         $.get('@Url.Action("ObtenerMobileXUser", "adGenerarVales")', function (mobiles) {
                             //console.log(mobiles)
                             var data = []
@@ -136,7 +136,7 @@
                 },
                 GenerarVale: {
                     CapacidadTanque: 0,
-                    keypress: function () {
+                    keypress: function () {//Se limita el ingreso de datos al input de total
 
                         $('#Input_Total').keypress(function (event) {
 
@@ -169,19 +169,22 @@
 
                         });
                     },
-                    Validaciones: function (mobileID, tipoCargaID, Total) {
+                    Validaciones: function (mobileID, tipoCargaID, Total) {//Validaciones para generar vales
                         var capacidadTanque = $.Vale.GenerarVale.CapacidadTanque
 
+                        //Se verifica si se selecciono un vehiculo
                         if (mobileID === '') {
-                            $._combustible.alert('error', 'Error', 'Debe selecionar un vehiculo')
+                            $._combustible.alert('error', 'Error', 'Debe selecionar un vehículo')
                             return false
                         }
 
+                        //Se verifica si se selcciono el tipo de carga 
                         if (tipoCargaID === '') {
                             $._combustible.alert('error', 'Error', 'Debe selecionar un tipo de carga')
                             return false
                         }
 
+                        //Total en dolares
                         if (tipoCargaID === "2") {
                             if (Total === "") {
                                 $._combustible.alert('error', 'Error', 'Debe insertar el total de dolares')
@@ -196,8 +199,9 @@
                                 return false
                             }
                         }
+
+                        //Total en galones
                         if (tipoCargaID === "3") {
-                            //console.log(capacidadTanque)
                             if (Total === "") {
                                 $._combustible.alert('error', 'Error', 'Debe insertar el total de galones')
                                 return false
@@ -216,17 +220,19 @@
                         }
                         return true
                     },
-                    BTN_GenerarVales: function () {
+                    BTN_GenerarVales: function () {//Función para generar vales 
                         var _this = this
                         $("#BTN_GenerarVale").on("click", function () {
                             _this.Validaciones()
+
+                            //Se obtienen los datos del vale 
                             var mobileID = $("#DropDownListMobiles").data("kendoDropDownList").value()
                             var tipoCargaID = $("#DropDownListTipoCarga").data("kendoDropDownList").value()
                             var Total = $("#Input_Total").val()
                             var _TotalDolares = null
                             var _TotaGalones = null
 
-                            if (_this.Validaciones(mobileID, tipoCargaID, Total) === true) {
+                            if (_this.Validaciones(mobileID, tipoCargaID, Total) === true) {//Se llama a la función que valida la data y se evalua
 
                                 if (tipoCargaID === "2") {
                                     _TotalDolares = parseFloat(Total)
@@ -241,6 +247,7 @@
                                     TotalDolares: _TotalDolares,
                                     TotaGalones: _TotaGalones
                                 }
+
                                 $.post('@Url.Action("GenerarVale", "adGenerarVales")', arg, function (mensaje) {
                                     mensaje = mensaje[0]
                                     if (mensaje.bandera === 1) {
@@ -267,8 +274,10 @@
                 }
             },
             Grid:{
-                CargarGrid: function () {
+                CargarGrid: function () {//Función para inicializar el GRID 
                     var _this = this
+
+                    //Se inicializan los DateTimePicker
                     $("#FechaIni").kendoDateTimePicker({
                         dateInput: true,
                         startTime: new Date(2023, 1, 3, 8, 30, 0),
@@ -280,6 +289,7 @@
                         endTime: new Date(2023, 1, 3, 17,00, 0)
                     });
 
+                    //Se define la fecha de los DateTimePicker
                     $("#FechaIni").data("kendoDateTimePicker").value(kendo.parseDate(moment().subtract(30, 'days').format("YYYY/MM/DD HH:mm:ss")));
                     $("#FechaFin").data("kendoDateTimePicker").value(kendo.parseDate(moment().format("YYYY/MM/DD HH:mm:ss")));
 
@@ -342,7 +352,7 @@
                     var FechaFin = moment().utc().format("YYYYMMDD HH:mm:ss")
                     _this.DataGrid(FechaIni, FechaFin)
                 },
-                DataGrid: function (_FechaIni, _FechaFin) {
+                DataGrid: function (_FechaIni, _FechaFin) {//Función para obtener la data del GRID
 
                     let arg = {
                         FechaIni: _FechaIni,
@@ -356,7 +366,7 @@
                         $("#GridVales").data("kendoGrid").dataSource.data(vales);
                     })
                 },
-                BTN_GenerarVales: function () {
+                BTN_GenerarVales: function () {//Función para obtener los vales
                     var _this = this
                     $("#BTN_GenerarValesGRID").on("click", function () {
                         var FechaIni = moment($("#FechaIni").data("kendoDateTimePicker").value()).format("YYYYMMDD HH:mm:ss:SSS")

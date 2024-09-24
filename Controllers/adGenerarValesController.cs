@@ -23,20 +23,20 @@ namespace COMBUSTIBLEAESCORE.Controllers
             return View();
         }
 
-        public async Task<JsonResult> ObtenerMobileXUser()
+        public async Task<JsonResult> ObtenerMobileXUser()//Action para obtener los vales por usuario
         {
             var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
             var mobiles = await iadGenerarVales.ObtenerMobileXUser(user.FirstOrDefault().UsuarioID);
             return Json(mobiles); 
         }
 
-        public async Task<JsonResult> ObtenerTipoCarga()
+        public async Task<JsonResult> ObtenerTipoCarga()//Action para obtener los tipos de carga
         {
             var tiposCarga = await iadGenerarVales.ObtenerTipoCarga();
             return Json(tiposCarga);
         }
 
-        public async Task<JsonResult> ObtenerValesGenerados(string FechaIni, string FechaFin) 
+        public async Task<JsonResult> ObtenerValesGenerados(string FechaIni, string FechaFin)//Action para obtener los vales generados
         {
             var sesion = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
             var dataUser = sesion.FirstOrDefault();
@@ -45,6 +45,7 @@ namespace COMBUSTIBLEAESCORE.Controllers
         }
 
         [HttpPost]
+        //Action para generar los vales
         public async Task<JsonResult> GenerarVale(int MobileID, string FechaGeneracion, int TipoCargaValeID, float? TotalDolares, float? TotaGalones)
         {
             var sesion = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");

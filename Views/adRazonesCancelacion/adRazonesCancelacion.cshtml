@@ -1,8 +1,4 @@
-﻿@*
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
     Layout = null;
     string guid = System.Guid.NewGuid().ToString().Replace("-", ""),
     Input_RazonCancel = "Input_RazonCancel_" + guid,
@@ -56,7 +52,7 @@
                 <div class="modal-body">
                     <div class="container-fluid">
                         <div class="row">
-                            <span>Ingrese la nueva razon de cancelacion</span>
+                            <span>Ingrese la nueva razón de cancelación</span>
                         </div>
                         <div class="row pt-lg-2">
                             <div class="col-lg-12">
@@ -113,11 +109,11 @@
         $.extend({
             ModuloRazonesCancelacion :{
                 RazonCancel: {
-                    BTN_AgregarRazonCancel: function () {
+                    BTN_AgregarRazonCancel: function () {//Función para agregar las razones de cancelación
                         var _this = this
                         $("#@{@BTN_RazonCancel}").on("click", function () {
                             //console.log("XD")
-                            var razon = $("#@{@Input_RazonCancel}").val().trim()
+                            var razon = $("#@{@Input_RazonCancel}").val().trim()//Se obtiene la razon de cancelación
                             if (_this.validaciones(razon) === true) {
                                 //console.log("Entra")
                                 $.post('@Url.Action("crearRazonCancelacion", "adRazonesCancelacion")', { Razon: razon }, function (mensaje) {
@@ -126,7 +122,7 @@
                                     if (mensaje.bandera === 0) {
                                         $._combustible.alert("error", "Error", mensaje.resultado)
                                     } else {
-                                        $._combustible.alert("success", "Creacion exitosa", mensaje.resultado)
+                                        $._combustible.alert("success", "Creación exitosa", mensaje.resultado)
                                         $.ModuloRazonesCancelacion.Grid.DataGrid();
                                         $("#@{@Input_RazonCancel}").val("")
                                         //$("#InputNombreCentroCosto").val("")
@@ -135,23 +131,23 @@
                             }
                         });
                     },
-                    validaciones: function (Razon) {
-                        if (Razon === "") {
-                            $._combustible.alert("error", "Campo vacio", "Debe insertar una Razon de cancelación")
+                    validaciones: function (Razon) {//Función para validar las razones de cancelación 
+                        if (Razon === "") {//Se valida si el input de la razon de cancelación no esta vacio 
+                            $._combustible.alert("error", "Campo vacio", "Debe insertar una Razón de cancelación")
                             return false
                         }
-                        if (Razon.length < 10) {
-                            $._combustible.alert("error", "Razon demasiada corta", "La razon de cancelación debe tener al menos 10 caracteres")
+                        if (Razon.length < 10) {// Se valida que la razón de validación no sea menor a 10 caracteres
+                            $._combustible.alert("error", "Razón demasiada corta", "La razon de cancelación debe tener al menos 10 caracteres")
                             return false
                         }
                         return true
                     }
                 },
                 Grid: {
-                    loadGrid: function () {
+                    loadGrid: function () {//Funcion para inicializar el GRID
                         var _this = this
-                        $("#@{@GRIDRazonCancel}").html("");
-                        $("#@{@GRIDRazonCancel}").kendoGrid({
+                        $("#@{@GRIDRazonCancel}").html("");//Se limpia el contenedor del GRID
+                        $("#@{@GRIDRazonCancel}").kendoGrid({//Se inicializa el GRID
                             dataSource: {
                                 pageSize: 10
                             },
@@ -172,7 +168,7 @@
                                                 e.preventDefault();
                                                 var tr = $(e.target).closest("tr");
                                                 var data = this.dataItem(tr);
-                                                $("#@{@EditarModalLabel}").text("Modificar razon de cancelacion")
+                                                $("#@{@EditarModalLabel}").text("Modificar la razón de cancelación")
                                                 _this.modal.RazonValeCanceladoID = data.idRazonValeCancelado
                                                 $("#@{@ModalAlert}").text("")
                                                 $("#@{@InputNombreRazonCancel}").val(data.razon)
@@ -206,16 +202,16 @@
                             pageable: true,
                             mobile: "phone",
                         });
-                        _this.DataGrid();
+                        _this.DataGrid();//Se llama a la funcion que obtine la data del GRID
                     },
-                    DataGrid: function () {
+                    DataGrid: function () {//Funcion para obtener la data del GIRD
                         $("#@{@GRIDRazonCancel}").data("kendoGrid").dataSource.data([])
                         $.get('@Url.Action("ObtenerRazonCancelacion", "adRazonesCancelacion")', function (Razones) {
                             //console.log(Razones)
                             $("#@{@GRIDRazonCancel}").data("kendoGrid").dataSource.data(Razones)
                         })
                     },
-                    EliminarRazonCancelacion: function (_RazonValeCanceladoID,_Razon) {                   
+                    EliminarRazonCancelacion: function (_RazonValeCanceladoID,_Razon) {//Funcion para eliminar las razones de cancelacion            
                         Swal.fire({
                             title: "¿Esta seguro?",
                             text: 'La eliminacion de "' + _Razon + '" no es reversible',
@@ -225,8 +221,8 @@
                             cancelButtonColor: "#d33",
                             cancelButtonText: "Cancelar",
                             confirmButtonText: "Si, eliminar!"
-                        }).then((result) => {
-                            if (result.isConfirmed) {
+                        }).then((result) => {//Se consulta si desea eliminar
+                            if (result.isConfirmed) {//Si se confirma se elimina
                                $.post('@Url.Action("EliminarRazonCancelacion", "adRazonesCancelacion")', { RazonValeCanceladoID: _RazonValeCanceladoID }, function (mensaje) {
                                    mensaje = mensaje[0]
                                    if (mensaje.bandera === 1) {
@@ -245,12 +241,12 @@
                         });
                     },
                     modal: {
-                        RazonValeCanceladoID: "",
-                        BTN_GuardarCambios: function () {
+                        RazonValeCanceladoID: "",//variable para almacenar el ID del de la razon de cancelacion para editar en el modal
+                        BTN_GuardarCambios: function () {//Funcion para guardar datos 
                             var _this = this
                             $("#@{@BTN_Guardar}").on("click", function () {
                                 var RazonCancelNuevo = $("#@{@InputNombreRazonCancel}").val().trim()
-                                if (_this.validaciones(RazonCancelNuevo) === true) {
+                                if (_this.validaciones(RazonCancelNuevo) === true) {// Se llama a la funcion para validar datos y se verifica el resultado
                                     var arg = {
                                         RazonValeCanceladoID: _this.RazonValeCanceladoID,
                                         RazonNuevo: RazonCancelNuevo
@@ -274,23 +270,23 @@
                             });
 
                         },
-                        validaciones: function (razon) {
+                        validaciones: function (razon) {//Funcion para validar los  nombres de las razones de cancenalcion
                             var _this = this
 
                             $("#@{@ModalAlert}").text("")
-                            if (razon === "") {
+                            if (razon === "") {//Se valida si el nombre de la razon no este vacio
                                 _this.alertModal("alerta", "Debe ingresar el nuevo nombre")
                                 return false
                             }
 
-                            if (razon.length < 10) {
+                            if (razon.length < 10) {// Se valida que la razón de cancelación no seea menor a 10 caracteres
                                 _this.alertModal("alerta", "El Nombre debe tener al menos diez carácteres")
                                 return false
                             }
 
                             return true
                         },
-                        alertModal: function (tipo, mensaje) {
+                        alertModal: function (tipo, mensaje) {//Funcion para mostrar alertas en el modal
                             if (tipo === "alerta") {
                                 $("#@{@ModalAlert}").text("Alerta: " + mensaje)
                                 $("#@{@ModalAlert}").css("color", "red")
@@ -299,6 +295,10 @@
                                 $("#@{@ModalAlert}").text("Nota: " + mensaje)
                                 $("#@{@ModalAlert}").css("color", "green")
                             }
+
+                            /*Nota:  
+                            alerta = se muestra el texto en rojo
+                            suceso = se muestra el texto en verde*/ 
                         }
                     }
                 },

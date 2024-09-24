@@ -66,7 +66,7 @@
         $.extend({
             ReporteActividadVales: {
                 BarraOpciones:{
-                    DateTimePicker: function () {
+                    DateTimePicker: function () {//Función para inicializar los DateTimePicker
                         @*$("#@{@Datepicker}").kendoDatePicker({
                             dateInput: true
                         });
@@ -74,6 +74,7 @@
 
                         $("#@{@Datepicker}").data("kendoDatePicker").value("06/06/2024")*@
 
+                        //Se inicializan los DateTimePicker
                         $("#@{@DateTimepicker_FechaIni}").kendoDateTimePicker({
                             dateInput: true,
                             startTime: new Date(2023, 1, 3, 8, 30, 0),
@@ -86,10 +87,11 @@
                             endTime: new Date(2023, 1, 3, 17,00, 0)
                         });
 
+                        //Se establece las fechas 
                         $("#@{@DateTimepicker_FechaIni}").data("kendoDateTimePicker").value(kendo.parseDate(moment().subtract(30, 'days').format("YYYY/MM/DD HH:mm:ss")));
                         $("#@{@DateTimepicker_FechaFin}").data("kendoDateTimePicker").value(kendo.parseDate(moment().format("YYYY/MM/DD HH:mm:ss")));
                     },
-                    DropDownList: function(){
+                    DropDownList: function () {//Función para inicializar el DropDownList
                         var data = [
                             { text: "Usuario Generador", value: "1" },
                             { text: "Usuario Autorizador", value: "2" }
@@ -104,12 +106,12 @@
                             change: onChange*/
                         });
                     },
-                    BTN_Generar:function(){
+                    BTN_Generar:function(){//Función para Generar la data del reporte
                         $("#@{@BTN_Generar}").on("click",function(){
                             $.ReporteActividadVales.Data.ObtenerData();
                         });
                     },
-                    init: function () { 
+                    init: function () { //Funciones que se ejecutan al entrar al modulo
                         var _this = this 
                         _this.DateTimePicker()
                         _this.DropDownList()
@@ -117,11 +119,11 @@
                     }
                 },
                 Data: {
-                    DataSubGRID: {
+                    DataSubGRID: {//Data del grid hijo
                         Vales : [],
                         PerfilUsuarioID: 0
                     },
-                    ObtenerData:function(){
+                    ObtenerData:function(){//Función para obtener la data del GRID 
                         var _this = this
                         var FechaInicio = $("#@{@DateTimepicker_FechaIni}").data("kendoDateTimePicker").value()
                         var FechaFin = $("#@{@DateTimepicker_FechaFin}").data("kendoDateTimePicker").value()
@@ -130,8 +132,9 @@
                         let _FechaFin = moment(FechaFin).add(6, 'hours').format("YYYYMMDD HH:mm:ss")
 
                         var _PerfilUsuarioID = $("#@{@DropDownList_TipoUsaurio}").data("kendoDropDownList").value()
+
+                        //Se cambia el titulo del GRID
                         let TituloGrid = $("#@{@DropDownList_TipoUsaurio}").data("kendoDropDownList").text()
-                        //console.log()
                         $("#@{@TXT_TipoUsuarioTituloGrid}").text(TituloGrid.toLowerCase())
                         _PerfilUsuarioID = parseInt(_PerfilUsuarioID)
                         let arg = {
@@ -143,11 +146,19 @@
                         
                                     
                         $.get('@Url.Action("ObtenerDataVales", "rpValesPorUsuario")' ,arg, function (vales) {
-                            console.log(vales)
+                            //console.log(vales)
+
+                            //Se llama a la función que da formato a la Data del GRID y se setea la data del GRID
                             $.ReporteActividadVales.GRID.DataGRID(_this.FormatoData.FormatoDataGrid(vales, _PerfilUsuarioID))
+
+                            /***************************Se guarda la data del SubGrid*****************************/ 
+
+                            //Se llama a la función que da formato a la data del SubGrid y se gurada
                             _this.DataSubGRID.Vales = _this.FormatoData.FormatoDataSubGrid(vales, _PerfilUsuarioID)
+                            //Se guarda el perfilID del usuario para el subGriD
                             _this.DataSubGRID.PerfilUsuarioID = _PerfilUsuarioID
 
+                            //Se genera la grafica
                             $.ReporteActividadVales.Grafica.DataGrafica(_this.FormatoData.FormatoDataGrafica(vales, _PerfilUsuarioID), _PerfilUsuarioID)
                             //$.ReporteActividadVales.Grafica.
                             //_this.FormatoData.FormatoDataDrilldown(vales, _PerfilUsuarioID)
@@ -155,10 +166,11 @@
                         
                     },
                     FormatoData: {
-                        FormatoDataGrid: function (vales, _PerfilUsuarioID) {
+                        FormatoDataGrid: function (vales, _PerfilUsuarioID) {//Función para dar formato a la data del GRID
                             var valesXUsario = [];
                             var found = false
 
+                            //Se da formato a la data para el usuario tipo Generador
                             if(_PerfilUsuarioID === 1){
                                 vales.forEach( vale => {
                                     found = false
@@ -180,7 +192,7 @@
                                         });
                                     }
                                 });
-                            }else{
+                            }else{//Se da formato al usuario de tipo Autorizador
                                 vales.forEach( vale => {
                                     found = false
                                     valesXUsario.forEach( _vale =>{
@@ -208,9 +220,10 @@
                             //console.log()
                             return valesXUsario
                         },
-                        FormatoDataSubGrid: function (vales, _PerfilUsuarioID) {
+                        FormatoDataSubGrid: function (vales, _PerfilUsuarioID) {//Función para dar formato a la data del subGrid 
                             var groupedItems;
 
+                            //Se da formato a la fecha de los vales
                             if (_PerfilUsuarioID === 1) {
                                 vales.forEach(vale => {
                                     vale.fechaGenerado = moment(vale.fechaGenerado).format("DD/MM/YYYY HH:mm:ss")
@@ -222,17 +235,20 @@
                                 })
                             }
 
+                            
                             if (_PerfilUsuarioID === 1) {
-                                groupedItems = vales.reduce((acc, vale) => {
-                                    const { userGenera } = vale;
-                                    if (!acc[userGenera]) {
-                                        acc[userGenera] = [];
+                                //Se usa reduce para agrupar los vales por usuario
+                                groupedItems = vales.reduce((acc /*Acumulador */, vale) => {
+                                    const { userGenera } = vale;//Se guarda el valor del userGenera
+                                    if (!acc[userGenera]) {//Se verifica si el acumulador tiene un array llamado como el userGenera
+                                        acc[userGenera] = [];//Si no tiene el array se setea un array vacio con el nombre del usuario userGenera
                                     }
-                                    acc[userGenera].push(vale);
-                                    return acc;
-                                }, {});
+                                    acc[userGenera].push(vale);//Si el array tiene el mismo nombre que el userGenera se setea el vale al acumulador
+                                    return acc;//Se retorna el acumulador
+                                }, {}/*Valor inicial del aculumalador*/);
 
                             } else {
+                                /*Es la misma logica que para userGenera pero con el usuarioAuto*/
                                 groupedItems = vales.reduce((acc, vale) => {
                                     const { usuarioAuto } = vale;
                                     if (!acc[usuarioAuto]) {
@@ -242,29 +258,33 @@
                                     return acc;
                                 }, {});
                             }
-                            return groupedItems
+
+                            //console.log(groupedItems)
+                            return groupedItems //Se retorna la data formatada
                         },
-                        FormatoDataGrafica: function (vales, _PerfilUsuarioID) {
+                        FormatoDataGrafica: function (vales, _PerfilUsuarioID) {//Función para dar formato a la data de la Grafica
                             var series = [];
-                            var found = false
-                            if (_PerfilUsuarioID === 1) {
+                            var found = false// Bool para validar si se encontró el objeto con el nombre de userGenera en el array series
+
+                            if (_PerfilUsuarioID === 1) {//Data pefil Generador
                                 vales.forEach(vale => {
-                                    found = false
-                                    series.forEach(serie => {
-                                        if (vale.userGenera === serie.name) {
-                                            serie.y++;
-                                            found = true
+                                    found = false//Se pone en falso el bool 
+                                    series.forEach(serie => {//Se recorre el array series
+                                        if (vale.userGenera === serie.name) {//Se verifica si ya existe el objeto con el nombre de userGenera en el array series
+                                            serie.y++; //Se incremente y en 1
+                                            found = true //Se pone en true el bool
                                         }
                                     });
 
-                                    if (!found) {
-                                        series.push({
+                                    if (!found) {//Si el bool esta en false
+                                        series.push({//Se crea el objeto en el array con el nombre del userGenera
                                             name: vale.userGenera,
                                             y: 1
                                         });
                                     }
                                 });
-                            } else {
+                            } else {//Data perfil Autorizador
+                                /*La misma logica que en el userGenera por userGenera  usuarioAuto*/
                                 vales.forEach(vale => {
                                     found = false
                                     series.forEach(serie => {
@@ -283,21 +303,17 @@
                                 });
                             }
 
+                            //Se usa sort para ordenar de mayor a menor los objetos del array
                             series.sort((a, b) => b.y - a.y);
-                            /*let DataGrafico = {
-                                name: 'Browsers',
-                                colorByPoint: true,
-                                data: series
-                            }*/
                             return series;
                         }
                     }
                 },
                 GRID: {
-                    load: function () {
+                    load: function () {//Función para inicializar el GRID
                         var _this = this 
-                        $("#@{@GRID_ValesXUsuario}").html("");
-                        $("#@{@GRID_ValesXUsuario}").kendoGrid({
+                        $("#@{@GRID_ValesXUsuario}").html("");//Se limpia el contendor del GRID
+                        $("#@{@GRID_ValesXUsuario}").kendoGrid({//Se inicializa el GRID 
                             dataSource: {
                                 pageSize: 10
                             },
@@ -336,15 +352,19 @@
                             },
                         });
                     },
-                    DataGRID: function (DataGrid) {
+                    DataGRID: function (DataGrid) {//Funcion para setear la data al GRID
                         $("#@{@GRID_ValesXUsuario}").data("kendoGrid").dataSource.data(DataGrid);
                     },
                     SubGrid: {
-                        load: function (e) {
-
+                        load: function (e) {//Función para inicializar el subGRID
+                            //Se obtiene el username de la fila del GRID
                             let usuario = e.data.usuario
+                            //Se obtiene el perfilID
                             let _PerfilUsuarioID = $.ReporteActividadVales.Data.DataSubGRID.PerfilUsuarioID
+                            //Se obtienen los vales por el username
                             var vales = $.ReporteActividadVales.Data.DataSubGRID.Vales[usuario]
+
+                            //Grid para perfilGenerador 
                             if (_PerfilUsuarioID === 1) {
                                 $("<div/>").appendTo(e.detailCell).kendoGrid({
                                     dataSource: vales,
@@ -353,21 +373,16 @@
                                         { field: "numVale", title: "N° Vale", width: "100px" },
                                         { field: "placa", title: "Placa", width: "100px" },
                                         { field: "userGenera", title: "Usuario Abre", width: "150px" },
-                                        { field: "fechaGenerado", title: "Fecha de Generacion", width: "200px" },
+                                        { field: "fechaGenerado", title: "Fecha de Generación", width: "200px" },
                                         { field: "tipoCarga", title: "Tipo de Carga", width: "150px" },
                                         { field: "totalPrecio", title: "Total ($)", width: "100px" },
                                         { field: "cantidadGalones", title: "Cant. Gal.", width: "100px" }
-
-                                            /*{ field: "odometro", title: "Odometro", width: "100px" },
-                                            { field: "gasolinera", title: "Gasolinera", width: "200px" },
-                                            { field: "usuarioCierra", title: "Usuario Cierra", width: "150px" },
-                                            { field: "fechaCierre", title: "Fecha Cierre", width: "200px" }*/
 
                                     ], selectable: "single, row",
                                     resizable: true
 
                                 });
-                            } else {
+                            } else {//Grid para pefil Autorizador
                                 $("<div/>").appendTo(e.detailCell).kendoGrid({
                                     dataSource: vales,
                                     toolbar: ["excel", "search"],
@@ -379,14 +394,8 @@
                                         { field: "tipoCarga", title: "Tipo de Carga", width: "150px" },
                                         { field: "totalPrecio", title: "Total ($)", width: "100px" },
                                         { field: "cantidadGalones", title: "Cant. Gal.", width: "100px" },
-
                                         { field: "usuarioAuto", title: "Usuario Autoriza", width: "150px" },
                                         { field: "fechaAutorizado", title: "Fecha Autorizado", width: "200px" }
-
-                                            /*{ field: "odometro", title: "Odometro", width: "100px" },
-                                            { field: "gasolinera", title: "Gasolinera", width: "200px" },
-                                            { field: "usuarioCierra", title: "Usuario Cierra", width: "150px" },
-                                            { field: "fechaCierre", title: "Fecha Cierre", width: "200px" }*/
 
                                     ], selectable: "single, row",
                                     resizable: true
@@ -396,16 +405,15 @@
                     }
                 },
                 Grafica: {
-                    Variable:undefined,
-                    load: function () {
+                    Variable:undefined,//Variable para guardar el grafico
+                    load: function () {//Función para inicializar el grafico
                         var _this = this
 
                         var _PerfilUsuarioID = $("#@{@DropDownList_TipoUsaurio}").data("kendoDropDownList").value()
                         _PerfilUsuarioID = parseInt(_PerfilUsuarioID)
 
-                        //let x;
-                        var _PerfilUsuarioID = $("#@{@DropDownList_TipoUsaurio}").data("kendoDropDownList").value()
-                        _this.Variable = Highcharts.chart('@{@BarChart}', {
+                        //var _PerfilUsuarioID = $("#@{@DropDownList_TipoUsaurio}").data("kendoDropDownList").value()
+                        _this.Variable = Highcharts.chart('@{@BarChart}', {//Se inicializa el Grafico
                             chart: {
                                 type: 'column',
                                 animation: true
@@ -413,11 +421,7 @@
                             title: {
                                 align: 'left',
                                 text: 'Top 10 usuarios que '
-                            }/*,
-                            subtitle: {
-                                align: 'left',
-                                text: 'Click the columns to view versions. Source: <a href="http://statcounter.com" target="_blank">statcounter.com</a>'
-                            }*/,
+                            },
                             accessibility: {
                                 announceNewData: {
                                     enabled: true
@@ -465,21 +469,19 @@
                         });
 
                     },
-                    DataGrafica:function(series, _PerfilUsuarioID) {
-                        Grafica = $.ReporteActividadVales.Grafica.Variable
-                        Grafica.series[0].setData(series.slice(0, 9))
-                        Grafica.series[0].setName('Usuarios que ' + (_PerfilUsuarioID === 1 ? "generaron vales" : " autorizaon vales"))
-                        Grafica.redraw();
-                         /*var _PerfilUsuarioID = $("#@{@DropDownList_TipoUsaurio}").data("kendoDropDownList").value()
-                        _PerfilUsuarioID = parseInt(_PerfilUsuarioID)*/
-                        Grafica.update({
+                    DataGrafica:function(series, _PerfilUsuarioID) {//Función para setear la dataGrafica
+                        Grafica = $.ReporteActividadVales.Grafica.Variable //Se obtiene la variable
+                        Grafica.series[0].setData(series.slice(0, 9))//Se obtienen las primeras 10 posisiones del array
+                        Grafica.series[0].setName('Usuarios que ' + (_PerfilUsuarioID === 1 ? "generaron vales" : " autorizaon vales"))//Se cambia el nombre de las series
+                        Grafica.redraw();//Se repinta la grafica
+                        Grafica.update({//Se actualiza el titulo del grafico
                             title: {
                                 text: 'Top 10 usuarios que ' + (_PerfilUsuarioID === 1 ? "Generaron vales" : " Autorizaon vales")
                             }
                         });
                     }
                 },
-                init: function () {
+                init: function () {//Función que se ejecutan al ingresar al modulo
                     var _this = this
                     _this.BarraOpciones.init()
                     _this.GRID.load()

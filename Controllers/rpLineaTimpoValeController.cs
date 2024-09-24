@@ -21,14 +21,14 @@ namespace COMBUSTIBLEAESCORE.Controllers
             return View();
         }
 
-        public async Task<JsonResult> ObtenerVales(int MobileID, string FechaIni, string FechaFin)
+        public async Task<JsonResult> ObtenerVales(int MobileID, string FechaIni, string FechaFin)//Action para obtener los vales
         {
             var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
             var vales = await irpLineaTimpoVale.ObtenerVales(user.FirstOrDefault().CompanyID, MobileID, FechaIni, FechaFin);
             return Json(vales);
         }
 
-        public async Task<JsonResult> ObtenerPlacas()
+        public async Task<JsonResult> ObtenerPlacas()//Action para obtener las placas
         {
             var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
             var mobiles = await irpLineaTimpoVale.ObtenerPlacas(user.FirstOrDefault().CompanyID);   

@@ -25,14 +25,14 @@ namespace COMBUSTIBLEAESCORE.Controllers
             return View();
         }
 
-        public async Task<JsonResult> ObtenerPerfiles()
+        public async Task<JsonResult> ObtenerPerfiles()//Action para obtener los pefiles
         {
             var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
             var perfiles = await iadAdministracionPerfiles.ObtenerPefiles(user.FirstOrDefault().CompanyID);
             return Json(perfiles);
         }
 
-        public async Task<JsonResult> ObtenerModulos(int PefilID)
+        public async Task<JsonResult> ObtenerModulos(int PefilID)//Action para obtener los modulos
         {
             var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
             var modulos = await iadAdministracionPerfiles.ObtenerModulos(PefilID, user.FirstOrDefault().CompanyID);
@@ -40,7 +40,7 @@ namespace COMBUSTIBLEAESCORE.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> CrearPerfil(string NombrePefil)
+        public async Task<JsonResult> CrearPerfil(string NombrePefil)//Action para crear nuevo perfil
         {
             var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
             var resultado = await iadAdministracionPerfiles.CrearPerfil(NombrePefil, user.FirstOrDefault().CompanyID);
@@ -48,7 +48,7 @@ namespace COMBUSTIBLEAESCORE.Controllers
         }
 
         [HttpPost]
-        public async Task<JsonResult> ActualizarPerfilXModulos(int PerfilID, string NombrePerfil_Nuevo, string ModulosID)
+        public async Task<JsonResult> ActualizarPerfilXModulos(int PerfilID, string NombrePerfil_Nuevo, string ModulosID)//Action para actulizar los perfilles por modulo
         {
             var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
             var resultado = await iadAdministracionPerfiles.ActualizarPerfilXModulos(user.FirstOrDefault().CompanyID, PerfilID, NombrePerfil_Nuevo, ModulosID);

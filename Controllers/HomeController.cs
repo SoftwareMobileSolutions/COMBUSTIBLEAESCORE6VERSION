@@ -94,6 +94,25 @@ namespace COMBUSTIBLEAESCORE.Controllers
             //Se obtienen los modulos de la sesión
             var menu = _Sesion.Get<IEnumerable<ModulosModel>>(HttpContext.Session, "menu");
 
+            /*************************************************************************************************************/
+            /*    
+                                          Tabla de ejemplo
+
+                    |--------------------------|-----|-------|------|-----------|
+                    |Nombre                    |Nivel|Codigo |Parent|GrandParent|
+                    |--------------------------|-----|-------|------|-----------|
+                    |Configuración             |  0  |CONFIG |      |           |
+                    |--------------------------|-----|-------|------|-----------|
+                    |Usuarios                  |  1  | USER  |CONFIG|           |
+                    |--------------------------|-----|-------|------|-----------|
+                    |Configuración de Compañia |  1  |CONFIG1|CONFIG|           |
+                    |--------------------------|-----|-------|------|-----------|
+                    |Administración de usuarios|  2  | USER1 | USER |   CONFIG  |
+                    |--------------------------|-----|-------|------|-----------|
+                   
+             */
+
+            /*************************************************************************************************************/
             //Se obtienen los modulos abuelos
             var grandParent = menu.Select(t => new {
                 Name = t.Nombre,
@@ -102,8 +121,19 @@ namespace COMBUSTIBLEAESCORE.Controllers
                 Nivel = t.Nivel,
                 Icono = t.Icono,
                 Descriptcion = t.Descriptcion
-            }).Where(t => t.Nivel == 0);
+            }).Where(t => t.Nivel == 0);//Se valida que todos los modulos sean nivel 0
 
+            /*
+             Json resultaodo usando la tabla ejemplo 
+
+                    {
+                        Name : Configuración
+                        Nivel : 0
+                        codigo : CONFIG
+                    }
+
+             */
+            /*************************************************************************************************************/
             //Se obtienen los modulos padres
             var parent = menu.Select(t => new {
                 Name = t.Nombre,
@@ -113,8 +143,28 @@ namespace COMBUSTIBLEAESCORE.Controllers
                 Nivel = t.Nivel,
                 Icono = t.Icono,
                 Descriptcion = t.Descriptcion
-            }).Where(t => t.Nivel == 1);
+            }).Where(t => t.Nivel == 1);//Se valida que todos los modulos sean nivel 1
 
+            /*
+             Json resultaodo usando la tabla ejemplo 
+
+                    {
+                        Name : Usuarios
+                        Nivel : 1
+                        codigo : USER
+                        parent : CONFIG
+                                           
+                    },
+                    {
+                        Name : Configuración de Compañia
+                        Nivel : 1
+                        codigo : CONFIG1
+                        parent : CONFIG
+                                           
+                    }
+
+             */
+            /*************************************************************************************************************/
             //Se obtienen los modulos hijos
             var children = menu.Select(t => new {
                 Name = t.Nombre,
@@ -126,6 +176,18 @@ namespace COMBUSTIBLEAESCORE.Controllers
                 Descriptcion = t.Descriptcion
             }).Where(t => t.Nivel == 2);
 
+            /*
+             Json resultaodo usando la tabla ejemplo 
+
+                   {
+                        Name : Usuarios
+                        Nivel : 1
+                        codigo : USER1
+                        parent : USER
+                        grandParent : CONFIG              
+                    }
+            */
+            /*************************************************************************************************************/
             //Se genera el arbol 
             var arbolMenu = grandParent.Select(gp => new
             {
@@ -135,21 +197,22 @@ namespace COMBUSTIBLEAESCORE.Controllers
                 nivel = gp.Nivel,
                 Icono = gp.Icono,
                 Descriptcion= gp.Descriptcion,
-                HasChildren = parent.Any(p => p.parent == gp.codigo), //Se añaden los modulos padres a los abuelos en base al cod y el parent 
-                Children = parent.Select(p => new
-                {
-                    Name = p.Name,
-                    codigo = p.codigo,
-                    parent = p.parent,
+                HasChildren = parent.Any(p => p.parent == gp.codigo),       //Se verifica si el modulo nivel 0 o grandParent tiene hijos
+                Children = parent.Select(p => new                       
+                {                                                                                        
+                    Name = p.Name,                                          //Se añaden los modulos padres a los abuelos en base al cod y el parent,                                
+                    codigo = p.codigo,                                      //es decir se compara el parent de los nivel 1 con el cod de los nivel 0
+                    parent = p.parent,                                      //y cuando son iguales, se añade el parent al granpaernt en el array Children
                     url = p.url,
                     Nivel = p.Nivel,
                     Icono = p.Icono,
                     Descriptcion= p.Descriptcion,
-                    HasChildren = children.Any(ch => ch.parent == p.codigo),//Se añaden los hijos a los padres en base al cod y el parent 
-                    children = children.Select(c => new {
-                        Name = c.Name,
-                        codigo = c.codigo,
-                        grandParent = c.grandParent,
+                    HasChildren = children.Any(ch => ch.parent == p.codigo),//Se verifica si el modulo nivel 1 o Parent tiene hijos
+                    children = children.Select(c => new 
+                    {
+                        Name = c.Name,                                      //Se añaden los hijos a los padres en base al cod y el parent 
+                        codigo = c.codigo,                                  //es decir se compara el parent de los nivel 2 con el cod de los nivel 1
+                        grandParent = c.grandParent,                        //y cuando son iguales, se añade el children al parent en el array Children
                         parent = c.parent,
                         url = c.url,
                         Nivel = c.Nivel,
@@ -158,6 +221,46 @@ namespace COMBUSTIBLEAESCORE.Controllers
 
                 }).Where(p => p.parent == gp.codigo)
             });
+
+            /*
+             Json resultaodo usando la tabla ejemplo 
+
+                    {
+                        Name : Configuración,
+                        Nivel : 0,
+                        codigo : CONFIG,
+                        hasChildren: true,
+                        children :  {                                      
+                                        {
+                                            Name : Usuarios
+                                            Nivel : 1
+                                            codigo : USER
+                                            parent : CONFIG  
+                                            hasChildren: true,
+                                            children :  {
+                                                            {
+                                                                Name : Usuarios
+                                                                Nivel : 1
+                                                                codigo : USER1
+                                                                parent : USER
+                                                                grandParent : CONFIG              
+                                                            }
+                                                        }
+                                        },
+                                        {
+                                            Name : Configuración de Compañia
+                                            Nivel : 1
+                                            codigo : CONFIG1
+                                            parent : CONFIG        
+                                            hasChildren: false,
+                                        }
+                                    }
+                    }
+
+             */
+
+            /*************************************************************************************************************/
+
             //Nota si no hay un nivel hijos, solo se queda en padre y abuelos
             return Json(arbolMenu);
         }

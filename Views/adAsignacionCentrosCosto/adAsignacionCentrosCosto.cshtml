@@ -37,6 +37,8 @@
         </div>
     </div>
 </section>
+
+@*Codigo  sin usar ya que antes se podí asignar centro de costo a usuarios, pero se eliminó*@
 @*<section>
     <div id="@{@Tabstrip}">
         <ul>
@@ -121,7 +123,7 @@
 
         $.extend({
             ModuloAsignacionCentroCosto: {
-                Tabstrip: function () {
+                Tabstrip: function () {//Codigo sin uso
                     $("#@{@Tabstrip}").kendoTabStrip({
                         animation: {
                             open: {
@@ -131,7 +133,7 @@
                         },
                     });
                 },
-                CentroCostoUsuario: {
+                CentroCostoUsuario: {//Codigo sin uso
                     GRID: {
                         CargarGRID: function () {
                             var _this = this;
@@ -343,11 +345,11 @@
                         },
                         BTN_ActualizarCentrosCosto: function () {
                             var _this = this
-                            console.log("@{@BTN_Guardar_ModalAsignarCCXUsuario}")
+                            @* console.log("@{@BTN_Guardar_ModalAsignarCCXUsuario}") *@
                             $("#@{@BTN_Guardar_ModalAsignarCCXUsuario}").on("click", function () {
                                 selects = $("#@{@Contenedor_Asignados_ModalAsignarCCXUsuario} > .carta h2")
                                 var valores = [];
-                                console.log("BTN_CentroCosto")
+                                @* console.log("BTN_CentroCosto") *@
                                 selects.each(function () {
                                     valores.push($(this).attr("value"));
                                 });
@@ -381,10 +383,10 @@
                 },
                 CentroCostoMobile: {
                     GRID: {
-                        CargarGRID: function () {
+                        CargarGRID: function () {//Función para inicializar el GRID
                             var _this = this
-                            $("#@{@GRIDCCMobile}").html("");
-                            $("#@{@GRIDCCMobile}").kendoGrid({
+                            $("#@{@GRIDCCMobile}").html("");//Se limpía el contenedor del GRID
+                            $("#@{@GRIDCCMobile}").kendoGrid({//Se inicializa el GRID
                                 dataSource: {
                                     pageSize: 10
                                 },
@@ -404,14 +406,14 @@
                                     {
                                         field: "centroCostoID",
                                         title: "Centro Costo Asociado",
-                                        template: "<input class=" + "dropDownTemplate" + "> </input>",
+                                        template: "<input class=" + "dropDownTemplate" + "> </input>", // Se agrega el input que contendrá el dropdowlist
                                         attributes: { class: "col-template" },
                                         headerAttributes: { class: "col-template" }
                                     }
                                 ],
                                 pageable: true,
                                 dataBound: function (e) {
-
+                                    /*En el dataBound se dejan las funciones que se ejecutaran despues de haberse construido el GRID*/ 
                                     var grid = e.sender;
                                     var items = e.sender.items();
 
@@ -422,34 +424,34 @@
                                             var ddt = $(this).find('.dropDownTemplate');
 
                                             $(ddt).kendoDropDownList({
-                                                value: dataItem.centroCostoID,
+                                                value: dataItem.centroCostoID,//Se selecciona el Centro de Costo que tiene asignado el vehiculo
                                                 filter: "contains",
-                                                optionLabel: 'Sin seleccion...',
+                                                //optionLabel: 'Sin seleccion...',
                                                 dataSource: CentrosCosto,
                                                 dataTextField: "nombreCentroCosto",
                                                 dataValueField: "centroCostoID",
-                                                change: _this.SelecionarCentroCosto
+                                                change: _this.SelecionarCentroCosto//Se llama a la función que cambia el centro de costo seleccionado
                                             });
                                         });
                                     })
                                 }
                             });
                         },
-                        DataGRID: function () {
+                        DataGRID: function () {//Se obtiene la data del GRID
                             var _this = this
                             $.get('@Url.Action("ObtenerCentroCostoXMobile", "adAsignacionCentrosCosto")', function (CentrosCostoXMobile) {
                                 $("#@{@GRIDCCMobile}").data("kendoGrid").dataSource.data(CentrosCostoXMobile)
                             })
                         },
-                        SelecionarCentroCosto: function (e) {
+                        SelecionarCentroCosto: function (e) {//Función para cambiar el centro de costo por vehiculo
                             var _this = this
                             var element = e.sender.element;
                             var row = element.closest("tr");
                             var grid = $("#@{@GRIDCCMobile}").data("kendoGrid");
                             var dataItem = grid.dataItem(row);
 
-                            var seleccioanado = dataItem.centroCostoID;
-                            var nuevo = isNaN(parseInt(this.value())) ? 0 : parseInt(this.value());
+                            var seleccioanado = dataItem.centroCostoID;//Se obtiene el ID actual
+                            var nuevo = isNaN(parseInt(this.value())) ? 0 : parseInt(this.value());//Se obtiene el ID nuevo
 
                             if (seleccioanado !== nuevo){
                                 Swal.fire({
@@ -461,8 +463,8 @@
                                     cancelButtonColor: "#d33",
                                     confirmButtonText: "Si , Actulizar!",
                                     cancelButtonText: "Cancelar"
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
+                                }).then((result) => {//Se consulta si se desea hacer el cambio
+                                    if (result.isConfirmed) {//Si se confirma se actualiza el centro de costo por usuario
 
                                         let arg = {
                                             MobileID: dataItem.mobileID,
@@ -482,7 +484,7 @@
                             }
                         }
                     },
-                    init: function () {
+                    init: function () {//Funciones que se llaman al entrar al modulo
                         var _this = this
                         _this.GRID.CargarGRID()
                         _this.GRID.DataGRID()

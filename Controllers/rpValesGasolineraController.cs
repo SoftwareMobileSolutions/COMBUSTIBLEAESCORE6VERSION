@@ -21,7 +21,7 @@ namespace COMBUSTIBLEAESCORE.Controllers
             return View();
         }
 
-        public async Task<JsonResult> ObtenerValesXGasolinera(string FechaIni, string FechaFin)
+        public async Task<JsonResult> ObtenerValesXGasolinera(string FechaIni, string FechaFin)//Action para obtener la data
         {
             var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
             var vales = await irpValesGasolinera.ObtenerValesXGasolinera(user.FirstOrDefault().CompanyID, FechaIni, FechaFin);

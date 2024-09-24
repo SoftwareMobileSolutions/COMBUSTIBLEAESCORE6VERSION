@@ -22,37 +22,37 @@ namespace COMBUSTIBLEAESCORE.Controllers
             return View();
         }  
 
-        public async Task<JsonResult> ArbolUsuariosVehiculo() {
+        public async Task<JsonResult> ArbolUsuariosVehiculo() {//Action para arbol
             var sesion = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
             var dataArbol = await iadUsuariosVehiculos.ArbolUsuariosVehiculo(sesion.FirstOrDefault().CompanyID);
             return Json(dataArbol);
         }
 
-        public async Task<JsonResult> UserXcompany()
+        public async Task<JsonResult> UserXcompany()//Action para obtener los usuarios por compañia
         {
-            var sesion = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
-            var usuaios = await iadUsuariosVehiculos.UserXcompany(sesion.FirstOrDefault().CompanyID);
+            var sesion = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");//Se obtiene la data del usuario de la sesion
+            var usuaios = await iadUsuariosVehiculos.UserXcompany(sesion.FirstOrDefault().CompanyID);//Se obtienen los usuarios
             return Json(usuaios);
         }
 
-        public async Task<JsonResult> MobileXUser(string Username) {
-            var sesion = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
-            var mobiles = await iadUsuariosVehiculos.mobileXUser(Username, sesion.FirstOrDefault().CompanyID);
+        public async Task<JsonResult> MobileXUser(string Username) {//Action para obtener los vehiculos por usuario
+            var sesion = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");//Se obtiene la data del usuario de la sesion
+            var mobiles = await iadUsuariosVehiculos.mobileXUser(Username, sesion.FirstOrDefault().CompanyID);//Se obtiiene los vehiculos
             return Json(mobiles);
         }
 
-        public async Task<JsonResult> obtenerObtenerMobileAsigandosXUser(string username)
+        public async Task<JsonResult> obtenerObtenerMobileAsigandosXUser(string username)//Action para obtener los vehiculos con una bandera para los asignados 
         {
-            var sesion = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
-            var mobiles = await iadUsuariosVehiculos.obtenerObtenerMobileAsigandosXUser(username, sesion.FirstOrDefault().CompanyID);
+            var sesion = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");//Se obtiene la data del usuario de la sesion
+            var mobiles = await iadUsuariosVehiculos.obtenerObtenerMobileAsigandosXUser(username, sesion.FirstOrDefault().CompanyID);//Se obtienen los vehiculos
             return Json(mobiles);
 
         }
 
-        public async Task<JsonResult> ActulizarMobileXUser(string mobilesid, string Username)
+        public async Task<JsonResult> ActulizarMobileXUser(string mobilesid, string Username)//Action para actualizar los vehiculos asignados
         {
             //var sesion = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
-            var resultado = await iadUsuariosVehiculos.ActulizarMobileXUser(mobilesid, Username);
+            var resultado = await iadUsuariosVehiculos.ActulizarMobileXUser(mobilesid, Username);//Se actualizan los vehiculos por usuario
             return Json(resultado);
         }
     }

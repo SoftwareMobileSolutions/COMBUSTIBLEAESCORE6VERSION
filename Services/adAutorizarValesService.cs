@@ -114,6 +114,7 @@ namespace COMBUSTIBLEAESCORE.Services
 
         public async Task<(IEnumerable<ValesGeneradosModel>, IEnumerable<ValeAnteriorXMobile>, IEnumerable<mensaje>)> ObtenerValeAutorizar(int ValeID, int CompanyID)
         {
+            /*Nota esta es la forma para recibir dos tablas o mas en una sola consulta*/
             IEnumerable<ValesGeneradosModel> valeAutorizar = null;
             IEnumerable<ValeAnteriorXMobile> valeAnterior = null;
             IEnumerable<mensaje> mensaje = null;

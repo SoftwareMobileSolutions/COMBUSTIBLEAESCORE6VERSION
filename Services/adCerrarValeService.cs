@@ -9,20 +9,20 @@ using Dapper;
 using System.ComponentModel.Design;
 namespace COMBUSTIBLEAESCORE.Services
 {
-    public class adLiquidarValesService : IadLiquidarVales
+    public class adCerrarValeService : IadCerrarVale
     {
         private readonly conexion conexion;
 
-        public adLiquidarValesService(conexion _conexion)
+        public adCerrarValeService(conexion _conexion)
         {
             conexion = _conexion;
         }
 
-        public async Task<IEnumerable<mensaje>> LiquidarVale(string placa, int userID, int CompanyID, double CantidadGalones, double TotalDolares, int Odometro)
+        public async Task<IEnumerable<mensaje>> CerrarVale(string placa, int userID, int CompanyID, double CantidadGalones, double TotalDolares, int Odometro)
         {
             IEnumerable<mensaje> data = null;
 
-            string sp = "EXEC SP_LiquidarVale @placa, @userID, @CompanyID, @CantidadGalones, @TotalDolares, @Odometro;";
+            string sp = "EXEC SP_CerrarVale @placa, @userID, @CompanyID, @CantidadGalones, @TotalDolares, @Odometro;";
             var con = new SqlConnection(conexion.Value);
             try
             {
@@ -63,11 +63,10 @@ namespace COMBUSTIBLEAESCORE.Services
             }
             return data;
         }
-
-        public async Task<IEnumerable<rpValesCerradosModel>> ObtenerValesLiquidados(int UserID, int CompanyID, string FechaIncio, string fechaFin)
+        public async Task<IEnumerable<rpValesCerradosModel>> ObtenerValesCerrados(int UserID, int CompanyID, string FechaIncio, string fechaFin)
         {
             IEnumerable<rpValesCerradosModel> data = null;
-            string sp = "EXEC SP_ObtenerValesLiquidados @UserID,@CompanyID,@FechaIncio,@fechaFin";
+            string sp = "EXEC SP_ObtenerValesCerrados @UserID,@CompanyID,@FechaIncio,@fechaFin";
             var con = new SqlConnection(conexion.Value);
             try
             {
@@ -86,11 +85,10 @@ namespace COMBUSTIBLEAESCORE.Services
             }
             return data;
         }
-
-        public async Task<IEnumerable<rpValesCerradosXPlacaModel>> ObtenerValesLiquidadosXPlaca(int UserID, int CompanyID, string Placa, string FechaIncio, string fechaFin)
+        public async Task<IEnumerable<rpValesCerradosXPlacaModel>> ObtenerValesCerradosXPlaca(int UserID, int CompanyID, string Placa, string FechaIncio, string fechaFin)
         {
             IEnumerable<rpValesCerradosXPlacaModel> data = null;
-            string sp = "EXEC SP_ObtenerValesLiquidadosXPlaca @UserID,@CompanyID,@Placa,@FechaIncio,@fechaFin";
+            string sp = "EXEC SP_ObtenerValesCerradosXPlaca @UserID,@CompanyID,@Placa,@FechaIncio,@fechaFin";
             var con = new SqlConnection(conexion.Value);
             try
             {

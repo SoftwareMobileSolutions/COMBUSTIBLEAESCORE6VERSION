@@ -19,6 +19,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12 col-lg-5">
+                <h6 class="mt-2 text-center">Dispobibles</h6>
                 <input type="text" class="form-control my-2" placeholder="Buscar" id="@{@Input_BuscarDisponibles_ModalAsignarVehiculos}" onkeyup="$.Cartas_ModuloAsignarVehiculos.cartas.buscar('@{@Input_BuscarDisponibles_ModalAsignarVehiculos}','@{@Contenedor_Disponibles_ModalAsignarVehiculos}')">
                 <div id="@{@Contenedor_Disponibles_ModalAsignarVehiculos}" class="border border-black contenedor-cartas"></div>
                 <p class="fst-italic">Mostrando <span id="@{@TXT_ContadorDisponibles_ModalAsignarVehiculos}">50</span>  de  <span class="totalCartas">100</span></p>
@@ -50,6 +51,7 @@
                 </div>
             </div>
             <div class="col-12 col-lg-5">
+                <h6 class="mt-2 text-center">Asignados</h6>
                 <input type="text" class="form-control my-2" placeholder="Buscar" id="@{@Input_BuscarAsignados_ModalAsignarVehiculos}" onkeyup="$.Cartas_ModuloAsignarVehiculos.cartas.buscar('@{@Input_BuscarAsignados_ModalAsignarVehiculos}','@{@Contenedor_Asignados_ModalAsignarVehiculos}')">
                 <div id="@{@Contenedor_Asignados_ModalAsignarVehiculos}" class="border border-black contenedor-cartas"></div>
                 <!--<span id="contadorAsignados" class="fst-italic" style="color: #6c6c6c;">Mostrando 50 de 100</span>-->
@@ -119,17 +121,23 @@
         }
 </style>
 <script>
+    /*Nota
+    carta es el div donde se muestra el vehiculo*/
     (function () {
         $.extend({
             Cartas_ModuloAsignarVehiculos: {
                 cartas: {
-                    cargarCartas: function (mobiles) {
+                    cargarCartas: function (mobiles) {//Función para mostrar las cartas 
                         var _this = this
-                        var disponibles = mobiles.filter(mobile => mobile.disponible === true);
-                        var asignados = mobiles.filter(mobile => mobile.disponible === false);
+                        var disponibles = mobiles.filter(mobile => mobile.disponible === true);//Se obtinen los vehiculos disponibles
+                        var asignados = mobiles.filter(mobile => mobile.disponible === false);//Se obtienen los vehiculos asignados
                         @*console.log("Segunda Vista: "+"@{@ID_GRID_RANGO}")*@
+
+                        /* Se limpian los contenedores de las cartas*/
                         $("#@{@Contenedor_Disponibles_ModalAsignarVehiculos}").empty()
                         $("#@{@Contenedor_Asignados_ModalAsignarVehiculos}").empty()
+
+                        /*Se muestran los disponibles*/
                         for (let i = 0; i < disponibles.length; i++) {
                             let div =
                                 '<div class= "carta"  seleccionado = false>' +
@@ -137,7 +145,7 @@
                             '</div>'
                             $("#@{@Contenedor_Disponibles_ModalAsignarVehiculos}").append(div);
                         }
-
+                        /*Se muestran los asignados*/
                         for (let i = 0; i < asignados.length; i++) {
                             let div =
                                 '<div class= "carta"  seleccionado = false>' +
@@ -145,11 +153,12 @@
                             '</div>'
                             $("#@{@Contenedor_Asignados_ModalAsignarVehiculos}").append(div);
                         }
-                        $(".totalCartas").text(mobiles.length)
-                        _this.contadorCartas();
-                        _this.clickCarta()
+                        
+                        $(".totalCartas").text(mobiles.length)//Se muestra la cantidad de vehiculos por compañia
+                        _this.contadorCartas();//Se llama a la función que cuenta las cartas
+                        _this.clickCarta()//Se llama a la función que selecciona las cartas
                     },
-                    cambiarEstado: function (_this) {
+                    cambiarEstado: function (_this) {//Función asigna o elimina la clase css selecionado
                         let seleccionado = _this.attr("seleccionado");
                         if (seleccionado === "true") {
                             _this.attr("seleccionado", "false");
@@ -161,15 +170,15 @@
                             _this.addClass("seleccionado")
                         }
                     },
-                    clickCarta: function () {
+                    clickCarta: function () {//Función para dar clic en las cartas
                         var _this = this;
 
                         $(".carta").on("click", function () {
                             var carta = $(this);
-                            _this.cambiarEstado(carta);
+                            _this.cambiarEstado(carta);//Se llama a la función que cambía estado
                         });
                     },
-                    buscar: function (ID_Input, ID_Contenedor) {
+                    buscar: function (ID_Input, ID_Contenedor) {//Función para buscar 
                         let ValorInput = $("#" + ID_Input).val()
                         let cartas = $("#" + ID_Contenedor + " div")
 
@@ -180,58 +189,57 @@
                         });
 
                     },
-                    contadorCartas: function () {
+                    contadorCartas: function () {//Función para contar los disponibles y los asignados 
                         var _this = this
                         $("#@{@TXT_ContadorDisponibles_ModalAsignarVehiculos}").text($("#@{@Contenedor_Disponibles_ModalAsignarVehiculos} div").length)
                         $("#@{@TXT_ContadorAsignados_ModalAsignarVehiculos}").text($("#@{@Contenedor_Asignados_ModalAsignarVehiculos} div").length)
                     },
                     movimientos: {
-                        moverDerecha: function () {
+                        moverDerecha: function () {//Función para mover las cartas seleccionadas a la derecha
                             $("#@{@BTN_HaciaDerecha_ModalAsignarVehiculos}").on("click", function () {
-                                $('#@{@Contenedor_Disponibles_ModalAsignarVehiculos} div[seleccionado="true"]').each(function () {
-                                    $.Cartas_ModuloAsignarVehiculos.cartas.cambiarEstado($(this))
-                                    $("#@{@Contenedor_Asignados_ModalAsignarVehiculos}").append($(this));
+                                /*Nota: seleccionado es un atributo html personalizado que se le asigan el div cuando se ingresan al contenedor de los selecionados */
+                                $('#@{@Contenedor_Disponibles_ModalAsignarVehiculos} div[seleccionado="true"]').each(function () {//Se obtienen los seleccionados y se reccorren en un array 
+                                    $.Cartas_ModuloAsignarVehiculos.cartas.cambiarEstado($(this))// Se llama a la función de cambio de estado y se le pasa la carta
+                                    $("#@{@Contenedor_Asignados_ModalAsignarVehiculos}").append($(this));//Se mueven las cartas al contenedor asignados
                                     $.Cartas_ModuloAsignarVehiculos.cartas.contadorCartas()
                                 });
-
                             });
                         },
-                        moverIzquierda: function () {
-                            $("#@{@BTN_HaciaIzquierda_ModalAsignarVehiculos}").on("click", function () {
-                                $('#@{@Contenedor_Asignados_ModalAsignarVehiculos} div[seleccionado="true"]').each(function () {
-                                    $.Cartas_ModuloAsignarVehiculos.cartas.cambiarEstado($(this))
-                                    $("#@{@Contenedor_Disponibles_ModalAsignarVehiculos}").append($(this));
-                                    $.Cartas_ModuloAsignarVehiculos.cartas.contadorCartas()
+                        moverIzquierda: function () {//Función para mover las cartas seleccionadas a la izquierda
+                            $("#@{@BTN_HaciaIzquierda_ModalAsignarVehiculos}").on("click", function () {                            
+                                $('#@{@Contenedor_Asignados_ModalAsignarVehiculos} div[seleccionado="true"]').each(function () {//Se obtienen los seleccionados y se reccorren en un array 
+                                    $.Cartas_ModuloAsignarVehiculos.cartas.cambiarEstado($(this))// Se llama a la función de cambio de estado y se le pasa la carta
+                                    $("#@{@Contenedor_Disponibles_ModalAsignarVehiculos}").append($(this));//Se mueven las cartas al contenedor disponibles
+                                    $.Cartas_ModuloAsignarVehiculos.cartas.contadorCartas()//Se actuliza el contador de las cartas
                                 });
-
                             });
                         },
-                        moverTodoDerecha: function () {
+                        moverTodoDerecha: function () {//Función para mover todas las cartas a la derecha 
                             $("#@{@BTN_TodoHaciaDerecha_ModalAsignarVehiculos}").on("click", function () {
-                                $('#@{@Contenedor_Disponibles_ModalAsignarVehiculos} div').each(function () {
+                                $('#@{@Contenedor_Disponibles_ModalAsignarVehiculos} div').each(function () {//Se obtienen todos los div del contenedor disponibles
                                     //console.log($(this))
-                                    $(this).attr("seleccionado", "false");
-                                    $(this).removeClass("seleccionado");
+                                    $(this).attr("seleccionado", "false");//se cambia el atributo seleccionado por false  en caso sea true
+                                    $(this).removeClass("seleccionado");//Se remueve la calse seleccioando en caso de tenerla
                                     //$(this).css("background", "white");
-                                    $("#@{@Contenedor_Asignados_ModalAsignarVehiculos}").append($(this));
-                                    $.Cartas_ModuloAsignarVehiculos.cartas.contadorCartas()
+                                    $("#@{@Contenedor_Asignados_ModalAsignarVehiculos}").append($(this));//Se asigna la carta al contenedor asigando
+                                    $.Cartas_ModuloAsignarVehiculos.cartas.contadorCartas()//Se actuliza el contador de las cartas
                                 });
                             });
                         },
-                        moverTodoIzquierda: function () {
+                        moverTodoIzquierda: function () {//Función para mover todas las cartas a laizquierda
                             $("#@{@BTN_TodoHaciaIzquierda_ModalAsignarVehiculos}").on("click", function () {
-                                $('#@{@Contenedor_Asignados_ModalAsignarVehiculos} div').each(function () {
+                                $('#@{@Contenedor_Asignados_ModalAsignarVehiculos} div').each(function () {//Se obtienen todos los div del contenedor asignados
                                     //console.log($(this))
-                                    $(this).attr("seleccionado", "false");
-                                    $(this).removeClass("seleccionado");
+                                    $(this).attr("seleccionado", "false");//se cambia el atributo seleccionado por false  en caso sea true
+                                    $(this).removeClass("seleccionado");//Se remueve la calse seleccioando en caso de tenerla
                                     //$(this).css("background", "white");
-                                    $("#@{@Contenedor_Disponibles_ModalAsignarVehiculos}").append($(this));
-                                    $.Cartas_ModuloAsignarVehiculos.cartas.contadorCartas()
+                                    $("#@{@Contenedor_Disponibles_ModalAsignarVehiculos}").append($(this));//Se asigna la carta al contenedor disponibles
+                                    $.Cartas_ModuloAsignarVehiculos.cartas.contadorCartas()//Se actuliza el contador de las cartas
                                 });
                             });
 
                         },
-                        init: function () {
+                        init: function () {//Función para llamar a las funciones de los botones
                             var _this = this
                             _this.moverDerecha()
                             _this.moverIzquierda()

@@ -172,7 +172,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <span>Telefono</span>
+                            <span>Teléfono</span>
                         </div>
                         <div class="row pt-lg-2">
                             <div class="col-lg-12">
@@ -264,7 +264,7 @@
             ModuloAgregarUsuario: {
                 AgregarUsuario: {
                     DropDownList: {
-                        load: function () {
+                        load: function () {//Función para inicializar los dropdownlists
                             var _this = this
                             $("#@{@DropDownList_PerfilUsuario}").kendoDropDownList({
                                 optionLabel: 'Perfiles...',
@@ -291,7 +291,7 @@
                             });
                             _this.dataDropDownList();
                         },
-                        dataDropDownList: function () {
+                        dataDropDownList: function () {//Función para obtener la data del los dropdwns
                             $.get('@Url.Action("ObtenerPerfilUsuarios", "adAgregarUsuario")', function (perfiles) {
                                 $("#@{@DropDownList_PerfilUsuario}").data("kendoDropDownList").dataSource.data(perfiles)
                             })
@@ -300,7 +300,7 @@
                             })
                         }
                     },
-                    showPassword: function () {
+                    showPassword: function () {//Función para mostrar u ocultutar la contraseña al crear usuarios
                         $(".show_hide_password a").on('click', function (event) {
                             event.preventDefault();
                             if ($('.show_hide_password input').attr("type") == "text") {
@@ -316,14 +316,14 @@
                         });
                     },
                     Validaciones: {
-                        formato: function (username, clave, perfil, gasolinera,contacto, nombre, apellido, correo) {
+                        formato: function (username, clave, perfil, gasolinera,contacto, nombre, apellido, correo) {//Función para validar que los datos de un vehiculo esten correctos
 
                             var validEmail = /^\w+([.-_+]?\w+)*@@\w+([.-]?\w+)*(\.\w{2,10})+$/;
                             //var securePassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)\S{8,}$/;
 
                             //Username
                             if (username === "") {
-                                $._combustible.alert("error", "Campo de texto vacio", "Debe digitar el username del nuevo usuario")
+                                $._combustible.alert("error", "Campo de texto vacío", "Debe digitar el username del nuevo usuario")
                                 return false
                             }
                             if (username.length < 3) {
@@ -332,7 +332,7 @@
                             }
                             //Contraseña
                             if (clave === "") {
-                                $._combustible.alert("error", "Campo de texto vacio", "Debe digitar una contraseña")
+                                $._combustible.alert("error", "Campo de texto vacío", "Debe digitar una contraseña")
                                 return false
                             }
                             if (clave.length < 8) {
@@ -370,7 +370,7 @@
 
                             //Nombre
                             if (nombre === "") {
-                                $._combustible.alert("error", "Campo de texto vacio", "Debe digitar el nombre del usuario")
+                                $._combustible.alert("error", "Campo de texto vacío", "Debe digitar el nombre del usuario")
                                 return false
                             }
 
@@ -380,7 +380,7 @@
                             }
                             //Apellido
                             if (apellido === "") {
-                                $._combustible.alert("error", "Campo de texto vacio", "Debe digitar el apellido del usuario")
+                                $._combustible.alert("error", "Campo de texto vacío", "Debe digitar el apellido del usuario")
                                 return false
                             }
 
@@ -398,8 +398,8 @@
 
                             return true
                         },
-                        keypress: function () {
-                            $('#@{@Input_Contacto}').keypress(function (event) {
+                        keypress: function () {// Función para validar el ingreso de data a los inputs 
+                            $('#@{@Input_Contacto}').keypress(function (event) {//Se valida que solo se pueda digitar
                                 var keyCode = event.which;
                                 var inputValue = $(this).val();
 
@@ -412,11 +412,11 @@
 
                             });
 
-                            $('#@{@Input_Contacto}').on("paste", function (event) {
+                            $('#@{@Input_Contacto}').on("paste", function (event) {//Se valida que no se pueda pegar
                                 event.preventDefault();
                             });
 
-                             $('#@{@Input_Username},#@{@Input_Password},#@{@Input_Nombre},#@{@Input_Apellido}').keypress(function (event) {
+                             $('#@{@Input_Username},#@{@Input_Password},#@{@Input_Nombre},#@{@Input_Apellido}').keypress(function (event) {//Se evita que tenga mas  de 19 caracteres
 
                                 //var keyCode = event.which;
                                 var inputValue = $(this).val();
@@ -425,7 +425,7 @@
                                     event.preventDefault();
                                 }
                             });
-                            $('#@{@Input_Correo}').keypress(function (event) {
+                            $('#@{@Input_Correo}').keypress(function (event) {//Se valida que el correo  no tenga mas de 120 caracteres
 
                                 //var keyCode = event.which;
                                 var inputValue = $(this).val();
@@ -436,7 +436,7 @@
                             });
                         },
                     },
-                    BTN_CrearUsuario: function () {
+                    BTN_CrearUsuario: function () {//Función para agregar usuarios
                         var _this = this                                     
                     
                         $("#@{@BTN_AgregarUsuario}").on("click", function () {
@@ -448,7 +448,8 @@
                             var _nombre = $("#@{@Input_Nombre}").val().trim()
                             var _apellido = $("#@{@Input_Apellido}").val().trim()
                             var _correo = $("#@{@Input_Correo}").val().trim()
-                    
+                            
+                            /*Se llama a la función de validacion y se evalua el resultado*/
                             if (_this.Validaciones.formato(_username, _clave, _perfil, _gasolinera, _contacto, _nombre, _apellido, _correo) === true) {
                                 _perfil = parseInt(_perfil)
                                 if (_contacto !== "") {
@@ -472,7 +473,10 @@
                                     mensaje = mensaje[0]
                                     if (mensaje.bandera === 1) {
                                         $._combustible.alert("success", "Usuario Creado", mensaje.resultado)
+                                        //Se refresca la data del GRID
                                         $.ModuloAgregarUsuario.GRID.DataGrid();
+
+                                        //Se limpia el formulario para crear usuarios
                                         $("#@{@Input_Username}").val("")
                                         $("#@{@Input_Password}").val("")
                                         $("#@{@DropDownList_PerfilUsuario}").data("kendoDropDownList").select(0)
@@ -494,10 +498,10 @@
                     }
                 },
                 GRID: {
-                    loadGRID: function () {
+                    loadGRID: function () {//Función para inicializar el GRID
                         var _this = this
-                        $("#@{@GRID_Usuarios}").html("");
-                        $("#@{@GRID_Usuarios}").kendoGrid({
+                        $("#@{@GRID_Usuarios}").html("");//Se limpia el contenedor del GRID
+                        $("#@{@GRID_Usuarios}").kendoGrid({//Se inicializa el GRID
                             dataSource: {
                                 pageSize: 15,
                             },
@@ -564,7 +568,7 @@
                                                 e.preventDefault();
                                                 var tr = $(e.target).closest("tr");
                                                 var data = this.dataItem(tr);
-                                                console.log(data)
+                                                //console.log(data)
                                                 var telefono = data.telefono === null ? "" : data.telefono.substring(5, 9) + data.telefono.substring(10)
                                                 $("#@{@TXT_NombreUsuario_ModalEditarUsuario}").text(data.username)
                                                 $("#@{@Input_Nombre_ModalEditarUsuario}").val(data.nombre)
@@ -595,12 +599,12 @@
                         });
                         _this.DataGrid()
                     },
-                    DataGrid: function() {
+                    DataGrid: function() {//Función para obtener la data del server y mostrar en el GRID
                         $.get('@Url.Action("ObtenerUsuarios", "adAgregarUsuario")', function (usuarios) {
                             $("#@{@GRID_Usuarios}").data("kendoGrid").dataSource.data(usuarios)
                         })
                     },
-                    CambioEstado: function (usuarioID, estado) {
+                    CambioEstado: function (usuarioID, estado) {//Función para cambiar el estado de los usuarios
                         var _this = this
                         arg = {
                             UsuarioID: usuarioID,
@@ -612,17 +616,18 @@
                     },
                     Modal: {
                         username:"",
-                        dataActual: {
+                        dataActual: {//Array para guardar la Data actual del GRID
                             nombre: "",
                             apellido: "",
                             correo: "",
                             telefono: ""
                         },
-                        evaluarData: function (_contrasena, _nombre, _apellido, _correo, _telefono) {
+                        evaluarData: function (_contrasena, _nombre, _apellido, _correo, _telefono) {//Función para comparar la data del usuario actual con la nueva
                             var _this = this
-                            if (_contrasena != "") {
+                            if (_contrasena != "") {//Se verifica si hay una contraseña nueva
                                 return true
                             }
+                            //Se verifica si hay cambios en los demas datos
                             if (_nombre != _this.dataActual.nombre) {
                                 return true
                             }
@@ -638,9 +643,9 @@
                             $("#@{@ModalAlert_ModalEditarUsuario}").text("")
                             return false
                         },
-                        Validaciones: function (_contrasena, _nombre, _apellido, _correo, _telefono) {
+                        Validaciones: function (_contrasena, _nombre, _apellido, _correo, _telefono) {//Función para validar los datos del nuevo usuario
                             var _this = this
-                            var validEmail = /^\w+([.-_+]?\w+)*@@\w+([.-]?\w+)*(\.\w{2,10})+$/;
+                            var validEmail = /^\w+([.-_+]?\w+)*@@\w+([.-]?\w+)*(\.\w{2,10})+$/;//Regex para validar email
                             /*var securePassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)\S{8,}$/;
                             if (_contrasena !== "") {
                                 if (!securePassword.test(_contrasena)) {
@@ -648,6 +653,8 @@
                                     return false
                                 }
                             }*/
+
+                            //Se valida el minimo de caracteres
                             if (_contrasena.length < 8) {
                                  _this.alertModal("alerta", "Contraseña demasiado corta, La contraseña debe tener al menos 8 caracteres")
                                 return false
@@ -661,15 +668,17 @@
                                 _this.alertModal("alerta", "Apellido demasiado corto, El Apellido del usuario debe tener al menos tres caracteres")
                                 return false
                             }
+
+                            //Se valdia los datos opcionales 
                             if (_correo !== "") {
-                                if (!validEmail.test(_correo)) {
+                                if (!validEmail.test(_correo)) {//Se valida email valido
                                     _this.alertModal("alerta", "Formato de correo, Debe digitar  un correo valido")
                                     return false
                                 }
                             }
                             if (_telefono !== "") {
-                                if (_telefono.length < 8) {
-                                    _this.alertModal("alerta", "Formato de telefono incorrecto, El numero de telefono debe tene 8 digitos")
+                                if (_telefono.length < 8) {//Se valida que el telefono tenga 8 digitos
+                                    _this.alertModal("alerta", "Formato de teléfono incorrecto, El numero de teléfono debe tene 8 digitos")
                                     return false
                                 }
                             }
@@ -677,7 +686,7 @@
                             $("#@{@ModalAlert_ModalEditarUsuario}").text("")
                             return true
                         },
-                        keypress: function () {
+                        keypress: function () {//Función para validar el ingreso de datos 
                             $('#@{@Input_Contacto_ModalEditarUsuario}').keypress(function (event) {
                                 var keyCode = event.which;
                                 var inputValue = $(this).val();
@@ -695,7 +704,7 @@
                                 event.preventDefault();
                             });
                         },
-                        activarBoton: function () {
+                        activarBoton: function () {//Función para activar el boton de guardar datos 
                             var _this = this 
                             $(".inputModal").on("blur", function () {
 
@@ -705,10 +714,10 @@
                                 var _correo = $("#@{@Input_Correo_ModalEditarUsuario}").val().trim()
                                 var _telefono = $("#@{@Input_Contacto_ModalEditarUsuario}").val().trim()
 
-                                if (_this.Validaciones(_contrasena, _nombre, _apellido, _correo, _telefono) === true) {
+                                if (_this.Validaciones(_contrasena, _nombre, _apellido, _correo, _telefono) === true) {//Se evalua que la data sea correcta al quitar el focus del input
                                 
 
-                                    if (_this.evaluarData(_contrasena, _nombre, _apellido, _correo, _telefono) === true) {
+                                    if (_this.evaluarData(_contrasena, _nombre, _apellido, _correo, _telefono) === true) {// Se evalua si la data nueva es diferente de la actual para activar el boton
                                         $("#@{@BTN_Guardar_ModalEditarUsuario}").attr("disabled", false)
                                     } else {
                                         $("#@{@BTN_Guardar_ModalEditarUsuario}").attr("disabled", true)
@@ -716,10 +725,9 @@
 
                                 }
                             
-                                //console.log("XD")
                             });
                         },
-                        BTN_GuardarCambios: function () {
+                        BTN_GuardarCambios: function () {//Función para guardar cambios
                             var _this = this
                             $("#@{@BTN_Guardar_ModalEditarUsuario}").on("click",function(){
                                 var _contrasena = $("#@{@Input_Password_ModalEditarUsuario}").val().trim()
@@ -758,7 +766,7 @@
                                 }                          
                             })
                         },                    
-                        alertModal: function (tipo, mensaje) {
+                        alertModal: function (tipo, mensaje) {//Función para mostrar mensajes en el modal
                             if (tipo === "alerta") {
                                 $("#@{@ModalAlert_ModalEditarUsuario}").text("Alerta: " + mensaje)
                                 $("#@{@ModalAlert_ModalEditarUsuario}").css("color", "red")

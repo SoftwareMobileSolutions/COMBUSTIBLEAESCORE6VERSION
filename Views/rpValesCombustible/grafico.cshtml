@@ -121,7 +121,7 @@
             },
             columbar2byClick: {
                 createColumChart: function (d, nombre) {
-                    console.log(d, nombre);
+                    @*console.log(d, nombre);*@
                     $("#graf_pie").hide();
                     $("#columbar1, #btnregresar").fadeIn();
                     $("#columbar1").html("");
@@ -207,7 +207,7 @@
                                     point: {
                                         events: {
                                             click: function () {
-                                                console.log(this.datos.arg);
+                                                @*console.log(this.datos.arg);*@
                                                 $.griddetallemodal.createGridDetalle(this.datos.arg);
                                                 //_this.columbar2byClick.createColumChart(this.datos, this.name);
                                             }

@@ -15,7 +15,7 @@
                             <div class="card-body p-lg-5 ">
 
                                 <div class="text-center">
-                                    <h4 class="mt-lg-1 mb-lg-5 pb-lg-1 mt-4 mb-5">Liquidar Vales Combustible</h4>
+                                    <h4 class="mt-lg-1 mb-lg-5 pb-lg-1 mt-4 mb-5">Cerrar Vales Combustible</h4>
                                 </div>
 
                                 <form>
@@ -49,12 +49,12 @@
                                     </div>
 
                                     <div class="form-outline mb-4 mt-4">
-                                        <label class="form-label" for="form2Example11">Total de dolares:</label>
+                                        <label class="form-label" for="form2Example11">Total de dólares:</label>
                                         <input type="text" id="Input_Dolares" class="form-control" step="0.01" disabled @*value="0"*@ placeholder="0"/>
                                     </div>
 
                                     <div class="form-outline mb-4 mt-4">
-                                        <label class="form-label" for="form2Example11">Odometro:</label>
+                                        <label class="form-label" for="form2Example11">Odómetro:</label>
                                         <input type="text" id="Input_Odometro" class="form-control" step="0.01" disabled @*value="0"*@ placeholder="0"/>
                                     </div>
                                     <div class="d-grid gap-2 col-12 mx-auto">
@@ -75,7 +75,7 @@
     </div>
     <div class="container-fluid">
         <div class="card rounded-3">
-            <h2 class="text-center mt-lg-3 mt-2">Vales Liquidados</h2>    
+            <h2 class="text-center mt-lg-3 mt-2">Vales Cerrados</h2>    
             <div class="row ">
                 <div class="col-lg-4 col-12 d-flex  align-items-center ps-lg-5 " >
                     <h4 class="w-50 ps-2 ps-lg-5 text-start text-lg-center">Fecha inicio:</h4>
@@ -128,21 +128,24 @@
     (function () {
         $.extend({
             CerrarVale: {
-                BTN_ObtenerVale: function(){
+                BTN_ObtenerVale: function(){//Función para obtener el vale por cerrar
                     var _this = this;
                     $('#ObtenerVale').on('click', function () {
-                        //let _placa = $.trim($('#Input_Placa').val());
+
                         var _placa = $('#Input_Placa').val().trim()
-                        var _galones = $("#Input_Galones").val().trim() //$.trim();
+                        var _galones = $("#Input_Galones").val().trim() 
 
                         var _dolares = $("#Input_Dolares").val().trim()
                         var _odometro = $("#Input_Odometro").val().trim()
-                        //this.ariaAutoComplete 
+
+                        //$.trim();
+                        //this.ariaAutoComplete
+                        //let _placa = $.trim($('#Input_Placa').val());
                         /*let _dolares = $.trim($("#Input_Dolares").val());
                         let _odometro = $.trim($("#Input_Odometro").val());*/
 
-                        if (_placa === "") {
-                            $.alert("Placa invalida", "Debe insertar una placa valida")
+                        if (_placa === "") {//Se valida que el input de la placa no esté vacio
+                            $.alert("Placa inválida", "Se debe insertar una placa válida.")
                             //_this.alert("Placa invalida", "Debe insertar una placa valida");
                             return false;
                         }
@@ -153,20 +156,25 @@
                             placa: _placa,
                         };
 
-                        $.get('@Url.Action("getInformation", "adLiquidarVales")', arg, function (data) {
+                        $.get('@Url.Action("getInformation", "adCerrarVale")', arg, function (data) {
                             data = data[0]
+
+                            //Si el caso igual a 4 se muestran los valores
                             if (data.caso === 4) {
                                 $('#TXT_Vale').text('Numero de vale: ' + data.numVale)
 
+                                //Se habilita el input de galones en caso de que sea en total dolares
                                 data.cantidadGalones == 0 ? $('#Input_Galones').prop("disabled", false) : $('#Input_Galones').prop("disabled", true)
                                 $('#Input_Galones').val(data.cantidadGalones)
 
-
+                                //Se habilita el input de dolares en caso que sea total en galones
                                 data.totalPrecio == 0 ? $('#Input_Dolares').prop("disabled", false) : $('#Input_Dolares').prop("disabled", true)
                                 $('#Input_Dolares').val(data.totalPrecio)
 
+                                //Se habilita el input de odometro
                                 $('#Input_Odometro').prop("disabled", false)
                                 $('#Input_Odometro').val(data.odometro)
+                                //Se habilita el boton de liquidar vales
                                 $('#BTN_Liquidar').prop("disabled", false)
                                 _this.validaPlaca();
                             } else {
@@ -175,7 +183,7 @@
                         });
                     });
                 },
-                BTN_LiquidarVale: function () {
+                BTN_LiquidarVale: function () {//Fución para cerrar un vale
                     var _this = this;
                     $('#BTN_Liquidar').on('click', function () {
                         let _placa = $.trim($('#Input_Placa').val().toUpperCase());
@@ -188,7 +196,9 @@
                             TotalDolares: _dolares,
                             Odometro: _odometro
                         }
-
+                        
+                        //Validaciones para cerrar el vale
+                        /*************************************************************************************************************/
                         if (isNaN(_galones)) {
                             $.alert("Valor de galones esta vacio", "Debe ingresar la cantidad de galones")
                             //_this.alert("Valor de galones esta vacio", "Debe ingresar la cantidad de galones")
@@ -201,28 +211,29 @@
                         }
 
                         if (isNaN(_dolares)) {
-                            $.alert("Valor de dolares esta vacio", "Debe ingresar el total de dolares")
+                            $.alert("Valor de dólares esta vacio", "Debe ingresar el total de dólares")
                             //_this.alert("Valor de dolares esta vacio", "Debe ingresar el total de dolares")
                             return false
                         }
                         if (_dolares === 0) {
-                            $.alert("El total de dolares es igual a 0", "El total de dolares debe ser mayor que 0")
-                            //_this.alert("El total de dolares es igual a 0", "El total de dolares debe ser mayor que 0")
+                            $.alert("El total de dólares es igual a 0", "El total de dólares debe ser mayor que 0")
+                            //_this.alert("El total de dólares es igual a 0", "El total de dólares debe ser mayor que 0")
                             return false
                         }
 
                         if (isNaN(_odometro)) {
-                            $.alert("Valor de odometro esta vacio", "Debe ingresar el odometro de la unidad")
+                            $.alert("Valor de odómetro esta vacio", "Debe ingresar el odómetro de la unidad")
                             //_this.alert("Valor de odometro esta vacio", "Debe ingresar el odometro de la unidad")
                             return false
                         }
                         if (_odometro === 0) {
-                            $.alert("Valor de odometro es igual a 0", "El odometro debe ser mayor que 0")
+                            $.alert("Valor de odómetro es igual a 0", "El odómetro debe ser mayor que 0")
                             //_this.alert("Valor de odometro es igual a 0", "El odometro debe ser mayor que 0")
                             return false
-                        }
-                        
-                        $.post('@Url.Action("LiquidarVale", "adLiquidarVales")', arg, function (mensaje) {
+                        }                      
+                        /*************************************************************************************************************/
+
+                        $.post('@Url.Action("CerrarVale", "adCerrarVale")', arg, function (mensaje) {
                             var _this = this;
                             $.GRID.FechaFin = moment().add(6, 'hours').format("YYYY/MM/DD HH:mm:ss")
                             Swal.fire({
@@ -258,13 +269,13 @@
                     })
 
                 },
-                validaPlaca: function () {
+                validaPlaca: function () {//Función para validar que la placa del input sea la misma que se guardo en la sesion
                     var _this = this;
 
                     $("#Input_Placa").off('blur');
                     $("#Input_Placa").on("blur", function () {
                         var valorInput = $(this).val();
-                        $.get('@Url.Action("validarPlaca", "adLiquidarVales")', function (placa) {
+                        $.get('@Url.Action("validarPlaca", "adCerrarVale")', function (placa) {
                             if (placa === null) {
                                 //console.log("Es nulo")
                             } else {
@@ -291,9 +302,9 @@
                     });
                 },
             },       
-            keypress: function () {
+            keypress: function () {//Función para limitar el ingreso de datos a los input
                 var _this = this;
-                $('#Input_Dolares').keypress(function (event) {
+                $('#Input_Dolares').keypress(function (event) {//Se valida que se pueden ingresar decimales positivos, con dos decimales despues del punto 
                     //console.log("XD")
                     var keyCode = event.which;
                     var inputValue = $(this).val();
@@ -312,7 +323,7 @@
 
                 });
 
-                $('#Input_Galones').keypress(function (event) {
+                $('#Input_Galones').keypress(function (event) {//Se valida que se pueden ingresar decimales positivos, con cuatro decimales despues del punto
 
                     var keyCode = event.which;
                     var inputValue = $(this).val();
@@ -331,7 +342,7 @@
 
                 });
 
-                $('#Input_Odometro').keypress(function (event) {
+                $('#Input_Odometro').keypress(function (event) {//Se valida que solamente se puedan ingresar decimales positivos
 
                     var keyCode = event.which;
                     var inputValue = $(this).val();
@@ -342,7 +353,7 @@
 
                 });
 
-                $('#Input_Placa').on('keypress', function (event) {
+                $('#Input_Placa').on('keypress', function (event) {//Se valida que solamente se pueden ingresar numero y letras
                     var inputValue = event.key;
                     var regex = /^[a-zA-Z0-9]*$/; 
                     if (!regex.test(inputValue)) {
@@ -353,7 +364,7 @@
 
 
             },
-            alert: function (title, text) {
+            alert: function (title, text) {//Función para mostrar alertas
                 Swal.fire({
                     icon: "warning",
                     title: title,
@@ -361,32 +372,32 @@
                 });
             },
             GRID: {
-                FechaInicio: moment().subtract(30, 'days').format("YYYYMMDD HH:mm:ss"),
-                FechaFin: moment().add(6, 'hours').format("YYYYMMDD HH:mm:ss"),
-                loadGrid:function(){
+                FechaInicio: moment().subtract(30, 'days').format("YYYYMMDD HH:mm:ss"),//variable para almacenar la fecha de inicio de los datos
+                FechaFin: moment().add(6, 'hours').format("YYYYMMDD HH:mm:ss"),//variable para almacenar la fecha de fin de los datos
+                loadGrid:function(){//Función para incializar el GRID
                     var _this = this;
+
+                    //Se inicializa los DateTimePicker
                     $("#FechaIni").kendoDateTimePicker({
                         dateInput: true,
                         startTime: new Date(2023, 1, 3, 8, 30, 0),
                         endTime: new Date(2023, 1, 3, 17,00, 0)
                     });
-                    $("#FechaIni").data("kendoDateTimePicker").value(kendo.parseDate(moment().subtract(30, 'days').format("YYYY/MM/DD HH:mm:ss")));
+
                     $("#FechaFin").kendoDateTimePicker({
                         dateInput: true,
                         startTime: new Date(2023, 1, 3, 8, 30, 0),
                         endTime: new Date(2023, 1, 3, 17,00, 0)
                     });
+
+                    //Se coloca las fechas a los DateTimePicker
                     $("#FechaFin").data("kendoDateTimePicker").value(kendo.parseDate(moment().format("YYYY/MM/DD HH:mm:ss")));
-                    $("#GridVales").html("");
+                    $("#FechaIni").data("kendoDateTimePicker").value(kendo.parseDate(moment().subtract(30, 'days').format("YYYY/MM/DD HH:mm:ss")));
 
 
-                    let arg = {
-                        FechaIncio: _this.FechaInicio,
-                        fechaFin: _this.FechaFin
-                    };
 
-                    $("#GridVales").html("");
-                    $("#GridVales").kendoGrid({
+                    $("#GridVales").html("");//Se limpia el contenedor del GRID
+                    $("#GridVales").kendoGrid({//Se inicializa el GRID
                         dataSource: {
                             pageSize: 10
                         },
@@ -421,36 +432,47 @@
                         },
                         detailInit: _this.SubGrid.loadGridPlaca
                     });
+
+                    let arg = {
+                        FechaIncio: _this.FechaInicio,
+                        fechaFin: _this.FechaFin
+                    };
+
+                    //Se llama a la función que muestra la data del GRID
                     _this.dataGrid(arg);
                 },
-                dataGrid: function (arg) {
-                    $.get('@Url.Action("ObtenerValesLiquidados", "adLiquidarVales")', arg, function (valesCerrados) {
-                        var valesXPlacas = [];
-                        for (let i = 0; i < valesCerrados.length; i++) {
-                            let found = false;
-                            for (let x = 0; x < valesXPlacas.length; x++) {
-                                if (valesXPlacas[x].placa === valesCerrados[i].placa) {
-                                    valesXPlacas[x].CantidadVales++;
-                                    valesXPlacas[x].Total += valesCerrados[i].totalPrecio;
-                                    valesXPlacas[x].CantidadGalones += valesCerrados[i].cantidadGalones;
-                                    found = true;
+                dataGrid: function (arg) {//Función para obtener la data del GRID
+                    $.get('@Url.Action("ObtenerValesCerrados", "adCerrarVale")', arg, function (valesCerrados) {
+
+                        var valesXPlacas = [];//Variable para almacenar los cantidad de vales, cantidadad de galones y cantidad de dinero por placa
+
+                        for (let i = 0; i < valesCerrados.length; i++) {//Array para recorrer los valesCerrados
+                            let found = false;//boleano para determinar si se encontro un vale en el array valesXPlacas
+                            for (let x = 0; x < valesXPlacas.length; x++) {//Array para recorrer los valesXPlacas
+                                if (valesXPlacas[x].placa === valesCerrados[i].placa) {//Se verifica si ya esta la placa en el array valesXPlacas
+
+                                    /*Si existe la placa*/
+                                    valesXPlacas[x].CantidadVales++; //Se incrementa el vale por placa en 1
+                                    valesXPlacas[x].Total += valesCerrados[i].totalPrecio; //Se suma el total del precio 
+                                    valesXPlacas[x].CantidadGalones += valesCerrados[i].cantidadGalones;// Se suma la cantidad de Galones
+                                    found = true;//Se setea true al booleano para no cerrar agregar la placa de nuevo
                                     break;
                                 }
                             }
-                            if (!found) {
+                            if (!found) { // Si la placa no existe en el array valesXPlacas se añade la placa
                                 valesXPlacas.push({
-                                    placa: valesCerrados[i].placa,
-                                    CantidadVales: 1,
-                                    Total: valesCerrados[i].totalPrecio,
-                                    CantidadGalones: valesCerrados[i].cantidadGalones
+                                    placa: valesCerrados[i].placa, //Se añade la placa
+                                    CantidadVales: 1,//Se añade un vale
+                                    Total: valesCerrados[i].totalPrecio,//Se añade el total de precio 
+                                    CantidadGalones: valesCerrados[i].cantidadGalones//Se añade la cantidad de galones
                                 });
                             }
                         }
                         //console.log(valesXPlacas);
-                        $("#GridVales").data("kendoGrid").dataSource.data(valesXPlacas);
+                        $("#GridVales").data("kendoGrid").dataSource.data(valesXPlacas);//Se insertan la data al GRID
                     });
                 },
-                BTN_ReloadGrid: function () {
+                BTN_ReloadGrid: function () {//Función pata mostrar la data del GRID 
                     var _this = this;
                     $("#reloadGrid").on("click", function (e) {
 
@@ -470,11 +492,11 @@
                     });
                 },
                 SubGrid: {
-                    loadGridPlaca: function (e) {
+                    loadGridPlaca: function (e) {//Función que llama a la función para inicializar el GRID
                         var _this = this
                         $.GRID.SubGrid.dataGridplaca(e.data.placa, e.detailCell)
                     },
-                    dataGridplaca: function (placa, fila) {
+                    dataGridplaca: function (placa, fila) {//Fución para inicializar el GRID hijo, donde se muestran los vales por placa
                         var _this = this;
                         let arg = {
                             Placa: placa,
@@ -483,7 +505,7 @@
                         }
                         //console.log(arg)
 
-                        $.get('@Url.Action("ObtenerValesLiquidadosXPlaca", "adLiquidarVales")', arg, function (vales) {
+                        $.get('@Url.Action("ObtenerValesCerradosXPlaca", "adCerrarVale")', arg, function (vales) {
                             //console.log(vales)
                             for (x = 0; x < vales.length; x++) {
                                 vales[x].fechaGeneracion = moment(vales[x].fechaGeneracion).subtract(6, 'hours').format("DD/MM/YYYY HH:mm:ss")

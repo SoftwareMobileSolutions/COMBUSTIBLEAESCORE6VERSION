@@ -218,7 +218,7 @@
                         </div>*@
                         <div class="row mt-3 d-flex align-items-center">
                             <div class="col-lg-3">
-                                <label>Desea anular el vale?</label>
+                                <label>¿Desea anular el vale?</label>
                                 <div>
                                     <div class="form-check form-check-inline" style="width:50px;">
                                         <input class="form-check-input RC" type="radio" name="RadioOptions_AnularVale" id="Radio_No" value="No" checked>
@@ -277,7 +277,7 @@
     (function () {
         $.extend({
             ModuloAutorizarVales: {
-                Tabstrip: function(){
+                Tabstrip: function(){//Función para inicializar el Tabstrip
                     $(document).ready(function () {
                         $("#tabstrip").kendoTabStrip({
                             animation: {
@@ -290,8 +290,10 @@
                 },
                 AutorizarVales: {
                     Grid: {
-                        CargarGrid: function () {
+                        CargarGrid: function () {//Función para incializar el GRID
                             var _this = this
+
+                            //Se inicializan los DateTimePicker
                             $("#FechaIni").kendoDateTimePicker({
                                 dateInput: true,
                                 startTime: new Date(2023, 1, 3, 8, 30, 0),
@@ -303,11 +305,12 @@
                                 endTime: new Date(2023, 1, 3, 17,00, 0)
                             });
 
+                            //Se establece el valor de los DateTimePicker
                             $("#FechaIni").data("kendoDateTimePicker").value(kendo.parseDate(moment().subtract(30, 'days').format("YYYY/MM/DD HH:mm:ss")));
                             $("#FechaFin").data("kendoDateTimePicker").value(kendo.parseDate(moment().format("YYYY/MM/DD HH:mm:ss")));
 
-                            $("#GridVales").html("");
-                            $("#GridVales").kendoGrid({
+                            $("#GridVales").html("");//Se limpia el contenedor del GRID
+                            $("#GridVales").kendoGrid({//Se inicializa el grid
                                 dataSource: {
                                     pageSize: 10
                                 },
@@ -365,8 +368,8 @@
                                 selectable: "single, row",
                                 dataBound: function () {
                                     var touchtime = 0;
-                                    $("#GridVales > div span input").attr("placeholder", "Busqueda")
-                                    $("#GridVales .k-grid-content tbody tr:not(.k-grouping-row)").on("click", function () {
+                                    $("#GridVales > div span input").attr("placeholder", "Busqueda")// Se reemplaza la palabra serach por buscar del grid
+                                    $("#GridVales .k-grid-content tbody tr:not(.k-grouping-row)").on("click", function () {//Función para mostrar modal al dar doble clic
 
                                         var grid = $("#GridVales").data("kendoGrid");
                                         var row = $(this);
@@ -380,12 +383,15 @@
                                 pageable: true,
                                 mobile: "phone",
                             });
+
+                            //Se muestra el texto de dar doble clic
                             $(".k-pager-wrap").append("<span class='w-100 text-center d-none d-lg-block'>Presione doble click para autorizar un vale</span>")
+                            /*Nota se usa lo hora UTC porque es la hora del server y se extraen 30 días para mostrar el mes anterior*/
                             var FechaIni = moment().utc().subtract(30, 'days').format("YYYYMMDD HH:mm:ss")
                             var FechaFin = moment().utc().format("YYYYMMDD HH:mm:ss")
-                            _this.DataGrid(FechaIni, FechaFin)
+                            _this.DataGrid(FechaIni, FechaFin)//Se llama a la función para traer la data del GRID
                         },
-                        DataGrid: function (_FechaIni, _FechaFin) {
+                        DataGrid: function (_FechaIni, _FechaFin) {//Función para mostrar la data del GRID
 
                             let arg = {
                                 FechaIni: _FechaIni,
@@ -400,7 +406,7 @@
                                 //console.log(vales)
                             })
                         },
-                        BTN_GenerarVales: function () {
+                        BTN_GenerarVales: function () {//Funcion para mostrar data en un rango de fecha
                             var _this = this
                             $("#BTN_GenerarValesGRID").on("click", function () {
                                 var FechaIni = moment(
@@ -413,19 +419,23 @@
                             });
                         },
                         Modal: {
-                            ValeID: 0,
-                            TipoCargaValeCombustibleID: 0,
-                            TotalDinero: 0,
-                            TotalGalones: 0,
-                            MostrarModal: function (valeCombustubibleID, tipoCargaValeCombustibleID, totalPrecio, cantidadGalones, placa) {
+                            ValeID: 0,//Variable para guardar el ID del vale para autorizar
+                            TipoCargaValeCombustibleID: 0,//Se guarda el ID del tipo de carga
+                            TotalDinero: 0,//Se guarda el total del dinero para el modal autorizar vales
+                            TotalGalones: 0,//Se guarda el total de galones para el modal autorizar vales
+                            MostrarModal: function (valeCombustubibleID, tipoCargaValeCombustibleID, totalPrecio, cantidadGalones, placa) {//Función para mostrar el modal
                                 var _this = this
+                                
+                                //Se alamceana la información del vale para obtenerla en el modal
                                 _this.ValeID = valeCombustubibleID
                                 _this.TipoCargaValeCombustibleID = tipoCargaValeCombustibleID
                                 _this.TotalDinero = totalPrecio
                                 _this.TotalGalones = cantidadGalones
                                 _this.DropDownList.DataDropDownList.DropDownListCentroCosto(placa)
+                                //Se llama a la función que trae la data del vale a autorizar
                                 _this.DataModal()
 
+                                //Se pone el vale en modo autorizar
                                 $("#ContainerValeAutorizar").removeClass("anular")
                                 $("#ContainerValeAutorizar").addClass("autorizar")
 
@@ -438,10 +448,12 @@
                                 $("#TXT_AccionVale").text("Vale por autorizar");
                                 $("#DropDownList_RazonesAnulacion").data("kendoDropDownList").value(0)
                                 $("#ModalAutorizarVale").modal('show');
+
                             },
-                            DataModal: function () {
+                            DataModal: function () {//Función para mostrar la data del modal
                                 var _this = this
 
+                                //Se obtiene el vale por autorizar
                                 $.get('@Url.Action("ObtenerValeAutorizar", "adAutorizarVales")', {
                                     ValeID: _this.ValeID
                                 }).then(function (vale) {
@@ -450,15 +462,17 @@
                                     /******************Vale por autorizar********************/
                                     let valeAutorizar = vale["valeAutorizar"][0]
 
-                                    $("#PlacaTXT").text(valeAutorizar.placa)
-                                    $("#NumValeTXT").text("N° Vale: " + valeAutorizar.numVale)
-                                    $("#FechaTXT").text("Fecha : " + moment(valeAutorizar.fechaGeneracion).format("DD/MM/YYYY HH:mm:ss"))
-                                    $("#DropDownListProyecto").data("kendoDropDownList").value(0)
-                                    $("#InputGalones").val("")
-                                    $("#InputTotalDinero").val("")
-                                    $("#TXT_AlertaValeAuto").text("")
+                                    $("#PlacaTXT").text(valeAutorizar.placa)//Se muestra la placa del vale
+                                    $("#NumValeTXT").text("N° Vale: " + valeAutorizar.numVale)//Se muestra el numero del vale
+                                    $("#FechaTXT").text("Fecha : " + moment(valeAutorizar.fechaGeneracion).format("DD/MM/YYYY HH:mm:ss"))//Se muestra la fecha
+                                    $("#DropDownListProyecto").data("kendoDropDownList").value(0)//Se reinicía del DropDownList del centro de costo
+                                    $("#InputGalones").val("")//Se limpia le input de galones
+                                    $("#InputTotalDinero").val("")//Se limpia el input de Dinero
+                                    $("#TXT_AlertaValeAuto").text("")//Se limpia la alerta
 
-                                    if (valeAutorizar.tipoCargaValeCombustibleID === 2) {
+                                    if (valeAutorizar.tipoCargaValeCombustibleID === 2) {//Vale total en dolares
+                                        /*Se habilita el input para cambiar la cantidad de dolares 
+                                        y se bloqueda el input de total galones*/
                                         $("#TXTTotal").css("display", "block")
                                         $("#TXTTotal").text("Total Dolares = $" + valeAutorizar.totalPrecio)
 
@@ -469,7 +483,9 @@
                                         $("#TXTTotalDinero").text("Cambiar cantidad en dolares")
                                         $("#InputTotalDinero").val("")
                                         $("#InputTotalDinero").css("display", "block")
-                                    } else if (valeAutorizar.tipoCargaValeCombustibleID === 3) {
+                                    } else if (valeAutorizar.tipoCargaValeCombustibleID === 3) {//Vale total en galones
+                                        /*Se habilita el input de cambiar cantidad galones y se 
+                                        bloquea el input total dinero*/
                                         $("#TXTTotal").css("display", "block")
                                         $("#TXTTotal").text("Total de Galones = " + valeAutorizar.cantidadGalones)
 
@@ -480,7 +496,9 @@
                                         $("#TXTGalones").text("Cambiar cantidad en Galones")
                                         $("#InputGalones").val("")
                                         $("#InputGalones").css("display", "block")
-                                    } else if (valeAutorizar.tipoCargaValeCombustibleID === 1) {
+                                    } else if (valeAutorizar.tipoCargaValeCombustibleID === 1) {//Vale Fullear
+
+                                        /*Se bloquea el input total galones y dolares*/
                                         $("#TXTTotal").css("display", "none")
                                         $("#ContenedorGalones").css("display", "none")
 
@@ -489,6 +507,8 @@
                                     }
 
                                     /*********** Vale Anterior **************************/
+
+                                    /*Vale anterior se refiere al cuadro que sale arriba del vale por autorizar, en este se muestra la data  del vale anterior cerrado para esa placa*/
                                     let ValeAnterior = vale["valeAnterior"][0]
                                     //console.log(ValeAnterior)
                                     if (ValeAnterior === undefined) {
@@ -504,6 +524,8 @@
                                     }
 
                                     /*********** Alerta vale autorizado *****************/
+
+                                    /*Esta alerta se muestra cuando la placa tiene otro vale autorizado*/
                                     let mensaje = vale["mensaje"][0]
 
                                     if (mensaje.bandera === 0) {
@@ -515,11 +537,11 @@
                                     $("#ModalAutorizarVale").modal('show');
                                 })
                             },
-                            AnularVale: function () {
+                            AnularVale: function () {//Función para anular vales
                                 $(".RC").on("change", function (e) {
 
                                     let seleccion = $(this).val()
-                                    if (seleccion === "Si") {
+                                    if (seleccion === "Si") {//Se pone el fondo en rojo y se bloquea el dropdown que este disponible
                                         $("#DIV_Razones").show(400)
                                         $("#ContainerValeAutorizar").removeClass("autorizar")
                                         $("#ContainerValeAutorizar").addClass("anular")
@@ -531,7 +553,7 @@
                                         $("#TXT_AccionVale").text("Vale por anular");
                                         $("#BTN_Autorizar_Anular_Vale").text("Anular Vale")
 
-                                    } else {
+                                    } else {//Se pone el fondo en verde y se habilita del dropdown
                                         $("#DIV_Razones").hide(400)
                                         $("#ContainerValeAutorizar").removeClass("anular")
                                         $("#ContainerValeAutorizar").addClass("autorizar")
@@ -543,11 +565,10 @@
                                         $("#TXT_AccionVale").text("Vale por autorizar");
                                         $("#BTN_Autorizar_Anular_Vale").text("Autorizar Vale")
                                     }
-                                    //console.log()
                                 })
                             },
                             DropDownList: {
-                                CargarDropDownList: function () {
+                                CargarDropDownList: function () {//Funcion para inicializar los dropdowns
                                     $("#DropDownListCentroCosto").kendoDropDownList({
                                         filter: "contains",
                                         optionLabel: 'Seleccione el centro de costo...',
@@ -570,7 +591,7 @@
                                     });
                                 },
                                 DataDropDownList: {
-                                    DropDownListCentroCosto: function (_Placa) {
+                                    DropDownListCentroCosto: function (_Placa) {//Se coloca la data al dropdown de centros de costo
                                         $("#DropDownListCentroCosto").data("kendoDropDownList").dataSource.data([]);
                                         $.get('@Url.Action("ObtenerCentrosCostoAutorizalVale", "adAutorizarVales")', { Placa: _Placa }, function (centrosCosto) {
                                             //console.log(centrosCosto)
@@ -582,7 +603,7 @@
                                             }
                                         })
                                     },
-                                    DropDownListProyecto: function () {
+                                    DropDownListProyecto: function () {//Se coloca la data al dropdown de proyectos
                                         var _Proyectos = []
 
                                         $.get('@Url.Action("ObtenerProyectos", "adAutorizarVales")', function (Proyectos) {
@@ -596,7 +617,7 @@
                                             $("#DropDownListProyecto").data("kendoDropDownList").dataSource.data(_Proyectos);
                                         })
                                     },
-                                    DropDownListRazonesCancel: function () {
+                                    DropDownListRazonesCancel: function () {//Se coloca la data al dropdown de razone cancel
                                         $.get('@Url.Action("ObtenerRazonCancelacion", "adAutorizarVales")', function (razones) {
                                             $("#DropDownList_RazonesAnulacion").data("kendoDropDownList").dataSource.data(razones);
                                             //console.log(razones)
@@ -604,9 +625,9 @@
                                     }
                                 }
                             },
-                            keypress: function () {
+                            keypress: function () {//Función para limitar el ingreso de datos del keypress
                                 var _this = this;
-                                $('#InputTotalDinero').keypress(function (event) {
+                                $('#InputTotalDinero').keypress(function (event) {//Se limita a solo decimales
                                     //console.log("XD")
                                     var keyCode = event.which;
                                     var inputValue = $(this).val();
@@ -625,7 +646,7 @@
 
                                 });
 
-                                $('#InputGalones').keypress(function (event) {
+                                $('#InputGalones').keypress(function (event) {//Se limita a decimales
 
                                     var keyCode = event.which;
                                     var inputValue = $(this).val();
@@ -646,7 +667,7 @@
 
                             },
                             Validaciones: {
-                                AurotizarVale: function (TotalDinero, TotalGalones, CentroCostoID, ProyectoID, TipoCargaID) {
+                                AurotizarVale: function (TotalDinero, TotalGalones, CentroCostoID, ProyectoID, TipoCargaID) {//Función para validar el la data del vale antes de autorizar 
                                     if (TipoCargaID === 2) {
 
                                         if (TotalDinero !== "") {
@@ -699,7 +720,8 @@
 
                                     return true
                                 },
-                                AnularVale: function (_RazonAnulacion) {
+                                AnularVale: function (_RazonAnulacion) {//Función para validar la anulación de vales
+                                    //Se valida si seleccionó una razon de anulación en caso de anular un vale
                                     if (_RazonAnulacion === "") {
                                         $._combustible.alert("error", "Sin selección", "Debe seleccionar una razón de anulación")
                                         return false
@@ -707,27 +729,30 @@
                                     return true
                                 }
                             },
-                            BTN_Autorizar_Anular_Vale: function () {
+                            BTN_Autorizar_Anular_Vale: function () {//Función para autorizar o anular vales 
                                 var _this = this
                                 $("#BTN_Autorizar_Anular_Vale").on("click", function () {
+
+                                    //Se verfica si el valé sera anulado
                                     var Anular = $("#Radio_Si").is(":checked")
-                                    //console.log(Anular)
+
+                                    //Si será anulado
                                     if (Anular === true) {
+                                        //Se obtiene la razon de cancelacion
                                         let razonID = $("#DropDownList_RazonesAnulacion").data("kendoDropDownList").value()
+                                        //Se manda a llamar a la función que valida la razon de anulación
                                         if (_this.Validaciones.AnularVale(razonID)) {
-                                            //console.log("Anula vale")
+
                                             let arg = {
                                                 ValeCombustubibleID: _this.ValeID,
                                                 RazonID: parseInt(razonID)
                                             }
-                                            //console.log(arg)
+
+
                                             $.post('@Url.Action("AnularVale", "adAutorizarVales")', arg, function (mensaje) {
                                                 mensaje = mensaje[0]
                                                 if (mensaje.bandera === 1) {
-                                                    /*_this.alertModal("suceso", 'Vale Anulado: ' + mensaje.resultado)
-                                                    $("#InputRazonesCancelacion").data("kendoDropDownList").select(0)
-                                                    $("#BTN_Anular").attr("disabled", true)
-                                                    $.GRID.dataGrid();*/
+
                                                     $._combustible.alert("success", "Vale anulado", mensaje.resultado)
                                                     $("#ModalAutorizarVale").modal('hide');
 
@@ -736,32 +761,16 @@
                                                     $("#FechaFin").data("kendoDateTimePicker").value(kendo.parseDate(moment().add(6, 'hours').format("YYYY/MM/DD HH:mm:ss")));
 
                                                     var FechaFin = moment($("#FechaFin").data("kendoDateTimePicker").value()).format("YYYYMMDD HH:mm:ss");
-                                                    /*console.log(FechaIni)
-                                                    console.log(FechaFin)*/
 
                                                     $.ModuloAutorizarVales.Grid.DataGrid(FechaIni, FechaFin)
                                                 } else {
-                                                    /*_this.alertModal("alerta", mensaje.resultado)
-                                                    $.GRID.dataGrid();*/
+                                                    $._combustible.alert("error", "Error", mensaje.resultado)
                                                 }
                                             })
-
-    @*$.post('@Url.Action("AnularVale", "adAnulacionEliminacionVales")', arg, function (mensaje) {
-                                                mensaje = mensaje[0]
-                                                if (mensaje.bandera === 1) {
-                                                _this.alertModal("suceso", 'Vale Anulado: ' + mensaje.resultado)
-                                                $("#InputRazonesCancelacion").data("kendoDropDownList").select(0)
-                                                $("#BTN_Anular").attr("disabled", true)
-                                                $.GRID.dataGrid();
-                                                } else {
-                                                _this.alertModal("alerta", mensaje.resultado)
-                                                $.GRID.dataGrid();
-                                                }
-
-                                                })*@
                                         }
-                                        //console.log("Anula")
-                                    } else {
+
+                                    } else {//En caso de autorización
+                                        //Se obtienen los datos del vale
                                         var TotalDineroNuevo = $("#InputTotalDinero").val();
                                         var TotalGalonesNuevo = $("#InputGalones").val();
                                         var CentroCostoID = $("#DropDownListCentroCosto").data("kendoDropDownList").value();
@@ -775,6 +784,7 @@
                                         let _CantidadGalones = TotalGalonesNuevo === '' ? null : parseFloat(TotalGalonesNuevo)
                                         let _TotalPrecio = TotalDineroNuevo === '' ? null : parseFloat(TotalDineroNuevo)
 
+                                        //Se manda a llamar a la función que valida los datos y se verifica el resultado
                                         if ((_this.Validaciones.AurotizarVale(TotalDinero, TotalGalones, CentroCostoID, ProyectoID, TipoCargaID)) === true) {
                                             let arg = {
                                                 ValeCombustibleID: ValeID,
@@ -805,12 +815,11 @@
                                             })
                                         }
                                     }
-    @**@
                                 });
                             }
                         }
                     },
-                    init: function(){
+                    init: function(){//Funciones que se llaman al entrar al modulo
                         var _this = this
                         _this.Grid.CargarGrid()
                         _this.Grid.BTN_GenerarVales()
@@ -823,7 +832,7 @@
                     }
                 },
                 ValesAutorizados: {
-                    BarraOpciones: function(){
+                    BarraOpciones: function(){//Función para inicializar la barra de opciones del GRID
                         $("#FechaIni_ValesGen").kendoDateTimePicker({
                             dateInput: true,
                             startTime: new Date(2023, 1, 3, 8, 30, 0),
@@ -839,10 +848,10 @@
                         $("#FechaFin_ValesGen").data("kendoDateTimePicker").value(kendo.parseDate(moment().format("YYYY/MM/DD HH:mm:ss")));
                     },
                     GRID: {
-                        CargarGrid: function () {
+                        CargarGrid: function () {//Función para inicializar el grid
                             var _this = this
-                            $("#GRID_ValesAutorizados").html("");
-                            $("#GRID_ValesAutorizados").kendoGrid({
+                            $("#GRID_ValesAutorizados").html("");//Se limpia el contenedor del GRID
+                            $("#GRID_ValesAutorizados").kendoGrid({//Se inicializa el GRID
                                 dataSource: {
                                     pageSize: 10
                                 },
@@ -921,7 +930,7 @@
                             var FechaFin = moment($("#FechaFin_ValesGen").data("kendoDateTimePicker").value()).add(6, "hours").format("YYYYMMDD HH:mm:ss:SSS")
                             _this.DataGrid(2, FechaIni, FechaFin);
                         },
-                        DataGrid: function (_EstadoValeID, _FechaIni,  _FechaFin) {
+                        DataGrid: function (_EstadoValeID, _FechaIni,  _FechaFin) {//Función para llamar la data del GRID
                             let arg = {
                                 EstadoValeID: _EstadoValeID,
                                 FechaIni: _FechaIni,
@@ -936,7 +945,7 @@
                                 $("#GRID_ValesAutorizados").data("kendoGrid").dataSource.data(vales);
                             });
                         },
-                        BTN_GenerarVales:function (){
+                        BTN_GenerarVales:function (){//Función para mostrar vales por rangos de fecha en el GRID
                             var _this = this
                             $("#BTN_ValesAutorizados").on("click", function () {
                                 var FechaIni = moment($("#FechaIni_ValesGen").data("kendoDateTimePicker").value()).add(6, "hours").format("YYYYMMDD HH:mm:ss:SSS")
@@ -945,7 +954,7 @@
                             })
                         }
                     },
-                    init:function(){
+                    init: function () {//Funciones que se llaman al entrar al modulo
                         var _this = this 
                         _this.BarraOpciones()
                         _this.GRID.CargarGrid()
@@ -953,7 +962,7 @@
                     }
                 }, 
                 ValesAnulados: {
-                    BarraOpciones: function () {
+                    BarraOpciones: function () {//Función para inicializar la barra de opciones del GRID
                         $("#FechaIni_ValesAnu").kendoDateTimePicker({
                             dateInput: true,
                             startTime: new Date(2023, 1, 3, 8, 30, 0),
@@ -969,10 +978,10 @@
                         $("#FechaFin_ValesAnu").data("kendoDateTimePicker").value(kendo.parseDate(moment().format("YYYY/MM/DD HH:mm:ss")));
                     },
                     GRID: {
-                        CargarGrid: function () {
+                        CargarGrid: function () {//Función para inicializar el grid
                             var _this = this
-                            $("#GRID_ValesAnulados").html("");
-                            $("#GRID_ValesAnulados").kendoGrid({
+                            $("#GRID_ValesAnulados").html("");//Se limpia el contenedor del GRID
+                            $("#GRID_ValesAnulados").kendoGrid({//Se inicializa el GRID
                                 dataSource: {
                                     pageSize: 10
                                 },
@@ -1047,11 +1056,13 @@
                                 mobile: "phone",
                             });
 
-                            var FechaIni = moment($("#FechaIni_ValesAnu").data("kendoDateTimePicker").value()).subtract(6, "hours").format("YYYYMMDD HH:mm:ss:SSS")
-                            var FechaFin = moment($("#FechaFin_ValesAnu").data("kendoDateTimePicker").value()).subtract(6, "hours").format("YYYYMMDD HH:mm:ss:SSS")
+                            var FechaIni = moment($("#FechaIni_ValesAnu").data("kendoDateTimePicker").value()).add(6, "hours").format("YYYYMMDD HH:mm:ss:SSS")
+                            var FechaFin = moment($("#FechaFin_ValesAnu").data("kendoDateTimePicker").value()).add(6, "hours").format("YYYYMMDD HH:mm:ss:SSS")
+                            @* console.log(FechaIni) *@
+                            @* console.log(FechaFin) *@
                             _this.DataGrid(5, FechaIni, FechaFin);
                         },
-                        DataGrid: function (_EstadoValeID, _FechaIni, _FechaFin) {
+                        DataGrid: function (_EstadoValeID, _FechaIni, _FechaFin) {//Función para llamar la data del GRID
                             let arg = {
                                 EstadoValeID: _EstadoValeID,
                                 FechaIni: _FechaIni,
@@ -1066,7 +1077,7 @@
                                 $("#GRID_ValesAnulados").data("kendoGrid").dataSource.data(vales);
                             });
                         },
-                        BTN_GenerarVales: function () {
+                        BTN_GenerarVales: function () {//Función para mostrar vales por rangos de fecha en el GRID
                             var _this = this
                             $("#BTN_ValesAnulados").on("click", function () {
                                 var FechaIni = moment($("#FechaIni_ValesAnu").data("kendoDateTimePicker").value()).subtract(6, "hours").format("YYYYMMDD HH:mm:ss:SSS")
@@ -1075,14 +1086,14 @@
                             })
                         }
                     },
-                    init: function () {
+                    init: function () {//Funciones que se llaman al entrar al modulo
                         var _this = this
                         _this.BarraOpciones()
                         _this.GRID.CargarGrid()
                         _this.GRID.BTN_GenerarVales()
                     }
                 },
-                init: function () {
+                init: function () {//Funciones que se llaman al entrar al modulo
                     var _this = this
                     _this.Tabstrip()
                     _this.AutorizarVales.init()

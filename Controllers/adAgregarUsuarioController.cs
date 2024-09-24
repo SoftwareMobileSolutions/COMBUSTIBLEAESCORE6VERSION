@@ -24,51 +24,55 @@ namespace COMBUSTIBLEAESCORE.Controllers
             return View();
         }
 
-        public async Task<JsonResult> ObtenerUsuarios()
+        public async Task<JsonResult> ObtenerUsuarios()//Action para obtener usuarios por compañia 
         {
-            var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
-            var usuarios = await iadAgregarUsuario.ObtenerUsuarios(user.FirstOrDefault().CompanyID);
+            var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");//Obtiene los datos del usuario de la sesion
+            var usuarios = await iadAgregarUsuario.ObtenerUsuarios(user.FirstOrDefault().CompanyID);//Se obtienen los usuarios
 
             return Json(usuarios);
         }
 
-        public async Task<JsonResult> ObtenerPerfilUsuarios()
+        public async Task<JsonResult> ObtenerPerfilUsuarios()//Action para obtener perfiles por compañia
         {
-            var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
-            var perfiles = await iadAgregarUsuario.ObtenerPerfilUsuarios(user.FirstOrDefault().CompanyID);
+            var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");//Obtiene los datos del usuario de la sesion
+            var perfiles = await iadAgregarUsuario.ObtenerPerfilUsuarios(user.FirstOrDefault().CompanyID);//Se obtienen los perfiles por compañia
             return Json(perfiles);
         }
 
-        public async Task<JsonResult> ObtenerGasolineras()
+        public async Task<JsonResult> ObtenerGasolineras()//Action para obtener las gasolineras
         {
-            var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
-            var gasolineras = await iadAgregarUsuario.ObtenerGasolineras(user.FirstOrDefault().CompanyID);
+            var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");//Obtiene los datos del usuario de la sesion
+            var gasolineras = await iadAgregarUsuario.ObtenerGasolineras(user.FirstOrDefault().CompanyID);// Se obtienen las gasolineras de la compañía
             return Json(gasolineras);
         }
 
-        [HttpPost]
+        [HttpPost]//Action para crear usuarios
         public async Task<JsonResult> CrearUsuarios(string Nombre, string Apellido, string Username, string Clave, string Correo, int PerfilID, int GasolineraID, string Telefono) {
-            var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
+            var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");//Obtiene los datos del usuario de la sesion
+
+            /*Se intenta crear el usuario y se obtiene el resultado*/
             var resultado = await iadAgregarUsuario.CrearUsuarios(Nombre, Apellido, Username, Clave, Correo, PerfilID, GasolineraID, user.FirstOrDefault().CompanyID, Telefono);
             return Json(resultado);
         }
-        [HttpPost]
+        [HttpPost]//Action para actualizar usuarios
         public async Task<JsonResult> ActualizarUsuario(string username, string contrasena, string nombre, string apellido, string correo, string telefono)
         {
-            var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
+            var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");//Obtiene los datos del usuario de la sesion
+            /* se intenta actualizar el usuario y se obtiene el resultado*/
             var resultado = await iadAgregarUsuario.ActualizarUsuario(user.FirstOrDefault().CompanyID, username, contrasena, nombre, apellido, correo, telefono);
             return Json(resultado);
         }
 
-        [HttpPost]
+        [HttpPost]//Action para cambiar el estado del usuario
         public async Task<JsonResult> CambiarEstadoUsuario(int UsuarioID, int Estado)
         {
-            var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
-            var resultado = await iadAgregarUsuario.CambiarEstadoUsuario(user.FirstOrDefault().CompanyID, UsuarioID, Estado);
+            var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");//Obtiene los datos del usuario de la sesion
+            var resultado = await iadAgregarUsuario.CambiarEstadoUsuario(user.FirstOrDefault().CompanyID, UsuarioID, Estado);//Se intenta cambiar el estado y se obtiene el resultado
             return Json(resultado);
         }
 
-        private void GuardarUsuario(string Username, string contrasena, int PerfilID)
+        
+        /*private void GuardarUsuario(string Username, string contrasena, int PerfilID)
         {
             var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
 
@@ -88,6 +92,6 @@ namespace COMBUSTIBLEAESCORE.Controllers
                     _Sesion.Set(HttpContext.Session, "PassAutTuto", contrasena);
                 }
             }
-        }
+        }*/
     }
 }

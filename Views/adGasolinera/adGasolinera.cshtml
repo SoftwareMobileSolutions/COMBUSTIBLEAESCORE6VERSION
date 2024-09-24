@@ -54,7 +54,7 @@
         </div>
         <div class="row mt-3">
             <div class="col-lg-6">
-                <h6>Ingrese el telefono de la Gasolinera</h6>
+                <h6>Ingrese el teléfono de la Gasolinera</h6>
                 <input type="text" class="form-control mt-lg-2"  id="@{@Input_TelefonoGasolinera}"/>
             </div>
             <div class="col-lg-6">
@@ -68,7 +68,7 @@
                 <input type="text" class="form-control mt-lg-2"  id="@{@Input_DireccionGasolinera}"/>
             </div>
             <div class="col-lg-6">
-                <h6>Ingrese el correo electronico de la Gasolinera</h6>
+                <h6>Ingrese el correo electrónico de la gasolinera</h6>
                 <input type="text" class="form-control mt-lg-2"  id="@{@Input_EmailGasolinera}"/>
             </div>
         </div>
@@ -165,24 +165,24 @@
             ModuloGasolinera:{
                 AgregarGasolinera: {
                     AgregarUbicaion: {
-                        markers: [],
-                        circles: [],
-                        CargarMapa: function () {
+                        markers: [],//Array para contener los marcadores
+                        circles: [],//Array para contener los circulos
+                        CargarMapa: function () {//Función para cargar mapa
                             var _this = this
 
-                            $.LoadAPI().then(() => {
-                                const map = new google.maps.Map(document.getElementById("@{@Map}"), {
-                                    center: { lat: 13.703052612879729, lng: -89.20242358465791 },
-                                    zoom: 13,
-                                    mapTypeId: "hybrid",
-                                    gestureHandling: 'greedy'
+                            $.LoadAPI().then(() => {//Se manda a llamar a la funcion de la view shared para inicializar la api de goole en base a la URL, es decir produción o desarrollo
+                                const map = new google.maps.Map(document.getElementById("@{@Map}"), {//Se inicializa el mapa
+                                    center: { lat: 13.703052612879729, lng: -89.20242358465791 },//Se determina la zona que se mostrara en el mapa
+                                    zoom: 13,// El acercamiento 
+                                    mapTypeId: "hybrid",//El tipo de mampa 
+                                    gestureHandling: 'greedy'//Se configura la interación del usuario con el mapa, en este caso que en la version movil se pueda usar los dedos
 
                                 });
 
-                                map.addListener('click', function (event) {
-                                    console.log("XD")
+                                map.addListener('click', function (event) {//Se añade el evento on click
+                                    //console.log("XD")
                                     _this.EliminarMarcador();
-                                    _this.AgregarMarcador(event.latLng, map);
+                                    _this.AgregarMarcador(event.latLng, map);//Se manda a llamar a la función que agrega marcadores
                                 });
                             }).catch((error) => {
                                 console.error("Error loading Google Maps API script: ", error);
@@ -202,24 +202,24 @@
                             });*/
 
                         },
-                        AgregarMarcador: function (location, map) {
+                        AgregarMarcador: function (location, map) {//Funcion para agregar los marcadores y el circulo
                             var _this = this
-                            var marker = new google.maps.Marker({
-                                position: location,
-                                Draggable: true,
-                                map: map
+                            var marker = new google.maps.Marker({ // Se incializa el marcador
+                                position: location,//Se indica la ubicación
+                                Draggable: true,//Se habilita el mantener click y jalar
+                                map: map//Se añade al mapa
                             });
 
-                            const circle = new google.maps.Circle({
-                                strokeColor: "#FF0000",
-                                strokeOpacity: 0.8,
-                                strokeWeight: 2,
-                                fillColor: "#FF0000",
-                                fillOpacity: 0.35,
-                                clickable: false,
-                                map,
-                                center: location,
-                                radius: 50
+                            const circle = new google.maps.Circle({//Se inicializar el circulo
+                                strokeColor: "#FF0000", //Color del borde
+                                strokeOpacity: 0.8, //opacidad
+                                strokeWeight: 2, // Grosor del borde 
+                                fillColor: "#FF0000", //Color del relleno
+                                fillOpacity: 0.35,//opacidad del relleno
+                                clickable: false,// Se desabilita el click
+                                map,//se añade al mapa
+                                center: location,//La ubicación del circulo
+                                radius: 50 // Se define el tamaño del circulo
                             });
 
                             circle.bindTo('center', marker, 'position');
@@ -227,32 +227,34 @@
                             _this.markers.push(marker);
                             _this.circles.push(circle)
                         },
-                        EliminarMarcador: function () {
+                        EliminarMarcador: function () {//Funcion para eliminar el marcador y circulo
                             var _this = this
-                            var circles = _this.circles
-                            var markers = _this.markers
+                            var circles = _this.circles //Se obtienen los circulos
+                            var markers = _this.markers //Se obtienen los marcadores
 
-                            for (var i = 0; i < markers.length; i++) {
+                            for (var i = 0; i < markers.length; i++) {//Se eliminan los marcadores
                                 markers[i].setMap(null);
                             }
 
-                            for (var i = 0; i < circles.length; i++) {
+                            for (var i = 0; i < circles.length; i++) {//Se eliminan los circulos
                                 circles[i].setMap(null);
                             }
 
                             markers = [];
                             circles = [];
-                            _this.circles = circles
+                            _this.circles = circles //Se guarda un array vacio en circulos y marcadores
                             _this.markers = markers
                         },
-                        Visibilidad: function () {
-                            $('#@{@DIV_Mapa}').hide()
-                            $('#@{@BTN_ShowHideMapa}').click(function () {
+                        Visibilidad: function () {//Funcion que controla la visivilidad del mapa para agregar la ubicación
+                            $('#@{@DIV_Mapa}').hide()//se oculta el mapa al entrar al modulo
+                            $('#@{@BTN_ShowHideMapa}').click(function () { 
                                 if ($("#@{@DIV_Mapa}").css("display") === "none") {
+                                    /*Se cambia el texto y el icono*/
                                     $("#@{@Flecha}").removeClass("bi-chevron-down")
                                     $("#@{@Flecha}").addClass("bi-chevron-up")
                                     $("#@{@TXT_ShowHideMapa}").text("Ocultar")
                                 } else {
+                                    /*Se cambia el texto y el icono*/
                                     $("#@{@Flecha}").removeClass("bi-chevron-up")
                                     $("#@{@Flecha}").addClass("bi-chevron-down")
                                     $("#@{@TXT_ShowHideMapa}").text("Agregar Ubicación")
@@ -261,8 +263,9 @@
                             })
                         }
                     },
-                    KeyPress: function () {
-                            $('#@{@Input_TelefonoGasolinera}').keypress(function (event) {
+                    KeyPress: function () {//Funcion para validar lo que se puede digitar en los inputs
+
+                            $('#@{@Input_TelefonoGasolinera}').keypress(function (event) { //Se evitan caracteres y letras en el input de telefono
                                 var keyCode = event.which;
                                 var inputValue = $(this).val();
 
@@ -275,11 +278,11 @@
 
                             });
 
-                            $('#@{@Input_TelefonoGasolinera}').on("paste", function (event) {
+                            $('#@{@Input_TelefonoGasolinera}').on("paste", function (event) {//Se evita el pegar en el input telefono 
                                 event.preventDefault();
                             });
 
-                            $('#@{@Input_NITGasolinera}').keypress(function (event) {
+                            $('#@{@Input_NITGasolinera}').keypress(function (event) {//Se evitan caracteres y letras en el input de nit
                                 var keyCode = event.which;
                                 var inputValue = $(this).val();
 
@@ -292,12 +295,12 @@
 
                             });
 
-                            $('#@{@Input_NITGasolinera}').on("paste", function (event) {
+                            $('#@{@Input_NITGasolinera}').on("paste", function (event) {//Se evita el pegar en el input telefono
                                 event.preventDefault();
                             });
 
                             
-                            $('#@{@Input_CodigoGasolinera}').keypress(function (event) {
+                            $('#@{@Input_CodigoGasolinera}').keypress(function (event) {//Se evitan caracteres y letras en el código de gasolinera
                                 var keyCode = event.which;
                                 var inputValue = $(this).val();
 
@@ -308,7 +311,7 @@
 
                             });
 
-                            $('#@{@Input_CiudadGasolinera}').keypress(function (event) {
+                            $('#@{@Input_CiudadGasolinera}').keypress(function (event) {//Se limita a que no se pueda poner mas de 50 caracteres en el input de ciudad
                                 var keyCode = event.which;
                                 var inputValue = $(this).val();
 
@@ -319,7 +322,7 @@
 
                             });
 
-                            $('#@{@Input_GerenteGasolinera}').keypress(function (event) {
+                            $('#@{@Input_GerenteGasolinera}').keypress(function (event) {//Se limita a que no se pueda poner mas de 50 caracteres en el input de Gerente
                                 var keyCode = event.which;
                                 var inputValue = $(this).val();
 
@@ -329,7 +332,7 @@
 
                             });
 
-                            $('#@{@Input_DireccionGasolinera}').keypress(function (event) {
+                            $('#@{@Input_DireccionGasolinera}').keypress(function (event) {//Se limita a que no se pueda poner mas de 255 caracteres en el input de Dirección
                                 var keyCode = event.which;
                                 var inputValue = $(this).val();
 
@@ -339,7 +342,7 @@
 
                             });
 
-                            $('#@{@Input_EmailGasolinera}').keypress(function (event) {
+                            $('#@{@Input_EmailGasolinera}').keypress(function (event) {//Se limita a que no se pueda poner mas de 255 caracteres en el input de Email
                                 var keyCode = event.which;
                                 var inputValue = $(this).val();
 
@@ -348,66 +351,66 @@
                                 }
 
                             });
-                    },
-                    Validaciones: function (NombreGasolinera, CodigoGasolinera,CiudadGasolinera,GerenteGasolinera,TelefonoGasolinera,NITGasolinera,DireccionGasolinera,EmailGasolinera) {
-                        var validEmail = /^\w+([.-_+]?\w+)*@@\w+([.-]?\w+)*(\.\w{2,10})+$/;
+                    },/*Funcion para validar los datos de la gasolinera*/
+                    Validaciones: function (NombreGasolinera, CodigoGasolinera,CiudadGasolinera,GerenteGasolinera,TelefonoGasolinera,NITGasolinera,DireccionGasolinera,EmailGasolinera) {//Funcion para validar los datos de la gasolinera
+                        var validEmail = /^\w+([.-_+]?\w+)*@@\w+([.-]?\w+)*(\.\w{2,10})+$/;/*Regex para validar correo*/ 
                         
-                        if (NombreGasolinera === ""){
-                            $._combustible.alert("error", "Campo vacio", "Debe insertar el nombre de la gasolinera")
+                        if (NombreGasolinera === ""){//Se verifica que se ingresó un nombre de gasolinera
+                            $._combustible.alert("error", "Campo vacío", "Debe insertar el nombre de la gasolinera")
                             return false
                         }
-                        if (NombreGasolinera.length < 3) {
-                            $._combustible.alert("error", "Campo vacio", "El nombre debe tener al menos tres caracteres")
+                        if (NombreGasolinera.length < 3) {//Se verifica el largo del nombre gasolinera
+                            $._combustible.alert("error", "Campo vacío", "El nombre debe tener al menos tres caracteres")
                             return false
                         }
 
-                        if(CodigoGasolinera.length > 0){
-                            if (CodigoGasolinera.length < 3) {
+                        if(CodigoGasolinera.length > 0){//Se verifica si se ingredo un codigo de gasolinera 
+                            if (CodigoGasolinera.length < 3) {//Si se ingreso un codigo se verifica que tengas mas de 2 caracteres 
                                 $._combustible.alert("error", "Código demasiado corto", "El Código debe tener al menos tres caracteres")
                                 return false
                             }
                         }
 
-                        if(CiudadGasolinera.length > 0){
-                            if (CiudadGasolinera.length < 3) {
+                        if(CiudadGasolinera.length > 0){//Se verifica si se ingreso una ciudad para la gasolinera
+                            if (CiudadGasolinera.length < 3) {//Si se ingreso una ciudad se verifica que tengas mas de 2 caracteres 
                                 $._combustible.alert("error", "Nombre demasiado corto", "El nombre de la ciudad debe tener al menos tres caracteres")
                                 return false
                             }
                         }
 
-                        if(GerenteGasolinera.length > 0){
-                            if (GerenteGasolinera.length < 3) {
+                        if(GerenteGasolinera.length > 0){//Se verifica si se ingreso un gerente para la gasolinera
+                            if (GerenteGasolinera.length < 3) {//Si se ingreso un gerente se verifica que tengas mas de 2 caracteres 
                                 $._combustible.alert("error", "Nombre demasiado corto", "El nombre de el gerente debe tener al menos tres caracteres")
                                 return false
                             }
                         }
 
-                        if(TelefonoGasolinera.length > 0){
+                        /*if(TelefonoGasolinera.length > 0){
                             if (TelefonoGasolinera.length < 3) {
                                 $._combustible.alert("error", "Nombre demasiado corto", "El nombre de el gerente debe tener al menos tres caracteres")
                                 return false
                             }
-                        }
+                        }*/
 
-                        if(TelefonoGasolinera.length > 0){
-                            if (TelefonoGasolinera.length < 8) {
+                        if(TelefonoGasolinera.length > 0){//Se verifica si se ingreso un telefono para la gasolinera
+                            if (TelefonoGasolinera.length < 8) {//Si se ingreso un telefono se verifica que tengas mas de 7 caracteres 
                                 $._combustible.alert("error", "Número demasiado corto", "El Número telefónico debe tener 8 digitos")
                                 return false
                             }
                         }
 
-                        if(NITGasolinera.length > 0){
-                            if (NITGasolinera.length < 14) {
+                        if(NITGasolinera.length > 0){//Se verifica si se ingreso un NIT para la gasolinera
+                            if (NITGasolinera.length < 14) {//Si se ingreso un telefono se verifica que tengas mas de 13 caracteres 
                                 $._combustible.alert("error", "NIT demasiado corto", "El NIT  debe tener 14 digitos")
                                 return false
                             }
                         }
-                        if(NITGasolinera.length > 0){
+                        /*if(NITGasolinera.length > 0){
                             if (NITGasolinera.length < 14) {
                                 $._combustible.alert("error", "NIT demasiado corto", "El NIT  debe tener 14 digitos")
                                 return false
                             }
-                        }
+                        }*/
 
                         if (DireccionGasolinera.length > 0) {
                             if (DireccionGasolinera.length < 8) {
@@ -432,9 +435,10 @@
                         }*/
                         return true
                     },
-                    BTN_GuardaGasolinera: function () {
+                    BTN_GuardaGasolinera: function () {//Funcion para guardar la nueva Gasooinera
                         var _this = this
                         $("#@{@BTN_GuardarGasolinera}").on("click", function () {
+                            /* Se obtienen los datos de la gasolinera*/
                             var NombreGasolinera = $("#@{@Input_NombreGasolinera}").val().trim()
                             var CodigoGasolinera = $("#@{@Input_CodigoGasolinera}").val().trim()
                             var CiudadGasolinera = $("#@{@Input_CiudadGasolinera}").val().trim()
@@ -444,6 +448,7 @@
                             var DireccionGasolinera = $("#@{@Input_DireccionGasolinera}").val().trim()
                             var EmailGasolinera = $("#@{@Input_EmailGasolinera}").val().trim()
 
+                            /*Se manda a llamar a la fucnion que valida los datos y se evalua el resultado*/ 
                             if (_this.Validaciones(NombreGasolinera,CodigoGasolinera,CiudadGasolinera,GerenteGasolinera,TelefonoGasolinera,NITGasolinera,DireccionGasolinera,EmailGasolinera) === true) {
                                 var market = _this.AgregarUbicaion.markers[0]
                                 arg = {
@@ -458,6 +463,7 @@
                                     DireccionGasolinera : DireccionGasolinera,  
                                     EmailGasolinera: EmailGasolinera
                                 }
+                                
                                 
                                 //console.log(arg)
                                 $.post('@Url.Action("CrearGasolinera", "adGasolinera")',arg,function (mensaje) {
@@ -492,25 +498,25 @@
                     }
                 },
                 GRID: {
-                    CargarGrid: function () {
-                        $("#@{@GRID_Gasolinera}").html("");
-                        $("#@{@GRID_Gasolinera}").kendoGrid({
+                    CargarGrid: function () {//Funcion para inicializar el GRID
+                        $("#@{@GRID_Gasolinera}").html("");//Se limmpia el contenedor del GRID
+                        $("#@{@GRID_Gasolinera}").kendoGrid({//Se inicializa el GRID
                             dataSource: {
                                 pageSize: 15
                             },
                             scrollable: true,
-                            toolbar: ["search"],
+                            toolbar: ["search"],//Se cnofigura las opciones del toolbar
                             themeColor: "Purple",
                             columns: [
                                 {
                                     field: "nombre",
                                     title: "Nombre",
-                                    attributes: { class: "col-data" },
-                                    headerAttributes: { class: "col-data" },
+                                    attributes: { class: "col-data" },//Se indica que el estilo será definido por una clase de css
+                                    headerAttributes: { class: "col-data" },//Se indica que el estilo será definido por una clase de css
                                 },
                                 {
                                     field: "codigo",
-                                    title: "Codigo",
+                                    title: "Código",
                                     attributes: { class: "col-data" },
                                     headerAttributes: { class: "col-data" },
                                 },
@@ -528,7 +534,7 @@
                                 },
                                 {
                                     field: "telefono",
-                                    title: "Telefono",
+                                    title: "Teléfono",
                                     attributes: { class: "col-data" },
                                     headerAttributes: { class: "col-data" },
                                 },
@@ -540,7 +546,7 @@
                                 },
                                 {
                                     field: "direccion",
-                                    title: "Direccion",
+                                    title: "Dirección",
                                     attributes: { class: "col-data" },
                                     headerAttributes: { class: "col-data" },
                                 },
@@ -577,22 +583,22 @@
                                 }
 
                             ],
-                            pageable: true,
-                            mobile: "phone",
+                            pageable: true,//Se habilita la paginación
+                            mobile: "phone",//Se habilita la vista movil
                             dataBound: function (e) {
                                 $("#@{@GRID_Gasolinera} > div span input").attr("placeholder", "Busqueda")
                             }
                         });
 
                     },
-                    DataGrid: function () {
+                    DataGrid: function () {//Función para traer la data del Grid del server
                         $.get('@Url.Action("ObtenerGasolineras", "adGasolinera")', function (Gasolineras) {
                             //console.log(Gasolineras)
                             $("#@{@GRID_Gasolinera}").data("kendoGrid").dataSource.data(Gasolineras)
                         })
                     },
                     Modal: {
-                        Mostrar: function (latitud, longitud,Nombre) {
+                        Mostrar: function (latitud, longitud,Nombre) {//Función para mostrar la ubicación de la gasolinera
                             $("#@{@Modal_body_mapa}").html("");
                             var DIV = '<div id="@{@MapaModal}" style="height:50vh;"><div>'
                             $("#@{@Modal_body_mapa}").html(DIV);

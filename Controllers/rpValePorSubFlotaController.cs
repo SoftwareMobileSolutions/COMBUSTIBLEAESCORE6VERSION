@@ -24,7 +24,7 @@ namespace COMBUSTIBLEAESCORE.Controllers
             return View();
         }
 
-        public async Task<JsonResult> ObtenerValeXSubFlota(string FechaIni, string FechaFin)
+        public async Task<JsonResult> ObtenerValeXSubFlota(string FechaIni, string FechaFin)//Action para obtener vales por flota
         {
             var user = _Sesion.Get<IEnumerable<LoginModel>>(HttpContext.Session, "usuario");
             var vales = await irpValePorSubFlota.ObtenerValeXSubFlota(user.FirstOrDefault().CompanyID, FechaIni, FechaFin);

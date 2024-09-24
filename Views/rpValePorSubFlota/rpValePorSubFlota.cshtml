@@ -75,7 +75,7 @@
         $.extend({
             ReporteValesPorSubFlota: {
                 Data: {
-                    ObtenerData: function () {
+                    ObtenerData: function () {//Función para obtener data en general
                         var _this = this;
 
                         let _FechaIni = moment($("#@{@DateTimePicker_FechaIni}").data("kendoDateTimePicker").value()).add(6, 'hours').format("YYYYMMDD HH:mm:ss")
@@ -93,34 +93,45 @@
                         });
                     },
                     FormatoData: {
-                        FormatoDataGrafica: function(_Vales){
+                        FormatoDataGrafica: function(_Vales){//Función para formatar la data del grafico
+                            //Se obtiene el texto de la variable
                             let variable = $("#@{@DropDownList_Variable}").data("kendoDropDownList").text()
+                            //Se obtiene la selección del DropDownList
                             let VariableID =  $("#@{@DropDownList_Variable}").data("kendoDropDownList").value()
+
+                            //se declaran las series
                             var series = {
                                 name: variable,
                                 data: []
                             }
+
+                            //Array para almacenar
                             var _data = [];
+
+                            
                             _Vales.forEach((vale) => {
-                                if (VariableID === "1") {
+                                if (VariableID === "1") {//Por cantidad de vales 
                                     _data.push({ name: vale.nombreSubfleet, y: vale.cantVales })
-                                } else if (VariableID === "2") {
+                                } else if (VariableID === "2") {//POr cantidad de galones
                                     _data.push({ name: vale.nombreSubfleet, y: vale.cantGal })
-                                } else{
+                                } else{//Por suma de dolares
                                     _data.push({ name: vale.nombreSubfleet, y: vale.totalDinero })
-                                }
-                           
+                                }                          
                             });
 
+                            //Se ordena la data del array
                             _data.sort((a, b) => b.y - a.y);
+                            //Se obtienen los primeras 10 pocisiones
                             series.data = _data.slice(0, 10)
                             return series
                         }
                     }
 
                 },
-                Datetimepicker: function () {
+                Datetimepicker: function () {//Función para inicializar los DateTimePicker
                     var _this = this
+
+                    //Se inicializan los DateTimePicker
                     $("#@{@DateTimePicker_FechaIni}").kendoDateTimePicker({
                         dateInput: true,
                         startTime: new Date(2023, 1, 3, 8, 30, 0),
@@ -132,14 +143,16 @@
                         endTime: new Date(2023, 1, 3, 17,00, 0)
                     });
 
+
                     var dataVariable = new kendo.data.DataSource({
                         data: [
                             { TopID: 1, TopName: "Cantidad de vales" },
                             { TopID: 2, TopName: "Suma de Galones" },
-                            { TopID: 3, TopName: "Suma de Dolares" }
+                            { TopID: 3, TopName: "Suma de Dólares" }
                         ]
                     });
 
+                    //Se inicializa los DropDownList
                     $("#@{@DropDownList_Variable}").kendoDropDownList({
                         filter: "contains",
                         dataTextField: "TopName",
@@ -147,14 +160,14 @@
                         dataSource: dataVariable
                     });
                 
-
+                    //Se setea la data a los DateTimePicker
                     $("#@{@DateTimePicker_FechaIni}").data("kendoDateTimePicker").value(kendo.parseDate(moment().subtract(30, 'days').format("YYYY/MM/DD HH:mm:ss:SSS")));
                     $("#@{@DateTimePicker_FechaFin}").data("kendoDateTimePicker").value(kendo.parseDate(moment().format("YYYY/MM/DD HH:mm:ss.SSS")));
                 },
-                Grafica: function (_series) {
+                Grafica: function (_series) {//Función para inicializar la Grafica
                     var _this = this
-                    $("#@{@Contenedor_Chart}").html("");
-                    let variable = $("#@{@DropDownList_Variable}").data("kendoDropDownList").text()
+                    $("#@{@Contenedor_Chart}").html("");//Se limpia el contenedor  de la gráfica
+                    let variable = $("#@{@DropDownList_Variable}").data("kendoDropDownList").text() //Se inicializa la grafica
 
                             Highcharts.chart('@{@Contenedor_Chart}', {
                                 chart: {
@@ -209,10 +222,10 @@
                             });
                 },
                 Grid: {
-                    LoadGrid: function () {
+                    LoadGrid: function () {//Funcion para inicializar el GRID
                         var _this = this
-                        $("#@{@GRID_Vales}").html("");
-                        $("#@{@GRID_Vales}").kendoGrid({
+                        $("#@{@GRID_Vales}").html("");//Se limpia el contenedor del GRID
+                        $("#@{@GRID_Vales}").kendoGrid({//Se inicializa el GRID
                             dataSource: {
                                 pageSize: 10
                             },
@@ -220,7 +233,7 @@
                             columns: [
                                 {
                                     field: "nombreSubfleet",
-                                    title: "Sub FLota",
+                                    title: "SubFlota",
                                     width: "100px"
                                 },
                                 {
@@ -251,17 +264,17 @@
                             }
                         });
                     },
-                    DataGrid: function (data) { 
+                    DataGrid: function (data) {//Función para setear la data del GRID
                         $("#@{@GRID_Vales}").data("kendoGrid").dataSource.data(data);
                     }
                 },
-                BTN_GenerarData: function () {
+                BTN_GenerarData: function () {//Función para ontener la data del Grafico
                     var _this = this;
                     $("#@{@BTN_GenerarReporte}").on("click", function () {
                         _this.Data.ObtenerData()
                     });
                 },
-                init: function () {
+                init: function () {//Función que se inicializan al entrar al modulo
                     var _this = this
                     _this.Datetimepicker()
                     _this.Grid.LoadGrid()
