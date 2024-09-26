@@ -302,7 +302,7 @@
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content ">
                 <div class="modal-header">
-                    <h5 class="modal-title" ><i class="bi bi-pencil-square"></i> Edicion de Vehículos</h5>
+                    <h5 class="modal-title" ><i class="bi bi-pencil-square"></i> Edición de Vehículos</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -865,24 +865,24 @@
 
                         //Se valida que se ingrese una placa
                         if (placa === "") {
-                            $.ModuloVehiculosFlotas.alert("Campo vacio", "Debe ingresar una placa", "warning");
+                            $.ModuloVehiculosFlotas.alert("Campo vacío", "Debe ingresar una placa", "warning");
 
                             return false;
                         }
                         //Sa valida que se ingreso un nombre
                         if (Nombre === "") {
-                            $.ModuloVehiculosFlotas.alert("Campo vacio", "Debe ingresar un nombre", "warning");
+                            $.ModuloVehiculosFlotas.alert("Campo vacío", "Debe ingresar un nombre", "warning");
 
                             return false;
                         }
                         //Se valida que se selecciono una flota
                         if (Flota === "") {
-                            $.ModuloVehiculosFlotas.alert("Sin seleccionar", "Debe seleccionar una flota para el vehiculo", "warning");
+                            $.ModuloVehiculosFlotas.alert("Sin seleccionar", "Debe seleccionar una flota para el vehículo", "warning");
                             return false;
                         }
                         //Se valida que se seleccionó un Centro de costo
                         if (CentroCosto === "") {
-                            $.ModuloVehiculosFlotas.alert("Sin seleccionar", "Debe seleccionar una centro de costo para el vehiculo", "warning");
+                            $.ModuloVehiculosFlotas.alert("Sin seleccionar", "Debe seleccionar una centro de costo para el vehículo", "warning");
                             return false;
                         }
                         return true
@@ -1056,7 +1056,7 @@
                             }
                             //Se valida que se selecciono una flota
                             if (Flota === "") {
-                                this.alert("alerta", "Debe seleccionar una flota para el vehiculo")
+                                this.alert("alerta", "Debe seleccionar una flota para el vehículo")
                                 return false;
                             }
                             return true
@@ -1301,7 +1301,7 @@
 
                         Swal.fire({
                             title: "¿Esta seguro?",
-                            text: 'La eliminacion de "' + _NombreSubfleet + '" no es reversible',
+                            text: 'La eliminación de "' + _NombreSubfleet + '" no es reversible',
                             icon: "warning",
                             showCancelButton: true,
                             confirmButtonColor: "#3085d6",
@@ -1503,7 +1503,7 @@
                             return false
                         }
                         if (CentroCosto.length < 3) {//Se valida que el centro de costo tenga al menos tres caracteres
-                            _this.nota("Nombre demasiado corto,El nombre debe tener al menos tres caractares", "warning")
+                            _this.nota("Nombre demasiado corto, El nombre debe tener al menos tres caractares", "warning")
                             //$._combustible.alert("error", "", "")
                             return false
                         }

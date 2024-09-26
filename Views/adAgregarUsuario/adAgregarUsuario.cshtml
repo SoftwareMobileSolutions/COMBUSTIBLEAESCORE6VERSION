@@ -655,7 +655,7 @@
                             }*/
 
                             //Se valida el minimo de caracteres
-                            if (_contrasena.length < 8) {
+                            if ( _contrasena.length > 0  && _contrasena.length < 5) {
                                  _this.alertModal("alerta", "Contraseña demasiado corta, La contraseña debe tener al menos 8 caracteres")
                                 return false
                             }
@@ -672,7 +672,7 @@
                             //Se valdia los datos opcionales 
                             if (_correo !== "") {
                                 if (!validEmail.test(_correo)) {//Se valida email valido
-                                    _this.alertModal("alerta", "Formato de correo, Debe digitar  un correo valido")
+                                    _this.alertModal("alerta", "Formato de correo, Debe digitar  un correo válido")
                                     return false
                                 }
                             }
@@ -754,10 +754,13 @@
                                         $.post('@Url.Action("ActualizarUsuario", "adAgregarUsuario")',arg, function (mensaje) {
                                             mensaje = mensaje[0]
                                             if (mensaje.bandera === 1) {
-                                                _this.alertModal("suceso", mensaje.resultado)
-                                                $.ModuloAgregarUsuario.GRID.DataGrid()
-                                                $("#@{@Input_Password_ModalEditarUsuario}").val("")
-                                                $("#@{@BTN_Guardar_ModalEditarUsuario}").attr("disabled", true)
+                                                _this.alertModal("suceso", mensaje.resultado);
+                                                $.ModuloAgregarUsuario.GRID.DataGrid();
+                                                $("#@{@Input_Password_ModalEditarUsuario}").val("");
+                                                $("#@{@BTN_Guardar_ModalEditarUsuario}").attr("disabled", true);
+                                                setTimeout(() => {
+                                                    $("#@{@ModalEditarUsuario}").modal("hide");
+                                                }, 2000);
                                             } else {
                                                 _this.alertModal("alerta", mensaje.resultado)
                                             }

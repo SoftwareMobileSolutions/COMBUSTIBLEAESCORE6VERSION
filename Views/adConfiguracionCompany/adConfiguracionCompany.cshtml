@@ -49,7 +49,7 @@
 
                     <div class="row mt-lg-2 mt-2">
                         <div class="col-lg-12">
-                            <label  class="form-label">Pagina web</label>
+                            <label  class="form-label">Página web</label>
                             <input type="text" class="w-100 form-control" id="@{@Input_Website}">
                         </div>
                     </div>
@@ -332,21 +332,21 @@
                             }
                             if (_Email !== "") {//Se verifica si el usuario digito un correo electronico 
                                 if (!Email_Regex.test(_Email)) {//Si el usario digito, se verifica si es valido con le regex 
-                                    $._combustible.alert("error", "Formato de correo incorrecto", "Debe digitar  un correo valido, por ejemplo usuario@correo.com")
+                                    $._combustible.alert("error", "Formato de correo incorrecto", "Debe digitar  un correo válido, por ejemplo usuario@correo.com")
                                     return false
                                 }
                             }
 
                             if (_Number1 !== "") {//Se verifica si el usuario digito un numero de telefono
                                 if (_Number1.length < 8) { // Se verifica que el numero contenga 8 digitos 
-                                    $._combustible.alert("error", "Número de telefono 1 demasido corto ", "El numero de telefono debe tener al menos 8 números")
+                                    $._combustible.alert("error", "Número de teléfono 1 demasido corto ", "El número de teléfono debe tener al menos 8 números")
                                     return false
                                 }
                             }
 
                             if (_Number2 !== "") {//Se verifica si el usuario digito un numero de telefono
                                 if (_Number2.length < 8) { // Se verifica que el numero contenga 8 digitos 
-                                    $._combustible.alert("error", "Número de telefono 2 demasido corto ", "El numero de telefono debe tener al menos 8 números")
+                                    $._combustible.alert("error", "Número de teléfono 2 demasido corto ", "El número de teléfono debe tener al menos 8 números")
                                     return false
                                 }
                             }                      
