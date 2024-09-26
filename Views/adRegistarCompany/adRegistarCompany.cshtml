@@ -131,19 +131,19 @@
                     var securePassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)\S{8,}$/;
 
                     if ($("#name").val().trim() === "") {//Se valida que se digito un nombre
-                        _this.alert("Campo de texto vacio", "Debe digitar su primer nombre");
+                        _this.alert("Campo de texto vacío", "Debe digitar su primer nombre");
                         return false
                     }
                     if ($("#lastname").val().trim() === "") {//Se valida que se digito un apellido
-                        _this.alert("Campo de texto vacio", "Debe digitar su primer apellido");
+                        _this.alert("Campo de texto vacío", "Debe digitar su primer apellido");
                         return false
                     }
                     if ($("#username").val().trim() === "") {//Se valdia que se digito el username
-                        _this.alert("Campo de texto vacio", "Debe digitar su nombre de usuario");
+                        _this.alert("Campo de texto vacío", "Debe digitar su nombre de usuario");
                         return false
                     }
                     if ($("#email").val().trim() === "") {//Se valida si se digitó el correo electronico
-                        _this.alert("Campo de texto vacio", "Debe digitar su correo eléctronico");
+                        _this.alert("Campo de texto vacío", "Debe digitar su correo eléctronico");
                         return false
                     }
                     if (!validEmail.test($("#email").val().trim())) {//Se valida si se digito un correo valido 
@@ -151,15 +151,15 @@
                         return false
                     }
                     if ($("#CompanyName").val().trim() === "") {//Se valida si se digitó el nombre de la compañia 
-                        _this.alert("Campo de texto vacio", "Debe digitar el nombre de la compañia");
+                        _this.alert("Campo de texto vacío", "Debe digitar el nombre de la compañia");
                         return false
                     }
                     if ($("#adrress").val().trim() === "") {//Se valida si se digitó la dirección de la empresa
-                        _this.alert("Campo de texto vacio", "Debe digitar la direcciíon de la compañia");
+                        _this.alert("Campo de texto vacío", "Debe digitar la direcciíon de la compañia");
                         return false
                     }
                     if ($("#password").val().trim() === "") {//Se valida si se digito la contraseña 
-                        _this.alert("Campo de texto vacio", "Debe digitar su contraseña");
+                        _this.alert("Campo de texto vacío", "Debe digitar su contraseña");
                         return false
                     }
                     if ($("#password").val().trim() < 8) {//Se valida el largo de la contraseña

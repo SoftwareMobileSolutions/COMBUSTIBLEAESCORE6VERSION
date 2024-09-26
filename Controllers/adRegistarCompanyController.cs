@@ -21,6 +21,7 @@ namespace COMBUSTIBLEAESCORE.Controllers
     {
         private readonly IadRegistarCompany iRegister;
         private string EncryptKey = "$_M_$_BLU3_KNTRL"; //Contraseña para encrptar y descincriptar
+        private string Correo_Monitoreo = "analista.monitoreo@sms-open.com";
 
         public adRegistarCompanyController(IadRegistarCompany _IRegister) {
             iRegister = _IRegister;
@@ -40,34 +41,34 @@ namespace COMBUSTIBLEAESCORE.Controllers
             if (data.FirstOrDefault().bandera == 1) {//Si se creó la empresa de manera correcta, se envian dos correos
 
                 /**************CORREO PARA IDC*********************************************************************************************************************/
-                var EncabezadoCorreo_IDC = "Notificaión para activacion de usuario - " + Username;//Se define el encabezado 
+                var EncabezadoCorreo_IDC = "Notificación para activación de usuario - " + Username;//Se define el encabezado 
                 var URL_Activacion = GetAbsoluteRootUrl() + "/ActivarUsuario/" + Encrypt(Username, EncryptKey);//Se crea el URL de activación de usuario
                 var CuerpoCorreo_IDC = "<html><body>" +
                                     "<p>Saludos cordiales.</p>" +
-                                    "<p>Se creo la compañía con el nombre <strong>" + NombreCompany + "</strong>  por favor activarla en el siguiente enlace</p>" +
+                                    "<p>Se creo la compañía con el nombre <strong>" + NombreCompany + "</strong>  por favor activarla con el siguiente enlace</p>" +
                                     "<ul>" +
-                                    "<li>Enlace de activacion de usuario: <a href=" + URL_Activacion + ">Click Aquí</a> </li>" +
+                                    "<li>Enlace de activación de usuario: <a href=" + URL_Activacion + ">Click Aquí</a> </li>" +
                                     "</ul>" +
                                     "</body></html>"; //Se define el cuerpo del correo
 
-                var ResultadoCorreoIDC =  await enviarCorreo("henry.herrera@sms-open.com", CuerpoCorreo_IDC, EncabezadoCorreo_IDC);//Se envia el correo
+                var ResultadoCorreoIDC =  await enviarCorreo(Correo_Monitoreo, CuerpoCorreo_IDC, EncabezadoCorreo_IDC);//Se envia el correo
                 /*************************************************************************************************************************************************/
 
 
                 /**************CORREO PARA USUARIO***************************************************************************************************************/
 
 
-                var EncabezadoCorreo_Usuario = "Notificacion de creacion de compañia  " + NombreCompany;//Se define el encabezado
+                var EncabezadoCorreo_Usuario = "Notificación de creación de compañía  " + NombreCompany;//Se define el encabezado
                 var CuerpoCorreo_Usuario = "<html><body>" +
-                                            "<p>Saludos cordiales de parte de Software Mobile Solutions</p>" +
-                                            "<p>Por este medio le comunicamos qué la compañia <strong>" + NombreCompany + "</strong>  se creó exitosamente</p>" +
+                                            "<p>Saludos cordiales de parte de Software Mobile Solutions.</p>" +
+                                            "<p>Por este medio le comunicamos qué la compañía <strong>" + NombreCompany + "</strong>  ha sido creada exitosamente</p>" +
                                             "<br />" +
-                                            "<p>Con las siguientes credenciales para el usuario administrador</p>" +
+                                            "<p>A continuación, encontrará las credenciales para el usuario administrador:</p>" +
                                             "<ul>" +
                                             "<li>Usuario: " + Username + "</li>" +
                                             "<li>Contraseña: " + Clave + "</li>" +
                                             "</ul>" +
-                                            "<p>Quedamos a la orden</p>" +
+                                            "<p>Quedamos a la orden para cualquier consulta.</p>" +
 
                                             "</body></html>";//Se define el cuerpo de correo 
                 var ResultadoCorreoUsuario = await enviarCorreo(Correo, CuerpoCorreo_Usuario, EncabezadoCorreo_Usuario);//Se envía el correo
